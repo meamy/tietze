@@ -1,6 +1,7 @@
 module Main where
 
 import Test.HUnit
+import DyadicRewrite.Common
 import DyadicRewrite.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------

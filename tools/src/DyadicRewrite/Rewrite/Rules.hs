@@ -4,7 +4,7 @@
 
 module DyadicRewrite.Rewrite.Rules where
 
-type Circuit = [String]
+import DyadicRewrite.Common (Circuit)
 
 -----------------------------------------------------------------------------------------
 -- * RewriteRule
@@ -16,8 +16,8 @@ data RewriteRule = RewriteRule { lhs :: Circuit, rhs :: Circuit }
 -- rewrite. The second circuit is the lhs of the rewrite rule. True is returned if the
 -- rule is applicable.
 checkRewriteRuleRec :: Circuit -> Circuit -> Bool
-checkRewriteRuleRec str []  = True
-checkRewriteRuleRec []  lhs = False
+checkRewriteRuleRec _   []  = True
+checkRewriteRuleRec []  _   = False
 checkRewriteRuleRec str lhs = if (head str) == (head lhs)
                               then checkRewriteRuleRec (tail str) (tail lhs)
                               else False
