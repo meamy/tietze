@@ -51,6 +51,73 @@ test6 = TestCase (assertBool "The rule does not match and must be rejected"
                              (not (checkRewriteRule circuit1a rule3 True)))
 
 -----------------------------------------------------------------------------------------
+-- Tests when a rewrite operation is applicable (in either direction).
+
+circuit2a :: Circuit
+circuit2a = ["X1", "X2", "Z1", "CCX123", "CX13", "CX23"]
+
+circuit2b :: Circuit
+circuit2b = ["X1", "X2", "Z1", "CX13", "CCX123", "CX23"]
+
+op1a :: RewriteOp
+op1a = RewriteOp rule1 3 True
+
+op1b :: RewriteOp
+op1b = RewriteOp rule1 3 False
+
+test7 :: Test
+test7 = TestCase (assertBool "Can apply CCX123.CX13 = CX13.CCX123 forward at index 3"
+                             (checkRewriteOp circuit2a op1a))
+
+test8 :: Test
+test8 = TestCase (assertBool "Can apply CCX123.CX13 = CX13.CCX123 backwards at index 3"
+                             (checkRewriteOp circuit2b op1b))
+
+test9 :: Test
+test9 = TestCase (assertEqual
+                  "X1.X2.Z1.CCX123.CX13.CX23 =(R1 at 3)=> X1.X2.Z1.CX13.CCX123.CX23"
+                  circuit2b
+                  (applyRewriteOp circuit2a op1a))
+
+test10 :: Test
+test10 = TestCase (assertEqual
+                   "X1.X2.Z1.CX13.CCX123.CX23 =(R1 at 3)=> X1.X2.Z1.CCX123.CX13.CX23"
+                   circuit2a
+                   (applyRewriteOp circuit2b op1b))
+
+circuit3a :: Circuit
+circuit3a = ["K12", "X1", "X2", "Z1", "CCX123", "CX13", "CX23"]
+
+circuit3b :: Circuit
+circuit3b = ["K12", "X1", "X2", "Z1", "CX13", "CCX123", "CX23"]
+
+op2a :: RewriteOp
+op2a = RewriteOp rule1 4 True
+
+op2b :: RewriteOp
+op2b = RewriteOp rule1 4 False
+
+test11 :: Test
+test11 = TestCase (assertBool "Can apply CCX123.CX13 = CX13.CCX123 forward at index 4"
+                             (checkRewriteOp circuit3a op2a))
+
+test12 :: Test
+test12 = TestCase (assertBool "Can apply CCX123.CX13 = CX13.CCX123 backwards at index 4"
+                             (checkRewriteOp circuit3b op2b))
+
+test13 :: Test
+test13 = TestCase (assertEqual
+                   "K12.X1.X2.Z1.CCX123.CX13.CX23 =(R1 at 4)=> X1.X2.Z1.CX13.CCX123.CX23"
+                   circuit3b
+                   (applyRewriteOp circuit3a op2a))
+
+test14 :: Test
+test14 = TestCase (assertEqual
+                   "K12.X1.X2.Z1.CX13.CCX123.CX23 =(R1 at 4)=> X1.X2.Z1.CCX123.CX13.CX23"
+                   circuit3a
+                   (applyRewriteOp circuit3b op2b))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests :: Test
@@ -58,7 +125,16 @@ tests = TestList [TestLabel "CheckRuleForwards" test1,
                   TestLabel "CheckRuleBackwards" test2,
                   TestLabel "ApplyRuleForwards" test3,
                   TestLabel "ApplyRuleBackwards" test4,
-                  TestLabel "RuleTooLong" test5]
+                  TestLabel "RuleTooLong" test5,
+                  TestLabel "RuleDoesNotMatch" test6,
+                  TestLabel "CheckOpAt3Forwards" test7,
+                  TestLabel "CheckOpAt3Backwards" test8,
+                  TestLabel "ApplyOpAt3Forwards" test9,
+                  TestLabel "ApplyOpAt3Backwards" test10,
+                  TestLabel "CheckOpAt4Forwards" test11,
+                  TestLabel "CheckOpAt4Backwards" test12,
+                  TestLabel "ApplyOpAt4Forwards" test13,
+                  TestLabel "ApplyOpAt4Backwards" test14]
 
 main :: IO Counts
 main = runTestTT tests
