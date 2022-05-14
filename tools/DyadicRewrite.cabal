@@ -16,14 +16,23 @@ extra-source-files:  CHANGELOG.md
 cabal-version:       >=1.10
 
 library
-  -- exposed-modules:
+  exposed-modules:     DyadicRewrite.Rewrite.Rules
   -- other-modules:
   -- other-extensions:
   build-depends:       base >=4.12 && <4.13
   hs-source-dirs:      src
   default-language:    Haskell2010
 
-executable Interactive
+test-suite dyadicrewrite-rewrite-rules-tests
+  main-is:             DyadicRewrite-Rewrite-Rules-Tests.hs
+  -- other-modules:
+  -- other-extensions:
+  type:                exitcode-stdio-1.0
+  build-depends:       base, HUnit, DyadicRewrite
+  hs-source-dirs:      test
+  default-language:    Haskell2010
+
+executable interactive
   main-is:             Main.hs
   -- other-modules:
   -- other-extensions:
