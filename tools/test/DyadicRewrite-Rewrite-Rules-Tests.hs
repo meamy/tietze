@@ -119,6 +119,28 @@ test14 = TestCase (assertEqual
                    (applyRewriteOp circuit3b op2b))
 
 -----------------------------------------------------------------------------------------
+-- Tests edge cases with empty strings.
+
+circuit4a :: Circuit
+circuit4a = ["CCX123", "CCX123"]
+
+circuit4b :: Circuit
+circuit4b = []
+
+rule4 :: RewriteRule
+rule4 = RewriteRule ["CCX123", "CCX123"] []
+
+test15 :: Test
+test15 = TestCase (assertEqual "Can support rules that eliminate symbols"
+                               circuit4b
+                               (applyRewriteRule circuit4a rule4 True))
+
+test16 :: Test
+test16 = TestCase (assertEqual "Can support rules that introduce symbols"
+                               circuit4a
+                               (applyRewriteRule circuit4b rule4 False))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests :: Test
@@ -135,7 +157,9 @@ tests = TestList [TestLabel "CheckRuleForwards" test1,
                   TestLabel "CheckOpAt4Forwards" test11,
                   TestLabel "CheckOpAt4Backwards" test12,
                   TestLabel "ApplyOpAt4Forwards" test13,
-                  TestLabel "ApplyOpAt4Backwards" test14]
+                  TestLabel "ApplyOpAt4Backwards" test14,
+                  TestLabel "ApplyElimination" test15,
+                  TestLabel "ApplyIntroduce" test16]
 
 main :: IO Counts
 main = runTestTT tests

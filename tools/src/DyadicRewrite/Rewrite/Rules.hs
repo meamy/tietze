@@ -10,7 +10,9 @@ import DyadicRewrite.Common (Circuit)
 -- * RewriteRule
 
 -- | Describes a rewrite rule of the form: lhs <=> rhs.
-data RewriteRule = RewriteRule { lhs :: Circuit, rhs :: Circuit }
+data RewriteRule = RewriteRule { lhs :: Circuit
+                               , rhs :: Circuit
+                               } deriving (Show,Eq)
 
 -- | Internal implementation of checkRewriteRule. The first circuit is the string to
 -- rewrite. The second circuit is the lhs of the rewrite rule. True is returned if the
@@ -47,7 +49,10 @@ applyRewriteRule str rule False = applyRewriteRuleRec str (rhs rule) (lhs rule)
 -- * RewriteOp
 
 -- | Applies a rewrite rule at the specified position, in the specified direction.
-data RewriteOp = RewriteOp { rule :: RewriteRule, pos :: Int, isLhsToRhs :: Bool }
+data RewriteOp = RewriteOp { rule :: RewriteRule
+                           , pos :: Int
+                           , isLhsToRhs :: Bool
+                           } deriving (Show,Eq)
 
 -- | Internal implementation of checkRewriteOp. The circuit is the string to rewrite. The
 -- integer is the index at which to apply the rewrite operation. The boolean flag is true
