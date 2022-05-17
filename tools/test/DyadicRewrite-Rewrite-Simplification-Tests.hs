@@ -6,6 +6,33 @@ import DyadicRewrite.Rewrite.Rules
 import DyadicRewrite.Rewrite.Simplification
 
 -----------------------------------------------------------------------------------------
+-- Declares some gates to ues throughout the test.
+
+x1 :: Gate
+x1 = Gate "X" [1]
+
+x2 :: Gate
+x2 = Gate "X" [2]
+
+x3 :: Gate
+x3 = Gate "X" [3]
+
+cx12 :: Gate
+cx12 = Gate "CX" [1, 2]
+
+cx13 :: Gate
+cx13 = Gate "CX" [1, 3]
+
+ccx123 :: Gate
+ccx123 = Gate "CCX" [1, 2, 3]
+
+z2 :: Gate
+z2 = Gate "Z" [2]
+
+k12 :: Gate
+k12 = Gate "K" [1, 2]
+
+-----------------------------------------------------------------------------------------
 -- Edge cases: success.
 
 test1 :: Test
@@ -14,7 +41,7 @@ test1 = TestCase (assertEqual "Support for empty lists of operations on empty ci
                               (simplify [] []))
 
 circuit1 :: Circuit
-circuit1 = ["X1", "X1"]
+circuit1 = [x1, x1]
 
 test2 :: Test
 test2 = TestCase (assertEqual "Support for empty lists of operations"
@@ -22,7 +49,7 @@ test2 = TestCase (assertEqual "Support for empty lists of operations"
                               (simplify circuit1 []))
 
 op1 :: RewriteOp
-op1 = RewriteOp (RewriteRule [] ["X1", "X1"]) 0 True
+op1 = RewriteOp (RewriteRule [] [x1, x1]) 0 True
 
 test3 :: Test
 test3 = TestCase (assertEqual "Support for rewrites of an empty circuits"
@@ -33,7 +60,7 @@ test3 = TestCase (assertEqual "Support for rewrites of an empty circuits"
 -- Edge cases: failure.
 
 op2 :: RewriteOp
-op2 = RewriteOp (RewriteRule ["X1", "X2"] ["X1", "X2"]) 0 True
+op2 = RewriteOp (RewriteRule [x1, x2] [x1, x2]) 0 True
 
 test4 :: Test
 test4 = TestCase (assertEqual "Rejects rewrite when input string is empty"
@@ -41,13 +68,13 @@ test4 = TestCase (assertEqual "Rejects rewrite when input string is empty"
                               (simplify [] [op2]))
 
 circuit2 :: Circuit
-circuit2 = ["X1", "X1", "X1", "X1", "X2", "X2"]
+circuit2 = [x1, x1, x1, x1, x2, x2]
 
 op3 :: RewriteOp
-op3 = RewriteOp (RewriteRule [] ["X2", "X2"]) 4 True
+op3 = RewriteOp (RewriteRule [] [x2, x2]) 4 True
 
 op4 :: RewriteOp
-op4 = RewriteOp (RewriteRule ["X1", "X2"] ["X1", "X2"]) 3 True
+op4 = RewriteOp (RewriteRule [x1, x2] [x1, x2]) 3 True
 
 test5 :: Test
 test5 = TestCase (assertEqual "Reject rewrite after 3 steps"
@@ -58,25 +85,25 @@ test5 = TestCase (assertEqual "Reject rewrite after 3 steps"
 -- Non-trivial simplification.
 
 circuit3a :: Circuit
-circuit3a = ["CX12", "X3", "CCX123", "K12", "Z2", "K12", "X3"]
+circuit3a = [cx12, x3, ccx123, k12, z2, k12, x3]
 
 circuit3b :: Circuit
-circuit3b = ["CX13", "CX12", "X2", "CCX123"]
+circuit3b = [cx13, cx12, x2, ccx123]
 
 oplist :: [RewriteOp]
-oplist = [(RewriteOp (RewriteRule [] ["X3", "X3"]) 3 True),
-          (RewriteOp (RewriteRule ["CCX123", "X3"] ["X3", "CCX123"]) 2 True),
-          (RewriteOp (RewriteRule [] ["X3", "X3"]) 1 False),
-          (RewriteOp (RewriteRule ["Z2", "K12"] ["K12", "X2"]) 4 True),
-          (RewriteOp (RewriteRule ["K12", "K12"] []) 3 True),
-          (RewriteOp (RewriteRule ["X3", "X2"] ["X2", "X3"]) 2 True),
-          (RewriteOp (RewriteRule ["X3", "X3"] []) 3 True),
-          (RewriteOp (RewriteRule ["CX13", "CX13"] []) 2 False),
-          (RewriteOp (RewriteRule ["CX13", "X2"] ["X2", "CX13"]) 3 True),
-          (RewriteOp (RewriteRule ["X2", "CCX123"] ["CCX123", "CX13", "X2"]) 1 False),
-          (RewriteOp (RewriteRule ["CCX123", "CX13"] ["CX13", "CCX123"]) 2 True),
-          (RewriteOp (RewriteRule ["X2", "CX13"] ["CX13", "X2"]) 1 True),
-          (RewriteOp (RewriteRule ["CX12", "CX13"] ["CX13", "CX12"]) 0 True)]
+oplist = [(RewriteOp (RewriteRule [] [x3, x3]) 3 True),
+          (RewriteOp (RewriteRule [ccx123, x3] [x3, ccx123]) 2 True),
+          (RewriteOp (RewriteRule [] [x3, x3]) 1 False),
+          (RewriteOp (RewriteRule [z2, k12] [k12, x2]) 4 True),
+          (RewriteOp (RewriteRule [k12, k12] []) 3 True),
+          (RewriteOp (RewriteRule [x3, x2] [x2, x3]) 2 True),
+          (RewriteOp (RewriteRule [x3, x3] []) 3 True),
+          (RewriteOp (RewriteRule [cx13, cx13] []) 2 False),
+          (RewriteOp (RewriteRule [cx13, x2] [x2, cx13]) 3 True),
+          (RewriteOp (RewriteRule [x2, ccx123] [ccx123, cx13, x2]) 1 False),
+          (RewriteOp (RewriteRule [ccx123, cx13] [cx13, ccx123]) 2 True),
+          (RewriteOp (RewriteRule [x2, cx13] [cx13, x2]) 1 True),
+          (RewriteOp (RewriteRule [cx12, cx13] [cx13, cx12]) 0 True)]
 
 test6 :: Test
 test6 = TestCase (assertEqual "Non-trivial rewrite success"
@@ -84,10 +111,10 @@ test6 = TestCase (assertEqual "Non-trivial rewrite success"
                               (simplify circuit3a oplist))
 
 circuit4a :: Circuit
-circuit4a = ["CX12", "X3", "CCX123", "K12", "Z2", "K12"]
+circuit4a = [cx12, x3, ccx123, k12, z2, k12]
 
 circuit4b :: Circuit
-circuit4b = ["CX12", "CCX123", "X2", "X3"]
+circuit4b = [cx12, ccx123, x2, x3]
 
 test7 :: Test
 test7 = TestCase (assertEqual "Non-trivial rewrite success"

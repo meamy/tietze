@@ -5,16 +5,43 @@ import DyadicRewrite.Common
 import DyadicRewrite.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
+-- Declares some gates to ues throughout the test.
+
+x1 :: Gate
+x1 = Gate "X" [1]
+
+x2 :: Gate
+x2 = Gate "X" [2]
+
+cx12 :: Gate
+cx12 = Gate "CX" [1, 2]
+
+cx13 :: Gate
+cx13 = Gate "CX" [1, 3]
+
+cx23 :: Gate
+cx23 = Gate "CX" [2, 3]
+
+ccx123 :: Gate
+ccx123 = Gate "CCX" [1, 2, 3]
+
+z1 :: Gate
+z1 = Gate "Z" [1]
+
+k12 :: Gate
+k12 = Gate "K" [1, 2]
+
+-----------------------------------------------------------------------------------------
 -- Tests when a rewrite rule is applicable (in either direction).
 
 circuit1a :: Circuit
-circuit1a = ["CCX123", "CX13", "CX23"]
+circuit1a = [ccx123, cx13, cx23]
 
 circuit1b :: Circuit
-circuit1b = ["CX13", "CCX123", "CX23"]
+circuit1b = [cx13, ccx123, cx23]
 
 rule1 :: RewriteRule
-rule1 = RewriteRule ["CCX123", "CX13"] ["CX13", "CCX123"]
+rule1 = RewriteRule [ccx123, cx13] [cx13, ccx123]
 
 test1 :: Test
 test1 = TestCase (assertBool "Can apply CCX123.CX13 = CX13.CCX123 to CCX123.CX13.CX23"
@@ -38,10 +65,10 @@ test4 = TestCase (assertEqual "CX13.CCX123.CX23 =R1=> CCX123.CX13.CX23"
 -- Tests when a rewrite rule is not applicable.
 
 rule2 :: RewriteRule
-rule2 = RewriteRule ["CCX123", "CX13", "CX23", "CX12"] ["CCX123", "CX13", "CX23", "CX12"]
+rule2 = RewriteRule [ccx123, cx13, cx23, cx12] [ccx123, cx13, cx23, cx12]
 
 rule3 :: RewriteRule
-rule3 = RewriteRule ["CX123", "CX23"] ["CX23", "CX123"]
+rule3 = RewriteRule [ccx123, cx23] [cx23, ccx123]
 
 test5 :: Test
 test5 = TestCase (assertBool "The rule is too long and must be rejected"
@@ -55,10 +82,10 @@ test6 = TestCase (assertBool "The rule does not match and must be rejected"
 -- Tests when a rewrite operation is applicable (in either direction).
 
 circuit2a :: Circuit
-circuit2a = ["X1", "X2", "Z1", "CCX123", "CX13", "CX23"]
+circuit2a = [x1, x2, z1, ccx123, cx13, cx23]
 
 circuit2b :: Circuit
-circuit2b = ["X1", "X2", "Z1", "CX13", "CCX123", "CX23"]
+circuit2b = [x1, x2, z1, cx13, ccx123, cx23]
 
 op1a :: RewriteOp
 op1a = RewriteOp rule1 3 True
@@ -87,10 +114,10 @@ test10 = TestCase (assertEqual
                    (applyRewriteOp circuit2b op1b))
 
 circuit3a :: Circuit
-circuit3a = ["K12", "X1", "X2", "Z1", "CCX123", "CX13", "CX23"]
+circuit3a = [k12, x1, x2, z1, ccx123, cx13, cx23]
 
 circuit3b :: Circuit
-circuit3b = ["K12", "X1", "X2", "Z1", "CX13", "CCX123", "CX23"]
+circuit3b = [k12, x1, x2, z1, cx13, ccx123, cx23]
 
 op2a :: RewriteOp
 op2a = RewriteOp rule1 4 True
@@ -122,13 +149,13 @@ test14 = TestCase (assertEqual
 -- Tests edge cases with empty strings.
 
 circuit4a :: Circuit
-circuit4a = ["CCX123", "CCX123"]
+circuit4a = [ccx123, ccx123]
 
 circuit4b :: Circuit
 circuit4b = []
 
 rule4 :: RewriteRule
-rule4 = RewriteRule ["CCX123", "CCX123"] []
+rule4 = RewriteRule [ccx123, ccx123] []
 
 test15 :: Test
 test15 = TestCase (assertEqual "Can support rules that eliminate symbols"

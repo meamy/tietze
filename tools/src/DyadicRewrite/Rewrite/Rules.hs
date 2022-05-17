@@ -41,7 +41,7 @@ applyRewriteRuleRec str lhs rhs = applyRewriteRuleRec (tail str) (tail lhs) rhs
 -- | Consumes a circuit, a rewrite rule, and a boolean flag indicating if the rule is to
 -- be applied from left-to-right. Returns the string obtained by applying the rewrite
 -- rule. Assumes that checkRewriteRule is true. 
-applyRewriteRule :: Circuit -> RewriteRule -> Bool -> [String]
+applyRewriteRule :: Circuit -> RewriteRule -> Bool -> Circuit
 applyRewriteRule str rule True  = applyRewriteRuleRec str (lhs rule) (rhs rule)
 applyRewriteRule str rule False = applyRewriteRuleRec str (rhs rule) (lhs rule)
 
