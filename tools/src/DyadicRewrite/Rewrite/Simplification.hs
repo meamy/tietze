@@ -8,17 +8,17 @@ import DyadicRewrite.Rewrite.Rules (RewriteOp, checkRewriteOp, applyRewriteOp)
 -----------------------------------------------------------------------------------------
 -- * Simplifier
 
-data RewriteResult = RewriteResult {output :: Circuit
+data RewriteResult = RewriteResult { output :: Circuit
                                    , step :: Int
                                    , success :: Bool
                                    } deriving (Show,Eq)
 
-simplifyRec :: Circuit -> [RewriteOp] -> Int -> RewriteResult
-simplifyRec str []    step = RewriteResult str step True
-simplifyRec str rules step =
-    if (checkRewriteOp str (head rules))
-    then (simplifyRec (applyRewriteOp str (head rules)) (tail rules) (step + 1))
-    else RewriteResult str step False
-
+-- | Consumes a circuit and a list of rewrite operations. Returned the string obtained
+-- by executing all rewrite operations, or failure data.
 simplify :: Circuit -> [RewriteOp] -> RewriteResult
-simplify str rules = simplifyRec str rules 0
+simplify str []    = RewriteResult str 0 True
+simplify str rules = if (checkRewriteOp str rule)
+                     then let res = (simplify (applyRewriteOp str rule) (tail rules))
+                          in RewriteResult (output res) ((step res) + 1) (success res)
+                     else RewriteResult str 0 False
+    where rule = (head rules)
