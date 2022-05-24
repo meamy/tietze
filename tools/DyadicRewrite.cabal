@@ -16,6 +16,7 @@ library
   exposed-modules:     DyadicRewrite.Common
                        DyadicRewrite.Rewrite.Rules
                        DyadicRewrite.Rewrite.Simplification
+                       DyadicRewrite.Generators.QubitGates
   build-depends:       base >=4.12 && <4.13,
                        split,
                        newsynth
@@ -41,6 +42,18 @@ test-suite dyadicrewrite-rewrite-simplification-tests
                        test-framework-hunit,
                        HUnit,
                        DyadicRewrite
+  hs-source-dirs:      test
+  default-language:    Haskell2010
+
+test-suite dyadicrewrite-generators-qubitgates-tests
+  main-is:             DyadicRewrite-Generators-QubitGates-Tests.hs
+  type:                exitcode-stdio-1.0
+  build-depends:       base,
+                       test-framework,
+                       test-framework-hunit,
+                       HUnit,
+                       DyadicRewrite,
+                       newsynth
   hs-source-dirs:      test
   default-language:    Haskell2010
 
