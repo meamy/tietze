@@ -33,35 +33,35 @@ test6 = TestCase (assertEqual "Splitting with non-trivial pred without a match."
                               (splitAtFirst (\x -> x `elem` "123") "abcabc123"))
 
 -----------------------------------------------------------------------------------------
--- parseNatInt
+-- parseNat
 
-test7 = TestCase (assertEqual "parseNatInt cannot parse an empty string."
+test7 = TestCase (assertEqual "parseNat cannot parse an empty string."
                               Nothing
-                              (parseNatInt ""))
+                              (parseNat ""))
 
-test8 = TestCase (assertEqual "parseNatInt cannot parse an alphabetical string."
+test8 = TestCase (assertEqual "parseNat cannot parse an alphabetical string."
                               Nothing
-                              (parseNatInt "abc"))
+                              (parseNat "abc"))
 
-test9 = TestCase (assertEqual "parseNatInt can parse positive integers."
+test9 = TestCase (assertEqual "parseNat can parse positive integers."
                               (Just (123, "") :: Maybe (Int, String))
-                              (parseNatInt "123"))
+                              (parseNat "123"))
 
-test10 = TestCase (assertEqual "parseNatInt will only parse decimal strings."
+test10 = TestCase (assertEqual "parseNat will only parse decimal strings."
                                (Just (123, "abc") :: Maybe (Int, String))
-                               (parseNatInt "123abc"))
+                               (parseNat "123abc"))
 
-test11 = TestCase (assertEqual "parseNatInt stops after first non-numeric character."
+test11 = TestCase (assertEqual "parseNat stops after first non-numeric character."
                                Nothing
-                               (parseNatInt "abc123"))
+                               (parseNat "abc123"))
 
-test12 = TestCase (assertEqual "parseNatInt cannot parse negative integers."
+test12 = TestCase (assertEqual "parseNat cannot parse negative integers."
                                Nothing
-                               (parseNatInt "-123"))
+                               (parseNat "-123"))
 
-test13 = TestCase (assertEqual "parseNatInt handles multiple zeros."
+test13 = TestCase (assertEqual "parseNat handles multiple zeros."
                                (Just (0, "abc") :: Maybe (Int, String))
-                               (parseNatInt "00000abc"))
+                               (parseNat "00000abc"))
 
 -----------------------------------------------------------------------------------------
 -- parseInt
@@ -170,6 +170,36 @@ test39 = TestCase (assertEqual "Intermediate spaces are not changed."
                                (trimSpacing "a   \t \t   abcdefg"))
 
 -----------------------------------------------------------------------------------------
+-- parseNonEmpty
+
+test40 = TestCase (assertEqual "parseNonEmpty can return nothing."
+                               Nothing
+                               (parseNonEmpty (\x -> False) "qwertyuiop1234567890"))
+
+test41 = TestCase (assertEqual "parseNonEmpty can return just a result."
+                               (Just ("abcabc", "123") :: Maybe (String, String))
+                               (parseNonEmpty (\x -> x `elem` "abcabc") "abcabc123"))
+
+-----------------------------------------------------------------------------------------
+-- parseId
+
+test42 = TestCase (assertEqual "parseId returns nothing on unsupported characters (1/2)."
+                               Nothing
+                               (parseId "-123"))
+
+test43 = TestCase (assertEqual "parseId returns nothing on unsupported characters (2/2)."
+                               Nothing
+                               (parseId " abc"))
+
+test44 = TestCase (assertEqual "parseId returns nothing on leading digit."
+                               Nothing
+                               (parseId "1abc"))
+
+test45 = TestCase (assertEqual "parseId can parse a valid identifier."
+                               (Just ("abc_123", "-12 456") :: Maybe (String, String))
+                               (parseId "abc_123-12 456"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" test1,
@@ -178,13 +208,13 @@ tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" 
                                      TestLabel "splitAtFirst_FalsePred" test4,
                                      TestLabel "splitAtFirst_MatchingPred" test5,
                                      TestLabel "splitAtFirst_NonMatchingPred" test6,
-                                     TestLabel "parseNatInt_EmptyString" test7,
-                                     TestLabel "parseNatInt_abc" test8,
-                                     TestLabel "parseNatInt_123" test9,
-                                     TestLabel "parseNatInt_123abc" test10,
-                                     TestLabel "parseNatInt_abc123" test11,
-                                     TestLabel "parseNatInt_-123" test12,
-                                     TestLabel "parseNatInt_00000abc" test13,
+                                     TestLabel "parseNat_EmptyString" test7,
+                                     TestLabel "parseNat_abc" test8,
+                                     TestLabel "parseNat_123" test9,
+                                     TestLabel "parseNat_123abc" test10,
+                                     TestLabel "parseNat_abc123" test11,
+                                     TestLabel "parseNat_-123" test12,
+                                     TestLabel "parseNat_00000abc" test13,
                                      TestLabel "parseInt_EmptyString" test14,
                                      TestLabel "parseInt_abc" test15,
                                      TestLabel "parseInt_123" test16,
@@ -210,6 +240,12 @@ tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" 
                                      TestLabel "trimSpacing_LeadingTab" test36,
                                      TestLabel "trimSpacing_TwoTabs" test37,
                                      TestLabel "trimSpacing_MixedSpacing" test38,
-                                     TestLabel "trimSpacing_IntermediateSpace" test39]
+                                     TestLabel "trimSpacing_IntermediateSpace" test39,
+                                     TestLabel "parseNonEmpty_Nothing" test40,
+                                     TestLabel "parseNonEmpty_Just" test41,
+                                     TestLabel "parseId_Invalid1" test42,
+                                     TestLabel "parseId_Invalid2" test43,
+                                     TestLabel "parseId_LeadingDigit" test44,
+                                     TestLabel "parseId_Valid" test45]
 
 main = defaultMain tests
