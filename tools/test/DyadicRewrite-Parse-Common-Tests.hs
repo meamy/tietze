@@ -111,6 +111,65 @@ test24 = TestCase (assertEqual "parseInt leading rejects dashes outside of numbe
                                (parseInt "-abc"))
 
 -----------------------------------------------------------------------------------------
+-- isSpacing
+
+test25 = TestCase (assertBool "isSpacing returns true on a space." 
+                              (isSpacing ' '))
+
+test26 = TestCase (assertBool "isSpacing returns true on a tab." 
+                              (isSpacing '\t'))
+
+test27 = TestCase (assertBool "isSpacing returns false on a newline." 
+                              (not (isSpacing '\n')))
+
+test28 = TestCase (assertBool "isSpacing returns false on a return." 
+                              (not (isSpacing '\r')))
+
+test29 = TestCase (assertBool "isSpacing returns false on a letter." 
+                              (not (isSpacing 'a')))
+
+test30 = TestCase (assertBool "isSpacing returns false on a number." 
+                              (not (isSpacing '4')))
+
+test31 = TestCase (assertBool "isSpacing returns false on a non-numeric symbol." 
+                              (not (isSpacing '-')))
+
+-----------------------------------------------------------------------------------------
+-- trimSpacing
+
+test32 = TestCase (assertEqual "A space without strings is unchanged and not trimmed."
+                               (False, "abc")
+                               (trimSpacing "abc"))
+
+test33 = TestCase (assertEqual "A string with newlines is unchanged and not trimmed."
+                               (False, "\nabc")
+                               (trimSpacing "\nabc"))
+
+test34 = TestCase (assertEqual "A string with a leading space is trimmed."
+                               (True, "abc")
+                               (trimSpacing " abc"))
+
+test35 = TestCase (assertEqual "A string with two leading spaces is trimmed."
+                               (True, "abc")
+                               (trimSpacing "  abc"))
+
+test36 = TestCase (assertEqual "A string with a leading tab is trimmed."
+                               (True, "abc")
+                               (trimSpacing "\tabc"))
+
+test37 = TestCase (assertEqual "A string with two leading tabs is trimmed."
+                               (True, "abc")
+                               (trimSpacing "\t\tabc"))
+
+test38 = TestCase (assertEqual "A space with mixed tabs and spaces is trimmed."
+                               (True, "abcdefg")
+                               (trimSpacing "   \t\t  \t\t\t\t \t abcdefg"))
+
+test39 = TestCase (assertEqual "Intermediate spaces are not changed."
+                               (False, "a   \t \t   abcdefg")
+                               (trimSpacing "a   \t \t   abcdefg"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" test1,
@@ -136,6 +195,21 @@ tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" 
                                      TestLabel "parseInt_-0" test21,
                                      TestLabel "parseInt_-123abc" test22,
                                      TestLabel "parseInt_--123" test23,
-                                     TestLabel "parseInt_-abc" test24]
+                                     TestLabel "parseInt_-abc" test24,
+                                     TestLabel "isSpacing_space" test25,
+                                     TestLabel "isSpacing_tab" test26,
+                                     TestLabel "isSpacing_newline" test27,
+                                     TestLabel "isSpacing_return" test28,
+                                     TestLabel "isSpacing_leter" test29,
+                                     TestLabel "isSpacing_number" test30,
+                                     TestLabel "isSpacing_symbolic" test31,
+                                     TestLabel "trimSpacing_NoSpaces" test32,
+                                     TestLabel "trimSpacing_Mewline" test33,
+                                     TestLabel "trimSpacing_LeadingSpace" test34,
+                                     TestLabel "trimSpacing_TwoSpaces" test35,
+                                     TestLabel "trimSpacing_LeadingTab" test36,
+                                     TestLabel "trimSpacing_TwoTabs" test37,
+                                     TestLabel "trimSpacing_MixedSpacing" test38,
+                                     TestLabel "trimSpacing_IntermediateSpace" test39]
 
 main = defaultMain tests

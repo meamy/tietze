@@ -7,6 +7,15 @@ import Data.Maybe
 import Data.List.Split (splitOneOf)
 
 -----------------------------------------------------------------------------------------
+-- * Character predicates not define in Data.Char.
+
+-- | Consumes a character c. Returns True if and only if c is a space or a tab.
+isSpacing :: Char -> Bool
+isSpacing ' '  = True
+isSpacing '\t' = True
+isSpacing _    = False
+
+-----------------------------------------------------------------------------------------
 -- * Generic string splitting functions.
 
 -- | Consumes a predicate over characters (pred) and an input string (str). Returns a
@@ -34,3 +43,9 @@ parseInt ('-' : str) = case (parseNatInt str) of
                          Just (digit, post) -> Just ((-1) * digit, post)
                          Nothing            -> Nothing
 parseInt str         = parseNatInt str
+
+-- | Consumes an input string (str). Returns (trimmed, post) where (pre, post) =
+-- splitAtFirst isSpacing str and trimmed = (pre != "").
+trimSpacing :: String -> (Bool, String)
+trimSpacing str = (not (pre == ""), post)
+    where (pre, post) = splitAtFirst isSpacing str
