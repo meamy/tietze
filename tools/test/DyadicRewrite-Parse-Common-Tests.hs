@@ -200,6 +200,56 @@ test45 = TestCase (assertEqual "parseId can parse a valid identifier."
                                (parseId "abc_123-12 456"))
 
 -----------------------------------------------------------------------------------------
+-- parseSep
+
+test46 = TestCase (assertEqual "parseSep can work empty inputs."
+                               (Just "" :: Maybe String)
+                               (parseSep "" ""))
+
+test47 = TestCase (assertEqual "parseSep can work empty string."
+                              Nothing
+                               (parseSep "abc" ""))
+
+test48 = TestCase (assertEqual "parseSep can work empty separator."
+                               (Just "abc" :: Maybe String)
+                               (parseSep "" "abc"))
+
+test49 = TestCase (assertEqual "parseSep can work on matching separator."
+                               (Just "123abc123" :: Maybe String)
+                               (parseSep "abc" "abc123abc123"))
+
+test50 = TestCase (assertEqual "parseSep can work with whitespace on the lhs."
+                               (Just "123abc123" :: Maybe String)
+                               (parseSep "abc" "   abc123abc123"))
+
+test51 = TestCase (assertEqual "parseSep can work with whitespace on the rhs."
+                               (Just "      123abc123" :: Maybe String)
+                               (parseSep "abc" "abc      123abc123"))
+
+test52 = TestCase (assertEqual "parseSep can work with whitespace on both sides."
+                               (Just "      123abc123" :: Maybe String)
+                               (parseSep "abc" "   abc      123abc123"))
+
+-----------------------------------------------------------------------------------------
+-- parseFromSeps
+
+test53 = TestCase (assertEqual ""
+                               Nothing
+                               (parseFromSeps [] "abc"))
+
+test54 = TestCase (assertEqual ""
+                               Nothing
+                               (parseFromSeps ["123"] "abc"))
+
+test55 = TestCase (assertEqual ""
+                               (Just ("abc", "123") :: Maybe (String, String))
+                               (parseFromSeps ["abc"] "abc123"))
+
+test56 = TestCase (assertEqual ""
+                               (Just ("!@", " 123a") :: Maybe (String, String))
+                               (parseFromSeps ["abc", "123", "!@", "999"] "   !@ 123a"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" test1,
@@ -246,6 +296,17 @@ tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" 
                                      TestLabel "parseId_Invalid1" test42,
                                      TestLabel "parseId_Invalid2" test43,
                                      TestLabel "parseId_LeadingDigit" test44,
-                                     TestLabel "parseId_Valid" test45]
+                                     TestLabel "parseId_Valid" test45,
+                                     TestLabel "parseSep_NoInput" test46,
+                                     TestLabel "parseSep_EmptyStr" test47,
+                                     TestLabel "parseSep_EmptySep" test48,
+                                     TestLabel "parseSep_Match" test49,
+                                     TestLabel "parseSep_LHSWhitespace" test50,
+                                     TestLabel "parseSep_RHSWhitespace" test51,
+                                     TestLabel "parseSep_Padded" test52,
+                                     TestLabel "parseFromSeps_NoSeps" test53,
+                                     TestLabel "parseFromSeps_MismatchedSeps" test54,
+                                     TestLabel "parseFromSeps_OneSep" test55,
+                                     TestLabel "parseFromSeps_ManySeps" test56]
 
 main = defaultMain tests

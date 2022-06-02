@@ -3,6 +3,7 @@
 module DyadicRewrite.Parse.Common where
 
 import Data.Char
+import Data.List
 import Data.Maybe
 
 -----------------------------------------------------------------------------------------
@@ -50,10 +51,10 @@ parseNat str
 -- | Consumes an input string (str). Returns the largest integral prefix of str coverted
 -- to an integer, if one exists. Otherwise, returns nothing.
 parseInt :: String -> Maybe (Int, String)
-parseInt ('-' : str) = case (parseNat str) of
+parseInt ('-':str) = case (parseNat str) of
                          Just (digit, post) -> Just ((-1) * digit, post)
                          Nothing            -> Nothing
-parseInt str         = parseNat str
+parseInt str       = parseNat str
 
 -- | Consumes an input string (str). Returns (trimmed, post) where (pre, post) =
 -- splitAtFirst isSpacing str and trimmed = (pre != "").
@@ -69,3 +70,23 @@ parseId ""  = Nothing
 parseId str
     | (isDigit (head str)) = Nothing
     | otherwise            = parseNonEmpty isIdChar str
+
+-- | Consumes a separator (sep) and an input string (str). Assume there exists at least
+-- one prefix of str of the form ( )*sep. Then let pre and post be strings such that pre
+-- is the maximal such prefix and str = pre + post. If post exists, then post is
+-- returned. Otherwise, nothing is returned. Requires that sep does not contain spacing.
+parseSep :: String -> String -> Maybe String
+parseSep sep str = case (stripPrefix sep trimmed) of
+                       Just post -> Just post
+                       Nothing   -> Nothing 
+    where trimmed = snd (trimSpacing str)
+
+-- | Consumes a list of separators (seps) and an input string. If seps if the first such
+-- separator in seps such that (Just post) = (parseSep sep str), then (sep, post) is
+-- returned. Otherwise, nothing is returned.
+parseFromSeps :: [String] -> String -> Maybe (String, String)
+parseFromSeps []         str = Nothing
+parseFromSeps (sep:seps) str = case (parseSep sep str) of
+                                   Just post -> Just (sep, post)
+                                   Nothing   -> parseFromSeps seps str
+                               -- Could be optimized by trimming once.
