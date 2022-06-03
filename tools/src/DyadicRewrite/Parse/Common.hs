@@ -13,6 +13,7 @@ import Data.Maybe
 data ParserError = UnexpectedSymbol Int
                  | UnexpectedEOL
                  | UnexpectedEOF
+                 deriving (Eq)
 
 instance Show ParserError where
     show (UnexpectedSymbol n) = "Unexpected symbol at " ++ (show n) ++ "."
