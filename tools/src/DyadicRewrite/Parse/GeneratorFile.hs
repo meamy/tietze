@@ -4,6 +4,7 @@ module DyadicRewrite.Parse.GeneratorFile where
 
 import Data.Maybe
 import Data.Either
+import DyadicRewrite.Generators.Semantics
 import DyadicRewrite.Parse.Common
 
 -----------------------------------------------------------------------------------------
@@ -14,6 +15,7 @@ data GenFileError = MissingSemModel
                   | UnknownSemModel String
                   | InvalidGenName
                   | InvalidGenSem Int String
+                  | DuplicateGenName String
                   deriving (Eq)
 
 instance Show GenFileError where
@@ -21,6 +23,7 @@ instance Show GenFileError where
     show (UnknownSemModel model) = "Unknown semantic model (" ++ model ++ ")."
     show InvalidGenName          = "Generator name started with invalid symbol."
     show (InvalidGenSem n msg)   = "Invalid semv at " ++ (show n) ++ " (" ++ msg ++ ")."
+    show (DuplicateGenName name) = "Duplicate generator name (" ++ name ++ ")."
 
 -- | Errors returned during generator file parsing.
 type GFPError = Either ParserError GenFileError
@@ -54,3 +57,17 @@ parseGenerator parseSem str =
                           then Right (id, Nothing)
                           else Left (Left (UnexpectedSymbol (getErrPos str trimmed)))
         Nothing -> Left (Right InvalidGenName)
+
+-- | Consumes a semantic model parser (parseSem), a partial map of generators (dict), and
+-- a single line of a generator file (str). Attemps to call (parseGenerator parseSem str)
+-- and then add the result to dict. If parseGenerator fails, then the error is forwarded.
+-- If the generator name is a duplicate, then a DuplicateGenName error is returned. If no
+-- errors occur, then the ID and semantic value returned by parseGenerator are added to
+-- dict. The resulting dict is returned.
+updateGenerators :: SemParser a -> GenDict a -> String -> Either GFPError (GenDict a)
+updateGenerators parseSem dict str =
+    case (parseGenerator parseSem str) of
+        Left err         -> Left err
+        Right (id, semv) -> if (dict `hasGen` id)
+                            then Left (Right (DuplicateGenName id))
+                            else Right (dict `addGen` (id, semv))
