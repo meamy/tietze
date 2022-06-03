@@ -16,10 +16,12 @@ library
   exposed-modules:     DyadicRewrite.Common
                        DyadicRewrite.Rewrite.Rules
                        DyadicRewrite.Rewrite.Simplification
+                       DyadicRewrite.Generators.Semantics
                        DyadicRewrite.Generators.QubitGates
                        DyadicRewrite.Parse.Common
                        DyadicRewrite.Parse.GeneratorFile
   build-depends:       base >=4.12 && <4.13,
+                       containers,
                        split,
                        newsynth
   hs-source-dirs:      src
@@ -44,6 +46,18 @@ test-suite dyadicrewrite-rewrite-simplification-tests
                        test-framework-hunit,
                        HUnit,
                        DyadicRewrite
+  hs-source-dirs:      test
+  default-language:    Haskell2010
+
+test-suite dyadicrewrite-generators-semantics-tests
+  main-is:             DyadicRewrite-Generators-Semantics-Tests.hs
+  type:                exitcode-stdio-1.0
+  build-depends:       base,
+                       test-framework,
+                       test-framework-hunit,
+                       HUnit,
+                       DyadicRewrite,
+                       newsynth
   hs-source-dirs:      test
   default-language:    Haskell2010
 

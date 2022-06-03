@@ -105,7 +105,6 @@ parseSep sep str = case (stripPrefix sep trimmed) of
 -- returned. Otherwise, nothing is returned.
 parseFromSeps :: [String] -> String -> Maybe (String, String)
 parseFromSeps []         str = Nothing
-parseFromSeps (sep:seps) str = case (parseSep sep str) of
+parseFromSeps (sep:seps) str = case (parseSep sep str) of -- Can trim once to optimize.
                                    Just post -> Just (sep, post)
                                    Nothing   -> parseFromSeps seps str
-                               -- Could be optimized by trimming once.
