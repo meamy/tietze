@@ -7,6 +7,24 @@ import Data.List
 import Data.Maybe
 
 -----------------------------------------------------------------------------------------
+-- * Common Parsing Errors.
+
+-- | General-purpose parsing errors.
+data ParserError = UnexpectedSymbol Int
+                 | UnexpectedEOL
+                 | UnexpectedEOF
+
+instance Show ParserError where
+    show (UnexpectedSymbol n) = "Unexpected symbol at " ++ (show n) ++ "."
+    show UnexpectedEOL        = "Unexpected end-of-line."
+    show UnexpectedEOF        = "Unexpected end-of-file."
+
+-- | Consumes a string (str) and the substring upon which parsing failed (unparsed).
+-- Returns the position in str at which parsing failed (zero indexed).
+getErrPos :: String -> String -> Int
+getErrPos full unparsed = (length full) - (length unparsed)
+
+-----------------------------------------------------------------------------------------
 -- * Character predicates not define in Data.Char.
 
 -- | Consumes a character c. Returns True if and only if c is a space or a tab.

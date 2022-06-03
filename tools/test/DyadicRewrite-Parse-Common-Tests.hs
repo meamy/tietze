@@ -202,15 +202,15 @@ test45 = TestCase (assertEqual "parseId can parse a valid identifier."
 -----------------------------------------------------------------------------------------
 -- parseSep
 
-test46 = TestCase (assertEqual "parseSep can work empty inputs."
+test46 = TestCase (assertEqual "parseSep can work on empty inputs."
                                (Just "" :: Maybe String)
                                (parseSep "" ""))
 
-test47 = TestCase (assertEqual "parseSep can work empty string."
+test47 = TestCase (assertEqual "parseSep can work with an empty string."
                               Nothing
                                (parseSep "abc" ""))
 
-test48 = TestCase (assertEqual "parseSep can work empty separator."
+test48 = TestCase (assertEqual "parseSep can work with an empty separator."
                                (Just "abc" :: Maybe String)
                                (parseSep "" "abc"))
 
@@ -233,21 +233,44 @@ test52 = TestCase (assertEqual "parseSep can work with whitespace on both sides.
 -----------------------------------------------------------------------------------------
 -- parseFromSeps
 
-test53 = TestCase (assertEqual ""
+test53 = TestCase (assertEqual "parseFromSeps can work with zero separators."
                                Nothing
                                (parseFromSeps [] "abc"))
 
-test54 = TestCase (assertEqual ""
+test54 = TestCase (assertEqual "parseFromSeps can fail to match separators."
                                Nothing
                                (parseFromSeps ["123"] "abc"))
 
-test55 = TestCase (assertEqual ""
+test55 = TestCase (assertEqual "parseFromSeps can match separators."
                                (Just ("abc", "123") :: Maybe (String, String))
                                (parseFromSeps ["abc"] "abc123"))
 
-test56 = TestCase (assertEqual ""
+test56 = TestCase (assertEqual "parseFromSeps can search for a matching separator."
                                (Just ("!@", " 123a") :: Maybe (String, String))
                                (parseFromSeps ["abc", "123", "!@", "999"] "   !@ 123a"))
+
+-----------------------------------------------------------------------------------------
+-- getErrPos
+
+test57 = TestCase (assertEqual "getErrPos works on empty strings."
+                               0
+                               (getErrPos "" ""))
+
+test58 = TestCase (assertEqual "getErrPos works on empty unparsed string."
+                               6
+                               (getErrPos "abcdef" ""))
+
+test59 = TestCase (assertEqual "getErrPos works on full unparsed string."
+                               0
+                               (getErrPos "abcdef" "abcdef"))
+
+test60 = TestCase (assertEqual "getErrPos works on proper substrings (1/2)."
+                               3
+                               (getErrPos "abcdefab" "defab"))
+
+test61 = TestCase (assertEqual "getErrPos works on proper substrings (1/2)."
+                               6
+                               (getErrPos "abcdefab" "ab"))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -307,6 +330,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" 
                                      TestLabel "parseFromSeps_NoSeps" test53,
                                      TestLabel "parseFromSeps_MismatchedSeps" test54,
                                      TestLabel "parseFromSeps_OneSep" test55,
-                                     TestLabel "parseFromSeps_ManySeps" test56]
+                                     TestLabel "parseFromSeps_ManySeps" test56,
+                                     TestLabel "getErrPos_Empty" test57,
+                                     TestLabel "getErrPos_Unparsed" test58,
+                                     TestLabel "getErrPos_AllParsed" test59,
+                                     TestLabel "getErrPos_SubstringOne" test60,
+                                     TestLabel "getErrPos_SubstringTwo" test61]
 
 main = defaultMain tests
