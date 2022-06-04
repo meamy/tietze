@@ -120,7 +120,7 @@ test26 = TestCase (assertEqual "parseGate parses parameterized gates with postfi
                                (parseGate "abc[1][2][3][4."))
 
 -----------------------------------------------------------------------------------------
--- parseCircuit
+-- parseNonEmptyCircuit
 
 circ1 :: Circuit
 circ1 = [(Gate "abc" [])]
@@ -134,45 +134,56 @@ circ3 = [(Gate "abc" []), (Gate "def" []), (Gate "ghi" [])]
 circ4 :: Circuit
 circ4 = [(Gate "abc" []), (Gate "def" [1]), (Gate "ghi" [1, 2])]
 
-test27 = TestCase (assertEqual "parseCircuit rejects empty strings."
+test27 = TestCase (assertEqual "parseNonEmptyCircuit rejects empty strings."
                                Nothing
-                               (parseCircuit ""))
+                               (parseNonEmptyCircuit ""))
 
-test28 = TestCase (assertEqual "parseCircuit rejects bad identifiers."
+test28 = TestCase (assertEqual "parseNonEmptyCircuit rejects bad identifiers."
                                Nothing
-                               (parseCircuit "1abc"))
+                               (parseNonEmptyCircuit "1abc"))
 
-test29 = TestCase (assertEqual "parseCircuit accepts single gate circuits."
+test29 = TestCase (assertEqual "parseNonEmptyCircuit accepts single gate circuits."
                                (Just (circ1, "") :: Maybe (Circuit, String))
-                               (parseCircuit "abc"))
+                               (parseNonEmptyCircuit "abc"))
 
-test30 = TestCase (assertEqual "parseCircuit rejects incomplete two gate circuits."
+test30 = TestCase (assertEqual "parseNonEmptyCircuit rejects incomplete two gate circuits."
                                Nothing
-                               (parseCircuit "abc."))
+                               (parseNonEmptyCircuit "abc."))
 
 test31 = TestCase (assertEqual "parseCircuit accepts two gate circuits."
                                (Just (circ2, "") :: Maybe (Circuit, String))
-                               (parseCircuit "abc.def"))
+                               (parseNonEmptyCircuit "abc.def"))
 
-test32 = TestCase (assertEqual "parseCircuit rejects incomplete three gate circuits."
+test32 = TestCase (assertEqual "parseNonEmptyCircuit rejects partial three gate circuits."
                                Nothing
-                               (parseCircuit "abc.def."))
+                               (parseNonEmptyCircuit "abc.def."))
 
-test33 = TestCase (assertEqual "parseCircuit accepts three gate circuits."
+test33 = TestCase (assertEqual "parseNonEmptyCircuit accepts three gate circuits."
                                (Just (circ3, "") :: Maybe (Circuit, String))
-                               (parseCircuit "abc.def.ghi"))
+                               (parseNonEmptyCircuit "abc.def.ghi"))
 
-test34 = TestCase (assertEqual "parseCircuit accepts parameterized circuits."
+test34 = TestCase (assertEqual "parseNonEmptyCircuit accepts parameterized circuits."
                                (Just (circ4, "") :: Maybe (Circuit, String))
-                               (parseCircuit "abc.def[1].ghi[1][2]"))
+                               (parseNonEmptyCircuit "abc.def[1].ghi[1][2]"))
 
-test35 = TestCase (assertEqual "parseCircuit accepts postfixes."
+test35 = TestCase (assertEqual "parseNonEmptyCircuit accepts postfixes."
+                               (Just (circ4, " .asd") :: Maybe (Circuit, String))
+                               (parseNonEmptyCircuit "abc.def[1].ghi[1][2] .asd"))
+
+test36 = TestCase (assertEqual "parseNonEmptyCircuit requires that strings terminate."
+                               Nothing
+                               (parseNonEmptyCircuit "abc.def[1].ghi[1][2]asd"))
+
+-----------------------------------------------------------------------------------------
+-- parseCircuit
+
+test37 = TestCase (assertEqual "parseCircuit supports empty strings."
                                (Just (circ4, " .asd") :: Maybe (Circuit, String))
                                (parseCircuit "abc.def[1].ghi[1][2] .asd"))
 
-test36 = TestCase (assertEqual "parseCircuit requires that strings terminate."
-                               Nothing
-                               (parseCircuit "abc.def[1].ghi[1][2]asd"))
+test38 = TestCase (assertEqual "parseCircuit supports non-empty strings."
+                               (Just (circ4, ".asd") :: Maybe (Circuit, String))
+                               (parseCircuit "ε.asd"))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.

@@ -46,6 +46,10 @@ parseGate str =
 -----------------------------------------------------------------------------------------
 -- * Circuit parsing functions.
 
+-- | Character representing the empty string.
+emptyStringChar :: Char
+emptyStringChar = 'Ɛ'
+
 -- | Data type used to distinguish separators in circuit string.
 data CircuitSep = CircuitDot | CircuitEnd
 
@@ -61,10 +65,10 @@ parseCircuitSep _          = Nothing
 -- | Helper method to append a known gate to the front of a circuit parsed by a circuit
 -- parser. If the circuit string does not parse, then nothing is returned.
 --
--- Mutually Depends On: parseCircuit
+-- Mutually Depends On: parseNonEmptyCircuit
 joinAndParseCircuit :: Gate -> String -> Maybe (Circuit, String)
 joinAndParseCircuit gate str =
-    case (parseCircuit str) of
+    case (parseNonEmptyCircuit str) of
         Just (circ, post) -> Just (gate:circ, post)
         Nothing           -> Nothing
 
@@ -74,11 +78,17 @@ joinAndParseCircuit gate str =
 -- returned.
 --
 -- Mutually Depends On: joinAndParseCircuit
-parseCircuit :: String -> Maybe (Circuit, String)
-parseCircuit str =
+parseNonEmptyCircuit :: String -> Maybe (Circuit, String)
+parseNonEmptyCircuit str =
     case (parseGate str) of
         Just (gate, post) -> case (parseCircuitSep post) of
             Just (CircuitEnd, post') -> Just (gate:[], post')
             Just (CircuitDot, post') -> (joinAndParseCircuit gate post')
             Nothing                  -> Nothing
         Nothing -> Nothing
+
+-- | Consumes a string (str). If str is epsilon, then an empty string is returned.
+-- Otherwise, the string is parsed according to parseNonEmptyCircuit.
+parseCircuit :: String -> Maybe (Circuit, String)
+parseCircuit (emptyStringChar:post) = Just ([], post)
+parseCircuit str                    = parseNonEmptyCircuit str
