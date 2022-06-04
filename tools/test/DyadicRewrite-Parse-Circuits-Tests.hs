@@ -83,41 +83,96 @@ test17 = TestCase (assertEqual "parseParams can handle unparsed postfixes."
 -----------------------------------------------------------------------------------------
 -- parseGate
 
-test18 = TestCase (assertEqual ""
-                              Nothing
-                              (parseGate ""))
+test18 = TestCase (assertEqual "parseGate rejects empty strings."
+                               Nothing
+                               (parseGate ""))
 
-test19 = TestCase (assertEqual ""
-                              Nothing
-                              (parseGate "1abc[1][2]"))
+test19 = TestCase (assertEqual "parseGate rejects bad ID's."
+                               Nothing
+                               (parseGate "1abc[1][2]"))
 
-test20 = TestCase (assertEqual ""
-                              Nothing
-                              (parseGate "[2]"))
+test20 = TestCase (assertEqual "parseGate rejects on missing ID's."
+                               Nothing
+                               (parseGate "[2]"))
 
-test21 = TestCase (assertEqual ""
-                              (Just ((Gate "abc" []), "") :: Maybe (Gate, String))
-                              (parseGate "abc"))
+test21 = TestCase (assertEqual "parseGate parses unparameterized gates."
+                               (Just ((Gate "abc" []), "") :: Maybe (Gate, String))
+                               (parseGate "abc"))
 
-test22 = TestCase (assertEqual ""
-                              (Just ((Gate "abc" []), ".") :: Maybe (Gate, String))
-                              (parseGate "abc."))
+test22 = TestCase (assertEqual "parseGate parses unparameterized gates with postfixes."
+                               (Just ((Gate "abc" []), ".") :: Maybe (Gate, String))
+                               (parseGate "abc."))
 
-test23 = TestCase (assertEqual ""
-                              (Just ((Gate "abc" [1]), "") :: Maybe (Gate, String))
-                              (parseGate "abc[1]"))
+test23 = TestCase (assertEqual "parseGate parses single parameter gates."
+                               (Just ((Gate "abc" [1]), "") :: Maybe (Gate, String))
+                               (parseGate "abc[1]"))
 
-test24 = TestCase (assertEqual ""
-                              (Just ((Gate "abc" [1, 2]), "") :: Maybe (Gate, String))
-                              (parseGate "abc[1][2]"))
+test24 = TestCase (assertEqual "parseGate parses two parameter gates."
+                               (Just ((Gate "abc" [1, 2]), "") :: Maybe (Gate, String))
+                               (parseGate "abc[1][2]"))
 
-test25 = TestCase (assertEqual ""
-                              (Just ((Gate "abc" [1, 2, 3]), "") :: Maybe (Gate, String))
-                              (parseGate "abc[1][2][3]"))
+test25 = TestCase (assertEqual "parseGate parses three parameter gates."
+                               (Just ((Gate "abc" [1, 2, 3]), "") :: Maybe (Gate, String))
+                               (parseGate "abc[1][2][3]"))
 
-test26 = TestCase (assertEqual ""
-                              (Just ((Gate "abc" [1, 2, 3]), "[4.") :: Maybe (Gate, String))
-                              (parseGate "abc[1][2][3][4."))
+test26 = TestCase (assertEqual "parseGate parses parameterized gates with postfixes."
+                               (Just ((Gate "abc" [1, 2, 3]), "[4.") :: Maybe (Gate, String))
+                               (parseGate "abc[1][2][3][4."))
+
+-----------------------------------------------------------------------------------------
+-- parseCircuit
+
+circ1 :: Circuit
+circ1 = [(Gate "abc" [])]
+
+circ2 :: Circuit
+circ2 = [(Gate "abc" []), (Gate "def" [])]
+
+circ3 :: Circuit
+circ3 = [(Gate "abc" []), (Gate "def" []), (Gate "ghi" [])]
+
+circ4 :: Circuit
+circ4 = [(Gate "abc" []), (Gate "def" [1]), (Gate "ghi" [1, 2])]
+
+test27 = TestCase (assertEqual "parseCircuit rejects empty strings."
+                               Nothing
+                               (parseCircuit ""))
+
+test28 = TestCase (assertEqual "parseCircuit rejects bad identifiers."
+                               Nothing
+                               (parseCircuit "1abc"))
+
+test29 = TestCase (assertEqual "parseCircuit accepts single gate circuits."
+                               (Just (circ1, "") :: Maybe (Circuit, String))
+                               (parseCircuit "abc"))
+
+test30 = TestCase (assertEqual "parseCircuit rejects incomplete two gate circuits."
+                               Nothing
+                               (parseCircuit "abc."))
+
+test31 = TestCase (assertEqual "parseCircuit accepts two gate circuits."
+                               (Just (circ2, "") :: Maybe (Circuit, String))
+                               (parseCircuit "abc.def"))
+
+test32 = TestCase (assertEqual "parseCircuit rejects incomplete three gate circuits."
+                               Nothing
+                               (parseCircuit "abc.def."))
+
+test33 = TestCase (assertEqual "parseCircuit accepts three gate circuits."
+                               (Just (circ3, "") :: Maybe (Circuit, String))
+                               (parseCircuit "abc.def.ghi"))
+
+test34 = TestCase (assertEqual "parseCircuit accepts parameterized circuits."
+                               (Just (circ4, "") :: Maybe (Circuit, String))
+                               (parseCircuit "abc.def[1].ghi[1][2]"))
+
+test35 = TestCase (assertEqual "parseCircuit accepts postfixes."
+                               (Just (circ4, " .asd") :: Maybe (Circuit, String))
+                               (parseCircuit "abc.def[1].ghi[1][2] .asd"))
+
+test36 = TestCase (assertEqual "parseCircuit requires that strings terminate."
+                               Nothing
+                               (parseCircuit "abc.def[1].ghi[1][2]asd"))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -147,6 +202,16 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseParam_EmptyString" test1,
                                      TestLabel "parseGate_OneParam" test23,
                                      TestLabel "parseGate_TwoParams" test24,
                                      TestLabel "parseGate_ThreeParams" test25,
-                                     TestLabel "parseGate_ParamsPostString" test26]
+                                     TestLabel "parseGate_ParamsPostString" test26,
+                                     TestLabel "parseCircuit_EmptyString" test27,
+                                     TestLabel "parseCircuit_BadID" test28,
+                                     TestLabel "parseCircuit_OneGate" test29,
+                                     TestLabel "parseCircuit_OneGateBadDot" test30,
+                                     TestLabel "parseCircuit_TwoGates" test31,
+                                     TestLabel "parseCircuit_TwoGatesBadDot" test32,
+                                     TestLabel "parseCircuit_ThreeGates" test33,
+                                     TestLabel "parseCircuit_ParamGates" test34,
+                                     TestLabel "parseCircuit_PostString" test35,
+                                     TestLabel "parseCircuit_MissingSpace" test36]
 
 main = defaultMain tests
