@@ -2,7 +2,6 @@
 
 module DyadicRewrite.Parse.Circuits where
 
-import Data.List.Split
 import DyadicRewrite.Common
 import DyadicRewrite.Parse.Common
 
@@ -30,3 +29,16 @@ parseParams str =
         Just (param, post) -> let (params, post') = (parseParams post)
                               in (param:params, post')
         Nothing -> ([], str)
+
+-----------------------------------------------------------------------------------------
+-- * Utilities to parse circuit gates.
+
+-- | Consumes a string (str). If there exists a string pre of the form <ID><PARAMS> that
+-- str = pre + post, then returns (Gate <ID> <PARAM>, post) where pre is the maximal such
+-- prefix. Otherwise, nothing is returned.
+parseGate :: String -> Maybe (Gate, String)
+parseGate str = 
+    case (parseId str) of
+        Just (id, post) -> let (params, post') = (parseParams post)
+                           in Just ((Gate id params), post')
+        Nothing -> Nothing

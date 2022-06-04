@@ -3,6 +3,7 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
+import DyadicRewrite.Common
 import DyadicRewrite.Parse.Circuits
 
 -----------------------------------------------------------------------------------------
@@ -80,6 +81,45 @@ test17 = TestCase (assertEqual "parseParams can handle unparsed postfixes."
                                (parseParams "[1][2][3][4]abdfsfa[12"))
 
 -----------------------------------------------------------------------------------------
+-- parseGate
+
+test18 = TestCase (assertEqual ""
+                              Nothing
+                              (parseGate ""))
+
+test19 = TestCase (assertEqual ""
+                              Nothing
+                              (parseGate "1abc[1][2]"))
+
+test20 = TestCase (assertEqual ""
+                              Nothing
+                              (parseGate "[2]"))
+
+test21 = TestCase (assertEqual ""
+                              (Just ((Gate "abc" []), "") :: Maybe (Gate, String))
+                              (parseGate "abc"))
+
+test22 = TestCase (assertEqual ""
+                              (Just ((Gate "abc" []), ".") :: Maybe (Gate, String))
+                              (parseGate "abc."))
+
+test23 = TestCase (assertEqual ""
+                              (Just ((Gate "abc" [1]), "") :: Maybe (Gate, String))
+                              (parseGate "abc[1]"))
+
+test24 = TestCase (assertEqual ""
+                              (Just ((Gate "abc" [1, 2]), "") :: Maybe (Gate, String))
+                              (parseGate "abc[1][2]"))
+
+test25 = TestCase (assertEqual ""
+                              (Just ((Gate "abc" [1, 2, 3]), "") :: Maybe (Gate, String))
+                              (parseGate "abc[1][2][3]"))
+
+test26 = TestCase (assertEqual ""
+                              (Just ((Gate "abc" [1, 2, 3]), "[4.") :: Maybe (Gate, String))
+                              (parseGate "abc[1][2][3][4."))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseParam_EmptyString" test1,
@@ -98,6 +138,15 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseParam_EmptyString" test1,
                                      TestLabel "parseParams_TwoParams" test14,
                                      TestLabel "parseParams_ThreeParams" test15,
                                      TestLabel "parseParams_FourParams" test16,
-                                     TestLabel "parseParams_PostString" test17]
+                                     TestLabel "parseParams_PostString" test17,
+                                     TestLabel "parseGate_EmptyString" test18,
+                                     TestLabel "parseGate_BadID" test19,
+                                     TestLabel "parseGate_NoID" test20,
+                                     TestLabel "parseGate_NoParams" test21,
+                                     TestLabel "parseGate_NoParamsPostString" test22,
+                                     TestLabel "parseGate_OneParam" test23,
+                                     TestLabel "parseGate_TwoParams" test24,
+                                     TestLabel "parseGate_ThreeParams" test25,
+                                     TestLabel "parseGate_ParamsPostString" test26]
 
 main = defaultMain tests
