@@ -17,6 +17,7 @@ library
                        DyadicRewrite.Generators.Semantics
                        DyadicRewrite.Generators.QubitGates
                        DyadicRewrite.Parse.Common
+                       DyadicRewrite.Parse.Circuits
                        DyadicRewrite.Parse.GeneratorFile
   build-depends:       base >=4.12 && <4.13,
                        containers,
@@ -58,6 +59,11 @@ test-suite dyadicrewrite-generators-qubitgates-tests
 test-suite dyadicrewrite-parse-common-tests
   import:              basic-unit-test-props
   main-is:             DyadicRewrite-Parse-Common-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite dyadicrewrite-parse-circuits-tests
+  import:              basic-unit-test-props
+  main-is:             DyadicRewrite-Parse-Circuits-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite dyadicrewrite-parse-generatorfile-tests
