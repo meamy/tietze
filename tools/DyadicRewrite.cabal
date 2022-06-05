@@ -14,6 +14,7 @@ library
   exposed-modules:     DyadicRewrite.Common
                        DyadicRewrite.Rewrite.Rules
                        DyadicRewrite.Rewrite.Simplification
+                       DyadicRewrite.Rewrite.Lookup
                        DyadicRewrite.Generators.Semantics
                        DyadicRewrite.Generators.QubitGates
                        DyadicRewrite.Parse.Common
@@ -44,6 +45,11 @@ test-suite dyadicrewrite-rewrite-rules-tests
 test-suite dyadicrewrite-rewrite-simplification-tests
   import:              basic-unit-test-props
   main-is:             DyadicRewrite-Rewrite-Simplification-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite dyadicrewrite-rewrite-lookup-tests
+  import:              basic-unit-test-props
+  main-is:             DyadicRewrite-Rewrite-Lookup-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite dyadicrewrite-generators-semantics-tests

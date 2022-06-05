@@ -10,7 +10,7 @@ import DyadicRewrite.Generators.Semantics
 
 -- This test builds up a generator dictionary and then checks properties. These tests are
 -- agnostic to the implementation of GenDict, so will be useful even if the
--- the implementation changes.
+-- implementation changes.
 
 gen1 :: (String, Maybe Int)
 gen1 = ("abc", Just 1)
