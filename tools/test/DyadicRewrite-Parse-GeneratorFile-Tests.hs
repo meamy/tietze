@@ -18,6 +18,10 @@ doFailedParse msg _ = Left msg
 readParse :: String -> Either String Int
 readParse str = (Right (read str :: Int))
 
+test0 = TestCase (assertEqual "Tests that empty strings are rejected."
+                              (Left (Right InvalidGenName))
+                              (parseGenerator (doFailedParse "") ""))
+
 test1 = TestCase (assertEqual "Tests that bad generator ID's are rejected."
                               (Left (Right InvalidGenName))
                               (parseGenerator (doFailedParse "") "1abc"))
@@ -115,7 +119,8 @@ test15 = TestCase (assertEqual "Tests that updateGenerators supports no semantic
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
-tests = hUnitTestToTests $ TestList [TestLabel "parseGenerator_BadId" test1,
+tests = hUnitTestToTests $ TestList [TestLabel "parseGenerator_EmptyString" test0,
+                                     TestLabel "parseGenerator_BadId" test1,
                                      TestLabel "parseGenerator_OnlyId" test2,
                                      TestLabel "parseGenerator_IdNoSemEq" test3,
                                      TestLabel "parseGenerator_BadSemOne" test4,

@@ -46,10 +46,6 @@ parseGate str =
 -----------------------------------------------------------------------------------------
 -- * Circuit parsing functions.
 
--- | Character representing the empty string.
-emptyStringChar :: Char
-emptyStringChar = 'Ɛ'
-
 -- | Data type used to distinguish separators in circuit string.
 data CircuitSep = CircuitDot | CircuitEnd
 
@@ -90,5 +86,5 @@ parseNonEmptyCircuit str =
 -- | Consumes a string (str). If str is epsilon, then an empty string is returned.
 -- Otherwise, the string is parsed according to parseNonEmptyCircuit.
 parseCircuit :: String -> Maybe (Circuit, String)
-parseCircuit (emptyStringChar:post) = Just ([], post)
-parseCircuit str                    = parseNonEmptyCircuit str
+parseCircuit ('ε':post) = Just ([], post)
+parseCircuit str        = parseNonEmptyCircuit str

@@ -177,12 +177,12 @@ test36 = TestCase (assertEqual "parseNonEmptyCircuit requires that strings termi
 -----------------------------------------------------------------------------------------
 -- parseCircuit
 
-test37 = TestCase (assertEqual "parseCircuit supports empty strings."
+test38 = TestCase (assertEqual "parseCircuit supports empty strings."
                                (Just (circ4, " .asd") :: Maybe (Circuit, String))
                                (parseCircuit "abc.def[1].ghi[1][2] .asd"))
 
-test38 = TestCase (assertEqual "parseCircuit supports non-empty strings."
-                               (Just (circ4, ".asd") :: Maybe (Circuit, String))
+test39 = TestCase (assertEqual "parseCircuit supports non-empty strings."
+                               (Just ([], ".asd") :: Maybe (Circuit, String))
                                (parseCircuit "ε.asd"))
 
 -----------------------------------------------------------------------------------------
@@ -214,15 +214,17 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseParam_EmptyString" test1,
                                      TestLabel "parseGate_TwoParams" test24,
                                      TestLabel "parseGate_ThreeParams" test25,
                                      TestLabel "parseGate_ParamsPostString" test26,
-                                     TestLabel "parseCircuit_EmptyString" test27,
-                                     TestLabel "parseCircuit_BadID" test28,
-                                     TestLabel "parseCircuit_OneGate" test29,
-                                     TestLabel "parseCircuit_OneGateBadDot" test30,
-                                     TestLabel "parseCircuit_TwoGates" test31,
-                                     TestLabel "parseCircuit_TwoGatesBadDot" test32,
-                                     TestLabel "parseCircuit_ThreeGates" test33,
-                                     TestLabel "parseCircuit_ParamGates" test34,
-                                     TestLabel "parseCircuit_PostString" test35,
-                                     TestLabel "parseCircuit_MissingSpace" test36]
+                                     TestLabel "parseNonEmptyCircuit_EmptyString" test27,
+                                     TestLabel "parseNonEmptyCircuit_BadID" test28,
+                                     TestLabel "parseNonEmptyCircuit_OneGate" test29,
+                                     TestLabel "parseNonEmptyCircuit_OneGateBadDot" test30,
+                                     TestLabel "parseNonEmptyCircuit_TwoGates" test31,
+                                     TestLabel "parseNonEmptyCircuit_TwoGatesBadDot" test32,
+                                     TestLabel "parseNonEmptyCircuit_ThreeGates" test33,
+                                     TestLabel "parseNonEmptyCircuit_ParamGates" test34,
+                                     TestLabel "parseNonEmptyCircuit_PostString" test35,
+                                     TestLabel "parseNonEmptyCircuit_MissingSpace" test36,
+                                     TestLabel "parseCircuit_NonEmpty" test38,
+                                     TestLabel "parseCircuit_Empty" test39]
 
 main = defaultMain tests
