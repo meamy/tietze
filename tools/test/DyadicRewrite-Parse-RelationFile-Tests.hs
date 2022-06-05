@@ -149,6 +149,44 @@ test22 = TestCase (assertEqual "findUnknownGenInCircuit accepts strings of gener
                                (findUnknownGenInCircuit genList2 noParamCirc))
 
 -----------------------------------------------------------------------------------------
+-- findUnknownGenInRel
+
+badParamRelLHS :: RewriteRule
+badParamRelLHS = RewriteRule paramCirc [] True False
+
+badNoParamRelLHS :: RewriteRule
+badNoParamRelLHS = RewriteRule noParamCirc [] True False
+
+badParamRelRHS :: RewriteRule
+badParamRelRHS = RewriteRule [] paramCirc True False
+
+badNoParamRelRHS :: RewriteRule
+badNoParamRelRHS = RewriteRule [] noParamCirc True False
+
+goodRel :: RewriteRule
+goodRel = RewriteRule noParamCirc noParamCirc True False
+
+test23 = TestCase (assertEqual "findUnknownGenInRel detects bad gates on the LHS (1/2)."
+                               (Just gateWP1)
+                               (findUnknownGenInRel genList3 badParamRelLHS))
+
+test24 = TestCase (assertEqual "findUnknownGenInRel detects bad gates on the LHS (2/2)."
+                               (Just gateWOP3)
+                               (findUnknownGenInRel genList1 badNoParamRelLHS))
+
+test25 = TestCase (assertEqual "findUnknownGenInRel detects bad gates on the RHS (1/2)."
+                               (Just gateWP1)
+                               (findUnknownGenInRel genList3 badParamRelRHS))
+
+test26 = TestCase (assertEqual "findUnknownGenInRel detects bad gates on the RHS (2/2)."
+                               (Just gateWOP3)
+                               (findUnknownGenInRel genList1 badNoParamRelRHS))
+
+test27 = TestCase (assertEqual "findUnknownGenInRel accepts valid relations."
+                               Nothing
+                               (findUnknownGenInRel genList2 goodRel))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseRelation_EmptyString" test1,
@@ -172,6 +210,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseRelation_EmptyString" test1
                                      TestLabel "findUnknownGenInCircuit_Empty" test19,
                                      TestLabel "findUnknownGenInCircuit_Params" test20,
                                      TestLabel "findUnknownGenInCircuit_BadName" test21,
-                                     TestLabel "findUnknownGenInCircuit_Accepts" test22]
+                                     TestLabel "findUnknownGenInCircuit_Accepts" test22,
+                                     TestLabel "findUnknownGenInRel_ParamsLHS" test23,
+                                     TestLabel "findUnknownGenInRel_BadNameLHS" test24,
+                                     TestLabel "findUnknownGenInRel_ParamsRHS" test25,
+                                     TestLabel "findUnknownGenInRel_BadNameRHS" test26,
+                                     TestLabel "findUnknownGenInRel_GoodRel" test27]
 
 main = defaultMain tests

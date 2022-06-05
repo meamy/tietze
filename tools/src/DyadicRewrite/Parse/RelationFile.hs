@@ -45,6 +45,15 @@ findUnknownGenInCircuit gens (gate:circ) = if gateIsValid
                                            else Just gate
     where gateIsValid = ((params gate) == []) && ((name gate) `elem` gens)
 
+-- | Consumes a list of generator names (gens) and a relation (rel). Returns the first
+-- gate (on either the lhs, or rhs, with priority for the lhs) which violates the checks
+-- of findUnknownGenInCircuit. If no such gate exists, then nothing is returned.
+findUnknownGenInRel :: [String] -> RewriteRule -> Maybe Gate
+findUnknownGenInRel gens rule =
+    case (findUnknownGenInCircuit gens (lhs rule)) of
+        Just gen -> Just gen
+        Nothing  -> (findUnknownGenInCircuit gens (rhs rule))
+
 -----------------------------------------------------------------------------------------
 -- * Line Parsing Methods.
 
