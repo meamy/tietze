@@ -37,6 +37,11 @@ common basic-unit-test-props
                        HUnit,
                        DyadicRewrite
 
+test-suite dyadicrewrite-common-tests
+  import:              basic-unit-test-props
+  main-is:             DyadicRewrite-Common-Tests.hs
+  type:                exitcode-stdio-1.0
+
 test-suite dyadicrewrite-rewrite-rules-tests
   import:              basic-unit-test-props
   main-is:             DyadicRewrite-Rewrite-Rules-Tests.hs

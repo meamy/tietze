@@ -7,6 +7,10 @@ module DyadicRewrite.Common where
 -- parameters are also given.
 data Gate = Gate { name :: String
                  , params :: [Int]
-                 } deriving (Show,Eq)
+                 } deriving (Eq)
 
+instance Show Gate where
+    show (Gate name params) = foldl (\str n -> str ++ "[" ++ (show n) ++ "]") name params
+
+-- | Type definition for strings of gates.
 type Circuit = [Gate]
