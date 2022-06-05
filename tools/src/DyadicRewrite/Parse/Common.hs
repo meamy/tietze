@@ -20,10 +20,16 @@ instance Show ParserError where
     show UnexpectedEOL        = "Unexpected end-of-line."
     show UnexpectedEOF        = "Unexpected end-of-file."
 
--- | Consumes a string (str) and the substring upon which parsing failed (unparsed).
--- Returns the position in str at which parsing failed (zero indexed).
+-- | Consumes a string (full) and the substring upon which parsing failed (unparsed).
+-- Returns the position in full at which parsing failed (zero indexed).
 getErrPos :: String -> String -> Int
 getErrPos full unparsed = (length full) - (length unparsed)
+
+-- | Consumes a string (full), the substring upon which parsing failed (unparsed), and the
+-- position at which a parsing error was reached within unparsed (pos). Returns the
+-- position relative to full.
+relToAbsErrPos :: String -> String -> Int -> Int
+relToAbsErrPos full unparsed pos = (getErrPos full unparsed) + pos
 
 -----------------------------------------------------------------------------------------
 -- * Character predicates not define in Data.Char.

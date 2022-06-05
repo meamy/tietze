@@ -277,27 +277,62 @@ test61 = TestCase (assertEqual "getErrPos works on proper substrings (1/2)."
 
 test62 = TestCase (assertEqual "bracnhOnSpacing supports empty strings."
                                (Right "Hello" :: Either Int String)
-                               (branchOnSpacing "" 1 "hello"))
+                               (branchOnSpacing "" 1 "Hello"))
 
 test63 = TestCase (assertEqual "bracnhOnSpacing supports spaces."
                                (Right "Hello" :: Either Int String)
-                               (branchOnSpacing " " 1 "hello"))
+                               (branchOnSpacing " " 1 "Hello"))
 
 test64 = TestCase (assertEqual "bracnhOnSpacing supports tabbing."
                                (Right "Hello" :: Either Int String)
-                               (branchOnSpacing "\t" 1 "hello"))
+                               (branchOnSpacing "\t" 1 "Hello"))
 
 test65 = TestCase (assertEqual "bracnhOnSpacing supports non-spacing."
-                               (Right "Hello" :: Either Int String)
-                               (branchOnSpacing "a" 1 "hello"))
+                               (Left 1 :: Either Int String)
+                               (branchOnSpacing "a" 1 "Hello"))
 
 test66 = TestCase (assertEqual "bracnhOnSpacing supports mixed spacing."
                                (Right "Hello" :: Either Int String)
-                               (branchOnSpacing "  \t   " 1 "hello"))
+                               (branchOnSpacing "  \t   " 1 "Hello"))
 
 test67 = TestCase (assertEqual "branchOnSpacing detects non-spacing characters later on."
                                (Left 1 :: Either Int String)
-                               (branchOnSpacing "  \t   a" 1 "hello"))
+                               (branchOnSpacing "  \t   a" 1 "Hello"))
+
+-----------------------------------------------------------------------------------------
+-- relToAbsErrPos
+
+test68 = TestCase (assertEqual "relToAbsErrPos works on empty strings."
+                               0
+                               (relToAbsErrPos "" "" 0))
+
+test69 = TestCase (assertEqual "relToAbsErrPos works on empty unparsed string."
+                               6
+                               (relToAbsErrPos "abcdef" "" 0))
+
+test70 = TestCase (assertEqual "relToAbsErrPos works on full unparsed string (1/2)."
+                               0
+                               (relToAbsErrPos "abcdef" "abcdef" 0))
+
+test71 = TestCase (assertEqual "relToAbsErrPos works on full unparsed string (2/2)."
+                               2
+                               (relToAbsErrPos "abcdef" "abcdef" 2))
+
+test72 = TestCase (assertEqual "relToAbsErrPos works on proper substrings, 0 pos (1/2)."
+                               3
+                               (relToAbsErrPos "abcdefab" "defab" 0))
+
+test73 = TestCase (assertEqual "relToAbsErrPos works on proper substrings, 0 pos (2/2)."
+                               6
+                               (relToAbsErrPos "abcdefab" "ab" 0))
+
+test74 = TestCase (assertEqual "relToAbsErrPos works on proper substrings (1/2)."
+                               4
+                               (relToAbsErrPos "abcdefab" "defab" 1))
+
+test75 = TestCase (assertEqual "relToAbsErrPos works on proper substrings (2/2)."
+                               7
+                               (relToAbsErrPos "abcdefab" "ab" 1))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -363,11 +398,19 @@ tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" 
                                      TestLabel "getErrPos_AllParsed" test59,
                                      TestLabel "getErrPos_SubstringOne" test60,
                                      TestLabel "getErrPos_SubstringTwo" test61,
-                                     TestLabel "branchOnSpacing_EmptyString" test56,
-                                     TestLabel "branchOnSpacing_Space" test57,
-                                     TestLabel "branchOnSpacing_Tab" test58,
-                                     TestLabel "branchOnSpacing_NonSpacing" test59,
-                                     TestLabel "branchOnSpacing_MixedSpacing" test60,
-                                     TestLabel "branchOnSpacing_MixedNonSpacing" test61]
+                                     TestLabel "branchOnSpacing_EmptyString" test62,
+                                     TestLabel "branchOnSpacing_Space" test63,
+                                     TestLabel "branchOnSpacing_Tab" test64,
+                                     TestLabel "branchOnSpacing_NonSpacing" test65,
+                                     TestLabel "branchOnSpacing_MixedSpacing" test66,
+                                     TestLabel "branchOnSpacing_MixedNonSpacing" test67,
+                                     TestLabel "relToAbsErrPos_EmptyString" test68,
+                                     TestLabel "relToAbsErrPos_Unparsed" test69,
+                                     TestLabel "relToAbsErrPos_AllParsedOne" test70,
+                                     TestLabel "relToAbsErrPos_AllParsedTwo" test71,
+                                     TestLabel "relToAbsErrPos_SubstringNoPosOne" test72,
+                                     TestLabel "relToAbsErrPos_SubstringNoPosTwo" test73,
+                                     TestLabel "relToAbsErrPos_SubstringPosOne" test74,
+                                     TestLabel "relToAbsErrPos_SubstringPosTwo" test75]
 
 main = defaultMain tests
