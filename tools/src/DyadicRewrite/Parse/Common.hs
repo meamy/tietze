@@ -108,3 +108,12 @@ parseFromSeps []         str = Nothing
 parseFromSeps (sep:seps) str = case (parseSep sep str) of -- Can trim once to optimize.
                                    Just post -> Just (sep, post)
                                    Nothing   -> parseFromSeps seps str
+
+-----------------------------------------------------------------------------------------
+-- * Conditional parsing.
+
+-- | Consumes a string (str), and two values (lval and rval). If str contains non-spacing
+-- characters, then lval is returned. Otherwise, rval is returned.
+branchOnSpacing :: String -> a -> b -> Either a b
+branchOnSpacing str lval rval = let trimmed = (snd (trimSpacing str))
+                                in if (trimmed == "") then (Right rval) else (Left lval)

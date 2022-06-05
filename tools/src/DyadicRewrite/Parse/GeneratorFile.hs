@@ -48,14 +48,13 @@ type SemParser a = (String -> Either String a)
 parseGenerator :: SemParser a -> String -> Either GFPError (String, Maybe a)
 parseGenerator parseSem str =
     case (parseId (snd (trimSpacing str))) of
-        Just (id, maybeSemStr) -> case (parseSep ":=" maybeSemStr) of
+        Just (id, defStr) -> case (parseSep ":=" defStr) of
             Just semStr -> case (parseSem semStr) of
                 Left err  -> Left (Right (InvalidGenSem (getErrPos str semStr) err))
                 Right sem -> Right (id, Just sem)
-            Nothing -> let trimmed = (snd (trimSpacing maybeSemStr))
-                       in if (trimmed == "")
-                          then Right (id, Nothing)
-                          else Left (Left (UnexpectedSymbol (getErrPos str trimmed)))
+            Nothing -> let lval = Left (UnexpectedSymbol (getErrPos str defStr))
+                           rval = (id, Nothing)
+                       in branchOnSpacing defStr lval rval
         Nothing -> Left (Right InvalidGenName)
 
 -- | Consumes a semantic model parser (parseSem), a partial map of generators (dict), and

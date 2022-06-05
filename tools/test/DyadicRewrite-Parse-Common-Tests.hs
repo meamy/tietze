@@ -273,6 +273,33 @@ test61 = TestCase (assertEqual "getErrPos works on proper substrings (1/2)."
                                (getErrPos "abcdefab" "ab"))
 
 -----------------------------------------------------------------------------------------
+-- branchOnSpacing
+
+test62 = TestCase (assertEqual "bracnhOnSpacing supports empty strings."
+                               (Right "Hello" :: Either Int String)
+                               (branchOnSpacing "" 1 "hello"))
+
+test63 = TestCase (assertEqual "bracnhOnSpacing supports spaces."
+                               (Right "Hello" :: Either Int String)
+                               (branchOnSpacing " " 1 "hello"))
+
+test64 = TestCase (assertEqual "bracnhOnSpacing supports tabbing."
+                               (Right "Hello" :: Either Int String)
+                               (branchOnSpacing "\t" 1 "hello"))
+
+test65 = TestCase (assertEqual "bracnhOnSpacing supports non-spacing."
+                               (Right "Hello" :: Either Int String)
+                               (branchOnSpacing "a" 1 "hello"))
+
+test66 = TestCase (assertEqual "bracnhOnSpacing supports mixed spacing."
+                               (Right "Hello" :: Either Int String)
+                               (branchOnSpacing "  \t   " 1 "hello"))
+
+test67 = TestCase (assertEqual "branchOnSpacing detects non-spacing characters later on."
+                               (Left 1 :: Either Int String)
+                               (branchOnSpacing "  \t   a" 1 "hello"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" test1,
@@ -335,6 +362,12 @@ tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" 
                                      TestLabel "getErrPos_Unparsed" test58,
                                      TestLabel "getErrPos_AllParsed" test59,
                                      TestLabel "getErrPos_SubstringOne" test60,
-                                     TestLabel "getErrPos_SubstringTwo" test61]
+                                     TestLabel "getErrPos_SubstringTwo" test61,
+                                     TestLabel "branchOnSpacing_EmptyString" test56,
+                                     TestLabel "branchOnSpacing_Space" test57,
+                                     TestLabel "branchOnSpacing_Tab" test58,
+                                     TestLabel "branchOnSpacing_NonSpacing" test59,
+                                     TestLabel "branchOnSpacing_MixedSpacing" test60,
+                                     TestLabel "branchOnSpacing_MixedNonSpacing" test61]
 
 main = defaultMain tests

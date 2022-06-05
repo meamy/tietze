@@ -27,7 +27,7 @@ test2 = TestCase (assertEqual "Tests that a lone generator can be read."
                               (parseGenerator (doFailedParse "") "  abc  "))
 
 test3 = TestCase (assertEqual "Tests that a lone generator can be read."
-                              (Left (Left (UnexpectedSymbol 7)))
+                              (Left (Left (UnexpectedSymbol 5)))
                               (parseGenerator (doFailedParse "") "  abc  abc"))
 
 test4 = TestCase (assertEqual "Tests that a bad semantic value is rejected (1/2)."
