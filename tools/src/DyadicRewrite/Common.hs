@@ -5,7 +5,7 @@ module DyadicRewrite.Common where
 
 -- | Specifies the name (id) of an operator. If the operator is parameterized, then the
 -- parameters are also given.
-data Gate = Gate { id :: String
+data Gate = Gate { name :: String
                  , params :: [Int]
                  } deriving (Show,Eq)
 

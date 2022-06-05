@@ -2,7 +2,10 @@
 
 module DyadicRewrite.Parse.RelationFile where
 
+import Data.Maybe
+import DyadicRewrite.Common
 import DyadicRewrite.Rewrite.Rules
+import DyadicRewrite.Rewrite.Lookup
 import DyadicRewrite.Parse.Common
 import DyadicRewrite.Parse.Circuits
 
@@ -28,6 +31,19 @@ instance Show RelFileError where
 
 -- | Errors returned during generator file parsing.
 type RFPError = Either ParserError RelFileError
+
+-----------------------------------------------------------------------------------------
+-- * Helper functions to identify bad symbols in circuits.
+
+-- | Consumes a list of generator names (gens) and a circuit (circ). Returns the first
+-- gate in circuit with either a non-zero number of parameters or a name not in gens. If
+-- no such gate exists, then nothing is returned.
+findUnknownGenInCircuit :: [String] -> Circuit -> Maybe Gate
+findUnknownGenInCircuit gens []          = Nothing
+findUnknownGenInCircuit gens (gate:circ) = if gateIsValid
+                                           then findUnknownGenInCircuit gens circ
+                                           else Just gate
+    where gateIsValid = ((params gate) == []) && ((name gate) `elem` gens)
 
 -----------------------------------------------------------------------------------------
 -- * Line Parsing Methods.

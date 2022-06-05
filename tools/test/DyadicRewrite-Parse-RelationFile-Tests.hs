@@ -101,6 +101,54 @@ test18 = TestCase (assertEqual "Tests that equational relations are parsed (2/2)
                                (parseRelationDefn "  rel2   a1.a2   =  a1.a2.a3  "))
 
 -----------------------------------------------------------------------------------------
+-- findUnknownGenInCircuit
+
+gateWP1 :: Gate
+gateWP1 = Gate "aaa" [1, 2]
+
+gateWP2 :: Gate
+gateWP2 = Gate "bbb" [1, 2, 3]
+
+gateWP3 :: Gate
+gateWP3 = Gate "ccc" [1, 2, 3, 4]
+
+gateWOP1 :: Gate
+gateWOP1 = Gate "ddd" []
+
+gateWOP2 :: Gate
+gateWOP2 = Gate "eee" []
+
+gateWOP3 :: Gate
+gateWOP3 = Gate "fff" []
+
+paramCirc :: Circuit
+paramCirc = [gateWOP1, gateWP1, gateWOP2, gateWP2, gateWOP3, gateWP3]
+
+noParamCirc :: Circuit
+noParamCirc = [gateWOP1, gateWOP1, gateWOP2, gateWOP2, gateWOP3, gateWOP3]
+
+genList1 :: [String]
+genList1 = [(name gateWOP1), (name gateWOP2)]
+genList2 = (name gateWOP3):genList1
+genList3 = (name gateWP1):(name gateWP2):(name gateWP3):genList2
+
+test19 = TestCase (assertEqual "findUnknownGenInCircuit supports empty strings."
+                               Nothing
+                               (findUnknownGenInCircuit genList3 []))
+
+test20 = TestCase (assertEqual "findUnknownGenInCircuit rejects parameters."
+                               (Just gateWP1)
+                               (findUnknownGenInCircuit genList3 paramCirc))
+
+test21 = TestCase (assertEqual "findUnknownGenInCircuit rejects unlisted generator."
+                               (Just gateWOP3)
+                               (findUnknownGenInCircuit genList1 noParamCirc))
+
+test22 = TestCase (assertEqual "findUnknownGenInCircuit accepts strings of generators."
+                               Nothing
+                               (findUnknownGenInCircuit genList2 noParamCirc))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseRelation_EmptyString" test1,
@@ -120,6 +168,10 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseRelation_EmptyString" test1
                                      TestLabel "parseRelationDefn_PosRelErr" test15,
                                      TestLabel "parseRelationDefn_SpaceAfterID" test16,
                                      TestLabel "parseRelationDefn_GoodRelOne" test17,
-                                     TestLabel "parseRelationDefn_GoodRelTwo" test18]
+                                     TestLabel "parseRelationDefn_GoodRelTwo" test18,
+                                     TestLabel "findUnknownGenInCircuit_Empty" test19,
+                                     TestLabel "findUnknownGenInCircuit_Params" test20,
+                                     TestLabel "findUnknownGenInCircuit_BadName" test21,
+                                     TestLabel "findUnknownGenInCircuit_Accepts" test22]
 
 main = defaultMain tests
