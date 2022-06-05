@@ -44,7 +44,7 @@ type SemParser a = (String -> Either String a)
 -- 2.  If str parses as <ID> then (<ID>, Nothing) is returned.
 -- 3.  If str parses as <ID> := <SEM> and <SEM> parses as v, then (<ID>, v) is returned.
 -- Requires that strToSem consumes the entire string, and supports both leading and
--- trailing whitespace
+-- trailing whitespace.
 parseGenerator :: SemParser a -> String -> Either GFPError (String, Maybe a)
 parseGenerator parseSem str =
     case (parseId (snd (trimSpacing str))) of
