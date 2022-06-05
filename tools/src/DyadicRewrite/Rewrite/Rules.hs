@@ -9,9 +9,12 @@ import DyadicRewrite.Common (Circuit)
 -----------------------------------------------------------------------------------------
 -- * RewriteRule
 
--- | Describes a rewrite rule of the form: lhs <=> rhs.
-data RewriteRule = RewriteRule { lhs :: Circuit
-                               , rhs :: Circuit
+-- | Describes a rewrite rule of the form: lhs => rhs or lhs <=> rhs (equational). Also
+-- indicates if the rule was derived from other relations.
+data RewriteRule = RewriteRule { lhs        :: Circuit
+                               , rhs        :: Circuit
+                               , equational :: Bool
+                               , derived    :: Bool
                                } deriving (Show,Eq)
 
 -- | Consumes a circuit and the lhs of a production rule: lhs → rhs. True is returned if

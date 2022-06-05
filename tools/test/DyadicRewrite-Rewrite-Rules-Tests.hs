@@ -43,7 +43,7 @@ circ1b :: Circuit
 circ1b = [cx13, ccx123, cx23]
 
 rule1 :: RewriteRule
-rule1 = RewriteRule [ccx123, cx13] [cx13, ccx123]
+rule1 = RewriteRule [ccx123, cx13] [cx13, ccx123] True False
 
 test1 = TestCase $ assertBool "Can apply CCX123.CX13 = CX13.CCX123 to CCX123.CX13.CX23"
                               (checkRewriteRule circ1a rule1 True)
@@ -61,10 +61,10 @@ test4 = TestCase $ assertEqual "CX13.CCX123.CX23 =R1=> CCX123.CX13.CX23"
 -- Tests when a rewrite rule is not applicable.
 
 rule2 :: RewriteRule
-rule2 = RewriteRule [ccx123, cx13, cx23, cx12] [ccx123, cx13, cx23, cx12]
+rule2 = RewriteRule [ccx123, cx13, cx23, cx12] [ccx123, cx13, cx23, cx12] True False
 
 rule3 :: RewriteRule
-rule3 = RewriteRule [ccx123, cx23] [cx23, ccx123]
+rule3 = RewriteRule [ccx123, cx23] [cx23, ccx123] True False
 
 test5 = TestCase $ assertBool "The rule is too long and must be rejected"
                               (not (checkRewriteRule circ1a rule2 True))
@@ -133,7 +133,7 @@ circ4b :: Circuit
 circ4b = []
 
 rule4 :: RewriteRule
-rule4 = RewriteRule [ccx123, ccx123] []
+rule4 = RewriteRule [ccx123, ccx123] [] True False
 
 test15 = TestCase $ assertEqual "Can support rules that eliminate symbols"
                                 circ4b (applyRewriteRule circ4a rule4 True)
