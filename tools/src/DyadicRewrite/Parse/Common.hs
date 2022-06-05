@@ -40,8 +40,10 @@ isSpacing ' '  = True
 isSpacing '\t' = True
 isSpacing _    = False
 
--- | Consumes a character c. Returns True if and only if c is alphanumeric or _.
+-- | Consumes a character c. Returns True if and only if c is alphanumeric or _. Note
+-- that ε is a reserved character (the empty string).
 isIdChar :: Char -> Bool
+isIdChar 'ε' = False
 isIdChar '_' = True
 isIdChar c   = isAlphaNum c
 
