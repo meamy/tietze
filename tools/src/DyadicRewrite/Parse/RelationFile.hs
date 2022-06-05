@@ -97,3 +97,20 @@ parseRelationDefn str =
                                          Right rule -> Right (id, rule)
                                 else Left (Left (UnexpectedSymbol (getErrPos str relStr)))
         Nothing -> Left (Right InvalidRelName)
+
+-- | Consumes a partial map of relations (dict), a list of generator names (gen)s, and a
+-- single line of a generator file (str). Attemps to call (parseRelationDefn str) and
+-- then add the result to dict. If parseGenerator fails, then the error is forwarded. If
+-- a relation contains an unknown generator, then an UnknownGeneratorName error is
+-- returned. If the relation name is a duplicate, then a DuplicateRelName error is
+-- returned. If no errors occur, then the ID and relation returned by parseGenerator are
+-- added to dict. The resulting dict is returned.
+updateRelations :: RelDict -> [String] -> String -> Either RFPError RelDict
+updateRelations dict gens str =
+    case (parseRelationDefn str) of
+        Left err        -> Left err
+        Right (id, rel) -> case (findUnknownGenInRel gens rel) of
+            Just gen -> Left (Right (UnknownGenName (show gen)))
+            Nothing  -> if (dict `hasRel` id)
+                        then Left (Right (DuplicateRelName id))
+                        else Right (dict `addRel` (id, rel))

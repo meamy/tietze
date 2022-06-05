@@ -7,6 +7,7 @@ import Data.Maybe
 import Data.Either
 import DyadicRewrite.Common
 import DyadicRewrite.Rewrite.Rules
+import DyadicRewrite.Rewrite.Lookup
 import DyadicRewrite.Parse.Common
 import DyadicRewrite.Parse.RelationFile
 
@@ -187,6 +188,75 @@ test27 = TestCase (assertEqual "findUnknownGenInRel accepts valid relations."
                                (findUnknownGenInRel genList2 goodRel))
 
 -----------------------------------------------------------------------------------------
+-- updateRelations
+
+rel1 :: (String, RewriteRule)
+rel1 = ("xyx", badParamRelLHS)
+
+rel2 :: (String, RewriteRule)
+rel2 = ("x123", badNoParamRelLHS)
+
+dupRel :: (String, RewriteRule)
+dupRel = ("abc", goodRel)
+
+emptyDict :: RelDict
+emptyDict = empty
+
+dupDict = addRel emptyDict dupRel
+dict1 = addRel emptyDict rel1
+dict2 = addRel dict1 rel2
+
+gateA :: Gate
+gateA = Gate "a" []
+
+gateB :: Gate
+gateB = Gate "b" []
+
+addedRel :: RewriteRule
+addedRel = RewriteRule [gateA, gateB] [gateB, gateA] True False
+
+test28 = TestCase (assertEqual "Tests that updateRelations propogates errors (1/2)."
+                               (Left (Right InvalidRelName))
+                               (updateRelations emptyDict [] "1abc"))
+
+test29 = TestCase (assertEqual "Tests that updateRelations propogates errors (2/2)."
+                               (Left (Right (InvalidRelType 12)))
+                               (updateRelations emptyDict [] "abc a1.a2.a3"))
+
+test30 = TestCase (assertEqual "Tests that updateRelations validates generators (1/2)."
+                               (Left (Right (UnknownGenName "c")))
+                               (updateRelations emptyDict ["a", "b"] "abc a.b = c.b.a"))
+
+test31 = TestCase (assertEqual "Tests that updateRelations validates generators (2/2)."
+                               (Left (Right (UnknownGenName "b[1]")))
+                               (updateRelations emptyDict ["a", "b"] "abc a = b[1].b"))
+
+test32 = TestCase (assertEqual "Tests that updateRelations detects duplicate names."
+                               (Left (Right (DuplicateRelName "abc")))
+                               (updateRelations dupDict ["a", "b"] " abc  a.b  = b.a  "))
+
+test33 = TestCase (assertEqual "Tests that updateRelations adds new relations."
+                               (Just addedRel)
+                               rel)
+         where rel = case (updateRelations emptyDict ["a", "b"] "abc a.b = b.a") of
+                         Left err   -> Nothing
+                         Right dict -> interpretRel dict "abc"
+
+test34 = TestCase (assertEqual "Tests that updateRelations preserves generators (1/2)."
+                               (Just (snd rel1))
+                               rel)
+         where rel = case (updateRelations dict2 ["a", "b"] "abc a.b = b.a") of
+                         Left err   -> Nothing
+                         Right dict -> interpretRel dict (fst rel1)
+
+test35 = TestCase (assertEqual "Tests that updateRelations preserves generators (2/2)."
+                               (Just (snd rel2))
+                               rel)
+         where rel = case (updateRelations dict2 ["a", "b"] "abc a.b = b.a") of
+                         Left err   -> Nothing
+                         Right dict -> interpretRel dict (fst rel2)
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseRelation_EmptyString" test1,
@@ -215,6 +285,14 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseRelation_EmptyString" test1
                                      TestLabel "findUnknownGenInRel_BadNameLHS" test24,
                                      TestLabel "findUnknownGenInRel_ParamsRHS" test25,
                                      TestLabel "findUnknownGenInRel_BadNameRHS" test26,
-                                     TestLabel "findUnknownGenInRel_GoodRel" test27]
+                                     TestLabel "findUnknownGenInRel_GoodRel" test27,
+                                     TestLabel "updateRelations_PropogateOne" test28,
+                                     TestLabel "updateRelations_PropogateTwo" test29,
+                                     TestLabel "updateRelations_BadGenOne" test30,
+                                     TestLabel "updateRelations_BadGenTwo" test31,
+                                     TestLabel "updateRelations_DupRelName" test32,
+                                     TestLabel "updateRelations_AddNewRel" test33,
+                                     TestLabel "updateRelations_UpdateRelsOne" test34,
+                                     TestLabel "updateRelations_UpdateRelsTwo" test35]
 
 main = defaultMain tests
