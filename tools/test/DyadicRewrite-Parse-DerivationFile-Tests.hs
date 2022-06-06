@@ -1,0 +1,96 @@
+module Main where
+
+import Test.Framework
+import Test.Framework.Providers.HUnit
+import Test.HUnit
+import Data.Either
+import DyadicRewrite.Common
+import DyadicRewrite.Rewrite.Rules
+import DyadicRewrite.Parse.Common
+import DyadicRewrite.Parse.DerivationFile
+
+-----------------------------------------------------------------------------------------
+-- parseAppPos
+
+circ1 :: Circuit
+circ1 = [(Gate "a" []), (Gate "b" []), (Gate "c" [])]
+
+circ2 :: Circuit
+circ2 = [(Gate "c" []), (Gate "a" []), (Gate "b" [])]
+
+primitiveRelL2R :: RewriteRule
+primitiveRelL2R = RewriteRule circ1 circ2 False False
+
+primitiveRelEqn :: RewriteRule
+primitiveRelEqn = RewriteRule circ1 circ2 True False
+
+test1 = TestCase (assertEqual "parseAppPos rejects empty strings (1/2)."
+                              (Left (Right InvalidAppPos))
+                              (parseAppPos primitiveRelL2R False ""))
+
+test2 = TestCase (assertEqual "parseAppPos rejects empty strings (2/2)."
+                              (Left (Right InvalidAppPos))
+                              (parseAppPos primitiveRelL2R True ""))
+
+test3 = TestCase (assertEqual "parseAppPos rejects bad positions (1/4)."
+                              (Left (Right InvalidAppPos))
+                              (parseAppPos primitiveRelL2R False "asd"))
+
+test4 = TestCase (assertEqual "parseAppPos rejects bad positions (2/4)."
+                              (Left (Right InvalidAppPos))
+                              (parseAppPos primitiveRelL2R True "asd"))
+
+test5 = TestCase (assertEqual "parseAppPos rejects bad positions (3/4)."
+                              (Left (Right InvalidAppPos))
+                              (parseAppPos primitiveRelL2R False "-4"))
+
+test6 = TestCase (assertEqual "parseAppPos rejects bad positions (4/4)."
+                              (Left (Right InvalidAppPos))
+                              (parseAppPos primitiveRelL2R True "-4"))
+
+test7 = TestCase (assertEqual "parseAppPos accepts natural numbers (1/5)."
+                              (Right (RewriteOp primitiveRelL2R 10 True))
+                              (parseAppPos primitiveRelL2R True "10"))
+
+test8 = TestCase (assertEqual "parseAppPos accepts natural numbers (2/5)."
+                              (Right (RewriteOp primitiveRelL2R 10 False))
+                              (parseAppPos primitiveRelL2R False "10"))
+
+test9 = TestCase (assertEqual "parseAppPos accepts natural numbers (3/5)."
+                              (Right (RewriteOp primitiveRelEqn 10 True))
+                              (parseAppPos primitiveRelEqn True "10"))
+
+test10 = TestCase (assertEqual "parseAppPos accepts natural numbers (4/5)."
+                               (Right (RewriteOp primitiveRelEqn 10 False))
+                               (parseAppPos primitiveRelEqn False "10"))
+
+test11 = TestCase (assertEqual "parseAppPos accepts natural numbers (5/5)."
+                               (Right (RewriteOp primitiveRelL2R 5 True))
+                               (parseAppPos primitiveRelL2R True "5"))
+
+test12 = TestCase (assertEqual "parseAppPos handles trailing spacing."
+                               (Right (RewriteOp primitiveRelL2R 1234 True))
+                               (parseAppPos primitiveRelL2R True "1234  \t\t   "))
+
+test13 = TestCase (assertEqual "parseAppPos rejects symbols after trailing spacing."
+                               (Left (Left (UnexpectedSymbol 4)))
+                               (parseAppPos primitiveRelL2R True "1234  \t\t   xyz"))
+
+-----------------------------------------------------------------------------------------
+-- Orchestrates tests.
+
+tests = hUnitTestToTests $ TestList [TestLabel "parseAppPos_EmptyStringOne" test1,
+                                     TestLabel "parseAppPos_EmptyStringTwo" test2,
+                                     TestLabel "parseAppPos_BadPosOne" test3,
+                                     TestLabel "parseAppPos_BadPosTwo" test4,
+                                     TestLabel "parseAppPos_BadPosThree" test5,
+                                     TestLabel "parseAppPos_BadPosFour" test6,
+                                     TestLabel "parseAppPos_GoodPosOne" test7,
+                                     TestLabel "parseAppPos_GoodPosTwo" test8,
+                                     TestLabel "parseAppPos_GoodPosThree" test9,
+                                     TestLabel "parseAppPos_GoodPosFour" test10,
+                                     TestLabel "parseAppPos_GoodPosFive" test11,
+                                     TestLabel "parseAppPos_TrailingSpacing" test12,
+                                     TestLabel "parseAppPos_TrailingSymbols" test13]
+
+main = defaultMain tests

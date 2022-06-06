@@ -29,7 +29,7 @@ instance Show GenFileError where
 type GFPError = Either ParserError GenFileError
 
 -----------------------------------------------------------------------------------------
--- * Line Parsing Methods.
+-- * Line parsing methods.
 
 -- | A function used to parse a value given a semantic model. Takes as input a textual
 -- representation of the semantic value. Returns either a parsing error (as a string) or

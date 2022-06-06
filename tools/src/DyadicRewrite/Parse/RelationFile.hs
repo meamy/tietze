@@ -55,7 +55,7 @@ findUnknownGenInRel gens rule =
         Nothing  -> (findUnknownGenInCircuit gens (rhs rule))
 
 -----------------------------------------------------------------------------------------
--- * Line Parsing Methods.
+-- * Line parsing helper methods.
 
 -- | Helper function to propogation relation file errors from unnamed relation parsing to
 -- named relation parsing. For example, if an error occurs at index 5 of substr, and if
@@ -67,6 +67,9 @@ propRelErr str substr err =
         Right (InvalidRelType pos)  -> Right (InvalidRelType (update pos))
         otherwise                   -> err
     where update pos = relToAbsErrPos str substr pos
+
+-----------------------------------------------------------------------------------------
+-- * Line parsing methods.
 
 -- | Consumes a string that represents a rewrite relation (str). Attempts to parse a
 -- relation of the form <CIRCUIT> <OP> <CIRCUIT> where <OP> is one of = or →. Requires

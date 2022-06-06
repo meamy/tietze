@@ -21,6 +21,7 @@ library
                        DyadicRewrite.Parse.Circuits
                        DyadicRewrite.Parse.GeneratorFile
                        DyadicRewrite.Parse.RelationFile
+                       DyadicRewrite.Parse.DerivationFile
   build-depends:       base >=4.12 && <4.13,
                        containers,
                        split,
@@ -86,6 +87,11 @@ test-suite dyadicrewrite-parse-generatorfile-tests
 test-suite dyadicrewrite-parse-relationfile-tests
   import:              basic-unit-test-props
   main-is:             DyadicRewrite-Parse-RelationFile-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite dyadicrewrite-parse-derivationfile-tests
+  import:              basic-unit-test-props
+  main-is:             DyadicRewrite-Parse-DerivationFile-Tests.hs
   type:                exitcode-stdio-1.0
 
 executable interactive
