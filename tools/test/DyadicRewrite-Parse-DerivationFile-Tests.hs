@@ -77,6 +77,37 @@ test13 = TestCase (assertEqual "parseAppPos rejects symbols after trailing spaci
                                (parseAppPos primitiveRelL2R True "1234  \t\t   xyz"))
 
 -----------------------------------------------------------------------------------------
+-- parseAppDirAndPos
+
+test14 = TestCase (assertEqual "parseAppDirAndPos propgates errors correctly."
+                               (Left (Right InvalidAppPos))
+                               (parseAppDirAndPos primitiveRelL2R "" "asd"))
+
+test15 = TestCase (assertEqual "parseAppDirAndPos direction misalignment (1/2)."
+                               (Left (Right InvalidAppDir))
+                               (parseAppDirAndPos primitiveRelL2R "←" "10"))
+
+test16 = TestCase (assertEqual "parseAppDirAndPos direction misalignment (2/2)."
+                               (Left (Right MissingAppDir))
+                               (parseAppDirAndPos primitiveRelEqn "" "10"))
+
+test17 = TestCase (assertEqual "parseAppDirAndPos accepts equational relations with →."
+                               (Right (RewriteOp primitiveRelEqn 10 True))
+                               (parseAppDirAndPos primitiveRelEqn "→" "10  \t"))
+
+test18 = TestCase (assertEqual "parseAppDirAndPos accepts equational relations with ←."
+                               (Right (RewriteOp primitiveRelEqn 10 False))
+                               (parseAppDirAndPos primitiveRelEqn "←" "10  \t"))
+
+test19 = TestCase (assertEqual "parseAppDirAndPos accepts production rules without dirs."
+                               (Right (RewriteOp primitiveRelL2R 0 True))
+                               (parseAppDirAndPos primitiveRelL2R "" "0  \t"))
+
+test20 = TestCase (assertEqual "parseAppDirAndPos accepts production rules with →."
+                               (Right (RewriteOp primitiveRelL2R 0 True))
+                               (parseAppDirAndPos primitiveRelL2R "→" "0  \t"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseAppPos_EmptyStringOne" test1,
@@ -91,6 +122,13 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseAppPos_EmptyStringOne" test
                                      TestLabel "parseAppPos_GoodPosFour" test10,
                                      TestLabel "parseAppPos_GoodPosFive" test11,
                                      TestLabel "parseAppPos_TrailingSpacing" test12,
-                                     TestLabel "parseAppPos_TrailingSymbols" test13]
+                                     TestLabel "parseAppPos_TrailingSymbols" test13,
+                                     TestLabel "parseAppDirAndPos_Propogates" test14,
+                                     TestLabel "parseAppDirAndPos_MisalignedOne" test15,
+                                     TestLabel "parseAppDirAndPos_MisalignedTwo" test16,
+                                     TestLabel "parseAppDirAndPos_Eqn_L2R" test17,
+                                     TestLabel "parseAppDirAndPos_Eqn_R2L" test18,
+                                     TestLabel "parseAppDirAndPos_L2R_Inferred" test19,
+                                     TestLabel "parseAppDirAndPos_L2R_Explicit" test20]
 
 main = defaultMain tests
