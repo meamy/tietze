@@ -15,8 +15,8 @@ data DerFileError = UnknownRelMod
                   | InvalidAppPos
                   | InvalidAppDir
                   | MissingAppDir
-                  | ApplyOnPRel
-                  | RewriteOnDRel
+                  | ApplyOnPrim
+                  | RewriteOnDeriv
                   | UnknownGenName String
                   | UnknownRelName String
                   deriving (Eq)
@@ -27,8 +27,8 @@ instance Show DerFileError where
     show InvalidAppPos         = "Expected position at end of rewrite operation."
     show InvalidAppDir         = "Non-equational relation applied right-to-left."
     show MissingAppDir         = "Equational relation requires application direction."
-    show ApplyOnPRel           = "Applied use of a primitive relation."
-    show RewriteOnDRel         = "Primitive use of a derived relation."
+    show ApplyOnPrim           = "Applied use of a primitive relation."
+    show RewriteOnDeriv        = "Primitive use of a derived relation."
     show (UnknownRelName name) = "Unknown relation name (" ++ name ++ ")."
 
 -- | Errors returned during derivation file parsing.
@@ -91,3 +91,23 @@ parseApp dict str =
                 Nothing ->  Left (Left UnknownParseError) -- Should be unreachable.
             Nothing -> Left (Right (UnknownRelName id))
         Nothing -> Left (Right InvalidRelName)
+
+-- | Consumes a dictionary of known relations (rel) and a rule application line of a
+-- derivation file (str). Attempts to parse str, taking into account all modifiers
+-- applied to the line. If parsing is successful, then the corresponding RewriteOp is
+-- returned. Otherwise, an error is returned. 
+parseRelApp :: RelDict -> String -> Either DFPError RewriteOp
+parseRelApp dict str =
+    case (parseFromSeps ["!apply", "!"] str) of
+        Just ("!apply", opStr) -> let trimmed = (snd (trimSpacing opStr))
+                                  in case (parseApp dict trimmed) of
+                                         Left err -> Left (propDerErr str trimmed err)
+                                         Right op -> if (derived (rule op))
+                                                     then Right op
+                                                     else Left (Right ApplyOnPrim)
+        Nothing -> case (parseApp dict str) of
+            Left err -> Left err
+            Right op -> if (derived (rule op))
+                        then Left (Right RewriteOnDeriv)
+                        else Right op
+        Just ("!", _) -> Left (Right UnknownRelMod)

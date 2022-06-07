@@ -111,46 +111,85 @@ test20 = TestCase (assertEqual "parseAppDirAndPos accepts production rules with 
 -----------------------------------------------------------------------------------------
 -- parseApp
 
+derivedRel :: RewriteRule
+derivedRel = RewriteRule circ1 circ2 False True
+
 dict0 :: RelDict
 dict0 = empty
 dict1 = addRel dict0 ("abc", primitiveRelL2R)
 dict2 = addRel dict1 ("xyz", primitiveRelEqn)
+dict3 = addRel dict2 ("derived", derivedRel)
 
 test21 = TestCase (assertEqual "parseApp handles empty strings."
                                (Left (Right InvalidRelName))
-                               (parseApp dict2 ""))
+                               (parseApp dict3 ""))
 
 test22 = TestCase (assertEqual "parseApp rejects bad relation identifiers."
                                (Left (Right InvalidRelName))
-                               (parseApp dict2 "1abc"))
+                               (parseApp dict3 "1abc"))
 
 test23 = TestCase (assertEqual "parseApp rejects invalid relation identifiers."
                                (Left (Right (UnknownRelName "bad")))
-                               (parseApp dict2 "bad"))
+                               (parseApp dict3 "bad"))
 
 test24 = TestCase (assertEqual "parseApp requires at least a position."
                                (Left (Right InvalidAppPos))
-                               (parseApp dict2 "abc"))
+                               (parseApp dict3 "abc"))
 
 test25 = TestCase (assertEqual "parseApp propogates errors correctly."
                                (Left (Left (UnexpectedSymbol 6)))
-                               (parseApp dict2 "abc 10 x"))
+                               (parseApp dict3 "abc 10 x"))
 
 test26 = TestCase (assertEqual "parseApp supports operations without directions."
                                (Right (RewriteOp primitiveRelL2R 0 True))
-                               (parseApp dict2 "abc  0   "))
+                               (parseApp dict3 "abc  0   "))
 
 test27 = TestCase (assertEqual "parseApp supports operations with direction →."
                                (Right (RewriteOp primitiveRelEqn 0 True))
-                               (parseApp dict2 "xyz  →   0   "))
+                               (parseApp dict3 "xyz  →   0   "))
 
 test28 = TestCase (assertEqual "parseApp supports operations with direction ←."
                                (Right (RewriteOp primitiveRelEqn 0 False))
-                               (parseApp dict2 "xyz  ←   0   "))
+                               (parseApp dict3 "xyz  ←   0   "))
 
 test29 = TestCase (assertEqual "parseApp can support different application positions."
                                (Right (RewriteOp primitiveRelL2R 1 True))
-                               (parseApp dict2 "abc 1"))
+                               (parseApp dict3 "abc 1"))
+
+-----------------------------------------------------------------------------------------
+-- parseRelApp
+
+test30 = TestCase (assertEqual ""
+                               (Left (Right InvalidRelName))
+                               (parseRelApp dict3 ""))
+
+test31 = TestCase (assertEqual ""
+                               (Left (Right UnknownRelMod))
+                               (parseRelApp dict3 "!badmod"))
+
+test32 = TestCase (assertEqual ""
+                               (Left (Left (UnexpectedSymbol 6)))
+                               (parseRelApp dict3 "abc 10 x"))
+
+test33 = TestCase (assertEqual ""
+                               (Left (Left (UnexpectedSymbol 19)))
+                               (parseRelApp dict3 "!apply   derived 10 x"))
+
+test34 = TestCase (assertEqual ""
+                               (Left (Right RewriteOnDeriv))
+                               (parseRelApp dict3 "derived 10"))
+
+test35 = TestCase (assertEqual ""
+                               (Left (Right ApplyOnPrim))
+                               (parseRelApp dict3 "!apply abc 10"))
+
+test36 = TestCase (assertEqual ""
+                               (Right (RewriteOp primitiveRelEqn 0 False))
+                               (parseRelApp dict3 "xyz  ←   0   "))
+
+test37 = TestCase (assertEqual ""
+                               (Right (RewriteOp derivedRel 10 True))
+                               (parseRelApp dict3 "!apply  derived   →    10     "))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -183,6 +222,14 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseAppPos_EmptyStringOne" test
                                      TestLabel "parseApp_NoDir" test26,
                                      TestLabel "parseApp_L2R" test27,
                                      TestLabel "parseApp_R2L" test28,
-                                     TestLabel "parseApp_OtherPos" test29]
+                                     TestLabel "parseApp_OtherPos" test29,
+                                     TestLabel "parseRelApp_EmptyString" test30,
+                                     TestLabel "parseRelApp_BadMod" test31,
+                                     TestLabel "parseRelApp_ErrorProp_NoApply" test32,
+                                     TestLabel "parseRelApp_ErrorProp_Apply" test33,
+                                     TestLabel "parseRelApp_DerivedAsPrim" test34,
+                                     TestLabel "parseRelApp_PrimAsDerived" test35,
+                                     TestLabel "parseRelApp_PrimParse" test36,
+                                     TestLabel "parseRelApp_DerivedParse" test37]
 
 main = defaultMain tests
