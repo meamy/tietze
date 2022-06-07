@@ -6,6 +6,7 @@ import Test.HUnit
 import Data.Either
 import DyadicRewrite.Common
 import DyadicRewrite.Rewrite.Rules
+import DyadicRewrite.Rewrite.Lookup
 import DyadicRewrite.Parse.Common
 import DyadicRewrite.Parse.DerivationFile
 
@@ -108,6 +109,50 @@ test20 = TestCase (assertEqual "parseAppDirAndPos accepts production rules with 
                                (parseAppDirAndPos primitiveRelL2R "→" "0  \t"))
 
 -----------------------------------------------------------------------------------------
+-- parseApp
+
+dict0 :: RelDict
+dict0 = empty
+dict1 = addRel dict0 ("abc", primitiveRelL2R)
+dict2 = addRel dict1 ("xyz", primitiveRelEqn)
+
+test21 = TestCase (assertEqual "parseApp handles empty strings."
+                               (Left (Right InvalidRelName))
+                               (parseApp dict2 ""))
+
+test22 = TestCase (assertEqual "parseApp rejects bad relation identifiers."
+                               (Left (Right InvalidRelName))
+                               (parseApp dict2 "1abc"))
+
+test23 = TestCase (assertEqual "parseApp rejects invalid relation identifiers."
+                               (Left (Right (UnknownRelName "bad")))
+                               (parseApp dict2 "bad"))
+
+test24 = TestCase (assertEqual "parseApp requires at least a position."
+                               (Left (Right InvalidAppPos))
+                               (parseApp dict2 "abc"))
+
+test25 = TestCase (assertEqual "parseApp propogates errors correctly."
+                               (Left (Left (UnexpectedSymbol 6)))
+                               (parseApp dict2 "abc 10 x"))
+
+test26 = TestCase (assertEqual "parseApp supports operations without directions."
+                               (Right (RewriteOp primitiveRelL2R 0 True))
+                               (parseApp dict2 "abc  0   "))
+
+test27 = TestCase (assertEqual "parseApp supports operations with direction →."
+                               (Right (RewriteOp primitiveRelEqn 0 True))
+                               (parseApp dict2 "xyz  →   0   "))
+
+test28 = TestCase (assertEqual "parseApp supports operations with direction ←."
+                               (Right (RewriteOp primitiveRelEqn 0 False))
+                               (parseApp dict2 "xyz  ←   0   "))
+
+test29 = TestCase (assertEqual "parseApp can support different application positions."
+                               (Right (RewriteOp primitiveRelL2R 1 True))
+                               (parseApp dict2 "abc 1"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseAppPos_EmptyStringOne" test1,
@@ -129,6 +174,15 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseAppPos_EmptyStringOne" test
                                      TestLabel "parseAppDirAndPos_Eqn_L2R" test17,
                                      TestLabel "parseAppDirAndPos_Eqn_R2L" test18,
                                      TestLabel "parseAppDirAndPos_L2R_Inferred" test19,
-                                     TestLabel "parseAppDirAndPos_L2R_Explicit" test20]
+                                     TestLabel "parseAppDirAndPos_L2R_Explicit" test20,
+                                     TestLabel "parseApp_EmptyString" test21,
+                                     TestLabel "parseApp_BadRelID" test22,
+                                     TestLabel "parseApp_UnknownRel" test23,
+                                     TestLabel "parseApp_MissingPos" test24,
+                                     TestLabel "parseApp_ErrorProp" test25,
+                                     TestLabel "parseApp_NoDir" test26,
+                                     TestLabel "parseApp_L2R" test27,
+                                     TestLabel "parseApp_R2L" test28,
+                                     TestLabel "parseApp_OtherPos" test29]
 
 main = defaultMain tests

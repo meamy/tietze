@@ -13,12 +13,14 @@ import Data.Maybe
 data ParserError = UnexpectedSymbol Int
                  | UnexpectedEOL
                  | UnexpectedEOF
+                 | UnknownParseError
                  deriving (Eq)
 
 instance Show ParserError where
     show (UnexpectedSymbol n) = "Unexpected symbol at " ++ (show n) ++ "."
     show UnexpectedEOL        = "Unexpected end-of-line."
     show UnexpectedEOF        = "Unexpected end-of-file."
+    show UnknownParseError    = "Parser failed unexpected."
 
 -- | Consumes a string (full) and the substring upon which parsing failed (unparsed).
 -- Returns the position in full at which parsing failed (zero indexed).

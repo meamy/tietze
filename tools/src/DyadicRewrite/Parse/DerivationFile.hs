@@ -65,10 +65,29 @@ parseAppPos rel isLeftToRight str =
 -- error value.
 parseAppDirAndPos :: RewriteRule -> String -> String -> Either DFPError RewriteOp
 parseAppDirAndPos rel dir str = if dirMatchesRel
-                                then parseAppPos rel isL2R str
+                                then parseAppPos rel isL2R (snd (trimSpacing str))
                                 else if isL2R
                                      then Left (Right MissingAppDir)
                                      else Left (Right InvalidAppDir)
     where isDirected    = (not (dir == ""))
           isL2R         = (not (dir == "←"))
           dirMatchesRel = if (equational rel) then isDirected else isL2R
+
+-----------------------------------------------------------------------------------------
+-- * Line parsing methods.
+
+-- | Consumes a dictionary of known relations (rel) and an input string (str). Attempts
+-- to parse a primitive rule operation of either the form <ID> <DIR> <POS> or <ID> <POS>.
+-- If parsing is successful, then the corresponding RewriteOp is returned. Otherwise, an
+-- error is returned.
+parseApp :: RelDict -> String -> Either DFPError RewriteOp
+parseApp dict str =
+    case (parseId str) of
+        Just (id, detStr) -> case (interpretRel dict id) of
+            Just rel -> case (parseFromSeps ["→", "←", ""] detStr) of
+                Just (dir, natStr) -> case (parseAppDirAndPos rel dir natStr) of
+                    Left err -> Left (propDerErr str natStr err)
+                    Right op -> Right op
+                Nothing ->  Left (Left UnknownParseError) -- Should be unreachable.
+            Nothing -> Left (Right (UnknownRelName id))
+        Nothing -> Left (Right InvalidRelName)
