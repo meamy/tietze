@@ -3,7 +3,6 @@
 module DyadicRewrite.Generators.Semantics where
 
 import qualified Data.Map
-import Data.Maybe
 
 -----------------------------------------------------------------------------------------
 -- * Generator Dictionary.

@@ -2,7 +2,6 @@
 
 module DyadicRewrite.Parse.RelationFile where
 
-import Data.Maybe
 import DyadicRewrite.Common
 import DyadicRewrite.Rewrite.Rules
 import DyadicRewrite.Rewrite.Lookup

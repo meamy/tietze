@@ -2,7 +2,6 @@
 
 module DyadicRewrite.Parse.DerivationFile where
 
-import Data.Either
 import DyadicRewrite.Rewrite.Lookup
 import DyadicRewrite.Rewrite.Rules
 import DyadicRewrite.Parse.Common

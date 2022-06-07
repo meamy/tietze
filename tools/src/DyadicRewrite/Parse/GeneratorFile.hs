@@ -2,8 +2,6 @@
 
 module DyadicRewrite.Parse.GeneratorFile where
 
-import Data.Maybe
-import Data.Either
 import DyadicRewrite.Generators.Semantics
 import DyadicRewrite.Parse.Common
 
