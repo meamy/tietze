@@ -11,225 +11,225 @@ import DyadicRewrite.Parse.Common
 import DyadicRewrite.Parse.DerivationFile
 
 -----------------------------------------------------------------------------------------
--- parseAppPos
+-- parseRewritePos
 
-circ1 :: Circuit
-circ1 = [(Gate "a" []), (Gate "b" []), (Gate "c" [])]
+word1 :: MonWord
+word1 = [(Symbol "a" []), (Symbol "b" []), (Symbol "c" [])]
 
-circ2 :: Circuit
-circ2 = [(Gate "c" []), (Gate "a" []), (Gate "b" [])]
+word2 :: MonWord
+word2 = [(Symbol "c" []), (Symbol "a" []), (Symbol "b" [])]
 
-primitiveRelL2R :: RewriteRule
-primitiveRelL2R = RewriteRule circ1 circ2 False False
+primitiveRuleL2R :: RewriteRule
+primitiveRuleL2R = RewriteRule word1 word2 False False
 
-primitiveRelEqn :: RewriteRule
-primitiveRelEqn = RewriteRule circ1 circ2 True False
+primitiveRuleEqn :: RewriteRule
+primitiveRuleEqn = RewriteRule word1 word2 True False
 
-test1 = TestCase (assertEqual "parseAppPos rejects empty strings (1/2)."
-                              (Left (Right InvalidAppPos))
-                              (parseAppPos primitiveRelL2R False ""))
+test1 = TestCase (assertEqual "parseRewritePos rejects empty strings (1/2)."
+                              (Left (Right InvalidRewritePos))
+                              (parseRewritePos primitiveRuleL2R False ""))
 
-test2 = TestCase (assertEqual "parseAppPos rejects empty strings (2/2)."
-                              (Left (Right InvalidAppPos))
-                              (parseAppPos primitiveRelL2R True ""))
+test2 = TestCase (assertEqual "parseRewritePos rejects empty strings (2/2)."
+                              (Left (Right InvalidRewritePos))
+                              (parseRewritePos primitiveRuleL2R True ""))
 
-test3 = TestCase (assertEqual "parseAppPos rejects bad positions (1/4)."
-                              (Left (Right InvalidAppPos))
-                              (parseAppPos primitiveRelL2R False "asd"))
+test3 = TestCase (assertEqual "parseRewritePos rejects bad positions (1/4)."
+                              (Left (Right InvalidRewritePos))
+                              (parseRewritePos primitiveRuleL2R False "asd"))
 
-test4 = TestCase (assertEqual "parseAppPos rejects bad positions (2/4)."
-                              (Left (Right InvalidAppPos))
-                              (parseAppPos primitiveRelL2R True "asd"))
+test4 = TestCase (assertEqual "parseRewritePos rejects bad positions (2/4)."
+                              (Left (Right InvalidRewritePos))
+                              (parseRewritePos primitiveRuleL2R True "asd"))
 
-test5 = TestCase (assertEqual "parseAppPos rejects bad positions (3/4)."
-                              (Left (Right InvalidAppPos))
-                              (parseAppPos primitiveRelL2R False "-4"))
+test5 = TestCase (assertEqual "parseRewritePos rejects bad positions (3/4)."
+                              (Left (Right InvalidRewritePos))
+                              (parseRewritePos primitiveRuleL2R False "-4"))
 
-test6 = TestCase (assertEqual "parseAppPos rejects bad positions (4/4)."
-                              (Left (Right InvalidAppPos))
-                              (parseAppPos primitiveRelL2R True "-4"))
+test6 = TestCase (assertEqual "parseRewritePos rejects bad positions (4/4)."
+                              (Left (Right InvalidRewritePos))
+                              (parseRewritePos primitiveRuleL2R True "-4"))
 
-test7 = TestCase (assertEqual "parseAppPos accepts natural numbers (1/5)."
-                              (Right (RewriteOp primitiveRelL2R 10 True))
-                              (parseAppPos primitiveRelL2R True "10"))
+test7 = TestCase (assertEqual "parseRewritePos accepts natural numbers (1/5)."
+                              (Right (Rewrite primitiveRuleL2R 10 True))
+                              (parseRewritePos primitiveRuleL2R True "10"))
 
-test8 = TestCase (assertEqual "parseAppPos accepts natural numbers (2/5)."
-                              (Right (RewriteOp primitiveRelL2R 10 False))
-                              (parseAppPos primitiveRelL2R False "10"))
+test8 = TestCase (assertEqual "parseRewritePos accepts natural numbers (2/5)."
+                              (Right (Rewrite primitiveRuleL2R 10 False))
+                              (parseRewritePos primitiveRuleL2R False "10"))
 
-test9 = TestCase (assertEqual "parseAppPos accepts natural numbers (3/5)."
-                              (Right (RewriteOp primitiveRelEqn 10 True))
-                              (parseAppPos primitiveRelEqn True "10"))
+test9 = TestCase (assertEqual "parseRewritePos accepts natural numbers (3/5)."
+                              (Right (Rewrite primitiveRuleEqn 10 True))
+                              (parseRewritePos primitiveRuleEqn True "10"))
 
-test10 = TestCase (assertEqual "parseAppPos accepts natural numbers (4/5)."
-                               (Right (RewriteOp primitiveRelEqn 10 False))
-                               (parseAppPos primitiveRelEqn False "10"))
+test10 = TestCase (assertEqual "parseRewritePos accepts natural numbers (4/5)."
+                               (Right (Rewrite primitiveRuleEqn 10 False))
+                               (parseRewritePos primitiveRuleEqn False "10"))
 
-test11 = TestCase (assertEqual "parseAppPos accepts natural numbers (5/5)."
-                               (Right (RewriteOp primitiveRelL2R 5 True))
-                               (parseAppPos primitiveRelL2R True "5"))
+test11 = TestCase (assertEqual "parseRewritePos accepts natural numbers (5/5)."
+                               (Right (Rewrite primitiveRuleL2R 5 True))
+                               (parseRewritePos primitiveRuleL2R True "5"))
 
-test12 = TestCase (assertEqual "parseAppPos handles trailing spacing."
-                               (Right (RewriteOp primitiveRelL2R 1234 True))
-                               (parseAppPos primitiveRelL2R True "1234  \t\t   "))
+test12 = TestCase (assertEqual "parseRewritePos handles trailing spacing."
+                               (Right (Rewrite primitiveRuleL2R 1234 True))
+                               (parseRewritePos primitiveRuleL2R True "1234  \t\t   "))
 
-test13 = TestCase (assertEqual "parseAppPos rejects symbols after trailing spacing."
+test13 = TestCase (assertEqual "parseRewritePos rejects symbols after trailing spacing."
                                (Left (Left (UnexpectedSymbol 4)))
-                               (parseAppPos primitiveRelL2R True "1234  \t\t   xyz"))
+                               (parseRewritePos primitiveRuleL2R True "1234  \t\t   xyz"))
 
 -----------------------------------------------------------------------------------------
--- parseAppDirAndPos
+-- parseRewriteDirAndPos
 
-test14 = TestCase (assertEqual "parseAppDirAndPos propgates errors correctly."
-                               (Left (Right InvalidAppPos))
-                               (parseAppDirAndPos primitiveRelL2R "" "asd"))
+test14 = TestCase (assertEqual "parseRewriteDirAndPos propgates errors correctly."
+                               (Left (Right InvalidRewritePos))
+                               (parseRewriteDirAndPos primitiveRuleL2R "" "asd"))
 
-test15 = TestCase (assertEqual "parseAppDirAndPos direction misalignment (1/2)."
-                               (Left (Right InvalidAppDir))
-                               (parseAppDirAndPos primitiveRelL2R "←" "10"))
+test15 = TestCase (assertEqual "parseRewriteDirAndPos direction misalignment (1/2)."
+                               (Left (Right InvalidRewriteDir))
+                               (parseRewriteDirAndPos primitiveRuleL2R "←" "10"))
 
-test16 = TestCase (assertEqual "parseAppDirAndPos direction misalignment (2/2)."
-                               (Left (Right MissingAppDir))
-                               (parseAppDirAndPos primitiveRelEqn "" "10"))
+test16 = TestCase (assertEqual "parseRewriteDirAndPos direction misalignment (2/2)."
+                               (Left (Right MissingRewriteDir))
+                               (parseRewriteDirAndPos primitiveRuleEqn "" "10"))
 
-test17 = TestCase (assertEqual "parseAppDirAndPos accepts equational relations with →."
-                               (Right (RewriteOp primitiveRelEqn 10 True))
-                               (parseAppDirAndPos primitiveRelEqn "→" "10  \t"))
+test17 = TestCase (assertEqual "parseRewriteDirAndPos accepts equational rules with →."
+                               (Right (Rewrite primitiveRuleEqn 10 True))
+                               (parseRewriteDirAndPos primitiveRuleEqn "→" "10  \t"))
 
-test18 = TestCase (assertEqual "parseAppDirAndPos accepts equational relations with ←."
-                               (Right (RewriteOp primitiveRelEqn 10 False))
-                               (parseAppDirAndPos primitiveRelEqn "←" "10  \t"))
+test18 = TestCase (assertEqual "parseRewriteDirAndPos accepts equational rules with ←."
+                               (Right (Rewrite primitiveRuleEqn 10 False))
+                               (parseRewriteDirAndPos primitiveRuleEqn "←" "10  \t"))
 
-test19 = TestCase (assertEqual "parseAppDirAndPos accepts production rules without dirs."
-                               (Right (RewriteOp primitiveRelL2R 0 True))
-                               (parseAppDirAndPos primitiveRelL2R "" "0  \t"))
+test19 = TestCase (assertEqual "parseRewriteDirAndPos accepts production rules without dirs."
+                               (Right (Rewrite primitiveRuleL2R 0 True))
+                               (parseRewriteDirAndPos primitiveRuleL2R "" "0  \t"))
 
-test20 = TestCase (assertEqual "parseAppDirAndPos accepts production rules with →."
-                               (Right (RewriteOp primitiveRelL2R 0 True))
-                               (parseAppDirAndPos primitiveRelL2R "→" "0  \t"))
+test20 = TestCase (assertEqual "parseRewriteDirAndPos accepts production rules with →."
+                               (Right (Rewrite primitiveRuleL2R 0 True))
+                               (parseRewriteDirAndPos primitiveRuleL2R "→" "0  \t"))
 
 -----------------------------------------------------------------------------------------
--- parseApp
+-- parseRewrite
 
-derivedRel :: RewriteRule
-derivedRel = RewriteRule circ1 circ2 False True
+derivedRule :: RewriteRule
+derivedRule = RewriteRule word1 word2 False True
 
-dict0 :: RelDict
+dict0 :: RuleDict
 dict0 = empty
-dict1 = addRel dict0 ("abc", primitiveRelL2R)
-dict2 = addRel dict1 ("xyz", primitiveRelEqn)
-dict3 = addRel dict2 ("derived", derivedRel)
+dict1 = addRule dict0 ("abc", primitiveRuleL2R)
+dict2 = addRule dict1 ("xyz", primitiveRuleEqn)
+dict3 = addRule dict2 ("derived", derivedRule)
 
-test21 = TestCase (assertEqual "parseApp handles empty strings."
-                               (Left (Right InvalidRelName))
-                               (parseApp dict3 ""))
+test21 = TestCase (assertEqual "parseRewrite handles empty strings."
+                               (Left (Right InvalidRuleName))
+                               (parseRewrite dict3 ""))
 
-test22 = TestCase (assertEqual "parseApp rejects bad relation identifiers."
-                               (Left (Right InvalidRelName))
-                               (parseApp dict3 "1abc"))
+test22 = TestCase (assertEqual "parseRewrite rejects bad rules identifiers."
+                               (Left (Right InvalidRuleName))
+                               (parseRewrite dict3 "1abc"))
 
-test23 = TestCase (assertEqual "parseApp rejects invalid relation identifiers."
-                               (Left (Right (UnknownRelName "bad")))
-                               (parseApp dict3 "bad"))
+test23 = TestCase (assertEqual "parseRewrite rejects invalid rules identifiers."
+                               (Left (Right (UnknownRuleName "bad")))
+                               (parseRewrite dict3 "bad"))
 
-test24 = TestCase (assertEqual "parseApp requires at least a position."
-                               (Left (Right InvalidAppPos))
-                               (parseApp dict3 "abc"))
+test24 = TestCase (assertEqual "parseRewrite requires at least a position."
+                               (Left (Right InvalidRewritePos))
+                               (parseRewrite dict3 "abc"))
 
-test25 = TestCase (assertEqual "parseApp propogates errors correctly."
+test25 = TestCase (assertEqual "parseRewrite propogates errors correctly."
                                (Left (Left (UnexpectedSymbol 6)))
-                               (parseApp dict3 "abc 10 x"))
+                               (parseRewrite dict3 "abc 10 x"))
 
-test26 = TestCase (assertEqual "parseApp supports operations without directions."
-                               (Right (RewriteOp primitiveRelL2R 0 True))
-                               (parseApp dict3 "abc  0   "))
+test26 = TestCase (assertEqual "parseRewrite supports rewrites without directions."
+                               (Right (Rewrite primitiveRuleL2R 0 True))
+                               (parseRewrite dict3 "abc  0   "))
 
-test27 = TestCase (assertEqual "parseApp supports operations with direction →."
-                               (Right (RewriteOp primitiveRelEqn 0 True))
-                               (parseApp dict3 "xyz  →   0   "))
+test27 = TestCase (assertEqual "parseRewrite supports rewrites with direction →."
+                               (Right (Rewrite primitiveRuleEqn 0 True))
+                               (parseRewrite dict3 "xyz  →   0   "))
 
-test28 = TestCase (assertEqual "parseApp supports operations with direction ←."
-                               (Right (RewriteOp primitiveRelEqn 0 False))
-                               (parseApp dict3 "xyz  ←   0   "))
+test28 = TestCase (assertEqual "parseRewrite supports rewrites with direction ←."
+                               (Right (Rewrite primitiveRuleEqn 0 False))
+                               (parseRewrite dict3 "xyz  ←   0   "))
 
-test29 = TestCase (assertEqual "parseApp can support different application positions."
-                               (Right (RewriteOp primitiveRelL2R 1 True))
-                               (parseApp dict3 "abc 1"))
+test29 = TestCase (assertEqual "parseRewrite can support different rewrite positions."
+                               (Right (Rewrite primitiveRuleL2R 1 True))
+                               (parseRewrite dict3 "abc 1"))
 
 -----------------------------------------------------------------------------------------
--- parseRelApp
+-- parseRewriteLine
 
 test30 = TestCase (assertEqual ""
-                               (Left (Right InvalidRelName))
-                               (parseRelApp dict3 ""))
+                               (Left (Right InvalidRuleName))
+                               (parseRewriteLine dict3 ""))
 
 test31 = TestCase (assertEqual ""
-                               (Left (Right UnknownRelMod))
-                               (parseRelApp dict3 "!badmod"))
+                               (Left (Right UnknownRewriteMod))
+                               (parseRewriteLine dict3 "!badmod"))
 
 test32 = TestCase (assertEqual ""
                                (Left (Left (UnexpectedSymbol 6)))
-                               (parseRelApp dict3 "abc 10 x"))
+                               (parseRewriteLine dict3 "abc 10 x"))
 
 test33 = TestCase (assertEqual ""
                                (Left (Left (UnexpectedSymbol 19)))
-                               (parseRelApp dict3 "!apply   derived 10 x"))
+                               (parseRewriteLine dict3 "!apply   derived 10 x"))
 
 test34 = TestCase (assertEqual ""
-                               (Left (Right RewriteOnDeriv))
-                               (parseRelApp dict3 "derived 10"))
+                               (Left (Right RewriteOnDerived))
+                               (parseRewriteLine dict3 "derived 10"))
 
 test35 = TestCase (assertEqual ""
-                               (Left (Right ApplyOnPrim))
-                               (parseRelApp dict3 "!apply abc 10"))
+                               (Left (Right ApplyOnPrimitive))
+                               (parseRewriteLine dict3 "!apply abc 10"))
 
 test36 = TestCase (assertEqual ""
-                               (Right (RewriteOp primitiveRelEqn 0 False))
-                               (parseRelApp dict3 "xyz  ←   0   "))
+                               (Right (Rewrite primitiveRuleEqn 0 False))
+                               (parseRewriteLine dict3 "xyz  ←   0   "))
 
 test37 = TestCase (assertEqual ""
-                               (Right (RewriteOp derivedRel 10 True))
-                               (parseRelApp dict3 "!apply  derived   →    10     "))
+                               (Right (Rewrite derivedRule 10 True))
+                               (parseRewriteLine dict3 "!apply  derived   →    10     "))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
-tests = hUnitTestToTests $ TestList [TestLabel "parseAppPos_EmptyStringOne" test1,
-                                     TestLabel "parseAppPos_EmptyStringTwo" test2,
-                                     TestLabel "parseAppPos_BadPosOne" test3,
-                                     TestLabel "parseAppPos_BadPosTwo" test4,
-                                     TestLabel "parseAppPos_BadPosThree" test5,
-                                     TestLabel "parseAppPos_BadPosFour" test6,
-                                     TestLabel "parseAppPos_GoodPosOne" test7,
-                                     TestLabel "parseAppPos_GoodPosTwo" test8,
-                                     TestLabel "parseAppPos_GoodPosThree" test9,
-                                     TestLabel "parseAppPos_GoodPosFour" test10,
-                                     TestLabel "parseAppPos_GoodPosFive" test11,
-                                     TestLabel "parseAppPos_TrailingSpacing" test12,
-                                     TestLabel "parseAppPos_TrailingSymbols" test13,
-                                     TestLabel "parseAppDirAndPos_Propogates" test14,
-                                     TestLabel "parseAppDirAndPos_MisalignedOne" test15,
-                                     TestLabel "parseAppDirAndPos_MisalignedTwo" test16,
-                                     TestLabel "parseAppDirAndPos_Eqn_L2R" test17,
-                                     TestLabel "parseAppDirAndPos_Eqn_R2L" test18,
-                                     TestLabel "parseAppDirAndPos_L2R_Inferred" test19,
-                                     TestLabel "parseAppDirAndPos_L2R_Explicit" test20,
-                                     TestLabel "parseApp_EmptyString" test21,
-                                     TestLabel "parseApp_BadRelID" test22,
-                                     TestLabel "parseApp_UnknownRel" test23,
-                                     TestLabel "parseApp_MissingPos" test24,
-                                     TestLabel "parseApp_ErrorProp" test25,
-                                     TestLabel "parseApp_NoDir" test26,
-                                     TestLabel "parseApp_L2R" test27,
-                                     TestLabel "parseApp_R2L" test28,
-                                     TestLabel "parseApp_OtherPos" test29,
-                                     TestLabel "parseRelApp_EmptyString" test30,
-                                     TestLabel "parseRelApp_BadMod" test31,
-                                     TestLabel "parseRelApp_ErrorProp_NoApply" test32,
-                                     TestLabel "parseRelApp_ErrorProp_Apply" test33,
-                                     TestLabel "parseRelApp_DerivedAsPrim" test34,
-                                     TestLabel "parseRelApp_PrimAsDerived" test35,
-                                     TestLabel "parseRelApp_PrimParse" test36,
-                                     TestLabel "parseRelApp_DerivedParse" test37]
+tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" test1,
+                                     TestLabel "parseRewritePos_EmptyStringTwo" test2,
+                                     TestLabel "parseRewritePos_BadPosOne" test3,
+                                     TestLabel "parseRewritePos_BadPosTwo" test4,
+                                     TestLabel "parseRewritePos_BadPosThree" test5,
+                                     TestLabel "parseRewritePos_BadPosFour" test6,
+                                     TestLabel "parseRewritePos_GoodPosOne" test7,
+                                     TestLabel "parseRewritePos_GoodPosTwo" test8,
+                                     TestLabel "parseRewritePos_GoodPosThree" test9,
+                                     TestLabel "parseRewritePos_GoodPosFour" test10,
+                                     TestLabel "parseRewritePos_GoodPosFive" test11,
+                                     TestLabel "parseRewritePos_TrailingSpacing" test12,
+                                     TestLabel "parseRewritePos_TrailingSymbols" test13,
+                                     TestLabel "parseRewriteDirAndPos_Propogates" test14,
+                                     TestLabel "parseRewriteDirAndPos_MisalignedOne" test15,
+                                     TestLabel "parseRewriteDirAndPos_MisalignedTwo" test16,
+                                     TestLabel "parseRewriteDirAndPos_Eqn_L2R" test17,
+                                     TestLabel "parseRewriteDirAndPos_Eqn_R2L" test18,
+                                     TestLabel "parseRewriteDirAndPos_L2R_Inferred" test19,
+                                     TestLabel "parseRewriteDirAndPos_L2R_Explicit" test20,
+                                     TestLabel "parseRewrite_EmptyString" test21,
+                                     TestLabel "parseRewrite_BadRuleID" test22,
+                                     TestLabel "parseRewrite_UnknownRule" test23,
+                                     TestLabel "parseRewrite_MissingPos" test24,
+                                     TestLabel "parseRewrite_ErrorProp" test25,
+                                     TestLabel "parseRewrite_NoDir" test26,
+                                     TestLabel "parseRewrite_L2R" test27,
+                                     TestLabel "parseRewrite_R2L" test28,
+                                     TestLabel "parseRewrite_OtherPos" test29,
+                                     TestLabel "parseRewriteLine_EmptyString" test30,
+                                     TestLabel "parseRewriteLine_BadMod" test31,
+                                     TestLabel "parseRewriteLine_ErrorProp_NoApply" test32,
+                                     TestLabel "parseRewriteLine_ErrorProp_Apply" test33,
+                                     TestLabel "parseRewriteLine_DerivedAsPrimitive" test34,
+                                     TestLabel "parseRewriteLine_PrimitiveAsDerived" test35,
+                                     TestLabel "parseRewriteLine_PrimitiveParse" test36,
+                                     TestLabel "parseRewriteLine_DerivedParse" test37]
 
 main = defaultMain tests

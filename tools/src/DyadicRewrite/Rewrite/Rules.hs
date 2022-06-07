@@ -1,79 +1,80 @@
--- | This module provides types and functions for string rewrite rules. In particular
--- RewriteRules rewrite the prefix of a string whereas RewriteOps apply RewriteRules to a
--- specified substring of a string.
+-- | This module provides types and functions for string rewrite rules. In particular,
+-- the RewriteRule type describes a rule in a rewrite system and the Rewrite type
+-- describes the application of a rewrite rule to a specific string.
 
 module DyadicRewrite.Rewrite.Rules where
 
-import DyadicRewrite.Common (Circuit)
+import DyadicRewrite.Common
 
 -----------------------------------------------------------------------------------------
--- * RewriteRule
+-- * Rule
 
--- | Describes a rewrite rule of the form: lhs => rhs or lhs <=> rhs (equational). Also
--- indicates if the rule was derived from other relations.
-data RewriteRule = RewriteRule { lhs        :: Circuit
-                               , rhs        :: Circuit
+-- | A rewrite rule in a rewrite system is a tuple of the form (lhs, rhs) and is usually
+-- denoted lhs → rhs (we refer to u → v as a production rule as it produces the word xvy
+-- from the word xuy for any words x and y). A relation is said to be **equational** if
+-- it is symmetric (that is, both lhs → rhs and rhs → lhs are valid). A relation u →* u'
+-- may also be **derived** from a proof of the form u → v1 → v2 → ... → vk → u', where
+-- each intermediate relation is valid.
+data RewriteRule = RewriteRule { lhs        :: MonWord
+                               , rhs        :: MonWord
                                , equational :: Bool
                                , derived    :: Bool
                                } deriving (Show,Eq)
 
--- | Consumes a circuit and the lhs of a production rule: lhs → rhs. True is returned if
--- the rule is applicable at index .
-doesRewriteTermMatch :: Circuit -> Circuit -> Bool
+-- | Consumes a monoidal word and the lhs of a production rule: lhs → rhs. True is
+-- returned if the rule is applicable at index .
+doesRewriteTermMatch :: MonWord -> MonWord -> Bool
 doesRewriteTermMatch _   []  = True
 doesRewriteTermMatch []  _   = False
 doesRewriteTermMatch str lhs = if (head str) == (head lhs)
                                then doesRewriteTermMatch (tail str) (tail lhs)
                                else False
 
--- | Consumes a circuit, a rewrite rule, and a boolean flag indicating if the rule is to
--- be applied from left-to-right. Returns true if rule matches a prefix of the circuit.
-checkRewriteRule :: Circuit -> RewriteRule -> Bool -> Bool
+-- | Consumes a monoidal word, a rewrite rule, and a boolean flag indicating if the rule
+-- is to be applied from left-to-right. Returns true if rule matches a prefix of the
+-- monoidal world.
+checkRewriteRule :: MonWord -> RewriteRule -> Bool -> Bool
 checkRewriteRule str rule True  = doesRewriteTermMatch str (lhs rule)
 checkRewriteRule str rule False = doesRewriteTermMatch str (rhs rule)
 
--- | Internal implementation of applyRewriteRule. The first circuit is the string to
--- rewrite. The second circuit is the lhs of the rewrite rule. The second circuit is the
--- rhs of the rewrite rule. Returns the new circuit.
-
--- | Consumes a circuit, together with the lhs and rhs of a production rule: lhs → rhs.
--- Returns the circuit obtained by applying the production rule at index.  Assumes that
--- doesRewriteTermMatch is true.
-applyProductionRule :: Circuit -> Circuit -> Circuit -> Circuit
+-- | Consumes a monoidal word, together with the lhs and rhs of a production rule:
+-- lhs → rhs. Returns the monoidal word obtained by applying the production rule at
+-- index. Assumes that doesRewriteTermMatch is true.
+applyProductionRule :: MonWord -> MonWord -> MonWord -> MonWord
 applyProductionRule str []  []  = str
 applyProductionRule str []  rhs = (head rhs) : (applyProductionRule str [] (tail rhs))
 applyProductionRule str lhs rhs = applyProductionRule (tail str) (tail lhs) rhs
 
--- | Consumes a circuit, a rewrite rule, and a boolean flag indicating if the rule is to
--- be applied from left-to-right. Returns the string obtained by applying the rewrite
--- rule. Assumes that checkRewriteRule is true. 
-applyRewriteRule :: Circuit -> RewriteRule -> Bool -> Circuit
+-- | Consumes a monoidal word, a rewrite rule, and a boolean flag indicating if the rule
+-- is to be applied from left-to-right. Returns the string obtained by applying the
+-- rewrite rule. Assumes that checkRewriteRule is true. 
+applyRewriteRule :: MonWord -> RewriteRule -> Bool -> MonWord
 applyRewriteRule str rule True  = applyProductionRule str (lhs rule) (rhs rule)
 applyRewriteRule str rule False = applyProductionRule str (rhs rule) (lhs rule)
 
 -----------------------------------------------------------------------------------------
--- * RewriteOp
+-- * Rewrite
 
 -- | Applies a rewrite rule at the specified position, in the specified direction.
-data RewriteOp = RewriteOp { rule :: RewriteRule
-                           , pos :: Int
-                           , isLhsToRhs :: Bool
-                           } deriving (Show,Eq)
+data Rewrite = Rewrite { rule :: RewriteRule
+                       , pos :: Int
+                       , isLhsToRhs :: Bool
+                       } deriving (Show,Eq)
 
--- | Consumes a circuit and a rewrite operation. Returns true if rule matches at the
--- position indicated by the rewrite rule.
-checkRewriteOp :: Circuit -> RewriteOp -> Bool
-checkRewriteOp str op = impl str (pos op)
+-- | Consumes a monoidal word and a rewrite. Returns true if rule matches at the position
+-- indicated by the rewrite.
+checkRewrite :: MonWord -> Rewrite -> Bool
+checkRewrite str rw = impl str (pos rw)
     where impl substr n = if n == 0
-                          then checkRewriteRule substr (rule op) (isLhsToRhs op)
+                          then checkRewriteRule substr (rule rw) (isLhsToRhs rw)
                           else if substr == []
                                then False
                                else impl (tail substr) (n - 1)
 
--- | Consumes a circuit and a rewrite operation. Returns the string obtained by applying
--- the rewrite operation. Assumes that checkRewriteOp is true. 
-applyRewriteOp :: Circuit -> RewriteOp -> Circuit
-applyRewriteOp str op = impl str (pos op)
+-- | Consumes a monoidal word and a rewrite. Returns the string obtained by applying the
+-- rewrite. Assumes that checkRewrite is true. 
+applyRewrite :: MonWord -> Rewrite -> MonWord
+applyRewrite str rw = impl str (pos rw)
     where impl substr n = if n == 0
-                          then applyRewriteRule substr (rule op) (isLhsToRhs op)
+                          then applyRewriteRule substr (rule rw) (isLhsToRhs rw)
                           else (head substr) : (impl (tail substr) (n - 1))

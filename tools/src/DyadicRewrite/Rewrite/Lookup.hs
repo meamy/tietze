@@ -6,24 +6,24 @@ import qualified Data.Map
 import DyadicRewrite.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
--- * Relation Dictionary.
+-- * Rule Dictionary.
 
--- | A mapping from relation names (strings) to the relations they represent.
-type RelDict = Data.Map.Map String RewriteRule
+-- | A mapping from rule names (strings) to the rewrite rules they represent.
+type RuleDict = Data.Map.Map String RewriteRule
 
--- | Creates an empty RelDict.
-empty :: RelDict
+-- | Creates an empty RuleDict.
+empty :: RuleDict
 empty = Data.Map.empty
 
--- | Returns true if a relation is already recorded.
-hasRel :: RelDict -> String -> Bool
-hasRel dict id = Data.Map.member id dict
+-- | Returns true if a rule is already recorded.
+hasRule :: RuleDict -> String -> Bool
+hasRule dict id = Data.Map.member id dict
 
--- | Records a identifier/relation pair inside a relation dictionary.
-addRel :: RelDict -> (String, RewriteRule) -> RelDict
-addRel dict (id, rel) = Data.Map.insert id rel dict
+-- | Records a identifier/rule pair inside a rewrite rule dictionary.
+addRule :: RuleDict -> (String, RewriteRule) -> RuleDict
+addRule dict (id, rule) = Data.Map.insert id rule dict
 
--- | Returns a relation by its name. If the relation does not exist, then nothing is
--- returned. To check if a generator is recorded, then use (hasRel dict id).
-interpretRel :: RelDict -> String -> Maybe RewriteRule
-interpretRel dict id = Data.Map.lookup id dict
+-- | Returns a rule by its name. If the rule does not exist, then nothing is returned. To
+-- check if a generator is recorded, then use (hasRel dict id).
+interpretRule :: RuleDict -> String -> Maybe RewriteRule
+interpretRule dict id = Data.Map.lookup id dict

@@ -18,7 +18,7 @@ library
                        DyadicRewrite.Generators.Semantics
                        DyadicRewrite.Generators.QubitGates
                        DyadicRewrite.Parse.Common
-                       DyadicRewrite.Parse.Circuits
+                       DyadicRewrite.Parse.MonWords
                        DyadicRewrite.Parse.GeneratorFile
                        DyadicRewrite.Parse.RelationFile
                        DyadicRewrite.Parse.DerivationFile
@@ -74,9 +74,9 @@ test-suite dyadicrewrite-parse-common-tests
   main-is:             DyadicRewrite-Parse-Common-Tests.hs
   type:                exitcode-stdio-1.0
 
-test-suite dyadicrewrite-parse-circuits-tests
+test-suite dyadicrewrite-parse-monwords-tests
   import:              basic-unit-test-props
-  main-is:             DyadicRewrite-Parse-Circuits-Tests.hs
+  main-is:             DyadicRewrite-Parse-MonWords-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite dyadicrewrite-parse-generatorfile-tests

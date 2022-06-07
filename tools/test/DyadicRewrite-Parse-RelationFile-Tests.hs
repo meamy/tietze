@@ -12,287 +12,287 @@ import DyadicRewrite.Parse.Common
 import DyadicRewrite.Parse.RelationFile
 
 -----------------------------------------------------------------------------------------
--- parseRelation
+-- parseRule
 
-circ1a :: Circuit
-circ1a = [(Gate "a1" []), (Gate "a2" []), (Gate "a3" [])]
+word1a :: MonWord
+word1a = [(Symbol "a1" []), (Symbol "a2" []), (Symbol "a3" [])]
 
-circ2a :: Circuit
-circ2a = [(Gate "abc" []), (Gate "def" [1]), (Gate "ghi" [1, 2])]
+word2a :: MonWord
+word2a = [(Symbol "abc" []), (Symbol "def" [1]), (Symbol "ghi" [1, 2])]
 
-circ1b :: Circuit
-circ1b = [(Gate "a1" []), (Gate "a2" [])]
+word1b :: MonWord
+word1b = [(Symbol "a1" []), (Symbol "a2" [])]
 
-circ2b :: Circuit
-circ2b = [(Gate "abc" []), (Gate "def" [1]), (Gate "ghi" [1, 2]), (Gate "a3" [])]
+word2b :: MonWord
+word2b = [(Symbol "abc" []), (Symbol "def" [1]), (Symbol "ghi" [1, 2]), (Symbol "a3" [])]
 
 test1 = TestCase (assertEqual "Tests that empty strings are rejected."
-                              (Left (Right RelMissingLHS))
-                              (parseRelation ""))
+                              (Left (Right RuleMissingLHS))
+                              (parseRule ""))
 
 test2 = TestCase (assertEqual "Tests that missing left-hand sides are rejected."
-                              (Left (Right RelMissingLHS))
-                              (parseRelation "1abc"))
+                              (Left (Right RuleMissingLHS))
+                              (parseRule "1abc"))
 
-test3 = TestCase (assertEqual "Tests that missing relation operations are detected."
-                              (Left (Right (InvalidRelType 8)))
-                              (parseRelation "a1.a2.a3"))
+test3 = TestCase (assertEqual "Tests that missing rule types are detected."
+                              (Left (Right (InvalidRuleType 8)))
+                              (parseRule "a1.a2.a3"))
 
-test4 = TestCase (assertEqual "Tests that bad relation types are detected."
-                              (Left (Right (InvalidRelType 8)))
-                              (parseRelation "a1.a2.a3 #"))
+test4 = TestCase (assertEqual "Tests that bad rule types are detected."
+                              (Left (Right (InvalidRuleType 8)))
+                              (parseRule "a1.a2.a3 #"))
 
 test5 = TestCase (assertEqual "Tests that missing right-hand sides are rejected."
-                              (Left (Right RelMissingRHS))
-                              (parseRelation "a1.a2.a3 ="))
+                              (Left (Right RuleMissingRHS))
+                              (parseRule "a1.a2.a3 ="))
 
 test6 = TestCase (assertEqual "Tests bad right-hand sides are rejected."
-                              (Left (Right RelMissingRHS))
-                              (parseRelation "a1.a2.a3 = 1abc"))
+                              (Left (Right RuleMissingRHS))
+                              (parseRule "a1.a2.a3 = 1abc"))
 
 test7 = TestCase (assertEqual "Tests bad right-hand sides are rejected."
                               (Left (Left (UnexpectedSymbol 31)))
-                              (parseRelation "a1.a2.a3 = abc.def[1].ghi[1][2]  bad"))
+                              (parseRule "a1.a2.a3 = abc.def[1].ghi[1][2]  bad"))
 
-test8 = TestCase (assertEqual "Tests that equational relations are parsed (1/2)."
-                              (Right (RewriteRule circ1a circ2a True False))
-                              (parseRelation "a1.a2.a3 = abc.def[1].ghi[1][2] "))
+test8 = TestCase (assertEqual "Tests that equational rules are parsed (1/2)."
+                              (Right (RewriteRule word1a word2a True False))
+                              (parseRule "a1.a2.a3 = abc.def[1].ghi[1][2] "))
 
-test9 = TestCase (assertEqual "Tests that equational relations are parsed (2/2)."
-                              (Right (RewriteRule circ1b circ2b True False))
-                              (parseRelation "a1.a2 = abc.def[1].ghi[1][2].a3 "))
+test9 = TestCase (assertEqual "Tests that equational rules are parsed (2/2)."
+                              (Right (RewriteRule word1b word2b True False))
+                              (parseRule "a1.a2 = abc.def[1].ghi[1][2].a3 "))
 
 test10 = TestCase (assertEqual "Tests that production rules are parsed (1/2)."
-                               (Right (RewriteRule circ1a circ2a False False))
-                               (parseRelation "a1.a2.a3 → abc.def[1].ghi[1][2] "))
+                               (Right (RewriteRule word1a word2a False False))
+                               (parseRule "a1.a2.a3 → abc.def[1].ghi[1][2] "))
 
 test11 = TestCase (assertEqual "Tests that production rules are parsed (2/2)."
-                               (Right (RewriteRule circ1b circ2b False False))
-                               (parseRelation "a1.a2 → abc.def[1].ghi[1][2].a3 "))
+                               (Right (RewriteRule word1b word2b False False))
+                               (parseRule "a1.a2 → abc.def[1].ghi[1][2].a3 "))
 
-test12 = TestCase (assertEqual "Tests that relations between empty strings are parsed."
+test12 = TestCase (assertEqual "Tests that rules between empty strings are parsed."
                                (Right (RewriteRule [] [] False False))
-                               (parseRelation "ε → ε "))
+                               (parseRule "ε → ε "))
 
 -----------------------------------------------------------------------------------------
--- parseRelationDefn
+-- parseRuleDefn
 
-test13 = TestCase (assertEqual "Tests that bad relation names are rejected."
-                               (Left (Right InvalidRelName))
-                               (parseRelationDefn "1ab ε → ε"))
+test13 = TestCase (assertEqual "Tests that bad rule names are rejected."
+                               (Left (Right InvalidRuleName))
+                               (parseRuleDefn "1ab ε → ε"))
 
-test14 = TestCase (assertEqual "Tests that bad relations are rejected (no position)."
-                               (Left (Right RelMissingRHS))
-                               (parseRelationDefn "rel1 a1.a2.a3 ="))
+test14 = TestCase (assertEqual "Tests that bad rules are rejected (no position)."
+                               (Left (Right RuleMissingRHS))
+                               (parseRuleDefn "rel1 a1.a2.a3 ="))
 
-test15 = TestCase (assertEqual "Tests that bad relations are rejected (positional)."
+test15 = TestCase (assertEqual "Tests that bad rules are rejected (positional)."
                                (Left (Left (UnexpectedSymbol 18)))
-                               (parseRelationDefn "rel1 a.b.c = b.c.a  x"))
+                               (parseRuleDefn "rel1 a.b.c = b.c.a  x"))
 
 test16 = TestCase (assertEqual "Tests that spaces are required after an identifier."
                                (Left (Left (UnexpectedSymbol 4)))
-                               (parseRelationDefn "rel1ε → ε"))
+                               (parseRuleDefn "rel1ε → ε"))
 
-test17 = TestCase (assertEqual "Tests that equational relations are parsed (1/2)."
-                               (Right ("rel1", (RewriteRule circ1a circ1b True False)))
-                               (parseRelationDefn "  rel1 a1.a2.a3   =  a1.a2  "))
+test17 = TestCase (assertEqual "Tests that equational rules are parsed (1/2)."
+                               (Right ("rel1", (RewriteRule word1a word1b True False)))
+                               (parseRuleDefn "  rel1 a1.a2.a3   =  a1.a2  "))
 
-test18 = TestCase (assertEqual "Tests that equational relations are parsed (2/2)."
-                               (Right ("rel2", (RewriteRule circ1b circ1a True False)))
-                               (parseRelationDefn "  rel2   a1.a2   =  a1.a2.a3  "))
+test18 = TestCase (assertEqual "Tests that equational rules are parsed (2/2)."
+                               (Right ("rel2", (RewriteRule word1b word1a True False)))
+                               (parseRuleDefn "  rel2   a1.a2   =  a1.a2.a3  "))
 
 -----------------------------------------------------------------------------------------
--- findUnknownGenInCircuit
+-- findUnknownGenInMonWord
 
-gateWP1 :: Gate
-gateWP1 = Gate "aaa" [1, 2]
+symbWP1 :: Symbol
+symbWP1 = Symbol "aaa" [1, 2]
 
-gateWP2 :: Gate
-gateWP2 = Gate "bbb" [1, 2, 3]
+symbWP2 :: Symbol
+symbWP2 = Symbol "bbb" [1, 2, 3]
 
-gateWP3 :: Gate
-gateWP3 = Gate "ccc" [1, 2, 3, 4]
+symbWP3 :: Symbol
+symbWP3 = Symbol "ccc" [1, 2, 3, 4]
 
-gateWOP1 :: Gate
-gateWOP1 = Gate "ddd" []
+symbWOP1 :: Symbol
+symbWOP1 = Symbol "ddd" []
 
-gateWOP2 :: Gate
-gateWOP2 = Gate "eee" []
+symbWOP2 :: Symbol
+symbWOP2 = Symbol "eee" []
 
-gateWOP3 :: Gate
-gateWOP3 = Gate "fff" []
+symbWOP3 :: Symbol
+symbWOP3 = Symbol "fff" []
 
-paramCirc :: Circuit
-paramCirc = [gateWOP1, gateWP1, gateWOP2, gateWP2, gateWOP3, gateWP3]
+paramWord :: MonWord
+paramWord = [symbWOP1, symbWP1, symbWOP2, symbWP2, symbWOP3, symbWP3]
 
-noParamCirc :: Circuit
-noParamCirc = [gateWOP1, gateWOP1, gateWOP2, gateWOP2, gateWOP3, gateWOP3]
+noParamWord :: MonWord
+noParamWord = [symbWOP1, symbWOP1, symbWOP2, symbWOP2, symbWOP3, symbWOP3]
 
 genList1 :: [String]
-genList1 = [(name gateWOP1), (name gateWOP2)]
-genList2 = (name gateWOP3):genList1
-genList3 = (name gateWP1):(name gateWP2):(name gateWP3):genList2
+genList1 = [(name symbWOP1), (name symbWOP2)]
+genList2 = (name symbWOP3):genList1
+genList3 = (name symbWP1):(name symbWP2):(name symbWP3):genList2
 
-test19 = TestCase (assertEqual "findUnknownGenInCircuit supports empty strings."
+test19 = TestCase (assertEqual "findUnknownGenInMonWord supports empty strings."
                                Nothing
-                               (findUnknownGenInCircuit genList3 []))
+                               (findUnknownGenInMonWord genList3 []))
 
-test20 = TestCase (assertEqual "findUnknownGenInCircuit rejects parameters."
-                               (Just gateWP1)
-                               (findUnknownGenInCircuit genList3 paramCirc))
+test20 = TestCase (assertEqual "findUnknownGenInMonWord rejects parameters."
+                               (Just symbWP1)
+                               (findUnknownGenInMonWord genList3 paramWord))
 
-test21 = TestCase (assertEqual "findUnknownGenInCircuit rejects unlisted generator."
-                               (Just gateWOP3)
-                               (findUnknownGenInCircuit genList1 noParamCirc))
+test21 = TestCase (assertEqual "findUnknownGenInMonWord rejects unlisted generator."
+                               (Just symbWOP3)
+                               (findUnknownGenInMonWord genList1 noParamWord))
 
-test22 = TestCase (assertEqual "findUnknownGenInCircuit accepts strings of generators."
+test22 = TestCase (assertEqual "findUnknownGenInMonWord accepts strings of generators."
                                Nothing
-                               (findUnknownGenInCircuit genList2 noParamCirc))
+                               (findUnknownGenInMonWord genList2 noParamWord))
 
 -----------------------------------------------------------------------------------------
--- findUnknownGenInRel
+-- findUnknownGenInRule
 
-badParamRelLHS :: RewriteRule
-badParamRelLHS = RewriteRule paramCirc [] True False
+badParamRuleLHS :: RewriteRule
+badParamRuleLHS = RewriteRule paramWord [] True False
 
-badNoParamRelLHS :: RewriteRule
-badNoParamRelLHS = RewriteRule noParamCirc [] True False
+badNoParamRuleLHS :: RewriteRule
+badNoParamRuleLHS = RewriteRule noParamWord [] True False
 
-badParamRelRHS :: RewriteRule
-badParamRelRHS = RewriteRule [] paramCirc True False
+badParamRuleRHS :: RewriteRule
+badParamRuleRHS = RewriteRule [] paramWord True False
 
-badNoParamRelRHS :: RewriteRule
-badNoParamRelRHS = RewriteRule [] noParamCirc True False
+badNoParamRuleRHS :: RewriteRule
+badNoParamRuleRHS = RewriteRule [] noParamWord True False
 
-goodRel :: RewriteRule
-goodRel = RewriteRule noParamCirc noParamCirc True False
+goodRule :: RewriteRule
+goodRule = RewriteRule noParamWord noParamWord True False
 
-test23 = TestCase (assertEqual "findUnknownGenInRel detects bad gates on the LHS (1/2)."
-                               (Just gateWP1)
-                               (findUnknownGenInRel genList3 badParamRelLHS))
+test23 = TestCase (assertEqual "findUnknownGenInRule detects bad symbols on the LHS (1/2)."
+                               (Just symbWP1)
+                               (findUnknownGenInRule genList3 badParamRuleLHS))
 
-test24 = TestCase (assertEqual "findUnknownGenInRel detects bad gates on the LHS (2/2)."
-                               (Just gateWOP3)
-                               (findUnknownGenInRel genList1 badNoParamRelLHS))
+test24 = TestCase (assertEqual "findUnknownGenInRule detects bad symbols on the LHS (2/2)."
+                               (Just symbWOP3)
+                               (findUnknownGenInRule genList1 badNoParamRuleLHS))
 
-test25 = TestCase (assertEqual "findUnknownGenInRel detects bad gates on the RHS (1/2)."
-                               (Just gateWP1)
-                               (findUnknownGenInRel genList3 badParamRelRHS))
+test25 = TestCase (assertEqual "findUnknownGenInRule detects bad symbols on the RHS (1/2)."
+                               (Just symbWP1)
+                               (findUnknownGenInRule genList3 badParamRuleRHS))
 
-test26 = TestCase (assertEqual "findUnknownGenInRel detects bad gates on the RHS (2/2)."
-                               (Just gateWOP3)
-                               (findUnknownGenInRel genList1 badNoParamRelRHS))
+test26 = TestCase (assertEqual "findUnknownGenInRule detects bad symbols on the RHS (2/2)."
+                               (Just symbWOP3)
+                               (findUnknownGenInRule genList1 badNoParamRuleRHS))
 
-test27 = TestCase (assertEqual "findUnknownGenInRel accepts valid relations."
+test27 = TestCase (assertEqual "findUnknownGenInRule accepts valid rules."
                                Nothing
-                               (findUnknownGenInRel genList2 goodRel))
+                               (findUnknownGenInRule genList2 goodRule))
 
 -----------------------------------------------------------------------------------------
--- updateRelations
+-- updateRules
 
 rel1 :: (String, RewriteRule)
-rel1 = ("xyx", badParamRelLHS)
+rel1 = ("xyx", badParamRuleLHS)
 
 rel2 :: (String, RewriteRule)
-rel2 = ("x123", badNoParamRelLHS)
+rel2 = ("x123", badNoParamRuleLHS)
 
-dupRel :: (String, RewriteRule)
-dupRel = ("abc", goodRel)
+dupRule :: (String, RewriteRule)
+dupRule = ("abc", goodRule)
 
-emptyDict :: RelDict
+emptyDict :: RuleDict
 emptyDict = empty
 
-dupDict = addRel emptyDict dupRel
-dict1 = addRel emptyDict rel1
-dict2 = addRel dict1 rel2
+dupDict = addRule emptyDict dupRule
+dict1 = addRule emptyDict rel1
+dict2 = addRule dict1 rel2
 
-gateA :: Gate
-gateA = Gate "a" []
+symbA :: Symbol
+symbA = Symbol "a" []
 
-gateB :: Gate
-gateB = Gate "b" []
+symbB :: Symbol
+symbB = Symbol "b" []
 
-addedRel :: RewriteRule
-addedRel = RewriteRule [gateA, gateB] [gateB, gateA] True False
+addedRule :: RewriteRule
+addedRule = RewriteRule [symbA, symbB] [symbB, symbA] True False
 
-test28 = TestCase (assertEqual "Tests that updateRelations propogates errors (1/2)."
-                               (Left (Right InvalidRelName))
-                               (updateRelations emptyDict [] "1abc"))
+test28 = TestCase (assertEqual "Tests that updateRules propogates errors (1/2)."
+                               (Left (Right InvalidRuleName))
+                               (updateRules emptyDict [] "1abc"))
 
-test29 = TestCase (assertEqual "Tests that updateRelations propogates errors (2/2)."
-                               (Left (Right (InvalidRelType 12)))
-                               (updateRelations emptyDict [] "abc a1.a2.a3"))
+test29 = TestCase (assertEqual "Tests that updateRules propogates errors (2/2)."
+                               (Left (Right (InvalidRuleType 12)))
+                               (updateRules emptyDict [] "abc a1.a2.a3"))
 
-test30 = TestCase (assertEqual "Tests that updateRelations validates generators (1/2)."
+test30 = TestCase (assertEqual "Tests that updateRules validates generators (1/2)."
                                (Left (Right (UnknownGenName "c")))
-                               (updateRelations emptyDict ["a", "b"] "abc a.b = c.b.a"))
+                               (updateRules emptyDict ["a", "b"] "abc a.b = c.b.a"))
 
-test31 = TestCase (assertEqual "Tests that updateRelations validates generators (2/2)."
+test31 = TestCase (assertEqual "Tests that updateRules validates generators (2/2)."
                                (Left (Right (UnknownGenName "b[1]")))
-                               (updateRelations emptyDict ["a", "b"] "abc a = b[1].b"))
+                               (updateRules emptyDict ["a", "b"] "abc a = b[1].b"))
 
-test32 = TestCase (assertEqual "Tests that updateRelations detects duplicate names."
-                               (Left (Right (DuplicateRelName "abc")))
-                               (updateRelations dupDict ["a", "b"] " abc  a.b  = b.a  "))
+test32 = TestCase (assertEqual "Tests that updateRules detects duplicate names."
+                               (Left (Right (DuplicateRuleName "abc")))
+                               (updateRules dupDict ["a", "b"] " abc  a.b  = b.a  "))
 
-test33 = TestCase (assertEqual "Tests that updateRelations adds new relations."
-                               (Just addedRel)
+test33 = TestCase (assertEqual "Tests that updateRules adds new rules."
+                               (Just addedRule)
                                rel)
-         where rel = case (updateRelations emptyDict ["a", "b"] "abc a.b = b.a") of
+         where rel = case (updateRules emptyDict ["a", "b"] "abc a.b = b.a") of
                          Left err   -> Nothing
-                         Right dict -> interpretRel dict "abc"
+                         Right dict -> interpretRule dict "abc"
 
-test34 = TestCase (assertEqual "Tests that updateRelations preserves generators (1/2)."
+test34 = TestCase (assertEqual "Tests that updateRules preserves generators (1/2)."
                                (Just (snd rel1))
                                rel)
-         where rel = case (updateRelations dict2 ["a", "b"] "abc a.b = b.a") of
+         where rel = case (updateRules dict2 ["a", "b"] "abc a.b = b.a") of
                          Left err   -> Nothing
-                         Right dict -> interpretRel dict (fst rel1)
+                         Right dict -> interpretRule dict (fst rel1)
 
-test35 = TestCase (assertEqual "Tests that updateRelations preserves generators (2/2)."
+test35 = TestCase (assertEqual "Tests that updateRules preserves generators (2/2)."
                                (Just (snd rel2))
                                rel)
-         where rel = case (updateRelations dict2 ["a", "b"] "abc a.b = b.a") of
+         where rel = case (updateRules dict2 ["a", "b"] "abc a.b = b.a") of
                          Left err   -> Nothing
-                         Right dict -> interpretRel dict (fst rel2)
+                         Right dict -> interpretRule dict (fst rel2)
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
-tests = hUnitTestToTests $ TestList [TestLabel "parseRelation_EmptyString" test1,
-                                     TestLabel "parseRelation_NoLHS" test2,
-                                     TestLabel "parseRelation_NoRelOp" test3,
-                                     TestLabel "parseRelation_BadRelOp" test4,
-                                     TestLabel "parseRelation_NoRHS" test5,
-                                     TestLabel "parseRelation_BadRHS" test6,
-                                     TestLabel "parseRelation_BadEndOfLine" test7,
-                                     TestLabel "parseRelation_EquationalOne" test8,
-                                     TestLabel "parseRelation_EquationalTwo" test9,
-                                     TestLabel "parseRelation_ProductionOne" test10,
-                                     TestLabel "parseRelation_ProductionTwo" test11,
-                                     TestLabel "parseRelation_EmptyStrings" test12,
-                                     TestLabel "parseRelationDefn_BadName" test13,
-                                     TestLabel "parseRelationDefn_NoPosRelErr" test14,
-                                     TestLabel "parseRelationDefn_PosRelErr" test15,
-                                     TestLabel "parseRelationDefn_SpaceAfterID" test16,
-                                     TestLabel "parseRelationDefn_GoodRelOne" test17,
-                                     TestLabel "parseRelationDefn_GoodRelTwo" test18,
-                                     TestLabel "findUnknownGenInCircuit_Empty" test19,
-                                     TestLabel "findUnknownGenInCircuit_Params" test20,
-                                     TestLabel "findUnknownGenInCircuit_BadName" test21,
-                                     TestLabel "findUnknownGenInCircuit_Accepts" test22,
-                                     TestLabel "findUnknownGenInRel_ParamsLHS" test23,
-                                     TestLabel "findUnknownGenInRel_BadNameLHS" test24,
-                                     TestLabel "findUnknownGenInRel_ParamsRHS" test25,
-                                     TestLabel "findUnknownGenInRel_BadNameRHS" test26,
-                                     TestLabel "findUnknownGenInRel_GoodRel" test27,
-                                     TestLabel "updateRelations_PropogateOne" test28,
-                                     TestLabel "updateRelations_PropogateTwo" test29,
-                                     TestLabel "updateRelations_BadGenOne" test30,
-                                     TestLabel "updateRelations_BadGenTwo" test31,
-                                     TestLabel "updateRelations_DupRelName" test32,
-                                     TestLabel "updateRelations_AddNewRel" test33,
-                                     TestLabel "updateRelations_UpdateRelsOne" test34,
-                                     TestLabel "updateRelations_UpdateRelsTwo" test35]
+tests = hUnitTestToTests $ TestList [TestLabel "parseRule_EmptyString" test1,
+                                     TestLabel "parseRule_NoLHS" test2,
+                                     TestLabel "parseRule_NoRuleOp" test3,
+                                     TestLabel "parseRule_BadRuleOp" test4,
+                                     TestLabel "parseRule_NoRHS" test5,
+                                     TestLabel "parseRule_BadRHS" test6,
+                                     TestLabel "parseRule_BadEndOfLine" test7,
+                                     TestLabel "parseRule_EquationalOne" test8,
+                                     TestLabel "parseRule_EquationalTwo" test9,
+                                     TestLabel "parseRule_ProductionOne" test10,
+                                     TestLabel "parseRule_ProductionTwo" test11,
+                                     TestLabel "parseRule_EmptyStrings" test12,
+                                     TestLabel "parseRuleDefn_BadName" test13,
+                                     TestLabel "parseRuleDefn_NoPosRuleErr" test14,
+                                     TestLabel "parseRuleDefn_PosRuleErr" test15,
+                                     TestLabel "parseRuleDefn_SpaceAfterID" test16,
+                                     TestLabel "parseRuleDefn_GoodRuleOne" test17,
+                                     TestLabel "parseRuleDefn_GoodRuleTwo" test18,
+                                     TestLabel "findUnknownGenInMonWord_Empty" test19,
+                                     TestLabel "findUnknownGenInMonWord_Params" test20,
+                                     TestLabel "findUnknownGenInMonWord_BadName" test21,
+                                     TestLabel "findUnknownGenInMonWord_Accepts" test22,
+                                     TestLabel "findUnknownGenInRule_ParamsLHS" test23,
+                                     TestLabel "findUnknownGenInRule_BadNameLHS" test24,
+                                     TestLabel "findUnknownGenInRule_ParamsRHS" test25,
+                                     TestLabel "findUnknownGenInRule_BadNameRHS" test26,
+                                     TestLabel "findUnknownGenInRule_GoodRule" test27,
+                                     TestLabel "updateRules_PropogateOne" test28,
+                                     TestLabel "updateRules_PropogateTwo" test29,
+                                     TestLabel "updateRules_BadGenOne" test30,
+                                     TestLabel "updateRules_BadGenTwo" test31,
+                                     TestLabel "updateRules_DupRuleName" test32,
+                                     TestLabel "updateRules_AddNewRule" test33,
+                                     TestLabel "updateRules_UpdateRulesOne" test34,
+                                     TestLabel "updateRules_UpdateRulesTwo" test35]
 
 main = defaultMain tests

@@ -10,26 +10,27 @@ import DyadicRewrite.Parse.Common
 -----------------------------------------------------------------------------------------
 -- * Generator File Parsing Errors.
 
-data DerFileError = UnknownRelMod
-                  | InvalidRelName
-                  | InvalidAppPos
-                  | InvalidAppDir
-                  | MissingAppDir
-                  | ApplyOnPrim
-                  | RewriteOnDeriv
+-- |
+data DerFileError = UnknownRewriteMod
+                  | InvalidRuleName
+                  | InvalidRewritePos
+                  | InvalidRewriteDir
+                  | MissingRewriteDir
+                  | ApplyOnPrimitive
+                  | RewriteOnDerived
                   | UnknownGenName String
-                  | UnknownRelName String
+                  | UnknownRuleName String
                   deriving (Eq)
 
 instance Show DerFileError where
-    show UnknownRelMod         = "Unknown relation modifier (a symbol prefixed by !)."
-    show InvalidRelName        = "Relation name started with invalid symbol."
-    show InvalidAppPos         = "Expected position at end of rewrite operation."
-    show InvalidAppDir         = "Non-equational relation applied right-to-left."
-    show MissingAppDir         = "Equational relation requires application direction."
-    show ApplyOnPrim           = "Applied use of a primitive relation."
-    show RewriteOnDeriv        = "Primitive use of a derived relation."
-    show (UnknownRelName name) = "Unknown relation name (" ++ name ++ ")."
+    show UnknownRewriteMod      = "Unknown rewrite modifier (a symbol prefixed by !)."
+    show InvalidRuleName        = "Rewrite rule name starts with invalid symbol."
+    show InvalidRewritePos      = "Expected position at end of rewrite."
+    show InvalidRewriteDir      = "Non-equational rewrite rule applied right-to-left."
+    show MissingRewriteDir      = "Equational rewrite rule requires derivation direction."
+    show ApplyOnPrimitive       = "Applied use of a primitive rewrite rule."
+    show RewriteOnDerived       = "Primitive use of a derived rewrite rule."
+    show (UnknownRuleName name) = "Unknown rewrite rule (" ++ name ++ ")."
 
 -- | Errors returned during derivation file parsing.
 type DFPError = Either ParserError DerFileError
@@ -47,67 +48,67 @@ propDerErr str substr err =
         otherwise                   -> err
     where update pos = relToAbsErrPos str substr pos
 
--- | Helper function to parse the position at the end of a derivation rule application.
--- Assumes that a relation (rel) and direction of applicaation (isLeftToRight) have
--- already been parsed, str is the remaining input, and that str has no leading spacing.
-parseAppPos :: RewriteRule -> Bool -> String -> Either DFPError RewriteOp
-parseAppPos rel isLeftToRight str =
+-- | Helper function to parse the position at the end of a rewrite. Assumes that a rule
+-- and derivation direction (isLeftToRight) have already been parsed, str is the
+-- remaining input, and that str has no leading spacing.
+parseRewritePos :: RewriteRule -> Bool -> String -> Either DFPError Rewrite
+parseRewritePos rule isLeftToRight str =
     case (parseNat str) of
         Just (pos, post) -> let lval = Left (UnexpectedSymbol (getErrPos str post))
-                                rval = RewriteOp rel pos isLeftToRight
+                                rval = Rewrite rule pos isLeftToRight
                             in branchOnSpacing post lval rval
-        Nothing -> Left (Right InvalidAppPos)
+        Nothing -> Left (Right InvalidRewritePos)
 
--- | Consumes a relation (rel), a requested derivation rule application direction (dir),
--- and the remaining input to be parsed (str). If the requested dir aligns with rel, then
--- the application position is parsed from str and the resulting operation (or error) is
--- returned. Otherwise, the misalignment between rel and dir is described through an
+-- | Consumes a rule a requested derivation rule derivation direction (dir),
+-- and the remaining input to be parsed (str). If the requested dir aligns with rule,
+-- then the rewrite position is parsed from str and the resulting rewrite (or error) is
+-- returned. Otherwise, the misalignment between rule and dir is described through an
 -- error value.
-parseAppDirAndPos :: RewriteRule -> String -> String -> Either DFPError RewriteOp
-parseAppDirAndPos rel dir str = if dirMatchesRel
-                                then parseAppPos rel isL2R (snd (trimSpacing str))
+parseRewriteDirAndPos :: RewriteRule -> String -> String -> Either DFPError Rewrite
+parseRewriteDirAndPos rule dir str = if dirMatchesRule
+                                then parseRewritePos rule isL2R (snd (trimSpacing str))
                                 else if isL2R
-                                     then Left (Right MissingAppDir)
-                                     else Left (Right InvalidAppDir)
+                                     then Left (Right MissingRewriteDir)
+                                     else Left (Right InvalidRewriteDir)
     where isDirected    = (not (dir == ""))
           isL2R         = (not (dir == "←"))
-          dirMatchesRel = if (equational rel) then isDirected else isL2R
+          dirMatchesRule = if (equational rule) then isDirected else isL2R
 
 -----------------------------------------------------------------------------------------
 -- * Line parsing methods.
 
--- | Consumes a dictionary of known relations (rel) and an input string (str). Attempts
--- to parse a primitive rule operation of either the form <ID> <DIR> <POS> or <ID> <POS>.
--- If parsing is successful, then the corresponding RewriteOp is returned. Otherwise, an
--- error is returned.
-parseApp :: RelDict -> String -> Either DFPError RewriteOp
-parseApp dict str =
+-- | Consumes a dictionary of known rules (dict) and an input string (str). Attempts to
+-- parse a primitive rewrite of either the form <ID> <DIR> <POS> or <ID> <POS>. If
+-- parsing is successful, then the corresponding rewrite is returned. Otherwise, an error
+-- is returned.
+parseRewrite :: RuleDict -> String -> Either DFPError Rewrite
+parseRewrite dict str =
     case (parseId str) of
-        Just (id, detStr) -> case (interpretRel dict id) of
-            Just rel -> case (parseFromSeps ["→", "←", ""] detStr) of
-                Just (dir, natStr) -> case (parseAppDirAndPos rel dir natStr) of
+        Just (id, detStr) -> case (interpretRule dict id) of
+            Just rule -> case (parseFromSeps ["→", "←", ""] detStr) of
+                Just (dir, natStr) -> case (parseRewriteDirAndPos rule dir natStr) of
                     Left err -> Left (propDerErr str natStr err)
-                    Right op -> Right op
+                    Right rw -> Right rw
                 Nothing ->  Left (Left UnknownParseError) -- Should be unreachable.
-            Nothing -> Left (Right (UnknownRelName id))
-        Nothing -> Left (Right InvalidRelName)
+            Nothing -> Left (Right (UnknownRuleName id))
+        Nothing -> Left (Right InvalidRuleName)
 
--- | Consumes a dictionary of known relations (rel) and a rule application line of a
--- derivation file (str). Attempts to parse str, taking into account all modifiers
--- applied to the line. If parsing is successful, then the corresponding RewriteOp is
--- returned. Otherwise, an error is returned. 
-parseRelApp :: RelDict -> String -> Either DFPError RewriteOp
-parseRelApp dict str =
+-- | Consumes a dictionary of known rules (dict) and a rewrite line of a derivation file
+-- (str). Attempts to parse str, taking into account all modifiers applied to the line.
+-- If parsing is successful, then the corresponding rewrite is returned. Otherwise, an
+-- error is returned. 
+parseRewriteLine :: RuleDict -> String -> Either DFPError Rewrite
+parseRewriteLine dict str =
     case (parseFromSeps ["!apply", "!"] str) of
-        Just ("!apply", opStr) -> let trimmed = (snd (trimSpacing opStr))
-                                  in case (parseApp dict trimmed) of
+        Just ("!apply", rwStr) -> let trimmed = (snd (trimSpacing rwStr))
+                                  in case (parseRewrite dict trimmed) of
                                          Left err -> Left (propDerErr str trimmed err)
-                                         Right op -> if (derived (rule op))
-                                                     then Right op
-                                                     else Left (Right ApplyOnPrim)
-        Nothing -> case (parseApp dict str) of
+                                         Right rw -> if (derived (rule rw))
+                                                     then Right rw
+                                                     else Left (Right ApplyOnPrimitive)
+        Nothing -> case (parseRewrite dict str) of
             Left err -> Left err
-            Right op -> if (derived (rule op))
-                        then Left (Right RewriteOnDeriv)
-                        else Right op
-        Just ("!", _) -> Left (Right UnknownRelMod)
+            Right rw -> if (derived (rule rw))
+                        then Left (Right RewriteOnDerived)
+                        else Right rw
+        Just ("!", _) -> Left (Right UnknownRewriteMod)
