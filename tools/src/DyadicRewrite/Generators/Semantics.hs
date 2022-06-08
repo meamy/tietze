@@ -5,6 +5,22 @@ module DyadicRewrite.Generators.Semantics where
 import qualified Data.Map
 
 -----------------------------------------------------------------------------------------
+-- * Types to describe semantic models.
+
+-- | All semantic model currently supported.
+data SemModel = MonoidalSem
+              | DyadicOneSem
+              | DyadicTwoSem
+              | DyadicThreeSem
+              deriving (Eq)
+
+instance Show SemModel where
+    show MonoidalSem    = "Monoidal"
+    show DyadicOneSem   = "Dyadic(1)"
+    show DyadicTwoSem   = "Dyadic(2)"
+    show DyadicThreeSem = "Dyadic(3)"
+
+-----------------------------------------------------------------------------------------
 -- * Generator Dictionary.
 
 -- | A mapping from generator symbols (strings) to their semantic values of type a.

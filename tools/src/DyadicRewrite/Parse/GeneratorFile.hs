@@ -27,7 +27,7 @@ instance Show GenFileError where
 type GFPError = Either ParserError GenFileError
 
 -----------------------------------------------------------------------------------------
--- * Line parsing methods.
+-- * Line Parsing Methods.
 
 -- | A function used to parse a value given a semantic model. Takes as input a textual
 -- representation of the semantic value. Returns either a parsing error (as a string) or
@@ -68,3 +68,32 @@ updateGenerators parseSem dict str =
         Right (id, semv) -> if (dict `hasGen` id)
                             then Left (Right (DuplicateGenName id))
                             else Right (dict `addGen` (id, semv))
+
+-----------------------------------------------------------------------------------------
+-- * File Parsing Methods.
+
+-- | List of all semantic models as text.
+_semModelStrings :: [String]
+_semModelStrings = [(show MonoidalSem),
+                    (show DyadicOneSem),
+                    (show DyadicTwoSem),
+                    (show DyadicThreeSem)]
+
+-- | Consumes all lines of a generator file (lines) and the current line number (num).
+-- Attempts to parse the semantic model declaration. If successful, then the semantic
+-- model, the number of lines parsed, and all remaining lines are returned. Otherwise, a
+-- parsing error is returned along with the line number.
+parseSemanticModel :: [String] -> Int -> Either (Int, GFPError) (SemModel, Int, [String])
+parseSemanticModel []           num = Left (num, (Right MissingSemModel))
+parseSemanticModel (line:lines) num =
+    case (cleanLine line) of
+        ""   -> (parseSemanticModel lines (num + 1))
+        text -> case parseFromSeps _semModelStrings text of
+            Just ("Monoidal",  post) -> (check MonoidalSem post text)
+            Just ("Dyadic(1)", post) -> (check DyadicOneSem post text)
+            Just ("Dyadic(2)", post) -> (check DyadicTwoSem post text)
+            Just ("Dyadic(3)", post) -> (check DyadicThreeSem post text)
+            Nothing                  -> Left (num, (Right (UnknownSemModel text)))
+    where check sem post text = let lval = (num, Right (UnknownSemModel text))
+                                    rval = (sem, num, lines)
+                                in branchOnSpacing post lval rval

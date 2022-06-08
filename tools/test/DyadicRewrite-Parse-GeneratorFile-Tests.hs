@@ -117,6 +117,68 @@ test15 = TestCase (assertEqual "Tests that updateGenerators supports no semantic
                           Right dict -> interpretGen dict "abc"
 
 -----------------------------------------------------------------------------------------
+-- parseSemanticModel
+
+-- Single line tests.
+
+test16 = TestCase (assertEqual "Tests parsing Monoidal semantics from a single line."
+                               (Right (MonoidalSem, 0, []))
+                               (parseSemanticModel ["    Monoidal    -- is valid"] 0))
+
+test17 = TestCase (assertEqual "Tests parsing Dyadic(1) semantics from a single line."
+                               (Right (DyadicOneSem, 0, []))
+                               (parseSemanticModel ["    Dyadic(1)    --  is valid"] 0))
+
+test18 = TestCase (assertEqual "Tests parsing Dyadic(1) semantics from a single line."
+                               (Right (DyadicTwoSem, 0, []))
+                               (parseSemanticModel ["    Dyadic(2)    -- is valid"] 0))
+
+test19 = TestCase (assertEqual "Tests parsing Dyadic(1) semantics from a single line."
+                               (Right (DyadicThreeSem, 0, []))
+                               (parseSemanticModel ["    Dyadic(3)    -- is valid"] 0))
+
+test20 = TestCase (assertEqual "Tests parsing an unknown semantic model."
+                               (Left (0, (Right (UnknownSemModel "Unknown"))))
+                               (parseSemanticModel ["    Unknown"] 0))
+
+test21 = TestCase (assertEqual "Tests parsing a valid model followed by other sybmols."
+                               (Left (0, (Right (UnknownSemModel "Monoidal Unknown"))))
+                               (parseSemanticModel ["    Monoidal Unknown"] 0))
+
+-- Multi-line tests.
+
+test22 = TestCase (assertEqual "Tests parsing a semantic model from an empty line."
+                               (Left (0, (Right MissingSemModel)))
+                               (parseSemanticModel [] 0))
+
+test23 = TestCase (assertEqual "Tests parsing a semantic model after many empty lines."
+                               (Right (MonoidalSem, 5, []))
+                               (parseSemanticModel input 0))
+    where input = ["", "   -- comment", " \t \t   -- comment", "", "  ", "   Monoidal "]
+
+test24 = TestCase (assertEqual "Tests parsing a semantic model with lines after model."
+                               (Right (MonoidalSem, 4, post))
+                               (parseSemanticModel input 0))
+    where post = ["a", "b", "c", "d"]
+          input = ["", "", "", "", "Monoidal"] ++ post
+
+test25 = TestCase (assertEqual "Tests returning an error after multiple lines."
+                               (Left (4, (Right (UnknownSemModel "Unknown"))))
+                               (parseSemanticModel ["", "", "", "", "Unknown"] 0))
+
+-- Adjusted starting line.
+
+test26 = TestCase (assertEqual "Tests parsing a semantic model with line offset."
+                               (Right (MonoidalSem, 9, post))
+                               (parseSemanticModel input 5))
+    where post = ["a", "b", "c", "d"]
+          input = ["", "", "", "", "Monoidal"] ++ post
+
+test27 = TestCase (assertEqual "Tests parsing an error with a line offset."
+                               (Left (9, (Right (UnknownSemModel "Unknown"))))
+                               (parseSemanticModel ["", "", "", "", "Unknown"] 5))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseGenerator_EmptyString" test0,
@@ -134,6 +196,18 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseGenerator_EmptyString" test
                                      TestLabel "updateGenerators_UpdateGens_0" test12,
                                      TestLabel "updateGenerators_UpdateGens_1" test13,
                                      TestLabel "updateGenerators_UpdateGens_2" test14,
-                                     TestLabel "updateGenerators_NoSemantics" test15]
+                                     TestLabel "updateGenerators_NoSemantics" test15,
+                                     TestLabel "parseSemanticModel_Monoidal" test16,
+                                     TestLabel "parseSemanticModel_Dyadic(1)" test17,
+                                     TestLabel "parseSemanticModel_Dyadic(2)" test18,
+                                     TestLabel "parseSemanticModel_Dyadic(3)" test19,
+                                     TestLabel "parseSemanticModel_UnknownModel" test20,
+                                     TestLabel "parseSemanticModel_PartialModel" test21,
+                                     TestLabel "parseSemanticModel_EmptyInput" test22,
+                                     TestLabel "parseSemanticModel_EmptyLines" test23,
+                                     TestLabel "parseSemanticModel_ReturnsLines" test24,
+                                     TestLabel "parseSemanticModel_NthLineError" test25,
+                                     TestLabel "parseSemanticModel_RvOffset" test26,
+                                     TestLabel "parseSemanticModel_ErrorOffset" test27]
 
 main = defaultMain tests
