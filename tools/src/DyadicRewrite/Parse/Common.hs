@@ -118,6 +118,16 @@ parseFromSeps (sep:seps) str = case (parseSep sep str) of -- Can trim once to op
                                    Just post -> Just (sep, post)
                                    Nothing   -> parseFromSeps seps str
 
+-- | Consumes a line and strips comments (postfixes starting with '--').
+stripComments :: String -> String
+stripComments ""          = ""
+stripComments ('-':'-':_) = ""
+stripComments (c:line)    = c:(stripComments line)
+
+-- | Consumes a line and removes both leading spacing a trailing comments.
+cleanLine :: String -> String
+cleanLine str = stripComments (snd (trimSpacing str))
+
 -----------------------------------------------------------------------------------------
 -- * Conditional parsing.
 

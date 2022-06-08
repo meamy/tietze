@@ -335,6 +335,48 @@ test75 = TestCase (assertEqual "relToAbsErrPos works on proper substrings (2/2).
                                (relToAbsErrPos "abcdefab" "ab" 1))
 
 -----------------------------------------------------------------------------------------
+-- stripComments
+
+test76 = TestCase (assertEqual "stripComments supports the empty string."
+                               ""
+                               (stripComments ""))
+
+test77 = TestCase (assertEqual "stripComments supports strings without comments."
+                               "This - is - a - valid - string ! 1234"
+                               (stripComments "This - is - a - valid - string ! 1234"))
+
+test78 = TestCase (assertEqual "stripComments strips comments."
+                               "gen := H[1].Z[1].H[1] "
+                               (stripComments "gen := H[1].Z[1].H[1] -- This is X[1]"))
+
+-----------------------------------------------------------------------------------------
+-- cleanLine
+
+test79 = TestCase (assertEqual "cleanLine supports the empty string."
+                               ""
+                               (cleanLine ""))
+
+test80 = TestCase (assertEqual "cleanLine supports strings without trimming."
+                               "This - is - a - valid - string ! 1234"
+                               (cleanLine "This - is - a - valid - string ! 1234"))
+
+test81 = TestCase (assertEqual "cleanLine omits leading spacing."
+                               "This - is - a - valid - string"
+                               (cleanLine "  \t\t  \t\t This - is - a - valid - string"))
+
+test82 = TestCase (assertEqual "cleanLine omits comments."
+                               "This - is - a - valid - string "
+                               (cleanLine "This - is - a - valid - string -- xyz abc"))
+
+test83 = TestCase (assertEqual "cleanLine handles comments and spacing (1/2)."
+                               "words words words "
+                               (cleanLine "\t  words words words -- comments comments"))
+
+test84 = TestCase (assertEqual "cleanLine handles comments and spacing (2/2)."
+                               ""
+                               (cleanLine "  \t\t   \t\t\t  -- comments comments..."))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" test1,
@@ -411,6 +453,15 @@ tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" 
                                      TestLabel "relToAbsErrPos_SubstringNoPosOne" test72,
                                      TestLabel "relToAbsErrPos_SubstringNoPosTwo" test73,
                                      TestLabel "relToAbsErrPos_SubstringPosOne" test74,
-                                     TestLabel "relToAbsErrPos_SubstringPosTwo" test75]
+                                     TestLabel "relToAbsErrPos_SubstringPosTwo" test75,
+                                     TestLabel "stripComments_EmptyString" test76,
+                                     TestLabel "stripComments_ManySymbols" test77,
+                                     TestLabel "stripComments_Comments" test78,
+                                     TestLabel "cleanLine_EmptyString" test79,
+                                     TestLabel "cleanLine_NoTrimming" test80,
+                                     TestLabel "cleanLine_LeadingSpacing" test81,
+                                     TestLabel "cleanLine_Comments" test82,
+                                     TestLabel "cleanLine_MixedPaddingOne" test83,
+                                     TestLabel "cleanLine_MixedPaddingTwo" test84]
 
 main = defaultMain tests
