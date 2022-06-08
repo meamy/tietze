@@ -85,35 +85,35 @@ test11 = TestCase (assertEqual "Tests that updateGenerators adds new generators.
                                (Just "1" :: Maybe String)
                                semv)
          where semv = case (updateGenerators copyStr emptyDict "abc:=1") of
-                          Left err   -> Nothing
+                          Left _     -> Nothing
                           Right dict -> interpretGen dict "abc"
 
 test12 = TestCase (assertEqual "Tests that updateGenerators preserves generators (1/3)."
                                (snd gen1)
                                semv)
          where semv = case (updateGenerators copyStr dict2 "abc:=1") of
-                          Left err   -> Nothing
+                          Left _     -> Nothing
                           Right dict -> interpretGen dict (fst gen1)
 
 test13 = TestCase (assertEqual "Tests that updateGenerators preserves generators (2/3)."
                                (snd gen2)
                                semv)
          where semv = case (updateGenerators copyStr dict2 "abc:=1") of
-                          Left err   -> Nothing
+                          Left _     -> Nothing
                           Right dict -> interpretGen dict (fst gen2)
 
 test14 = TestCase (assertEqual "Tests that updateGenerators preserves generators (3/3)."
                                (Just "1" :: Maybe String)
                                semv)
          where semv = case (updateGenerators copyStr dict2 "abc:=1") of
-                          Left err   -> Nothing
+                          Left _     -> Nothing
                           Right dict -> interpretGen dict "abc"
 
 test15 = TestCase (assertEqual "Tests that updateGenerators supports no semantics."
                                Nothing
                                semv)
          where semv = case (updateGenerators copyStr emptyDict "abc") of
-                          Left err   -> Nothing
+                          Left _     -> Nothing
                           Right dict -> interpretGen dict "abc"
 
 -----------------------------------------------------------------------------------------
@@ -179,6 +179,73 @@ test27 = TestCase (assertEqual "Tests parsing an error with a line offset."
                                (parseSemanticModel ["", "", "", "", "Unknown"] 5))
 
 -----------------------------------------------------------------------------------------
+-- parseGenFile
+
+-- Single line tests.
+
+test28 = TestCase (assertEqual "Tests parsing of a single generator with parseGenFile."
+                               (Just "   1   " :: Maybe String)
+                               semv)
+         where semv = case (parseGenFile copyStr ["  abc :=   1   -- comment"] 0) of
+                          Left _     -> Nothing
+                          Right dict -> interpretGen dict "abc"
+
+test29 = TestCase (assertEqual "Tests that parseGenFile handles single line errors."
+                               (Left (0, (Right InvalidGenName)))
+                               (parseGenFile copyStr ["  1abc :=   1   -- comment"] 0))
+
+-- Multi-line tests.
+
+validMultiline :: [String]
+validMultiline = ["", "abc:= 12a", "cdf:=32c ", "", "xyz_123:=qwerty"]
+
+test30 = TestCase (assertEqual "Tests parsing of a single generator with multiple lines."
+                               (Just "1" :: Maybe String)
+                               semv)
+         where input =  [" \t\t\t  \t", "  \t\t", "abc:=1", "  -- comment"]
+               semv = case (parseGenFile copyStr input 0) of
+                          Left _     -> Nothing
+                          Right dict -> interpretGen dict "abc"
+
+test31 = TestCase (assertEqual "Tests parsing of multiple valid generators (1/3)."
+                               (Just " 12a" :: Maybe String)
+                               semv)
+         where semv = case (parseGenFile copyStr validMultiline 0) of
+                          Left _     -> Nothing
+                          Right dict -> interpretGen dict "abc"
+
+test32 = TestCase (assertEqual "Tests parsing of multiple valid generators (2/3)."
+                               (Just "32c " :: Maybe String)
+                               semv)
+         where semv = case (parseGenFile copyStr validMultiline 0) of
+                          Left _     -> Nothing
+                          Right dict -> interpretGen dict "cdf"
+
+test33 = TestCase (assertEqual "Tests parsing of multiple valid generators (3/3)."
+                               (Just "qwerty" :: Maybe String)
+                               semv)
+         where semv = case (parseGenFile copyStr validMultiline 0) of
+                          Left _     -> Nothing
+                          Right dict -> interpretGen dict "xyz_123"
+
+test34 = TestCase (assertEqual "Tests that parseGenFile handles errors after valid lines."
+                               (Left (1, (Right (DuplicateGenName "b"))))
+                               (parseGenFile copyStr ["a", "b", "c", "b", "d"] 0))
+
+-- Adjusted starting line.
+
+test35 = TestCase (assertEqual "Tests that parseGenFile handles single line errors."
+                               (Just "1" :: Maybe String)
+                               semv)
+         where semv = case (parseGenFile copyStr ["", "", "", "abc:=1", "", ""] 5) of
+                          Left _     -> Nothing
+                          Right dict -> interpretGen dict "abc"
+
+test36 = TestCase (assertEqual "Tests that parseGenFile handles single line errors."
+                               (Left (8, (Right InvalidGenName)))
+                               (parseGenFile copyStr ["", "", "", "1abc:=1", "", ""] 5))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseGenerator_EmptyString" test0,
@@ -208,6 +275,15 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseGenerator_EmptyString" test
                                      TestLabel "parseSemanticModel_ReturnsLines" test24,
                                      TestLabel "parseSemanticModel_NthLineError" test25,
                                      TestLabel "parseSemanticModel_RvOffset" test26,
-                                     TestLabel "parseSemanticModel_ErrorOffset" test27]
+                                     TestLabel "parseSemanticModel_ErrorOffset" test27,
+                                     TestLabel "parseGenFile_ValidGen" test28,
+                                     TestLabel "parseGenFile_InvalidGen" test29,
+                                     TestLabel "parseGenFile_ValidGenMultiline" test30,
+                                     TestLabel "parseGenFile_MultipleGensOne" test31,
+                                     TestLabel "parseGenFile_MultipleGensTwo" test32,
+                                     TestLabel "parseGenFile_MultipleGensThree" test33,
+                                     TestLabel "parseGenFile_MidParsingError" test34,
+                                     TestLabel "parseGenFile_OffsetValid" test35,
+                                     TestLabel "parseGenFile_OffsetInvalid" test36]
 
 main = defaultMain tests

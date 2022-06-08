@@ -27,6 +27,20 @@ instance Show GenFileError where
 type GFPError = Either ParserError GenFileError
 
 -----------------------------------------------------------------------------------------
+-- * Line parsing helper methods.
+
+-- | Helper function to propogation generator file errors from a callee parsing function
+-- to a caller parsing function. For example, if an error occurs at index 5 of substr,
+-- and if substr appears at index 7 of str, then the error is updated to index 12.
+propGenErr :: String -> String -> GFPError -> GFPError
+propGenErr str substr err =
+    case err of
+        Left (UnexpectedSymbol pos)   -> Left (UnexpectedSymbol (update pos))
+        Right (InvalidGenSem pos msg) -> Right (InvalidGenSem (update pos) msg)
+        otherwise                     -> err
+    where update pos = relToAbsErrPos str substr pos
+
+-----------------------------------------------------------------------------------------
 -- * Line Parsing Methods.
 
 -- | A function used to parse a value given a semantic model. Takes as input a textual
@@ -97,3 +111,21 @@ parseSemanticModel (line:lines) num =
     where check sem post text = let lval = (num, Right (UnknownSemModel text))
                                     rval = (sem, num, lines)
                                 in branchOnSpacing post lval rval
+
+-- | Consumes a semantic model parser (parseSem) and all lines of a generator file
+-- (lines), excluding the semantic model declaration. If the lines are valid, then
+-- returns a dictionary of all generators and their semantics. Otherwise, returns a
+-- parsing exception.
+--
+-- Note that the semantic model declaration determines the type a. This means that the
+-- semantic model declaration must be parsed independent of this code.
+parseGenFile :: SemParser a -> [String] -> Int -> Either (Int, GFPError) (GenDict a)
+parseGenFile _        []           _   = Right empty
+parseGenFile parseSem (line:lines) num =
+    case (parseGenFile parseSem lines (num + 1)) of
+        Left  err  -> Left err
+        Right dict -> case (cleanLine line) of
+            ""   -> Right dict
+            text -> case (updateGenerators parseSem dict text) of
+                Left err   -> Left (num, (propGenErr line text err))
+                Right dict -> Right dict
