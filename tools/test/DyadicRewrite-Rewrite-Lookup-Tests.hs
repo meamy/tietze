@@ -129,6 +129,47 @@ test23 = TestCase (assertEqual "Tests that sampleDict3 maps \"xyz\" to Nothing."
                                Nothing
                                (interpretRule sampleDict3 "xyz"))
 
+-- Can fold over relations.
+
+accumulator1 :: (String, RewriteRule) -> [String] -> [String]
+accumulator1 (_, rule) acc = (name (head (lhs rule))):acc
+
+test24 = TestCase (assertEqual "Folding accumulator1 on sampleDict0 is successful."
+                               [""]
+                               (foldRules accumulator1 [""] sampleDict0))
+
+test25 = TestCase (assertEqual "Folding accumulator1 on sampleDict1 is successful."
+                               ["a1", ""]
+                               (foldRules accumulator1 [""] sampleDict1))
+
+test26 = TestCase (assertEqual "Folding accumulator1 on sampleDict2 is successful."
+                               ["a1", "c1", ""]
+                               (foldRules accumulator1 [""] sampleDict2))
+
+test27 = TestCase (assertEqual "Folding accumulator1 on sampleDict3 is successful."
+                               ["e1", "a1", "c1", ""]
+                               (foldRules accumulator1 [""] sampleDict3))
+
+accumulator2 :: (String, RewriteRule) -> [String] -> [String]
+accumulator2 (_, rule) acc = ((name (head (rhs rule)))):acc
+
+test28 = TestCase (assertEqual "Folding accumulator1 on sampleDict0 is successful."
+                               [""]
+                               (foldRules accumulator2 [""] sampleDict0))
+
+test29 = TestCase (assertEqual "Folding accumulator1 on sampleDict1 is successful."
+                               ["b1", ""]
+                               (foldRules accumulator2 [""] sampleDict1))
+
+test30 = TestCase (assertEqual "Folding accumulator1 on sampleDict2 is successful."
+                               ["b1", "d1", ""]
+                               (foldRules accumulator2 [""] sampleDict2))
+
+test31 = TestCase (assertEqual "Folding accumulator1 on sampleDict3 is successful."
+                               ["f1", "b1", "d1", ""]
+                               (foldRules accumulator2 [""] sampleDict3))
+
+
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
@@ -154,6 +195,14 @@ tests = hUnitTestToTests $ TestList [TestLabel "RuleDictDoesNotContain_Test0" te
                                      TestLabel "RuleDictLookup_Test3" test20,
                                      TestLabel "RuleDictLookup_Test4" test21,
                                      TestLabel "RuleDictLookup_Test5" test22,
-                                     TestLabel "RuleDictLookup_Test6" test23]
+                                     TestLabel "RuleDictLookup_Test6" test23,
+                                     TestLabel "RuleFolding_Test0" test24,
+                                     TestLabel "RuleFolding_Test1" test25,
+                                     TestLabel "RuleFolding_Test2" test26,
+                                     TestLabel "RuleFolding_Test3" test27,
+                                     TestLabel "RuleFolding_Test4" test28,
+                                     TestLabel "RuleFolding_Test5" test29,
+                                     TestLabel "RuleFolding_Test6" test30,
+                                     TestLabel "RuleFolding_Test7" test31]
 
 main = defaultMain tests
