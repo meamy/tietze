@@ -17,6 +17,7 @@ library
                        DyadicRewrite.Rewrite.Lookup
                        DyadicRewrite.Generators.Semantics
                        DyadicRewrite.Generators.QubitGates
+                       DyadicRewrite.Logging.LineBased
                        DyadicRewrite.Parse.Common
                        DyadicRewrite.Parse.MonWords
                        DyadicRewrite.Parse.GeneratorFile
@@ -68,6 +69,11 @@ test-suite dyadicrewrite-generators-qubitgates-tests
   main-is:             DyadicRewrite-Generators-QubitGates-Tests.hs
   type:                exitcode-stdio-1.0
   build-depends:       newsynth
+
+test-suite dyadicrewrite-logging-linebased-tests
+  import:              basic-unit-test-props
+  main-is:             DyadicRewrite-Logging-LineBased-Tests.hs
+  type:                exitcode-stdio-1.0
 
 test-suite dyadicrewrite-parse-common-tests
   import:              basic-unit-test-props
