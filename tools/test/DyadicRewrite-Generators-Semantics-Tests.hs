@@ -105,6 +105,49 @@ test22 = TestCase (assertEqual "Tests that sampleDict3 maps \"ab_12_ef\" to Noth
                                (snd gen3)
                                (interpretGen sampleDict3 (fst gen3)))
 
+-- Can accumulate.
+
+accumulator1 :: (String, Maybe Int) -> Maybe Int -> Maybe Int
+accumulator1 (name, Just x)  (Just y) = Just (x + y)
+accumulator1 _               Nothing  = Nothing
+accumulator1 (_, Nothing)    _        = Nothing
+
+test23 = TestCase (assertEqual "Folding accumulator1 on sampleDict0 is successful."
+                               (Just 5)
+                               (foldGens accumulator1 (Just 5) sampleDict0))
+
+test24 = TestCase (assertEqual "Folding accumulator1 on sampleDict1 is successful."
+                               (Just 6)
+                               (foldGens accumulator1 (Just 5) sampleDict1))
+
+test25 = TestCase (assertEqual "Folding accumulator1 on sampleDict2 is successful."
+                               (Just 8)
+                               (foldGens accumulator1 (Just 5) sampleDict2))
+
+test26 = TestCase (assertEqual "Folding accumulator1 on sampleDict3 is successful."
+                               Nothing
+                               (foldGens accumulator1 (Just 5) sampleDict3))
+
+accumulator2 :: (String, Maybe Int) -> Maybe Int -> Maybe Int
+accumulator2 ("abc", _) (Just y) = Just (10 + y)
+accumulator2 gen        acc      = (accumulator1 gen acc)
+
+test27 = TestCase (assertEqual "Folding accumulator2 on sampleDict0 is successful."
+                               (Just 5)
+                               (foldGens accumulator2 (Just 5) sampleDict0))
+
+test28 = TestCase (assertEqual "Folding accumulator2 on sampleDict1 is successful."
+                               (Just 15)
+                               (foldGens accumulator2 (Just 5) sampleDict1))
+
+test29 = TestCase (assertEqual "Folding accumulator2 on sampleDict2 is successful."
+                               (Just 17)
+                               (foldGens accumulator2 (Just 5) sampleDict2))
+
+test30 = TestCase (assertEqual "Folding accumulator2 on sampleDict3 is successful."
+                               Nothing
+                               (foldGens accumulator2 (Just 5) sampleDict3))
+
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
@@ -129,6 +172,14 @@ tests = hUnitTestToTests $ TestList [TestLabel "GenDictDoesNotContain_Test0" tes
                                      TestLabel "GenDictSemv_Test2" test19,
                                      TestLabel "GenDictSemv_Test3" test20,
                                      TestLabel "GenDictSemv_Test4" test21,
-                                     TestLabel "GenDictSemv_Test5" test22]
+                                     TestLabel "GenDictSemv_Test5" test22,
+                                     TestLabel "GenFolding_Test0" test23,
+                                     TestLabel "GenFolding_Test1" test24,
+                                     TestLabel "GenFolding_Test2" test25,
+                                     TestLabel "GenFolding_Test3" test26,
+                                     TestLabel "GenFolding_Test4" test27,
+                                     TestLabel "GenFolding_Test5" test28,
+                                     TestLabel "GenFolding_Test6" test29,
+                                     TestLabel "GenFolding_Test7" test30]
 
 main = defaultMain tests

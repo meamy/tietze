@@ -38,6 +38,11 @@ hasGen dict id = Data.Map.member id dict
 addGen :: GenDict a -> (String, Maybe a) -> GenDict a
 addGen dict (id, semv) = Data.Map.insert id semv dict
 
+-- | Folds f over the (name, semv) entries of dict, and returns the accumulated value.
+foldGens :: ((String, Maybe a) -> b -> b) -> b -> GenDict a -> b
+foldGens f init dict = Data.Map.foldrWithKey fadj init dict
+    where fadj key semv acc = f (key, semv) acc
+
 -- | Returns the semantic value of a generator. If the generator does not exist, then
 -- nothing is returned. To check if a generator is recorded, then use (hasGen dict id).
 interpretGen :: GenDict a -> String -> Maybe a
