@@ -21,6 +21,7 @@ library
                        DyadicRewrite.Parse.Common
                        DyadicRewrite.Parse.MonWords
                        DyadicRewrite.Parse.GeneratorFile
+                       DyadicRewrite.Parse.Semantics
                        DyadicRewrite.Parse.RelationFile
                        DyadicRewrite.Parse.DerivationFile
   build-depends:       base >=4.12 && <4.13,
@@ -100,8 +101,10 @@ test-suite dyadicrewrite-parse-derivationfile-tests
   main-is:             DyadicRewrite-Parse-DerivationFile-Tests.hs
   type:                exitcode-stdio-1.0
 
-executable interactive
-  main-is:             Main.hs
-  build-depends:       base >=4.12 && <4.13
-  hs-source-dirs:      src
+executable check_generators
+  main-is:             check_generators.hs
+  build-depends:       base >=4.12 && <4.13,
+                       directory,
+                       DyadicRewrite
+  hs-source-dirs:      exe
   default-language:    Haskell2010
