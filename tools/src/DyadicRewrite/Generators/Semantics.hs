@@ -43,6 +43,10 @@ foldGens :: ((String, Maybe a) -> b -> b) -> b -> GenDict a -> b
 foldGens f init dict = Data.Map.foldrWithKey fadj init dict
     where fadj key semv acc = f (key, semv) acc
 
+-- | Returns the alphabet described by the generators.
+toAlphabet :: GenDict a -> [String]
+toAlphabet dict = Data.Map.keys dict
+
 -- | Returns the semantic value of a generator. If the generator does not exist, then
 -- nothing is returned. To check if a generator is recorded, then use (hasGen dict id).
 interpretGen :: GenDict a -> String -> Maybe a

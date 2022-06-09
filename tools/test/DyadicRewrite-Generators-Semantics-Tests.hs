@@ -148,6 +148,24 @@ test30 = TestCase (assertEqual "Folding accumulator2 on sampleDict3 is successfu
                                Nothing
                                (foldGens accumulator2 (Just 5) sampleDict3))
 
+-- Can convert to an alphabet.
+
+test31 = TestCase (assertEqual "Can extract alphabet from empty GenDict."
+                               []
+                               (toAlphabet sampleDict0))
+
+test32 = TestCase (assertEqual "Can extract alphabet from sampleDict0."
+                               ["abc"]
+                               (toAlphabet sampleDict1))
+
+test33 = TestCase (assertEqual "Can extract alphabet from sampleDict1."
+                               ["abc", "def"]
+                               (toAlphabet sampleDict2))
+
+test34 = TestCase (assertEqual "Can extract alphabet from sampleDict2."
+                               ["ab_12_ef", "abc", "def"]
+                               (toAlphabet sampleDict3))
+
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
@@ -180,6 +198,10 @@ tests = hUnitTestToTests $ TestList [TestLabel "GenDictDoesNotContain_Test0" tes
                                      TestLabel "GenFolding_Test4" test27,
                                      TestLabel "GenFolding_Test5" test28,
                                      TestLabel "GenFolding_Test6" test29,
-                                     TestLabel "GenFolding_Test7" test30]
+                                     TestLabel "GenFolding_Test7" test30,
+                                     TestLabel "GenToAlpha_Test0" test31,
+                                     TestLabel "GenToAlpha_Test1" test32,
+                                     TestLabel "GenToAlpha_Test2" test33,
+                                     TestLabel "GenToAlpha_Test3" test34]
 
 main = defaultMain tests
