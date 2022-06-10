@@ -40,11 +40,21 @@ type DFPError = Either ParserError DerFileError
 -- | Helper function to propogation derivation file errors from a callee parsing function
 -- to a caller parsing function. For example, if an error occurs at index 5 of substr,
 -- and if substr appears at index 7 of str, then the error is updated to index 12.
+--
+-- Note: All cases are stated explicitly, so that adding a new positional error without
+-- updating this method will result in a compile-time type error.
 propDerErr :: String -> String -> DFPError -> DFPError
-propDerErr str substr err =
+propDerErr str substr (Left err)  = Left (propCommonErr str substr err)
+propDerErr str substr (Right err) =
     case err of
-        Left (UnexpectedSymbol pos) -> Left (UnexpectedSymbol (update pos))
-        otherwise                   -> err
+        UnknownRewriteMod      -> Right UnknownRewriteMod
+        InvalidRuleName        -> Right InvalidRuleName
+        InvalidRewritePos      -> Right InvalidRewritePos
+        InvalidRewriteDir      -> Right InvalidRewriteDir
+        MissingRewriteDir      -> Right MissingRewriteDir
+        ApplyOnPrimitive       -> Right ApplyOnPrimitive
+        RewriteOnDerived       -> Right RewriteOnDerived
+        (UnknownRuleName name) -> Right (UnknownRuleName name)
     where update pos = relToAbsErrPos str substr pos
 
 -- | Helper function to parse the position at the end of a rewrite. Assumes that a rule

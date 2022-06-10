@@ -60,12 +60,19 @@ findUnknownGenInRule gens rule =
 -- parsing to named rewrite rule parsing. For example, if an error occurs at index 5 of
 -- substr, and if substr appears at index 7 of str, then the error is updated to display
 -- index 12.
+--
+-- Note: All cases are stated explicitly, so that adding a new positional error without
+-- updating this method will result in a compile-time type error.
 propRelErr :: String -> String -> RFPError -> RFPError
-propRelErr str substr err =
+propRelErr str substr (Left err)  = Left (propCommonErr str substr err)
+propRelErr str substr (Right err) =
     case err of
-        Left (UnexpectedSymbol pos) -> Left (UnexpectedSymbol (update pos))
-        Right (InvalidRuleType pos)  -> Right (InvalidRuleType (update pos))
-        otherwise                   -> err
+        InvalidRuleName          -> Right InvalidRuleName
+        RuleMissingLHS           -> Right RuleMissingLHS
+        (InvalidRuleType pos)    -> Right (InvalidRuleType (update pos))
+        RuleMissingRHS           -> Right RuleMissingRHS
+        (UnknownGenName name)    -> Right (UnknownGenName name)
+        (DuplicateRuleName name) -> Right (DuplicateRuleName name)
     where update pos = relToAbsErrPos str substr pos
 
 -----------------------------------------------------------------------------------------

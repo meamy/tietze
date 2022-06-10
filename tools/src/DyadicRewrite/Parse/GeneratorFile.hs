@@ -20,7 +20,7 @@ instance Show GenFileError where
     show MissingSemModel         = "Semantics model not provided."
     show (UnknownSemModel model) = "Unknown semantic model (" ++ model ++ ")."
     show InvalidGenName          = "Generator name started with invalid symbol."
-    show (InvalidGenSem n msg)   = "Invalid semv at " ++ (show n) ++ " (" ++ msg ++ ")."
+    show (InvalidGenSem pos msg) = "Invalid semv at " ++ (show pos) ++ " (" ++ msg ++ ")."
     show (DuplicateGenName name) = "Duplicate generator name (" ++ name ++ ")."
 
 -- | Errors returned during generator file parsing.
@@ -32,12 +32,18 @@ type GFPError = Either ParserError GenFileError
 -- | Helper function to propogation generator file errors from a callee parsing function
 -- to a caller parsing function. For example, if an error occurs at index 5 of substr,
 -- and if substr appears at index 7 of str, then the error is updated to index 12.
+--
+-- Note: All cases are stated explicitly, so that adding a new positional error without
+-- updating this method will result in a compile-time type error.
 propGenErr :: String -> String -> GFPError -> GFPError
-propGenErr str substr err =
+propGenErr str substr (Left err)  = Left (propCommonErr str substr err)
+propGenErr str substr (Right err) =
     case err of
-        Left (UnexpectedSymbol pos)   -> Left (UnexpectedSymbol (update pos))
-        Right (InvalidGenSem pos msg) -> Right (InvalidGenSem (update pos) msg)
-        otherwise                     -> err
+        MissingSemModel         -> Right MissingSemModel
+        (UnknownSemModel model) -> Right (UnknownSemModel model)
+        InvalidGenName          -> Right InvalidGenName
+        (InvalidGenSem pos msg) -> Right (InvalidGenSem (update pos) msg)
+        DuplicateGenName name   -> Right (DuplicateGenName name)
     where update pos = relToAbsErrPos str substr pos
 
 -----------------------------------------------------------------------------------------

@@ -16,10 +16,10 @@ data ParserError = UnexpectedSymbol Int
                  deriving (Eq)
 
 instance Show ParserError where
-    show (UnexpectedSymbol n) = "Unexpected symbol at " ++ (show n) ++ "."
-    show UnexpectedEOL        = "Unexpected end-of-line."
-    show UnexpectedEOF        = "Unexpected end-of-file."
-    show UnknownParseError    = "Parser failed unexpected."
+    show (UnexpectedSymbol pos) = "Unexpected symbol at " ++ (show pos) ++ "."
+    show UnexpectedEOL          = "Unexpected end-of-line."
+    show UnexpectedEOF          = "Unexpected end-of-file."
+    show UnknownParseError      = "Parser failed unexpected."
 
 -- | Consumes a string (full) and the substring upon which parsing failed (unparsed).
 -- Returns the position in full at which parsing failed (zero indexed).
@@ -31,6 +31,21 @@ getErrPos full unparsed = (length full) - (length unparsed)
 -- position relative to full.
 relToAbsErrPos :: String -> String -> Int -> Int
 relToAbsErrPos full unparsed pos = (getErrPos full unparsed) + pos
+
+-- | Helper function to propogation common parsing errors from a callee parsing function
+-- to a caller parsing function. For example, if an error occurs at index 5 of substr,
+-- and if substr appears at index 7 of str, then the error is updated to index 12.
+--
+-- Note: All cases are stated explicitly, so that adding a new positional error without
+-- updating this method will result in a compile-time type error.
+propCommonErr :: String -> String -> ParserError -> ParserError
+propCommonErr str substr err =
+    case err of
+        (UnexpectedSymbol pos) -> UnexpectedSymbol (update pos)
+        UnexpectedEOL          -> UnexpectedEOL
+        UnexpectedEOF          -> UnexpectedEOF
+        UnknownParseError      -> UnknownParseError
+    where update pos = relToAbsErrPos str substr pos
 
 -----------------------------------------------------------------------------------------
 -- * Character Predicate (Not Define in Data.Char).
