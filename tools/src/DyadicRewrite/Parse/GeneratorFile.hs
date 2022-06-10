@@ -4,6 +4,7 @@ module DyadicRewrite.Parse.GeneratorFile where
 
 import DyadicRewrite.Generators.Semantics
 import DyadicRewrite.Parse.Common
+import DyadicRewrite.Parse.Semantics
 
 -----------------------------------------------------------------------------------------
 -- * Generator File Parsing Errors.
@@ -11,6 +12,7 @@ import DyadicRewrite.Parse.Common
 -- | Errors unique to generator file parsing.
 data GenFileError = MissingSemModel
                   | UnknownSemModel String
+                  | SemModelWOImpl SemModel
                   | InvalidGenName
                   | InvalidGenSem Int String
                   | DuplicateGenName String
@@ -19,6 +21,7 @@ data GenFileError = MissingSemModel
 instance Show GenFileError where
     show MissingSemModel         = "Semantics model not provided."
     show (UnknownSemModel model) = "Unknown semantic model (" ++ model ++ ")."
+    show (SemModelWOImpl model)  = (show model) ++ " not implemented."
     show InvalidGenName          = "Generator name started with invalid symbol."
     show (InvalidGenSem pos msg) = "Invalid semv at " ++ (show pos) ++ " (" ++ msg ++ ")."
     show (DuplicateGenName name) = "Duplicate generator name (" ++ name ++ ")."
@@ -48,11 +51,6 @@ propGenErr str substr (Right err) =
 
 -----------------------------------------------------------------------------------------
 -- * Line Parsing Methods.
-
--- | A function used to parse a value given a semantic model. Takes as input a textual
--- representation of the semantic value. Returns either a parsing error (as a string) or
--- a semantic model value.
-type SemParser a = (String -> Either String a)
 
 -- | Consumes a semantic model parser (parseSem) and a single line of a generator file
 -- (str). Attempts to parse a generator and its semantics model from str. There are three
@@ -125,13 +123,35 @@ parseSemanticModel (line:lines) num =
 --
 -- Note that the semantic model declaration determines the type a. This means that the
 -- semantic model declaration must be parsed independent of this code.
-parseGenFile :: SemParser a -> [String] -> Int -> Either (Int, GFPError) (GenDict a)
-parseGenFile _        []           _   = Right empty
-parseGenFile parseSem (line:lines) num =
-    case (parseGenFile parseSem lines (num + 1)) of
+parseGenDict :: SemParser a -> [String] -> Int -> Either (Int, GFPError) (GenDict a)
+parseGenDict _        []           _   = Right empty
+parseGenDict parseSem (line:lines) num =
+    case (parseGenDict parseSem lines (num + 1)) of
         Left  err  -> Left err
         Right dict -> case (cleanLine line) of
             ""   -> Right dict
             text -> case (updateGenerators parseSem dict text) of
                 Left err   -> Left (num, (propGenErr line text err))
                 Right dict -> Right dict
+
+-----------------------------------------------------------------------------------------
+-- * Full Generator File Parsing.
+
+-- | Lifts semantic value types to the return value. This is a cleaner alternative to the
+-- type: Either (GenDict SemV1) (Either (GenDict SemV2), (Either SemV3 (Either ...)))).
+--
+-- In the future, this might also carry on parameters that describe the generator file.
+data GenFileSummary = MonoidalGenSummary (GenDict ())
+
+-- | Consumes all lines of a generator file (lines). If the lines are valid, then returns
+-- a dictionary of all generators and their semantics, wrapped by their semantic model.
+-- Otherwise, returns a parsing exception.
+parseGenFileAsDict :: [String] -> Int -> Either (Int, GFPError) GenFileSummary
+parseGenFileAsDict lines num =
+    case (parseSemanticModel lines 0) of
+        Left err                 -> Left err
+        Right (sem, semLn, gens) -> let nextLn = semLn + 1 in case sem of
+            MonoidalSem -> case (parseGenDict parseMonoidalSem gens nextLn) of
+                Left err   -> Left err
+                Right dict -> Right (MonoidalGenSummary dict)
+            otherwise -> Left (semLn, Right (SemModelWOImpl sem))

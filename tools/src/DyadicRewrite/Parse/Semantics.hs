@@ -2,7 +2,13 @@
 
 module DyadicRewrite.Parse.Semantics where
 
-import DyadicRewrite.Parse.GeneratorFile
+-----------------------------------------------------------------------------------------
+-- * General Semantic Parsing.
+
+-- | A function used to parse a value given a semantic model. Takes as input a textual
+-- representation of the semantic value. Returns either a parsing error (as a string) or
+-- a semantic model value.
+type SemParser a = (String -> Either String a)
 
 -----------------------------------------------------------------------------------------
 -- * Monoidal Semantics.

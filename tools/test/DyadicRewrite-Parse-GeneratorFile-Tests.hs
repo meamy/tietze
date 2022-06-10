@@ -179,20 +179,20 @@ test27 = TestCase (assertEqual "Tests parsing an error with a line offset."
                                (parseSemanticModel ["", "", "", "", "Unknown"] 5))
 
 -----------------------------------------------------------------------------------------
--- parseGenFile
+-- parseGenDict
 
 -- Single line tests.
 
-test28 = TestCase (assertEqual "Tests parsing of a single generator with parseGenFile."
+test28 = TestCase (assertEqual "Tests parsing of a single generator with parseGenDict."
                                (Just "   1   " :: Maybe String)
                                semv)
-         where semv = case (parseGenFile copyStr ["  abc :=   1   -- comment"] 0) of
+         where semv = case (parseGenDict copyStr ["  abc :=   1   -- comment"] 0) of
                           Left _     -> Nothing
                           Right dict -> interpretGen dict "abc"
 
-test29 = TestCase (assertEqual "Tests that parseGenFile handles single line errors."
+test29 = TestCase (assertEqual "Tests that parseGenDict handles single line errors."
                                (Left (0, (Right InvalidGenName)))
-                               (parseGenFile copyStr ["  1abc :=   1   -- comment"] 0))
+                               (parseGenDict copyStr ["  1abc :=   1   -- comment"] 0))
 
 -- Multi-line tests.
 
@@ -203,47 +203,81 @@ test30 = TestCase (assertEqual "Tests parsing of a single generator with multipl
                                (Just "1" :: Maybe String)
                                semv)
          where input =  [" \t\t\t  \t", "  \t\t", "abc:=1", "  -- comment"]
-               semv = case (parseGenFile copyStr input 0) of
+               semv = case (parseGenDict copyStr input 0) of
                           Left _     -> Nothing
                           Right dict -> interpretGen dict "abc"
 
 test31 = TestCase (assertEqual "Tests parsing of multiple valid generators (1/3)."
                                (Just " 12a" :: Maybe String)
                                semv)
-         where semv = case (parseGenFile copyStr validMultiline 0) of
+         where semv = case (parseGenDict copyStr validMultiline 0) of
                           Left _     -> Nothing
                           Right dict -> interpretGen dict "abc"
 
 test32 = TestCase (assertEqual "Tests parsing of multiple valid generators (2/3)."
                                (Just "32c " :: Maybe String)
                                semv)
-         where semv = case (parseGenFile copyStr validMultiline 0) of
+         where semv = case (parseGenDict copyStr validMultiline 0) of
                           Left _     -> Nothing
                           Right dict -> interpretGen dict "cdf"
 
 test33 = TestCase (assertEqual "Tests parsing of multiple valid generators (3/3)."
                                (Just "qwerty" :: Maybe String)
                                semv)
-         where semv = case (parseGenFile copyStr validMultiline 0) of
+         where semv = case (parseGenDict copyStr validMultiline 0) of
                           Left _     -> Nothing
                           Right dict -> interpretGen dict "xyz_123"
 
-test34 = TestCase (assertEqual "Tests that parseGenFile handles errors after valid lines."
+test34 = TestCase (assertEqual "Tests that parseGenDict handles errors after valid lines."
                                (Left (1, (Right (DuplicateGenName "b"))))
-                               (parseGenFile copyStr ["a", "b", "c", "b", "d"] 0))
+                               (parseGenDict copyStr ["a", "b", "c", "b", "d"] 0))
 
 -- Adjusted starting line.
 
-test35 = TestCase (assertEqual "Tests that parseGenFile handles offsets (1/2)."
+test35 = TestCase (assertEqual "Tests that parseGenDict handles offsets (1/2)."
                                (Just "1" :: Maybe String)
                                semv)
-         where semv = case (parseGenFile copyStr ["", "", "", "abc:=1", "", ""] 5) of
+         where semv = case (parseGenDict copyStr ["", "", "", "abc:=1", "", ""] 5) of
                           Left _     -> Nothing
                           Right dict -> interpretGen dict "abc"
 
-test36 = TestCase (assertEqual "Tests that parseGenFile handles offsets (2/2)."
+test36 = TestCase (assertEqual "Tests that parseGenDict handles offsets (2/2)."
                                (Left (8, (Right InvalidGenName)))
-                               (parseGenFile copyStr ["", "", "", "1abc:=1", "", ""] 5))
+                               (parseGenDict copyStr ["", "", "", "1abc:=1", "", ""] 5))
+
+-----------------------------------------------------------------------------------------
+-- parseGenFileAsDict
+
+validMonoidalFile :: [String]
+validMonoidalFile = ["Monoidal", "abc", "cdf", "xyz_123"]
+
+invalidMonoidalFile :: [String]
+invalidMonoidalFile = ["Monoidal", "abc", "1cdf", "xyz_123"]
+
+test37 = TestCase (assertBool "Tests parsing of valid monoidal generator file (1/3)."
+                               check)
+         where check = case (parseGenFileAsDict validMonoidalFile 0) of
+                           Right (MonoidalGenSummary dict) -> hasGen dict "abc"
+                           otherwise                       -> False
+
+test38 = TestCase (assertBool "Tests parsing of valid monoidal generator file (2/3)."
+                               check)
+         where check = case (parseGenFileAsDict validMonoidalFile 0) of
+                           Right (MonoidalGenSummary dict) -> hasGen dict "cdf"
+                           otherwise                       -> False
+
+test39 = TestCase (assertBool "Tests parsing of valid monoidal generator file (3/3)."
+                               check)
+         where check = case (parseGenFileAsDict validMonoidalFile 0) of
+                           Right (MonoidalGenSummary dict) -> hasGen dict "xyz_123"
+                           otherwise                       -> False
+
+test40 = TestCase (assertEqual "Tests parsing of invalid monoidal generator file."
+                               (Just (2, Right InvalidGenName) :: Maybe (Int, GFPError))
+                               maybeErr)
+         where maybeErr = case (parseGenFileAsDict invalidMonoidalFile 0) of
+                              Left err  -> (Just err :: Maybe (Int, GFPError))
+                              otherwise -> Nothing
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -276,14 +310,18 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseGenerator_EmptyString" test
                                      TestLabel "parseSemanticModel_NthLineError" test25,
                                      TestLabel "parseSemanticModel_RvOffset" test26,
                                      TestLabel "parseSemanticModel_ErrorOffset" test27,
-                                     TestLabel "parseGenFile_ValidGen" test28,
-                                     TestLabel "parseGenFile_InvalidGen" test29,
-                                     TestLabel "parseGenFile_ValidGenMultiline" test30,
-                                     TestLabel "parseGenFile_MultipleGensOne" test31,
-                                     TestLabel "parseGenFile_MultipleGensTwo" test32,
-                                     TestLabel "parseGenFile_MultipleGensThree" test33,
-                                     TestLabel "parseGenFile_MidParsingError" test34,
-                                     TestLabel "parseGenFile_OffsetValid" test35,
-                                     TestLabel "parseGenFile_OffsetInvalid" test36]
+                                     TestLabel "parseGenDict_ValidGen" test28,
+                                     TestLabel "parseGenDict_InvalidGen" test29,
+                                     TestLabel "parseGenDict_ValidGenMultiline" test30,
+                                     TestLabel "parseGenDict_MultipleGensOne" test31,
+                                     TestLabel "parseGenDict_MultipleGensTwo" test32,
+                                     TestLabel "parseGenDict_MultipleGensThree" test33,
+                                     TestLabel "parseGenDict_MidParsingError" test34,
+                                     TestLabel "parseGenDict_OffsetValid" test35,
+                                     TestLabel "parseGenDict_OffsetInvalid" test36,
+                                     TestLabel "parseGenFileAsDict_ValidOne" test37,
+                                     TestLabel "parseGenFileAsDict_ValidTwo" test38,
+                                     TestLabel "parseGenFileAsDict_ValidThree" test39,
+                                     TestLabel "parseGenFileAsDict_Ivalid" test40]
 
 main = defaultMain tests
