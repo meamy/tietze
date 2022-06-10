@@ -5,7 +5,7 @@ module DyadicRewrite.Generators.Semantics where
 import qualified Data.Map
 
 -----------------------------------------------------------------------------------------
--- * Types to describe semantic models.
+-- * Semantic Model Descriptions.
 
 -- | All semantic model currently supported.
 data SemModel = MonoidalSem

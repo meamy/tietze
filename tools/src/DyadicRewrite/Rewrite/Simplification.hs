@@ -7,7 +7,7 @@ import DyadicRewrite.Common
 import DyadicRewrite.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
--- * Simplifier
+-- * Rewrite Evaluation.
 
 data RewriteResult = RewriteResult { output :: MonWord
                                    , step :: Int

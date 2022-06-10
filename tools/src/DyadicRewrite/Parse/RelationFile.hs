@@ -32,7 +32,7 @@ instance Show RelFileError where
 type RFPError = Either ParserError RelFileError
 
 -----------------------------------------------------------------------------------------
--- * Helper functions to identify bad symbols in monoidal words.
+-- * Functions to Validate Monoidal Words.
 
 -- | Consumes a list of generator names (gens) and a monoidal word (word). Returns the
 -- first symbol in monoidal word with either a non-zero number of parameters or a name
@@ -54,7 +54,7 @@ findUnknownGenInRule gens rule =
         Nothing  -> (findUnknownGenInMonWord gens (rhs rule))
 
 -----------------------------------------------------------------------------------------
--- * Line parsing helper methods.
+-- * Line Parsing Helper Methods.
 
 -- | Helper function to propogation relation file errors from unnamed rewrite rule
 -- parsing to named rewrite rule parsing. For example, if an error occurs at index 5 of

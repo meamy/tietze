@@ -1,7 +1,7 @@
 module DyadicRewrite.Common where
 
 -----------------------------------------------------------------------------------------
--- * Words.
+-- * Common Word Types.
 
 -- | Specifies a symbol which represents a generator. Built-in generators may allow for
 -- parameterization (e.g., the k-out-of-n qubits that a k-qubit gate is applied to in an

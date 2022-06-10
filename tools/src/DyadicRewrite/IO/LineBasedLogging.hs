@@ -2,6 +2,9 @@
 
 module DyadicRewrite.IO.LineBasedLogging where
 
+-----------------------------------------------------------------------------------------
+-- * Logging By: File and Line Number.
+
 -- | Consumes a file name (fname) and line number (n). Return a prefix for logs
 -- originating from this line.
 fileLogPrefix :: String -> Int -> String

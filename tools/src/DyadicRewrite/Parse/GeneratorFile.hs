@@ -27,7 +27,7 @@ instance Show GenFileError where
 type GFPError = Either ParserError GenFileError
 
 -----------------------------------------------------------------------------------------
--- * Line parsing helper methods.
+-- * Line Parsing Helper Methods.
 
 -- | Helper function to propogation generator file errors from a callee parsing function
 -- to a caller parsing function. For example, if an error occurs at index 5 of substr,

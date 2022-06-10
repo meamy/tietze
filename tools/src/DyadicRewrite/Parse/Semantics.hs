@@ -5,7 +5,7 @@ module DyadicRewrite.Parse.Semantics where
 import DyadicRewrite.Parse.GeneratorFile
 
 -----------------------------------------------------------------------------------------
--- * Monoidal semantics.
+-- * Monoidal Semantics.
 
 -- | Always returns an error message since free monoids do not have semantics beyond
 -- their generators and relations.

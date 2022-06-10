@@ -6,7 +6,7 @@ import DyadicRewrite.Common
 import DyadicRewrite.Parse.Common
 
 -----------------------------------------------------------------------------------------
--- * Utilities to parse arguments to generators.
+-- * Utilities to Parse Symbol Arguments.
 
 -- | Helper function to parse: [ <NAT> ].
 parseParam :: String -> Maybe (Int, String)
@@ -31,7 +31,7 @@ parseParams str =
         Nothing -> ([], str)
 
 -----------------------------------------------------------------------------------------
--- * Utilities to parse generator symbols.
+-- * Utilities Parse Sybmol Names.
 
 -- | Consumes a string (str). If there exists a string pre of the form <ID><PARAMS> that
 -- str = pre + post, then returns (Symbol <ID> <PARAM>, post) where pre is the maximal
@@ -44,7 +44,7 @@ parseSymbol str =
         Nothing -> Nothing
 
 -----------------------------------------------------------------------------------------
--- * Monoidal word parsing functions.
+-- * Monoidal Word Parsing Functions.
 
 -- | Data type used to distinguish separators in monoidal words.
 data MonWordSep = MonWordDot | MonWordEnd

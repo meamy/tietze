@@ -7,7 +7,7 @@ module DyadicRewrite.Rewrite.Rules where
 import DyadicRewrite.Common
 
 -----------------------------------------------------------------------------------------
--- * Rule
+-- * RewriteRules.
 
 -- | A rewrite rule in a rewrite system is a tuple of the form (lhs, rhs) and is usually
 -- denoted lhs → rhs (we refer to u → v as a production rule as it produces the word xvy
@@ -53,7 +53,7 @@ applyRewriteRule str rule True  = applyProductionRule str (lhs rule) (rhs rule)
 applyRewriteRule str rule False = applyProductionRule str (rhs rule) (lhs rule)
 
 -----------------------------------------------------------------------------------------
--- * Rewrite
+-- * Rewrites.
 
 -- | Applies a rewrite rule at the specified position, in the specified direction.
 data Rewrite = Rewrite { rule :: RewriteRule

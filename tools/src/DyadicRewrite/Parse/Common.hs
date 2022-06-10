@@ -33,7 +33,7 @@ relToAbsErrPos :: String -> String -> Int -> Int
 relToAbsErrPos full unparsed pos = (getErrPos full unparsed) + pos
 
 -----------------------------------------------------------------------------------------
--- * Character predicates not define in Data.Char.
+-- * Character Predicate (Not Define in Data.Char).
 
 -- | Consumes a character c. Returns True if and only if c is a space or a tab.
 isSpacing :: Char -> Bool
@@ -49,7 +49,7 @@ isIdChar '_' = True
 isIdChar c   = isAlphaNum c
 
 -----------------------------------------------------------------------------------------
--- * Generic string splitting functions.
+-- * Generic String Splitting Functions.
 
 -- | Consumes a predicate over characters (pred) and an input string (str). Returns a
 -- pair (pre, post) such that str = pre + post and pre is the maximal prefix of str such
@@ -129,7 +129,7 @@ cleanLine :: String -> String
 cleanLine str = stripComments (snd (trimSpacing str))
 
 -----------------------------------------------------------------------------------------
--- * Conditional parsing.
+-- * Conditional Parsing.
 
 -- | Consumes a string (str), and two values (lval and rval). If str contains non-spacing
 -- characters, then lval is returned. Otherwise, rval is returned.

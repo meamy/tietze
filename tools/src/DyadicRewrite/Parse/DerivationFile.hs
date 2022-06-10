@@ -35,7 +35,7 @@ instance Show DerFileError where
 type DFPError = Either ParserError DerFileError
 
 -----------------------------------------------------------------------------------------
--- * Line parsing helper methods.
+-- * Line Parsing Helper Methods.
 
 -- | Helper function to propogation derivation file errors from a callee parsing function
 -- to a caller parsing function. For example, if an error occurs at index 5 of substr,
@@ -74,7 +74,7 @@ parseRewriteDirAndPos rule dir str = if dirMatchesRule
           dirMatchesRule = if (equational rule) then isDirected else isL2R
 
 -----------------------------------------------------------------------------------------
--- * Line parsing methods.
+-- * Line Parsing Methods.
 
 -- | Consumes a dictionary of known rules (dict) and an input string (str). Attempts to
 -- parse a primitive rewrite of either the form <ID> <DIR> <POS> or <ID> <POS>. If
