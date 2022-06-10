@@ -246,7 +246,7 @@ test36 = TestCase (assertEqual "Tests that parseGenDict handles offsets (2/2)."
                                (parseGenDict copyStr ["", "", "", "1abc:=1", "", ""] 5))
 
 -----------------------------------------------------------------------------------------
--- parseGenFileAsDict
+-- parseGenFileAsDict and parseGenFileAsAlphabet
 
 validMonoidalFile :: [String]
 validMonoidalFile = ["Monoidal", "abc", "cdf", "xyz_123"]
@@ -276,6 +276,17 @@ test40 = TestCase (assertEqual "Tests parsing of invalid monoidal generator file
                                (Just (2, Right InvalidGenName) :: Maybe (Int, GFPError))
                                maybeErr)
          where maybeErr = case (parseGenFileAsDict invalidMonoidalFile 0) of
+                              Left err  -> (Just err :: Maybe (Int, GFPError))
+                              otherwise -> Nothing
+
+test41 = TestCase (assertEqual "Tests parsing of valid monoidal generators (alpha)."
+                               (Right ["abc", "cdf", "xyz_123"])
+                               (parseGenFileAsAlphabet validMonoidalFile 0))
+
+test42 = TestCase (assertEqual "Tests parsing of invalid monoidal generators (alpha)."
+                               (Just (2, Right InvalidGenName) :: Maybe (Int, GFPError))
+                               maybeErr)
+         where maybeErr = case (parseGenFileAsAlphabet invalidMonoidalFile 0) of
                               Left err  -> (Just err :: Maybe (Int, GFPError))
                               otherwise -> Nothing
 
@@ -322,6 +333,8 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseGenerator_EmptyString" test
                                      TestLabel "parseGenFileAsDict_ValidOne" test37,
                                      TestLabel "parseGenFileAsDict_ValidTwo" test38,
                                      TestLabel "parseGenFileAsDict_ValidThree" test39,
-                                     TestLabel "parseGenFileAsDict_Ivalid" test40]
+                                     TestLabel "parseGenFileAsDict_Invalid" test40,
+                                     TestLabel "parseGenFileAsAlpha_Valid" test41,
+                                     TestLabel "parseGenFileAsAlpha_Invalid" test42]
 
 main = defaultMain tests

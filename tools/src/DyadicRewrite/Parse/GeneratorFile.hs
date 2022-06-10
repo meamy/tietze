@@ -155,3 +155,13 @@ parseGenFileAsDict lines num =
                 Left err   -> Left err
                 Right dict -> Right (MonoidalGenSummary dict)
             otherwise -> Left (semLn, Right (SemModelWOImpl sem))
+
+-- | A GenFileSummary carries the type data of the underlying semantic model. This
+-- function allows all semantic data to be stripped away, returning instead a list of
+-- generator symbols. Consumes all lines of a generator file (lines). If the lines are
+-- valid, then returns a list of all generator symbols. Otherwise, returns a parsing
+-- exception.
+parseGenFileAsAlphabet :: [String] -> Int -> Either (Int, GFPError) [String]
+parseGenFileAsAlphabet lines num = case (parseGenFileAsDict lines num) of
+    Left err                        -> Left err
+    Right (MonoidalGenSummary dict) -> Right (toAlphabet dict)
