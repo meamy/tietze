@@ -6,7 +6,7 @@ module Main where
 import System.Directory
 import System.Environment
 import DyadicRewrite.Generators.Semantics
-import DyadicRewrite.Logging.LineBased
+import DyadicRewrite.IO.LineBasedLogging
 import DyadicRewrite.Parse.Common
 import DyadicRewrite.Parse.Semantics
 import DyadicRewrite.Parse.GeneratorFile

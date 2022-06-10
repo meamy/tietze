@@ -9,7 +9,8 @@ import DyadicRewrite.Common
 import DyadicRewrite.Rewrite.Rules
 import DyadicRewrite.Rewrite.Lookup
 import DyadicRewrite.Generators.Semantics
-import DyadicRewrite.Logging.LineBased
+import DyadicRewrite.IO.Files
+import DyadicRewrite.IO.LineBasedLogging
 import DyadicRewrite.Parse.Semantics
 import DyadicRewrite.Parse.GeneratorFile
 import DyadicRewrite.Parse.RelationFile
@@ -66,18 +67,15 @@ readFiles genFname relFname = do
 -- | Validates file before calling readFiles.
 checkFiles :: String -> String -> IO ()
 checkFiles genFname relFname = do
-    genFileExists <- doesFileExist genFname
-    relFileExists <- doesFileExist relFname
-    if (genFileExists && relFileExists)
-    then readFiles genFname relFname
-    else if relFileExists
-         then putStr ("File does not exist: " ++ genFname ++ "\n")
-         else putStr ("File does not exist: " ++ relFname ++ "\n")
+    res <- doFilesExist [genFname, relFname]
+    case res of
+        Just name -> putStr ("File does not exist: " ++ name ++ "\n")
+        Nothing   -> readFiles genFname relFname
 
 -- | Parses and validates arguments before calling checkFiles.
 main = do
     pname <- getProgName
     args <- getArgs
     if (not ((length args) == 2))
-    then putStr ("usage: " ++ pname ++ " generator_file relation_file\n")
+    then putStr ("usage: " ++ pname ++ " gen_file rel_file\n")
     else checkFiles (args !! 0) (args !! 1)

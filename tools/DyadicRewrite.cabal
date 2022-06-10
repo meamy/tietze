@@ -17,7 +17,8 @@ library
                        DyadicRewrite.Rewrite.Lookup
                        DyadicRewrite.Generators.Semantics
                        DyadicRewrite.Generators.QubitGates
-                       DyadicRewrite.Logging.LineBased
+                       DyadicRewrite.IO.Files
+                       DyadicRewrite.IO.LineBasedLogging
                        DyadicRewrite.Parse.Common
                        DyadicRewrite.Parse.MonWords
                        DyadicRewrite.Parse.GeneratorFile
@@ -26,6 +27,7 @@ library
                        DyadicRewrite.Parse.DerivationFile
   build-depends:       base >=4.12 && <4.13,
                        containers,
+                       directory,
                        split,
                        newsynth
   hs-source-dirs:      src
@@ -78,9 +80,9 @@ test-suite dyadicrewrite-generators-qubitgates-tests
   type:                exitcode-stdio-1.0
   build-depends:       newsynth
 
-test-suite dyadicrewrite-logging-linebased-tests
+test-suite dyadicrewrite-io-linebasedlogging-tests
   import:              basic-unit-test-props
-  main-is:             DyadicRewrite-Logging-LineBased-Tests.hs
+  main-is:             DyadicRewrite-IO-LineBasedLogging-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite dyadicrewrite-parse-common-tests

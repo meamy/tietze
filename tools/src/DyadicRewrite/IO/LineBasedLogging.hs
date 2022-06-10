@@ -1,6 +1,6 @@
 -- | Helper methods to format logs originating from a single line in a single file.
 
-module DyadicRewrite.Logging.LineBased where
+module DyadicRewrite.IO.LineBasedLogging where
 
 -- | Consumes a file name (fname) and line number (n). Return a prefix for logs
 -- originating from this line.

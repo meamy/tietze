@@ -3,7 +3,7 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import DyadicRewrite.Logging.LineBased
+import DyadicRewrite.IO.LineBasedLogging
 
 -----------------------------------------------------------------------------------------
 -- fileLogPrefix
