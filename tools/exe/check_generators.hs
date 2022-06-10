@@ -23,24 +23,13 @@ logGenerators :: (Show a) => SemModel -> GenDict a -> String
 logGenerators sem dict = foldGens logGenerator semstr dict
     where semstr = "Semantic Model : " ++ (show sem) ++ "\n"
 
--- | Factors out the generator summary code so that it can be reused for each semantic
--- value type.
-summarize :: (Show a) => String -> SemModel -> SemParser a -> [String] -> Int -> String
-summarize fname sem parser gens ln = case (parseGenFile parser gens ln) of
-    (Left (errLn, err)) -> logEitherMsg fname errLn err
-    (Right dict)        -> logGenerators sem dict
-
 -- | Parses all generators and returns their textual representation if possible. If not,
 -- then an error message is returned.
 processGenFile :: String -> [String] -> String
 processGenFile fname lines =
-    case (parseSemanticModel lines 0) of
-        Left (errLn, err)        -> (logEitherMsg fname errLn err)
-        Right (sem, semLn, gens) -> let nextLn = semLn + 1 in case sem of
-            MonoidalSem    -> summarize fname sem parseMonoidalSem gens nextLn
-            DyadicOneSem   -> (logFromFile fname semLn "Dyadic(1) not implemented.")
-            DyadicTwoSem   -> (logFromFile fname semLn "Dyadic(2) not implemented.")
-            DyadicThreeSem -> (logFromFile fname semLn "Dyadic(3) not implemented.")
+    case (parseGenFileAsDict lines 0) of
+        Left (errLn, err)               -> (logEitherMsg fname errLn err)
+        Right (MonoidalGenSummary dict) -> logGenerators MonoidalSem dict 
 
 -- | Validates file before calling processGenFile.
 readGenFile :: String -> IO ()
