@@ -69,7 +69,7 @@ propRelErr str substr err =
     where update pos = relToAbsErrPos str substr pos
 
 -----------------------------------------------------------------------------------------
--- * Line parsing methods.
+-- * Line Parsing Methods.
 
 -- | Consumes a string that represents a rewrite rule (str). Attempts to parse a rule of
 -- the form <MON_WORD> <OP> <MON_WORD> where <OP> is one of = or →. Requires that str
@@ -117,3 +117,20 @@ updateRules dict gens str =
             Nothing  -> if (dict `hasRule` id)
                         then Left (Right (DuplicateRuleName id))
                         else Right (dict `addRule` (id, rule))
+
+-----------------------------------------------------------------------------------------
+-- * File Parsing Methods.
+
+-- | Consumes all lines of a relation file (lines), a list of generator names (gens), and
+-- the current line number (num). If the lines are valid, then returns a dictionary of
+-- all rewrite rules. Otherwise, returns a parsing exception.
+parseRelFile :: [String] -> [String] -> Int -> Either (Int, RFPError) RuleDict
+parseRelFile _    []           _   = Right empty
+parseRelFile gens (line:lines) num =
+    case (parseRelFile gens lines (num + 1)) of
+        Left  err  -> Left err
+        Right dict -> case (cleanLine line) of
+            ""   -> Right dict
+            text -> case (updateRules dict gens text) of
+                Left err   -> Left (num, (propRelErr line text err))
+                Right dict -> Right dict

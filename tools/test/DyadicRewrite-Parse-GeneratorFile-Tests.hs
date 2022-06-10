@@ -234,14 +234,14 @@ test34 = TestCase (assertEqual "Tests that parseGenFile handles errors after val
 
 -- Adjusted starting line.
 
-test35 = TestCase (assertEqual "Tests that parseGenFile handles single line errors."
+test35 = TestCase (assertEqual "Tests that parseGenFile handles offsets (1/2)."
                                (Just "1" :: Maybe String)
                                semv)
          where semv = case (parseGenFile copyStr ["", "", "", "abc:=1", "", ""] 5) of
                           Left _     -> Nothing
                           Right dict -> interpretGen dict "abc"
 
-test36 = TestCase (assertEqual "Tests that parseGenFile handles single line errors."
+test36 = TestCase (assertEqual "Tests that parseGenFile handles offsets (2/2)."
                                (Left (8, (Right InvalidGenName)))
                                (parseGenFile copyStr ["", "", "", "1abc:=1", "", ""] 5))
 
