@@ -40,6 +40,13 @@ common basic-unit-test-props
                        HUnit,
                        DyadicRewrite
 
+common exe-with-file-io-props
+  hs-source-dirs:      exe
+  default-language:    Haskell2010
+  build-depends:       base >=4.12 && <4.13,
+                       directory,
+                       DyadicRewrite
+
 test-suite dyadicrewrite-common-tests
   import:              basic-unit-test-props
   main-is:             DyadicRewrite-Common-Tests.hs
@@ -102,9 +109,9 @@ test-suite dyadicrewrite-parse-derivationfile-tests
   type:                exitcode-stdio-1.0
 
 executable check_generators
+  import:              exe-with-file-io-props
   main-is:             check_generators.hs
-  build-depends:       base >=4.12 && <4.13,
-                       directory,
-                       DyadicRewrite
-  hs-source-dirs:      exe
-  default-language:    Haskell2010
+
+executable check_relations
+  import:              exe-with-file-io-props
+  main-is:             check_relations.hs
