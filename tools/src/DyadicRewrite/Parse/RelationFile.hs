@@ -101,11 +101,11 @@ parseRuleDefn :: String -> Either RFPError (String, RewriteRule)
 parseRuleDefn str =
     case (parseId (snd (trimSpacing str))) of
         Just (id, ruleStr) -> let (isTrimmed, trimmed) = trimSpacing ruleStr
-                             in if isTrimmed
-                                then case (parseRule trimmed) of
-                                         Left err   -> Left (propRelErr str trimmed err)
-                                         Right rule -> Right (id, rule)
-                                else Left (Left (UnexpectedSymbol (getErrPos str ruleStr)))
+                              in if isTrimmed
+                                 then case (parseRule trimmed) of
+                                          Left err   -> Left (propRelErr str trimmed err)
+                                          Right rule -> Right (id, rule)
+                                 else Left (Left (UnexpectedSymbol (getErrPos str ruleStr)))
         Nothing -> Left (Right InvalidRuleName)
 
 -- | Consumes a partial map of rewrite rules (dict), a list of generator names (gens),
@@ -136,8 +136,9 @@ parseRelFile _    []           _   = Right empty
 parseRelFile gens (line:lines) num =
     case (parseRelFile gens lines (num + 1)) of
         Left  err  -> Left err
-        Right dict -> case (cleanLine line) of
+        Right dict -> case (snd (trimSpacing stripped)) of
             ""   -> Right dict
             text -> case (updateRules dict gens text) of
-                Left err   -> Left (num, (propRelErr line text err))
+                Left err   -> Left (num, (propRelErr stripped text err))
                 Right dict -> Right dict
+    where stripped = stripComments line

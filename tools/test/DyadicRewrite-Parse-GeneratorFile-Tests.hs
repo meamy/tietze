@@ -190,9 +190,13 @@ test28 = TestCase (assertEqual "Tests parsing of a single generator with parseGe
                           Left _     -> Nothing
                           Right dict -> interpretGen dict "abc"
 
-test29 = TestCase (assertEqual "Tests that parseGenDict handles single line errors."
+test29 = TestCase (assertEqual "parseGenDict handles single line errors (1/2)."
                                (Left (0, (Right InvalidGenName)))
                                (parseGenDict copyStr ["  1abc :=   1   -- comment"] 0))
+
+test43 = TestCase (assertEqual "parseGenDict handles single line errors (2/2)."
+                               (Left (0, (Left (UnexpectedSymbol 8))))
+                               (parseGenDict copyStr ["  \t\t abc  xyz -- comment"] 0))
 
 -- Multi-line tests.
 
@@ -322,7 +326,7 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseGenerator_EmptyString" test
                                      TestLabel "parseSemanticModel_RvOffset" test26,
                                      TestLabel "parseSemanticModel_ErrorOffset" test27,
                                      TestLabel "parseGenDict_ValidGen" test28,
-                                     TestLabel "parseGenDict_InvalidGen" test29,
+                                     TestLabel "parseGenDict_InvalidGenOne" test29,
                                      TestLabel "parseGenDict_ValidGenMultiline" test30,
                                      TestLabel "parseGenDict_MultipleGensOne" test31,
                                      TestLabel "parseGenDict_MultipleGensTwo" test32,
@@ -335,6 +339,7 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseGenerator_EmptyString" test
                                      TestLabel "parseGenFileAsDict_ValidThree" test39,
                                      TestLabel "parseGenFileAsDict_Invalid" test40,
                                      TestLabel "parseGenFileAsAlpha_Valid" test41,
-                                     TestLabel "parseGenFileAsAlpha_Invalid" test42]
+                                     TestLabel "parseGenFileAsAlpha_Invalid" test42,
+                                     TestLabel "parseGenDict_InvalidGenTwo" test43]
 
 main = defaultMain tests

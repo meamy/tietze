@@ -128,11 +128,12 @@ parseGenDict _        []           _   = Right empty
 parseGenDict parseSem (line:lines) num =
     case (parseGenDict parseSem lines (num + 1)) of
         Left  err  -> Left err
-        Right dict -> case (cleanLine line) of
+        Right dict -> case (snd (trimSpacing stripped)) of
             ""   -> Right dict
             text -> case (updateGenerators parseSem dict text) of
-                Left err   -> Left (num, (propGenErr line text err))
+                Left err   -> Left (num, (propGenErr stripped text err))
                 Right dict -> Right dict
+    where stripped = stripComments line
 
 -----------------------------------------------------------------------------------------
 -- * Full Generator File Parsing.

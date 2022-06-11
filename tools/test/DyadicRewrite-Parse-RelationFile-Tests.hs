@@ -280,7 +280,11 @@ test36 = TestCase (assertEqual "Tests parsing of a single rule with parseRelFile
                          Left _     -> Nothing
                          Right dict -> interpretRule dict "abc"
 
-test37 = TestCase (assertEqual "Tests that parseRelFile handles single line errors."
+test37 = TestCase (assertEqual "Tests that parseRelFile handles single line errors (1/2)."
+                               (Left (0, (Left (UnexpectedSymbol 14))))
+                               (parseRelFile gens ["   abc x  =  y   xyz -- comment"] 0))
+
+test45 = TestCase (assertEqual "Tests that parseRelFile handles single line errors (2/2)."
                                (Left (0, (Right (UnknownGenName "c"))))
                                (parseRelFile gens ["  abc  a.b  =  c.b.a -- comment"] 0))
 
@@ -338,7 +342,7 @@ test43 = TestCase (assertEqual "Tests that parseRelFile handles offsets (1/2)."
                          Left _     -> Nothing
                          Right dict -> interpretRule dict "abc"
 
-test44 = TestCase (assertEqual "Tests that parseRelFile handles offsets (1/2)."
+test44 = TestCase (assertEqual "Tests that parseRelFile handles offsets (2/2)."
                                (Left (8, (Right InvalidRuleName)))
                                (parseRelFile gens ["", "", "", "1a a = a", "", ""] 5))
 
@@ -381,13 +385,14 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseRule_EmptyString" test1,
                                      TestLabel "updateRules_UpdateRulesOne" test34,
                                      TestLabel "updateRules_UpdateRulesTwo" test35,
                                      TestLabel "parseRelFile_ValidRule" test36,
-                                     TestLabel "parseRelFile_InvalidRule" test37,
+                                     TestLabel "parseRelFile_InvalidRuleOne" test37,
                                      TestLabel "parseRelFile_ValidRuleMultiline" test38,
                                      TestLabel "parseRelFile_MultipleRulesOne" test39,
                                      TestLabel "parseRelFile_MultipleRulesTwo" test40,
                                      TestLabel "parseRelFile_MultipleRulesThree" test41,
                                      TestLabel "parseRelFile_MidParsingError" test42,
                                      TestLabel "parseRelFile_OffsetValid" test43,
-                                     TestLabel "parseRelFile_OffsetInvalid" test44]
+                                     TestLabel "parseRelFile_OffsetInvalid" test44,
+                                     TestLabel "parseRelFile_InvalidRuleTwo" test45]
 
 main = defaultMain tests
