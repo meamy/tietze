@@ -29,7 +29,7 @@ settings = [(makePropPair "val1" parseInt sampleSetter1),
             (makePropPair "val3" parseInt sampleSetter3)]
 
 -----------------------------------------------------------------------------------------
--- makePropUpdater.
+-- makePropUpdater
 
 updater1 :: PropUpdater Container
 updater1 = snd (settings !! 0)
@@ -61,12 +61,58 @@ test5 = TestCase (assertEqual "PropUpdater can detect bad parsing."
                               (updater1 "  abc" fullContainer))
 
 -----------------------------------------------------------------------------------------
+-- Property Dictionary.
+
+dict0 :: PropertyDict Container
+dict0 = empty
+
+dict1 = addProp dict0 (settings !! 0)
+dict2 = addProp dict1 (settings !! 1)
+dict3 = addProp dict2 (settings !! 2)
+dictn = addProps dict0 settings
+
+test6 = TestCase (assertEqual "propToSeps on dict0."
+                              ["@"]
+                              (propsToSeps dict0))
+
+test7 = TestCase (assertEqual "propToSeps on dict1."
+                              ["@val1", "@"]
+                              (propsToSeps dict1))
+
+test8 = TestCase (assertEqual "propToSeps on dict2."
+                              ["@val1", "@val2", "@"]
+                              (propsToSeps dict2))
+
+test9 = TestCase (assertEqual "propToSeps on dict3."
+                              ["@val1", "@val2", "@val3", "@"]
+                              (propsToSeps dict3))
+
+test10 = TestCase (assertEqual "propToSeps on dictn."
+                               ["@val1", "@val2", "@val3", "@"]
+                               (propsToSeps dictn))
+
+test11 = TestCase (assertEqual "Can parse from a dictionary."
+                               (Right (Container (Just 100) Nothing Nothing))
+                               (parseFromPropDict dict3 "val1" "  100  " emptyContainer))
+
+test12 = TestCase (assertEqual "Can parse from a dictionary."
+                               (Left (UnknownProp "val5"))
+                               (parseFromPropDict dict3 "val5" "  100  " emptyContainer))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "PropUpdater_Parse_TestOne" test1,
                                      TestLabel "PropUpdater_Parse_TestTwo" test2,
                                      TestLabel "PropUpdater_FailToParseAll" test3,
                                      TestLabel "PropUpdater_DuplicateProp" test4,
-                                     TestLabel "PropUpdater_BadParsing" test5]
+                                     TestLabel "PropUpdater_BadParsing" test5,
+                                     TestLabel "propsToSteps_TestOne" test6,
+                                     TestLabel "propsToSteps_TestTwo" test7,
+                                     TestLabel "propsToSteps_TestThree" test8,
+                                     TestLabel "propsToSteps_TestFour" test9,
+                                     TestLabel "propsToSteps_TestFive" test10,
+                                     TestLabel "parseFromPropDict_Valid" test11,
+                                     TestLabel "parseFromPropDict_Valid" test12]
 
 main = defaultMain tests
