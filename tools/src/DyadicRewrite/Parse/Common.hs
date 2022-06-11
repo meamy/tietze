@@ -9,13 +9,19 @@ import Data.List
 -- * Common Parsing Errors.
 
 -- | General-purpose parsing errors.
-data ParserError = UnexpectedSymbol Int
+data ParserError = ImplError String
+                 | DuplicateProp String
+                 | UnknownProp String
+                 | UnexpectedSymbol Int
                  | UnexpectedEOL
                  | UnexpectedEOF
                  | UnknownParseError
                  deriving (Eq)
 
 instance Show ParserError where
+    show (ImplError msg)        = "Implementation error! " ++ msg
+    show (DuplicateProp prop)   = "Property set twice (" ++ prop ++ ")."
+    show (UnknownProp prop)     = "Unknown property (" ++ prop ++ ")."
     show (UnexpectedSymbol pos) = "Unexpected symbol at " ++ (show pos) ++ "."
     show UnexpectedEOL          = "Unexpected end-of-line."
     show UnexpectedEOF          = "Unexpected end-of-file."
@@ -41,6 +47,9 @@ relToAbsErrPos full unparsed pos = (getErrPos full unparsed) + pos
 propCommonErr :: String -> String -> ParserError -> ParserError
 propCommonErr str substr err =
     case err of
+        (ImplError msg)        -> ImplError msg
+        (DuplicateProp prop)   -> DuplicateProp prop
+        (UnknownProp prop)     -> UnknownProp prop
         (UnexpectedSymbol pos) -> UnexpectedSymbol (update pos)
         UnexpectedEOL          -> UnexpectedEOL
         UnexpectedEOF          -> UnexpectedEOF
