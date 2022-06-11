@@ -34,23 +34,26 @@ settings = [(makePropPair "val1" parseInt sampleSetter1),
 updater1 :: PropUpdater Container
 updater1 = snd (settings !! 0)
 
-emptyContainer :: Container
-emptyContainer = Container Nothing Nothing Nothing
+emptyCon :: Container
+emptyCon = Container Nothing Nothing Nothing
+
+containerWValOne :: Container
+containerWValOne = Container (Just 100) Nothing Nothing
 
 fullContainer :: Container
-fullContainer = Container (Just 1) (Just 1) (Just 1)
+fullContainer = Container (Just 100) (Just 200) (Just 300)
 
 test1 = TestCase (assertEqual "PropUpdater can parse an integer (1/2)."
-                              (Right (Container (Just 100) Nothing Nothing))
-                              (updater1 "  100  " emptyContainer))
+                              (Right containerWValOne)
+                              (updater1 "  100  " emptyCon))
 
 test2 = TestCase (assertEqual "PropUpdater can parse an integer (2/2)."
                               (Right (Container (Just 50) Nothing Nothing))
-                              (updater1 "  50  " emptyContainer))
+                              (updater1 "  50  " emptyCon))
 
 test3 = TestCase (assertEqual "PropUpdater can detect partial parse."
                               (Left (UnexpectedSymbol 5))
-                              (updater1 "  100  xyz" emptyContainer))
+                              (updater1 "  100  xyz" emptyCon))
 
 test4 = TestCase (assertEqual "PropUpdater can detect duplicate sets."
                               (Left (DuplicateProp "val1"))
@@ -92,12 +95,12 @@ test10 = TestCase (assertEqual "propToSeps on dictn."
                                (propsToSeps dictn))
 
 test11 = TestCase (assertEqual "Can parse from a dictionary."
-                               (Right (Container (Just 100) Nothing Nothing))
-                               (parseFromPropDict dict3 "val1" "  100  " emptyContainer))
+                               (Right containerWValOne)
+                               (parseFromPropDict dict3 "val1" "  100  " emptyCon))
 
 test12 = TestCase (assertEqual "Can parse from a dictionary."
                                (Left (UnknownProp "val5"))
-                               (parseFromPropDict dict3 "val5" "  100  " emptyContainer))
+                               (parseFromPropDict dict3 "val5" "  100  " emptyCon))
 
 -----------------------------------------------------------------------------------------
 -- parsePropLine
@@ -105,34 +108,83 @@ test12 = TestCase (assertEqual "Can parse from a dictionary."
 seps :: [String]
 seps = propsToSeps dict3
 
-test13 = TestCase (assertEqual "parsePropLine can parse a property (1/1)."
-                               (Right res)
-                               (parsePropLine seps dict3 emptyContainer "@val1 100  "))
-    where res = (Just (Container (Just 100) Nothing Nothing) :: Maybe Container)
+test13 = TestCase (assertEqual "parsePropLine can parse a property (1/2)."
+                               (Right (Just containerWValOne :: Maybe Container))
+                               (parsePropLine seps dict3 emptyCon "@val1 100  "))
 
 test14 = TestCase (assertEqual "parsePropLine can parse a property (2/2)."
                                (Right res)
-                               (parsePropLine seps dict3 emptyContainer "@val2 100  "))
-    where res = (Just (Container  Nothing (Just 100)Nothing) :: Maybe Container)
+                               (parsePropLine seps dict3 emptyCon "@val2 100  "))
+    where res = (Just (Container  Nothing (Just 100) Nothing) :: Maybe Container)
 
 test15 = TestCase (assertEqual "parsePropLine can propogate an error."
-                               (Left (UnexpectedSymbol 10))
-                               (parsePropLine seps dict3 emptyContainer str))
-    where str = "@val1  100  xyz"
-          res = (Just (Container (Just 100) Nothing Nothing) :: Maybe Container)
+                               (Left (UnexpectedSymbol 9))
+                               (parsePropLine seps dict3 emptyCon "@val1 100 xyz"))
 
 test16 = TestCase (assertEqual "parsePropLine can detect end of preamble."
                                (Right Nothing)
-                               (parsePropLine seps dict3 emptyContainer "rel1 x.y = z"))
+                               (parsePropLine seps dict3 emptyCon "rel1 x.y = z"))
 
-test17 = TestCase (assertEqual "parsePropLine can detect end of preamble."
+test17 = TestCase (assertEqual "parsePropLine can detect bad properties."
                                (Left (UnknownProp "bad"))
-                               (parsePropLine seps dict3 emptyContainer "@bad value 5"))
+                               (parsePropLine seps dict3 emptyCon "@bad value 5"))
 
 test18 = TestCase (assertEqual "parsePropLine handles bad usage at the coding level."
                                (Left (ImplError "Property not prefixed with @."))
-                               (parsePropLine badSeps dict3 emptyContainer "@val4 123"))
-    where badSeps = ("val4":seps)
+                               (parsePropLine ("val4":seps) dict3 emptyCon "val4 1"))
+
+-----------------------------------------------------------------------------------------
+-- parsePreamble
+
+parseFn :: PropParser Container
+parseFn = makePreambleParser dict3 emptyCon
+
+ruleLine :: [String]
+ruleLine = ["  rel1 x.y = z  -- comment"]
+
+ruleLines :: [String]
+ruleLines = ruleLine ++ ["rel2 y = z", "rel3 y = x"]
+
+multiline :: [String]
+multiline = ["", "@val1 100", "", "@val2 200", "", "", "", "@val3 300"] ++ ruleLines
+
+-- Single line tests.
+
+test19 = TestCase (assertEqual "PropParser can parse a single line."
+                               (Right ([], 1, containerWValOne))
+                               (parseFn ["  @val1  100  -- comment"] 0))
+
+test20 = TestCase (assertEqual "PropParser can detect end of preamble."
+                               (Right (ruleLine, 0, emptyCon))
+                               (parseFn ruleLine 0))
+
+test21 = TestCase (assertEqual "PropParser propogates errors."
+                               (Left (0, UnexpectedSymbol 12))
+                               (parseFn ["  @val1  100 xyz  -- comment"] 0))
+
+test22 = TestCase (assertEqual "PropParser skips blank lines."
+                               (Right ([], 1, emptyCon))
+                               (parseFn ["   \t\t\t\t  -- comment"] 0))
+
+-- Multi-line tests.
+
+test23 = TestCase (assertEqual "PropParser handles valid preamble with body."
+                               (Right (ruleLines, 8, fullContainer))
+                               (parseFn multiline 0))
+
+test24 = TestCase (assertEqual "PropParser handles invalid preamble with body."
+                               (Left (2, DuplicateProp "val1"))
+                               (parseFn ("@val1 100":multiline) 0))
+
+-- Adjusted starting line.
+
+test25 = TestCase (assertEqual "PropParser handles offsets (1/2)."
+                               (Right (ruleLines, 18, fullContainer))
+                               (parseFn multiline 10))
+
+test26 = TestCase (assertEqual "PropParser handles offsets (2/2)."
+                               (Left (12, DuplicateProp "val1"))
+                               (parseFn ("@val1 100":multiline) 10))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -153,6 +205,15 @@ tests = hUnitTestToTests $ TestList [TestLabel "PropUpdater_Parse_TestOne" test1
                                      TestLabel "parsePropLine_ValidTwo" test14,
                                      TestLabel "parsePropLine_PropogateError" test15,
                                      TestLabel "parsePropLine_EndOfPreamble" test16,
-                                     TestLabel "parsePropLine_UnknownProp" test17]
+                                     TestLabel "parsePropLine_UnknownProp" test17,
+                                     TestLabel "parsePropLine_InvalidUsage" test18,
+                                     TestLabel "parsePreamble_Valid" test19,
+                                     TestLabel "parsePreamble_EndOfPreamble" test20,
+                                     TestLabel "parsePreamble_PropogateErrors" test21,
+                                     TestLabel "parsePreamble_BlankLines" test22,
+                                     TestLabel "parsePreamble_ValidMultiline" test23,
+                                     TestLabel "parsePreamble_InvalidMultiline" test24,
+                                     TestLabel "parsePreamble_OffsetValid" test25,
+                                     TestLabel "parsePreamble_OffsetInvalid" test26]
 
 main = defaultMain tests

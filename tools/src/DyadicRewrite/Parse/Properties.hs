@@ -77,6 +77,11 @@ parseFromPropDict dict name str container =
 -----------------------------------------------------------------------------------------
 -- * Property Preamble Parsing.
 
+-- | Function to consume the lines of a file, parse its preamble (a list of properties),
+-- and return a property container together with the remaining lines. If parsing fails,
+-- then an error is returned.
+type PropParser b = ([String] -> Int -> Either (Int, ParserError) ([String], Int, b))
+
 -- | Consumes a list of separators (seps), a dictionary of properties (dict), a container
 -- for said properties (container), and a line of a preamble. Attempts to parse a
 -- property listed in seps using a parser from dict. If parsing is successful then
@@ -92,4 +97,28 @@ parsePropLine seps dict container line =
             Left err  -> Left (propCommonErr line post err)
             Right res -> Right (Just res)
         Just _  -> Left (ImplError "Property not prefixed with @.")
-        Nothing -> Right Nothing  -- End of preamble.
+        Nothing -> Right Nothing -- End of preamble.
+
+-- | Consumes a list of separators (seps), a dictionary of properties (dict), a container
+-- for said properties (container), and a line of a preamble. Returns a PropParser fn.
+-- The function fn attempts to aprse all lines of a preamble using the properties listed
+-- in seps and the parsers stored in dict. Parsing terminates when all lines are consumed
+-- or a non-property line is reached. If parsing is successful then returns container
+-- updated with all properties, and the list of remaining lines. Otherwise, a parsing
+-- error is returned. Requires that seps == (propsToSeps dict).
+parsePreamble :: [String] -> PropertyDict b -> b -> PropParser b
+parsePreamble _    _    container []           num = Right ([], num, container)
+parsePreamble seps dict container (line:lines) num =
+    case (snd (trimSpacing stripped)) of
+        ""   -> parsePreamble seps dict container lines (num + 1)
+        text -> case (parsePropLine seps dict container text) of
+            Left  err        -> Left (num, (propCommonErr stripped text err))
+            Right (Just res) -> parsePreamble seps dict res lines (num + 1)
+            Right Nothing    -> Right ((line:lines), num, container)
+    where stripped = stripComments line
+
+-- | Helper function. Consumes a dictionary of properties (dict) and an empty container
+-- (empty). Returns the parser produced by parsePreamble when called correctly using dict
+-- and empty.
+makePreambleParser :: PropertyDict b -> b -> PropParser b
+makePreambleParser dict empty = parsePreamble (propsToSeps dict) dict empty    
