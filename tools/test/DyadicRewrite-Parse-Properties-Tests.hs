@@ -100,6 +100,41 @@ test12 = TestCase (assertEqual "Can parse from a dictionary."
                                (parseFromPropDict dict3 "val5" "  100  " emptyContainer))
 
 -----------------------------------------------------------------------------------------
+-- parsePropLine
+
+seps :: [String]
+seps = propsToSeps dict3
+
+test13 = TestCase (assertEqual "parsePropLine can parse a property (1/1)."
+                               (Right res)
+                               (parsePropLine seps dict3 emptyContainer "@val1 100  "))
+    where res = (Just (Container (Just 100) Nothing Nothing) :: Maybe Container)
+
+test14 = TestCase (assertEqual "parsePropLine can parse a property (2/2)."
+                               (Right res)
+                               (parsePropLine seps dict3 emptyContainer "@val2 100  "))
+    where res = (Just (Container  Nothing (Just 100)Nothing) :: Maybe Container)
+
+test15 = TestCase (assertEqual "parsePropLine can propogate an error."
+                               (Left (UnexpectedSymbol 10))
+                               (parsePropLine seps dict3 emptyContainer str))
+    where str = "@val1  100  xyz"
+          res = (Just (Container (Just 100) Nothing Nothing) :: Maybe Container)
+
+test16 = TestCase (assertEqual "parsePropLine can detect end of preamble."
+                               (Right Nothing)
+                               (parsePropLine seps dict3 emptyContainer "rel1 x.y = z"))
+
+test17 = TestCase (assertEqual "parsePropLine can detect end of preamble."
+                               (Left (UnknownProp "bad"))
+                               (parsePropLine seps dict3 emptyContainer "@bad value 5"))
+
+test18 = TestCase (assertEqual "parsePropLine handles bad usage at the coding level."
+                               (Left (ImplError "Property not prefixed with @."))
+                               (parsePropLine badSeps dict3 emptyContainer "@val4 123"))
+    where badSeps = ("val4":seps)
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "PropUpdater_Parse_TestOne" test1,
@@ -113,6 +148,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "PropUpdater_Parse_TestOne" test1
                                      TestLabel "propsToSteps_TestFour" test9,
                                      TestLabel "propsToSteps_TestFive" test10,
                                      TestLabel "parseFromPropDict_Valid" test11,
-                                     TestLabel "parseFromPropDict_Valid" test12]
+                                     TestLabel "parseFromPropDict_Valid" test12,
+                                     TestLabel "parsePropLine_ValidOne" test13,
+                                     TestLabel "parsePropLine_ValidTwo" test14,
+                                     TestLabel "parsePropLine_PropogateError" test15,
+                                     TestLabel "parsePropLine_EndOfPreamble" test16,
+                                     TestLabel "parsePropLine_UnknownProp" test17]
 
 main = defaultMain tests

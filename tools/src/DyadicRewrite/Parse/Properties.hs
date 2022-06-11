@@ -73,3 +73,23 @@ parseFromPropDict dict name str container =
     case (Data.Map.lookup name dict) of
         Just update -> (update str container)
         Nothing     -> Left (UnknownProp name)
+
+-----------------------------------------------------------------------------------------
+-- * Property Preamble Parsing.
+
+-- | Consumes a list of separators (seps), a dictionary of properties (dict), a container
+-- for said properties (container), and a line of a preamble. Attempts to parse a
+-- property listed in seps using a parser from dict. If parsing is successful then
+-- container is updated and returned. Otherwise, a parsing error is returned. Requires
+-- that seps == (propsToSeps dict), that line is free from leading whitespace, and line
+-- is free from comments.
+parsePropLine :: [String] -> PropertyDict b -> b -> String -> Either ParserError (Maybe b)
+parsePropLine seps dict container line =
+    case (parseFromSeps seps line) of
+        Just ("@", post) -> let prop = fst (splitAtFirst (\c -> not $ isSpacing c) post)
+                            in Left (UnknownProp prop)
+        Just ('@':prop, post) -> case (parseFromPropDict dict prop post container) of
+            Left err  -> Left (propCommonErr line post err)
+            Right res -> Right (Just res)
+        Just _  -> Left (ImplError "Property not prefixed with @.")
+        Nothing -> Right Nothing  -- End of preamble.
