@@ -5,6 +5,7 @@ module DyadicRewrite.Parse.DerivationFile where
 import DyadicRewrite.Rewrite.Lookup
 import DyadicRewrite.Rewrite.Rules
 import DyadicRewrite.Parse.Common
+import DyadicRewrite.Parse.Properties
 
 -----------------------------------------------------------------------------------------
 -- * Generator File Parsing Errors.
@@ -121,3 +122,29 @@ parseRewriteLine dict str =
                         then Left (Right RewriteOnDerived)
                         else Right rw
         Just ("!", _) -> Left (Right UnknownRewriteMod)
+
+-----------------------------------------------------------------------------------------
+-- * Preamble Parsing.
+
+-- | Maintains metadata about a derivation file.
+data RewritePreamble = RewritePreamble { propName :: Maybe String
+                                       } deriving (Eq)
+
+-- | Creates a RewritePreamble will all metadata set to N/A.
+defaultPreamble :: RewritePreamble
+defaultPreamble = RewritePreamble Nothing
+
+-- | Consumes a derivation name (str) and a rewrite preamble. If the preamble does not
+-- have a name, then a new preamble is returned with the name field set to str and all
+-- other fields unchanged. Otherwise, nothing is returned.
+setName :: PropSetter String RewritePreamble
+setName str (RewritePreamble Nothing)  = Just (RewritePreamble (Just str))
+setName _   (RewritePreamble (Just _)) = Nothing
+
+-- | A dictionary of all preamble properties.
+rewriteProperties :: PropertyDict RewritePreamble
+rewriteProperties = noProps `addProp` (makePropPair "name" parseId setName)
+
+-- | A parser for rewriteProperties.
+parseRewritePreamble :: PropParser RewritePreamble
+parseRewritePreamble = makePreambleParser rewriteProperties defaultPreamble

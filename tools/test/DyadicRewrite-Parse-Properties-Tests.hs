@@ -67,7 +67,7 @@ test5 = TestCase (assertEqual "PropUpdater can detect bad parsing."
 -- Property Dictionary.
 
 dict0 :: PropertyDict Container
-dict0 = empty
+dict0 = noProps
 
 dict1 = addProp dict0 (settings !! 0)
 dict2 = addProp dict1 (settings !! 1)

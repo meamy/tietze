@@ -192,6 +192,49 @@ test37 = TestCase (assertEqual ""
                                (parseRewriteLine dict3 "!apply  derived   →    10     "))
 
 -----------------------------------------------------------------------------------------
+-- Preamble parsing.
+
+goodPreamble :: [String]
+goodPreamble = ["-- Preamble",
+                "\t\t-- TODO: Update name.",
+                "@name tmp -- Placeholder",
+                "",
+                "-- Start of proof.",
+                ""]
+
+goodBody :: [String]
+goodBody = ["  x1.x2.x3",
+            "",
+            "abc 0",
+            "xyz → 5",
+            "!apply derived 10",
+            "",
+            "",
+            "  x3.x2.x1",
+            ""]
+
+expectedPreamble :: RewritePreamble
+expectedPreamble = RewritePreamble (Just "tmp")
+
+badPreambleOne :: [String]
+badPreambleOne = ["@name tmp", "@name tmp"]
+
+badPreambleTwo :: [String]
+badPreambleTwo = ["@name tmp", "@unknown tmp"]
+
+test38 = TestCase (assertEqual "Rewrite preamble parser works on valid files."
+                               (Right (goodBody, 6, expectedPreamble))
+                               (parseRewritePreamble (goodPreamble ++ goodBody) 0))
+
+test39 = TestCase (assertEqual "Rewrite preamble parser works on valid files."
+                               (Left (1, DuplicateProp "name"))
+                               (parseRewritePreamble badPreambleOne 0))
+
+test40 = TestCase (assertEqual "Rewrite preamble parser works on valid files."
+                               (Left (1, UnknownProp "unknown"))
+                               (parseRewritePreamble badPreambleTwo 0))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" test1,
@@ -230,6 +273,9 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" 
                                      TestLabel "parseRewriteLine_DerivedAsPrimitive" test34,
                                      TestLabel "parseRewriteLine_PrimitiveAsDerived" test35,
                                      TestLabel "parseRewriteLine_PrimitiveParse" test36,
-                                     TestLabel "parseRewriteLine_DerivedParse" test37]
+                                     TestLabel "parseRewriteLine_DerivedParse" test37,
+                                     TestLabel "parseRewritePreamble_Valid" test38,
+                                     TestLabel "parseRewritePreamble_Duplicate" test39,
+                                     TestLabel "parseRewritePreamble_Unknown" test40]
 
 main = defaultMain tests

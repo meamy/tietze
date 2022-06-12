@@ -46,8 +46,8 @@ makePropPair name read set = (name, updater)
 type PropertyDict b = Data.Map.Map String (PropUpdater b)
 
 -- | Creates an empty property dictionary.
-empty :: PropertyDict b
-empty = Data.Map.empty
+noProps :: PropertyDict b
+noProps = Data.Map.empty
 
 -- | Consume a dictionary (dict) and a property pair (name, updater). Returns a new
 -- dictionary that maps 
