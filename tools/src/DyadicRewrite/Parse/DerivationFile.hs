@@ -2,9 +2,11 @@
 
 module DyadicRewrite.Parse.DerivationFile where
 
+import DyadicRewrite.Common
 import DyadicRewrite.Rewrite.Lookup
 import DyadicRewrite.Rewrite.Rules
 import DyadicRewrite.Parse.Common
+import DyadicRewrite.Parse.MonWords
 import DyadicRewrite.Parse.Properties
 
 -----------------------------------------------------------------------------------------
@@ -128,7 +130,7 @@ parseRewriteLine dict str =
 
 -- | Maintains metadata about a derivation file.
 data RewritePreamble = RewritePreamble { propName :: Maybe String
-                                       } deriving (Eq)
+                                       } deriving (Show,Eq)
 
 -- | Creates a RewritePreamble will all metadata set to N/A.
 defaultPreamble :: RewritePreamble
@@ -148,3 +150,18 @@ rewriteProperties = noProps `addProp` (makePropPair "name" parseId setName)
 -- | A parser for rewriteProperties.
 parseRewritePreamble :: PropParser RewritePreamble
 parseRewritePreamble = makePreambleParser rewriteProperties defaultPreamble
+
+-----------------------------------------------------------------------------------------
+-- * Full Derivation File Parsing.
+
+-- | Consumes the body of a derivation file (excluding the initial word). Attempts to
+-- find the final word in the file. If the final word is found, then the word is returned
+-- along with all lines which follow the word. Otherwise, nothing is returned.
+parseFinalMonWord :: [String] -> Maybe ([String], MonWord)
+parseFinalMonWord []           = Nothing
+parseFinalMonWord (line:lines) =
+    case (parseFinalMonWord lines) of
+        Nothing -> case (parseLineAsMonWord line) of
+            Just word -> Just ([], word)
+            Nothing   -> Nothing
+        Just (body, word) -> Just ((line:body), word)

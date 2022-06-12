@@ -203,14 +203,12 @@ goodPreamble = ["-- Preamble",
                 ""]
 
 goodBody :: [String]
-goodBody = ["  x1.x2.x3",
+goodBody = ["  a.b.c",
             "",
             "abc 0",
             "xyz → 5",
             "!apply derived 10",
             "",
-            "",
-            "  x3.x2.x1",
             ""]
 
 expectedPreamble :: RewritePreamble
@@ -233,6 +231,38 @@ test39 = TestCase (assertEqual "Rewrite preamble parser works on valid files."
 test40 = TestCase (assertEqual "Rewrite preamble parser works on valid files."
                                (Left (1, UnknownProp "unknown"))
                                (parseRewritePreamble badPreambleTwo 0))
+
+-----------------------------------------------------------------------------------------
+-- parseFinalMonWord
+
+goodEOF :: [String]
+goodEOF = ["\t\t", "-- END OF FILE."]
+
+goodFinal1 :: [String]
+goodFinal1 = ["  a.b.c  "] ++ goodEOF
+
+goodFinal2 :: [String]
+goodFinal2 = ["  c.a.b  "] ++ goodEOF
+
+test41 = TestCase (assertEqual "parseFinalMonWord supports empty files."
+                               Nothing
+                               (parseFinalMonWord []))
+
+test42 = TestCase (assertEqual "parseFinalMonWord extracts final words (1/3)."
+                               (Just (goodBody, word1))
+                               (parseFinalMonWord (goodBody ++ goodFinal1)))
+
+test43 = TestCase (assertEqual "parseFinalMonWord extracts final words (2/3)."
+                               (Just (goodBody, word2))
+                               (parseFinalMonWord (goodBody ++ goodFinal2)))
+
+test44 = TestCase (assertEqual "parseFinalMonWord extracts final words (2/3)."
+                               (Just (goodBody ++ goodFinal2, word1))
+                               (parseFinalMonWord (goodBody ++ goodFinal2 ++ goodFinal1)))
+
+test45 = TestCase (assertEqual "parseFinalMonWord without final mon word works."
+                               Nothing
+                               (parseFinalMonWord (tail goodBody)))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -276,6 +306,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" 
                                      TestLabel "parseRewriteLine_DerivedParse" test37,
                                      TestLabel "parseRewritePreamble_Valid" test38,
                                      TestLabel "parseRewritePreamble_Duplicate" test39,
-                                     TestLabel "parseRewritePreamble_Unknown" test40]
+                                     TestLabel "parseRewritePreamble_Unknown" test40,
+                                     TestLabel "parseFinalMonWord_EmptyInput" test41,
+                                     TestLabel "parseFinalMonWord_ValidOne" test42,
+                                     TestLabel "parseFinalMonWord_ValidTwo" test43,
+                                     TestLabel "parseFinalMonWord_ValidThree" test44,
+                                     TestLabel "parseFinalMonWord_MissingFinalWord" test45]
 
 main = defaultMain tests
