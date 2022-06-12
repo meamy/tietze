@@ -377,6 +377,33 @@ test84 = TestCase (assertEqual "cleanLine handles comments and spacing (2/2)."
                                (cleanLine "  \t\t   \t\t\t  -- comments comments..."))
 
 -----------------------------------------------------------------------------------------
+-- iteOnSpacing
+
+test85 = TestCase (assertEqual "iteOnSpacing supports empty strings."
+                               5
+                               (iteOnSpacing "" 1 5))
+
+test86 = TestCase (assertEqual "iteOnSpacing supports spaces."
+                               5
+                               (iteOnSpacing " " 1 5))
+
+test87 = TestCase (assertEqual "iteOnSpacing supports tabbing."
+                               5
+                               (iteOnSpacing "\t" 1 5))
+
+test88 = TestCase (assertEqual "iteOnSpacing supports non-spacing."
+                               1
+                               (iteOnSpacing "a" 1 5))
+
+test89 = TestCase (assertEqual "iteOnSpacing supports mixed spacing."
+                               5
+                               (iteOnSpacing "  \t   " 1 5))
+
+test90 = TestCase (assertEqual "iteOnSpacing detects non-spacing characters later on."
+                               1
+                               (iteOnSpacing "  \t   a" 1 5))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" test1,
@@ -462,6 +489,12 @@ tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" 
                                      TestLabel "cleanLine_LeadingSpacing" test81,
                                      TestLabel "cleanLine_Comments" test82,
                                      TestLabel "cleanLine_MixedPaddingOne" test83,
-                                     TestLabel "cleanLine_MixedPaddingTwo" test84]
+                                     TestLabel "cleanLine_MixedPaddingTwo" test84,
+                                     TestLabel "iteOnSpacing_EmptyString" test85,
+                                     TestLabel "iteOnSpacing_Space" test86,
+                                     TestLabel "iteOnSpacing_Tab" test87,
+                                     TestLabel "iteOnSpacing_NonSpacing" test88,
+                                     TestLabel "iteOnSpacing_MixedSpacing" test89,
+                                     TestLabel "iteOnSpacing_MixedNonSpacing" test90]
 
 main = defaultMain tests

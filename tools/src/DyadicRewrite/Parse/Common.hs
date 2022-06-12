@@ -15,6 +15,7 @@ data ParserError = ImplError String
                  | UnexpectedSymbol Int
                  | UnexpectedEOL
                  | UnexpectedEOF
+                 | ExpectedEOF
                  | UnknownParseError
                  deriving (Eq)
 
@@ -25,6 +26,7 @@ instance Show ParserError where
     show (UnexpectedSymbol pos) = "Unexpected symbol at " ++ (show pos) ++ "."
     show UnexpectedEOL          = "Unexpected end-of-line."
     show UnexpectedEOF          = "Unexpected end-of-file."
+    show ExpectedEOF            = "Expected end-of-file."
     show UnknownParseError      = "Parser failed unexpected."
 
 -- | Consumes a string (full) and the substring upon which parsing failed (unparsed).
@@ -53,6 +55,7 @@ propCommonErr str substr err =
         (UnexpectedSymbol pos) -> UnexpectedSymbol (update pos)
         UnexpectedEOL          -> UnexpectedEOL
         UnexpectedEOF          -> UnexpectedEOF
+        ExpectedEOF            -> ExpectedEOF
         UnknownParseError      -> UnknownParseError
     where update pos = relToAbsErrPos str substr pos
 
@@ -160,3 +163,24 @@ cleanLine str = stripComments (snd (trimSpacing str))
 branchOnSpacing :: String -> a -> b -> Either a b
 branchOnSpacing str lval rval = let trimmed = (snd (trimSpacing str))
                                 in if (trimmed == "") then (Right rval) else (Left lval)
+
+-- | Consumes a string (str), and two values of the same type (fval and tval). If str
+-- contains non-spacing characters, then fval is returned. Otherwise, rval is returned.
+iteOnSpacing :: String -> a -> a -> a
+iteOnSpacing str fval tval = case (branchOnSpacing str fval tval) of
+    Left v  -> v
+    Right v -> v
+
+-----------------------------------------------------------------------------------------
+-- * Line Parsing.
+
+-- | Consumes a list of lines in a file. If all lines are empty after stripping comments
+-- and whitespace, then nothing is retrned. Otherwise, an ExpectedEOF error is returned
+-- with the number of the non-empty line.
+parseEOFSpacing :: [String] -> Int -> Maybe (Int, ParserError)
+parseEOFSpacing []           _   = Nothing
+parseEOFSpacing (line:lines) num =
+    case (snd (trimSpacing stripped)) of
+        ""   -> parseEOFSpacing lines (num + 1)
+        text -> Just (num, ExpectedEOF)
+    where stripped = stripComments line
