@@ -244,6 +244,9 @@ goodFinal1 = ["  a.b.c  "] ++ goodEOF
 goodFinal2 :: [String]
 goodFinal2 = ["  c.a.b  "] ++ goodEOF
 
+goodRewrite :: [String]
+goodRewrite = tail goodBody
+
 test41 = TestCase (assertEqual "parseFinalMonWord supports empty files."
                                Nothing
                                (parseFinalMonWord []))
@@ -262,7 +265,49 @@ test44 = TestCase (assertEqual "parseFinalMonWord extracts final words (2/3)."
 
 test45 = TestCase (assertEqual "parseFinalMonWord without final mon word works."
                                Nothing
-                               (parseFinalMonWord (tail goodBody)))
+                               (parseFinalMonWord goodRewrite))
+
+-----------------------------------------------------------------------------------------
+-- parseRewriteLines
+
+-- Single line tests.
+
+test46 = TestCase (assertEqual "parseRewriteLines supports empty files."
+                               (Right [])
+                               (parseRewriteLines dict3 [] 0))
+
+test47 = TestCase (assertEqual "parseRewriteLines can parse a single line."
+                               (Right [(Rewrite primitiveRuleEqn 5 False)])
+                               (parseRewriteLines dict3 ["  xyz  ←   5   -- xyz"] 0))
+
+test48 = TestCase (assertEqual "parseRewriteLines can propogate errors (single line)."
+                               (Left (0, Left (UnexpectedSymbol 19)))
+                               (parseRewriteLines dict3 ["  !apply derived 10 x --x"] 0))
+
+-- Multi-line tests.
+
+rewriteList :: [Rewrite]
+rewriteList = [(Rewrite primitiveRuleL2R 0 True),
+               (Rewrite primitiveRuleEqn 5 True),
+               (Rewrite derivedRule 10 True)]
+
+test49 = TestCase (assertEqual "parseRewriteLines can parse multiple valid lines."
+                               (Right rewriteList)
+                               (parseRewriteLines dict3 goodRewrite 0))
+
+test50 = TestCase (assertEqual "parseRewriteLines can propogate errors (multiline)."
+                               (Left (6, Left (UnexpectedSymbol 6)))
+                               (parseRewriteLines dict3 (goodRewrite ++ [" abc 0 x"]) 0))
+
+-- Adjusted starting line.
+
+test51 = TestCase (assertEqual "parseRewriteLines supports offsets (1/2)."
+                               (Right rewriteList)
+                               (parseRewriteLines dict3 goodRewrite 5))
+
+test52 = TestCase (assertEqual "parseRewriteLines supports offsets (2/2)."
+                               (Left (11, Left (UnexpectedSymbol 6)))
+                               (parseRewriteLines dict3 (goodRewrite ++ [" abc 0 x"]) 5))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -311,6 +356,13 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" 
                                      TestLabel "parseFinalMonWord_ValidOne" test42,
                                      TestLabel "parseFinalMonWord_ValidTwo" test43,
                                      TestLabel "parseFinalMonWord_ValidThree" test44,
-                                     TestLabel "parseFinalMonWord_MissingFinalWord" test45]
+                                     TestLabel "parseFinalMonWord_MissingFinalWord" test45,
+                                     TestLabel "parseRewriteLines_EmptyFile" test46,
+                                     TestLabel "parseRewriteLines_SingleValid" test47,
+                                     TestLabel "parseRewriteLines_SinglePropogate" test48,
+                                     TestLabel "parseRewriteLines_MultilineValid" test49,
+                                     TestLabel "parseRewriteLines_MultilineError" test50,
+                                     TestLabel "parseRewriteLines_OffsetOne" test51,
+                                     TestLabel "parseRewriteLines_OffsetTwo" test52]
 
 main = defaultMain tests

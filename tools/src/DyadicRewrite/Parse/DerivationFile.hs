@@ -165,3 +165,19 @@ parseFinalMonWord (line:lines) =
             Just word -> Just ([], word)
             Nothing   -> Nothing
         Just (body, word) -> Just ((line:body), word)
+
+-- | Consumes a dictionary of known rules (dict) and the rewrite lines of a derivation
+-- file. If the lines are valid with respect to dict, then returns a list of rewrites in
+-- the order they appear. Otherwise, returns a parsing exception.
+parseRewriteLines :: RuleDict -> [String] -> Int -> Either (Int, DFPError) [Rewrite]
+parseRewriteLines _     []           _   = Right []
+parseRewriteLines rules (line:lines) num =
+    case (snd (trimSpacing stripped)) of
+        ""   -> parseRewriteLines rules lines nextNum
+        text -> case (parseRewriteLine rules text) of
+            Left err      -> Left (num, (propDerErr stripped text err))
+            Right rewrite -> case (parseRewriteLines rules lines nextNum) of
+                Left (errLn, err) -> Left (errLn, (propDerErr stripped text err))
+                Right rewrites    -> Right (rewrite:rewrites)
+    where stripped = stripComments line
+          nextNum = num + 1
