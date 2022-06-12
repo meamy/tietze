@@ -88,3 +88,15 @@ parseNonEmptyMonWord str =
 parseMonWord :: String -> Maybe (MonWord, String)
 parseMonWord ('ε':post) = Just ([], post)
 parseMonWord str        = parseNonEmptyMonWord str
+
+-----------------------------------------------------------------------------------------
+-- * Line Parsing Functions.
+
+-- | Consumes a string (str). If str contains a monoidal word (with optional whitespace
+-- and comments), then the monoidal word is returned. Otherwise, nothing is returned.
+parseLineAsMonWord :: String -> Maybe MonWord
+parseLineAsMonWord line =
+    case (parseMonWord cleaned) of
+        Just (word, post) -> iteOnSpacing post Nothing (Just word)
+        Nothing           -> Nothing
+    where cleaned = cleanLine line

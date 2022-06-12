@@ -186,6 +186,29 @@ test39 = TestCase (assertEqual "parseMonWord supports non-empty strings."
                                (parseMonWord "ε.asd"))
 
 -----------------------------------------------------------------------------------------
+-- parseLineAsMonWord
+
+test40 = TestCase (assertEqual "parseLineAsMonWord supports empty lines."
+                               Nothing
+                               (parseLineAsMonWord ""))
+
+test41 = TestCase (assertEqual "parseLineAsMonWord supports non-word lines."
+                               Nothing
+                               (parseLineAsMonWord "    @name rel1    -- comment"))
+
+test42 = TestCase (assertEqual "parseLineAsMonWord supports empty words."
+                               (Just [] :: Maybe MonWord)
+                               (parseLineAsMonWord "    ε    -- comment"))
+
+test43 = TestCase (assertEqual "parseLineAsMonWord supports non-empty words."
+                               (Just word2 :: Maybe MonWord)
+                               (parseLineAsMonWord "    abc.def    -- comment"))
+
+test44 = TestCase (assertEqual "parseLineAsMonWord supports trailing symbols."
+                               Nothing
+                               (parseLineAsMonWord "    abc.def  xyz  -- comment"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseParam_EmptyString" test1,
@@ -225,6 +248,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseParam_EmptyString" test1,
                                      TestLabel "parseNonEmptyMonWord_PostString" test35,
                                      TestLabel "parseNonEmptyMonWord_MissingSpace" test36,
                                      TestLabel "parseMonWord_NonEmpty" test38,
-                                     TestLabel "parseMonWord_Empty" test39]
+                                     TestLabel "parseMonWord_Empty" test39,
+                                     TestLabel "parseLineAsMonWord_EmptyLine" test40,
+                                     TestLabel "parseLineAsMonWord_NonWordLine" test41,
+                                     TestLabel "parseLineAsMonWord_EmptyWord" test42,
+                                     TestLabel "parseLineAsMonWord_NonEmptyWord" test43,
+                                     TestLabel "parseLineAsMonWord_TrailingSymbols" test44]
 
 main = defaultMain tests
