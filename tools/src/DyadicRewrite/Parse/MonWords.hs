@@ -31,7 +31,7 @@ parseParams str =
         Nothing -> ([], str)
 
 -----------------------------------------------------------------------------------------
--- * Utilities Parse Sybmol Names.
+-- * Utilities to Parse Symbol Names.
 
 -- | Consumes a string (str). If there exists a string pre of the form <ID><PARAMS> that
 -- str = pre + post, then returns (Symbol <ID> <PARAM>, post) where pre is the maximal
@@ -42,6 +42,16 @@ parseSymbol str =
         Just (id, post) -> let (params, post') = (parseParams post)
                            in Just ((Symbol id params), post')
         Nothing -> Nothing
+
+-- | Consumes a list of generator names (gens) and a monoidal word (word). Returns the
+-- first symbol in monoidal word with either a non-zero number of parameters or a name
+-- not in gens. If no such symbol exists, then nothing is returned.
+findUnknownGenInMonWord :: [String] -> MonWord -> Maybe Symbol
+findUnknownGenInMonWord gens []          = Nothing
+findUnknownGenInMonWord gens (symb:word) = if symbolIsValid
+                                           then findUnknownGenInMonWord gens word
+                                           else Just symb
+    where symbolIsValid = ((args symb) == []) && ((name symb) `elem` gens)
 
 -----------------------------------------------------------------------------------------
 -- * Monoidal Word Parsing Functions.

@@ -34,16 +34,6 @@ type RFPError = Either ParserError RelFileError
 -----------------------------------------------------------------------------------------
 -- * Functions to Validate Monoidal Words.
 
--- | Consumes a list of generator names (gens) and a monoidal word (word). Returns the
--- first symbol in monoidal word with either a non-zero number of parameters or a name
--- not in gens. If no such symbol exists, then nothing is returned.
-findUnknownGenInMonWord :: [String] -> MonWord -> Maybe Symbol
-findUnknownGenInMonWord gens []          = Nothing
-findUnknownGenInMonWord gens (symb:word) = if symbolIsValid
-                                           then findUnknownGenInMonWord gens word
-                                           else Just symb
-    where symbolIsValid = ((args symb) == []) && ((name symb) `elem` gens)
-
 -- | Consumes a list of generator names (gens) and a rule. Returns the first symbol (on
 -- either the lhs, or rhs, with priority for the lhs) which violates the checks of
 -- findUnknownGenInMonWord. If no such symbol exists, then nothing is returned.

@@ -22,6 +22,8 @@ data DerFileError = UnknownRewriteMod
                   | RewriteOnDerived
                   | UnknownGenName String
                   | UnknownRuleName String
+                  | MissingInitialWord
+                  | MissingFinalWord
                   deriving (Eq)
 
 instance Show DerFileError where
@@ -32,7 +34,10 @@ instance Show DerFileError where
     show MissingRewriteDir      = "Equational rewrite rule requires derivation direction."
     show ApplyOnPrimitive       = "Applied use of a primitive rewrite rule."
     show RewriteOnDerived       = "Primitive use of a derived rewrite rule."
+    show (UnknownGenName name)  = "Unknown generator name (" ++ name ++ ")."
     show (UnknownRuleName name) = "Unknown rewrite rule (" ++ name ++ ")."
+    show MissingInitialWord     = "Initial word missing in derivation."
+    show MissingFinalWord       = "Final word missing in derivation."
 
 -- | Errors returned during derivation file parsing.
 type DFPError = Either ParserError DerFileError
@@ -57,7 +62,10 @@ propDerErr str substr (Right err) =
         MissingRewriteDir      -> Right MissingRewriteDir
         ApplyOnPrimitive       -> Right ApplyOnPrimitive
         RewriteOnDerived       -> Right RewriteOnDerived
+        (UnknownGenName name)  -> Right (UnknownGenName name)
         (UnknownRuleName name) -> Right (UnknownRuleName name)
+        MissingInitialWord     -> Right MissingInitialWord
+        MissingFinalWord       -> Right MissingFinalWord
     where update pos = relToAbsErrPos str substr pos
 
 -- | Helper function to parse the position at the end of a rewrite. Assumes that a rule
@@ -152,7 +160,13 @@ parseRewritePreamble :: PropParser RewritePreamble
 parseRewritePreamble = makePreambleParser rewriteProperties defaultPreamble
 
 -----------------------------------------------------------------------------------------
--- * Full Derivation File Parsing.
+-- * Derivation Body Parsing.
+
+-- | Summary of the derivation in a derivation file.
+data Derivation = Derivation { initial :: MonWord
+                             , rewrites :: [Rewrite]
+                             , final :: MonWord
+                             } deriving (Eq,Show)
 
 -- | Consumes the body of a derivation file (excluding the initial word). Attempts to
 -- find the final word in the file. If the final word is found, then the word is returned
@@ -181,3 +195,28 @@ parseRewriteLines rules (line:lines) num =
                 Right rewrites    -> Right (rewrite:rewrites)
     where stripped = stripComments line
           nextNum = num + 1
+
+-- | Factors out the type of both derivation file parsers. Intended for internal use.
+type DParser a = RuleDict -> [String] -> [String] -> Int -> Either (Int, DFPError) a
+
+-- | Consumes a dictionary of known relations (dict), a list of known generator names
+-- (gens), and the lines of a derivation file immediately following its preamble. If the
+-- lines are valid with respect to dict and gen, then a derivation is returned.
+-- Otherwise, returns a parsing exception. Requires that there is at least one line in
+-- the body, and that the first line is the initial circuit. 
+parseDerivation :: DParser Derivation
+parseDerivation _     _    []              num = Left (num, Left UnexpectedEOF)
+parseDerivation rules gens (initLine:body) num =
+    case (parseLineAsMonWord initLine) of
+        Nothing   -> Left (num, Right MissingInitialWord)
+        Just init -> case (findUnknownGenInMonWord gens init) of
+            Just gen -> Left (num, Right (UnknownGenName (name gen)))
+            Nothing  -> case (parseFinalMonWord body) of
+                Nothing              -> Left ((finalAt body), Right MissingFinalWord)
+                Just (rwtLines, final) -> case (findUnknownGenInMonWord gens final) of
+                    Just gen -> Left ((finalAt rwtLines), Right (UnknownGenName (name gen)))
+                    Nothing  -> case (parseRewriteLines rules rwtLines bodyLn) of
+                        Left err       -> Left err
+                        Right rewrites -> Right (Derivation init rewrites final)
+    where bodyLn = num + 1
+          finalAt body = bodyLn + (length body)

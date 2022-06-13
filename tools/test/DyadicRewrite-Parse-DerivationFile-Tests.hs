@@ -310,6 +310,66 @@ test52 = TestCase (assertEqual "parseRewriteLines supports offsets (2/2)."
                                (parseRewriteLines dict3 (goodRewrite ++ [" abc 0 x"]) 5))
 
 -----------------------------------------------------------------------------------------
+-- parseDerivation
+
+gens :: [String]
+gens = ["a", "b", "c"]
+
+badBody :: [String]
+badBody = ["a.b.c",
+           "",
+           "abc 0",
+           "1abc 0",
+           "",
+           "",
+           "a.b.c"]
+
+test53 = TestCase (assertEqual "parseDerivation parses a full derivation (1/3)."
+                               (Right (Derivation word1 rewriteList word1))
+                               (parseDerivation dict3 gens (goodBody ++ goodFinal1) 0))
+
+test54 = TestCase (assertEqual "parseDerivation parses a full derivation (2/3)."
+                               (Right (Derivation word1 rewriteList word2))
+                               (parseDerivation dict3 gens (goodBody ++ goodFinal2) 0))
+
+test55 = TestCase (assertEqual "parseDerivation parses a full derivation (3/3)."
+                               (Right (Derivation word1 rewriteList word1))
+                               (parseDerivation dict3 gens input 0))
+    where input = goodFinal1 ++ goodRewrite ++ goodFinal1
+
+test56 = TestCase (assertEqual "parseDerivation detects missing initial word."
+                               (Left (0, Right MissingInitialWord))
+                               (parseDerivation dict3 gens input 0))
+    where input = goodRewrite ++ goodFinal1
+
+test57 = TestCase (assertEqual "parseDerivation detects delayed initial word."
+                               (Left (0, Right MissingInitialWord))
+                               (parseDerivation dict3 gens input 0))
+    where input = [""] ++ goodFinal1 ++ goodRewrite ++ goodFinal1
+
+test58 = TestCase (assertEqual "parseDerivation detects empty inputs."
+                               (Left (0, Left UnexpectedEOF))
+                               (parseDerivation dict3 gens [] 0))
+
+test59 = TestCase (assertEqual "parseDerivation detects bad generators in initial word."
+                               (Left (0, Right (UnknownGenName "c")))
+                               (parseDerivation dict3 ["a", "b"] input 0))
+    where input = goodBody ++ goodFinal1
+
+test60 = TestCase (assertEqual "parseDerivation detects bad generators in final word."
+                               (Left (7, Right (UnknownGenName "c")))
+                               (parseDerivation dict3 ["a", "b"] input 0))
+    where input = ["ε"] ++ goodRewrite ++ goodFinal1
+
+test61 = TestCase (assertEqual "parseDerivation detects missing final word."
+                               (Left (7, Right MissingFinalWord))
+                               (parseDerivation dict3 gens goodBody 0))
+
+test62 = TestCase (assertEqual "parseDerivation detects rewrite issues."
+                               (Left (3, Right InvalidRuleName))
+                               (parseDerivation dict3 gens badBody 0))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" test1,
@@ -363,6 +423,16 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" 
                                      TestLabel "parseRewriteLines_MultilineValid" test49,
                                      TestLabel "parseRewriteLines_MultilineError" test50,
                                      TestLabel "parseRewriteLines_OffsetOne" test51,
-                                     TestLabel "parseRewriteLines_OffsetTwo" test52]
+                                     TestLabel "parseRewriteLines_OffsetTwo" test52,
+                                     TestLabel "parseDerivation_ValidOne" test53,
+                                     TestLabel "parseDerivation_ValidTwo" test54,
+                                     TestLabel "parseDerivation_ValidThree" test55,
+                                     TestLabel "parseDerivation_MissingInitWord" test56,
+                                     TestLabel "parseDerivation_DelayedInitWord" test57,
+                                     TestLabel "parseDerivation_EmptyString" test58,
+                                     TestLabel "parseDerivation_InitWordBadGen" test59,
+                                     TestLabel "parseDerivation_FinalWordBadGen" test60,
+                                     TestLabel "parseDerivation_MissingFinalWord" test61,
+                                     TestLabel "parseDerivation_InvalidRewrite" test62]
 
 main = defaultMain tests

@@ -9,6 +9,7 @@ import DyadicRewrite.Common
 import DyadicRewrite.Rewrite.Rules
 import DyadicRewrite.Rewrite.Lookup
 import DyadicRewrite.Parse.Common
+import DyadicRewrite.Parse.MonWords
 import DyadicRewrite.Parse.RelationFile
 
 -----------------------------------------------------------------------------------------
