@@ -19,6 +19,7 @@ library
                        DyadicRewrite.Generators.QubitGates
                        DyadicRewrite.IO.Files
                        DyadicRewrite.IO.LineBasedLogging
+                       DyadicRewrite.IO.PrimitiveLogging
                        DyadicRewrite.Parse.Common
                        DyadicRewrite.Parse.MonWords
                        DyadicRewrite.Parse.Properties
@@ -84,6 +85,11 @@ test-suite dyadicrewrite-generators-qubitgates-tests
 test-suite dyadicrewrite-io-linebasedlogging-tests
   import:              basic-unit-test-props
   main-is:             DyadicRewrite-IO-LineBasedLogging-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite dyadicrewrite-io-primitivelogging-tests
+  import:              basic-unit-test-props
+  main-is:             DyadicRewrite-IO-PrimitiveLogging-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite dyadicrewrite-parse-common-tests

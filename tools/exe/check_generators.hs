@@ -8,7 +8,6 @@ import System.Environment
 import DyadicRewrite.Generators.Semantics
 import DyadicRewrite.IO.LineBasedLogging
 import DyadicRewrite.Parse.Common
-import DyadicRewrite.Parse.Semantics
 import DyadicRewrite.Parse.GeneratorFile
 
 -- | Consumes a generator name, its showable semantics, and an accumulated string.

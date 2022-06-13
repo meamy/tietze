@@ -5,36 +5,20 @@ module Main where
 
 import System.Directory
 import System.Environment
-import DyadicRewrite.Common
-import DyadicRewrite.Rewrite.Rules
 import DyadicRewrite.Rewrite.Lookup
-import DyadicRewrite.Generators.Semantics
 import DyadicRewrite.IO.Files
 import DyadicRewrite.IO.LineBasedLogging
-import DyadicRewrite.Parse.Semantics
+import DyadicRewrite.IO.PrimitiveLogging
 import DyadicRewrite.Parse.GeneratorFile
 import DyadicRewrite.Parse.RelationFile
-
--- | Converts a monoidal word into a dot concatenated string.
-logWord :: MonWord -> String
-logWord []          = "ε"
-logWord (symb:[])   = (show symb)
-logWord (symb:word) = (show symb) ++ "." ++ (logWord word)
-
--- | Converts a rewrite rule into a string.
-logRule :: (String, RewriteRule) -> String
-logRule (name, rule) = name ++ ": " ++ lstr ++ " " ++ ostr ++ " " ++ rstr ++ "\n"
-    where lstr = logWord (lhs rule)
-          ostr = if (equational rule) then "=" else "→"
-          rstr = logWord (rhs rule)
 
 -- | Processes all lines of a relation file, and returns a textual representation of the
 -- relations. If parsing fails, then a formatted error message is returned.
 processRelFile :: String -> [String] -> [String] -> String
 processRelFile fname gens lines =
     case (parseRelFile gens lines 0) of
-        (Left (errLn, err)) -> logEitherMsg fname errLn err
-        (Right dict)        -> foldRules (\gen str -> (logRule gen) ++ str) "" dict
+        (Left (num, err)) -> logEitherMsg fname num err
+        (Right dict)      -> foldRules (\gen str -> (logRule gen) ++ "\n" ++ str) "" dict
 
 -- | Parses all generators and rules, then prints a textual representation of the result.
 readFiles :: String -> String -> IO ()
