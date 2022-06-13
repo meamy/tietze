@@ -220,3 +220,16 @@ parseDerivation rules gens (initLine:body) num =
                         Right rewrites -> Right (Derivation init rewrites final)
     where bodyLn = num + 1
           finalAt body = bodyLn + (length body)
+
+-- | Consumes a dictionary of known relations (dict), a list of known generator names
+-- (gens), and the lines of a derivation file including the preamble. If the lines are
+-- valid with respect to dict and gen, then a derivation is returned. Otherwise, returns
+-- a parsing exception. Requires that there is at least one line in the body, and that
+-- the first line is the initial circuit. 
+parseDerivationFile :: DParser (RewritePreamble, Derivation)
+parseDerivationFile rules gens lines num =
+    case (parseRewritePreamble lines num) of
+        Left (errLn, err)          -> Left (errLn, Left err)
+        Right (body, bodyLn, meta) -> case (parseDerivation rules gens body bodyLn) of
+            Left err         -> Left err
+            Right derivation -> Right (meta, derivation)

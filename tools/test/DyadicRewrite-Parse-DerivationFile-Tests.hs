@@ -370,6 +370,27 @@ test62 = TestCase (assertEqual "parseDerivation detects rewrite issues."
                                (parseDerivation dict3 gens badBody 0))
 
 -----------------------------------------------------------------------------------------
+-- parseDerivationFile
+
+validResult :: (RewritePreamble, Derivation)
+validResult = ((RewritePreamble (Just "tmp")), (Derivation word1 rewriteList word2))
+
+test63 = TestCase (assertEqual "parseDerivationFile parses a full derivation file."
+                               (Right validResult)
+                               (parseDerivationFile dict3 gens input 0))
+    where input = goodPreamble ++ goodBody ++ goodFinal2
+
+test64 = TestCase (assertEqual "parseDerivationFile propogates preamble errors."
+                               (Left (1, Left (DuplicateProp "name")))
+                               (parseDerivationFile dict3 gens input 0))
+    where input = badPreambleOne ++ goodBody ++ goodFinal2
+
+test65 = TestCase (assertEqual "parseDerivationFile propogates body errors."
+                               (Left (13, Right (UnknownGenName "c")))
+                               (parseDerivationFile dict3 ["a", "b"] input 0))
+    where input = goodPreamble ++ ["ε"] ++ goodRewrite ++ goodFinal1
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" test1,
@@ -433,6 +454,9 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" 
                                      TestLabel "parseDerivation_InitWordBadGen" test59,
                                      TestLabel "parseDerivation_FinalWordBadGen" test60,
                                      TestLabel "parseDerivation_MissingFinalWord" test61,
-                                     TestLabel "parseDerivation_InvalidRewrite" test62]
+                                     TestLabel "parseDerivation_InvalidRewrite" test62,
+                                     TestLabel "parseDerivationFile_Valid" test63,
+                                     TestLabel "parseDerivationFile_BadPreamble" test64,
+                                     TestLabel "parseDerivationFile_BadBody" test65]
 
 main = defaultMain tests
