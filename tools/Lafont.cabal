@@ -1,0 +1,135 @@
+cabal-version:       2.2
+
+name:                Lafont
+version:             0.1.0.0
+license:             MIT
+license-file:        LICENSE
+author:              Scott Wesley
+maintainer:          ar627383@dal.ca
+category:            Math
+build-type:          Simple
+extra-source-files:  CHANGELOG.md
+
+library
+  exposed-modules:     Lafont.Common
+                       Lafont.Rewrite.Rules
+                       Lafont.Rewrite.Simplification
+                       Lafont.Rewrite.Lookup
+                       Lafont.Generators.Semantics
+                       Lafont.Generators.QubitGates
+                       Lafont.IO.Files
+                       Lafont.IO.LineBasedLogging
+                       Lafont.IO.PrimitiveLogging
+                       Lafont.Parse.Common
+                       Lafont.Parse.MonWords
+                       Lafont.Parse.Properties
+                       Lafont.Parse.GeneratorFile
+                       Lafont.Parse.Semantics
+                       Lafont.Parse.RelationFile
+                       Lafont.Parse.DerivationFile
+  build-depends:       base >=4.12 && <4.13,
+                       containers,
+                       directory,
+                       split,
+                       newsynth
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+
+common basic-unit-test-props
+  hs-source-dirs:      test
+  default-language:    Haskell2010
+  build-depends:       base,
+                       test-framework,
+                       test-framework-hunit,
+                       HUnit,
+                       Lafont
+
+common exe-with-file-io-props
+  hs-source-dirs:      exe
+  default-language:    Haskell2010
+  build-depends:       base >=4.12 && <4.13,
+                       directory,
+                       Lafont
+
+test-suite lafont-common-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Common-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-rewrite-rules-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Rewrite-Rules-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-rewrite-simplification-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Rewrite-Simplification-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-rewrite-lookup-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Rewrite-Lookup-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-generators-semantics-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Generators-Semantics-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-generators-qubitgates-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Generators-QubitGates-Tests.hs
+  type:                exitcode-stdio-1.0
+  build-depends:       newsynth
+
+test-suite lafont-io-linebasedlogging-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-IO-LineBasedLogging-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-io-primitivelogging-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-IO-PrimitiveLogging-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-parse-common-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Parse-Common-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-parse-monwords-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Parse-MonWords-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-parse-properties-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Parse-Properties-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-parse-generatorfile-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Parse-GeneratorFile-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-parse-relationfile-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Parse-RelationFile-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-parse-derivationfile-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Parse-DerivationFile-Tests.hs
+  type:                exitcode-stdio-1.0
+
+executable check_generators
+  import:              exe-with-file-io-props
+  main-is:             check_generators.hs
+
+executable check_relations
+  import:              exe-with-file-io-props
+  main-is:             check_relations.hs
+
+executable validate_derivations
+  import:              exe-with-file-io-props
+  main-is:             validate_derivations.hs

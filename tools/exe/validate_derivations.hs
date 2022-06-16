@@ -4,14 +4,14 @@ module Main where
 
 import System.Directory
 import System.Environment
-import DyadicRewrite.Rewrite.Lookup
-import DyadicRewrite.Rewrite.Simplification
-import DyadicRewrite.IO.Files
-import DyadicRewrite.IO.LineBasedLogging
-import DyadicRewrite.IO.PrimitiveLogging
-import DyadicRewrite.Parse.GeneratorFile
-import DyadicRewrite.Parse.RelationFile
-import DyadicRewrite.Parse.DerivationFile
+import Lafont.Rewrite.Lookup
+import Lafont.Rewrite.Simplification
+import Lafont.IO.Files
+import Lafont.IO.LineBasedLogging
+import Lafont.IO.PrimitiveLogging
+import Lafont.Parse.GeneratorFile
+import Lafont.Parse.RelationFile
+import Lafont.Parse.DerivationFile
 
 -- | Helper types to simplify code.
 type NamedDerivationData = (String, RewritePreamble, Derivation)

@@ -5,10 +5,10 @@ module Main where
 
 import System.Directory
 import System.Environment
-import DyadicRewrite.Generators.Semantics
-import DyadicRewrite.IO.LineBasedLogging
-import DyadicRewrite.Parse.Common
-import DyadicRewrite.Parse.GeneratorFile
+import Lafont.Generators.Semantics
+import Lafont.IO.LineBasedLogging
+import Lafont.Parse.Common
+import Lafont.Parse.GeneratorFile
 
 -- | Consumes a generator name, its showable semantics, and an accumulated string.
 -- Returns a textual representation representation of the name and semantics, appended to

@@ -5,12 +5,12 @@ module Main where
 
 import System.Directory
 import System.Environment
-import DyadicRewrite.Rewrite.Lookup
-import DyadicRewrite.IO.Files
-import DyadicRewrite.IO.LineBasedLogging
-import DyadicRewrite.IO.PrimitiveLogging
-import DyadicRewrite.Parse.GeneratorFile
-import DyadicRewrite.Parse.RelationFile
+import Lafont.Rewrite.Lookup
+import Lafont.IO.Files
+import Lafont.IO.LineBasedLogging
+import Lafont.IO.PrimitiveLogging
+import Lafont.Parse.GeneratorFile
+import Lafont.Parse.RelationFile
 
 -- | Processes all lines of a relation file, and returns a textual representation of the
 -- relations. If parsing fails, then a formatted error message is returned.
