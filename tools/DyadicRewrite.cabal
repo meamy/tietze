@@ -129,3 +129,7 @@ executable check_generators
 executable check_relations
   import:              exe-with-file-io-props
   main-is:             check_relations.hs
+
+executable validate_derivations
+  import:              exe-with-file-io-props
+  main-is:             validate_derivations.hs
