@@ -6,9 +6,9 @@ module Main where
 import System.Directory
 import System.Environment
 import Lafont.Generators.Semantics
-import Lafont.IO.LineBasedLogging
 import Lafont.Parse.Common
 import Lafont.Parse.GeneratorFile
+import LafontExe.IO.LineBasedLogging
 
 -- | Consumes a generator name, its showable semantics, and an accumulated string.
 -- Returns a textual representation representation of the name and semantics, appended to

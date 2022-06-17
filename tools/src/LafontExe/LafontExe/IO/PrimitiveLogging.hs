@@ -1,6 +1,6 @@
 -- | Functions to log primitive types with a special format.
 
-module Lafont.IO.PrimitiveLogging where
+module LafontExe.IO.PrimitiveLogging where
 
 import Lafont.Common
 import Lafont.Rewrite.Rules

@@ -6,12 +6,12 @@ import System.Directory
 import System.Environment
 import Lafont.Rewrite.Lookup
 import Lafont.Rewrite.Simplification
-import Lafont.IO.Files
-import Lafont.IO.LineBasedLogging
-import Lafont.IO.PrimitiveLogging
 import Lafont.Parse.GeneratorFile
 import Lafont.Parse.RelationFile
 import Lafont.Parse.DerivationFile
+import LafontExe.IO.Files
+import LafontExe.IO.LineBasedLogging
+import LafontExe.IO.PrimitiveLogging
 
 -- | Helper types to simplify code.
 type NamedDerivationData = (String, RewritePreamble, Derivation)

@@ -1,6 +1,6 @@
 -- | Helper functions to interace with files.
 
-module Lafont.IO.Files where
+module LafontExe.IO.Files where
 
 import System.Directory
 

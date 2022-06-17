@@ -6,11 +6,11 @@ module Main where
 import System.Directory
 import System.Environment
 import Lafont.Rewrite.Lookup
-import Lafont.IO.Files
-import Lafont.IO.LineBasedLogging
-import Lafont.IO.PrimitiveLogging
 import Lafont.Parse.GeneratorFile
 import Lafont.Parse.RelationFile
+import LafontExe.IO.Files
+import LafontExe.IO.LineBasedLogging
+import LafontExe.IO.PrimitiveLogging
 
 -- | Processes all lines of a relation file, and returns a textual representation of the
 -- relations. If parsing fails, then a formatted error message is returned.
