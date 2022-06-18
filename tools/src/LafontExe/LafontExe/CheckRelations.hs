@@ -2,6 +2,7 @@
 
 module LafontExe.CheckRelations where
 
+import System.IO
 import Lafont.Rewrite.Lookup
 import Lafont.Parse.GeneratorFile
 import Lafont.Parse.RelationFile
@@ -21,21 +22,21 @@ processRelationFile fname gens lines =
 
 -- | See checkRelations. Requires that both files exist, whereas checkRelations does not
 -- imporse this assumption
-checkRelationsImpl :: String -> String -> IO ()
-checkRelationsImpl genFname relFname = do
+checkRelationsImpl :: Handle -> String -> String -> IO ()
+checkRelationsImpl hdl genFname relFname = do
     gContent <- readFile genFname
     rContent <- readFile relFname
     case (parseGenFileAsAlphabet (lines gContent) 0) of
-        Left (errLn, err) -> putStr (logEitherMsg genFname errLn err)
-        Right gens        -> putStr (processRelationFile relFname gens (lines rContent))
+        Left (errLn, err) -> hPutStr hdl (logEitherMsg genFname errLn err)
+        Right gens        -> hPutStr hdl (processRelationFile relFname gens (lines rContent))
 
--- | Consumes the name of a generator file (genFname) and the name of a relation file
--- (relFname). If the generator and relation files parse correctly, then an internal
--- representation of the generators is printed. Otherwise, a parsing error is printed
--- with the file name and line number.
-checkRelations :: String -> String -> IO ()
-checkRelations genFname relFname = do
+-- | Consumes a handle, the name of a generator file (genFname) and the name of a
+-- relation file (relFname). If the generator and relation files parse correctly, then an
+-- internal representation of the generators is printed to handle. Otherwise, a parsing
+-- error is printed to handle with the file name and line number.
+checkRelations :: Handle -> String -> String -> IO ()
+checkRelations hdl genFname relFname = do
     res <- doFilesExist [genFname, relFname]
     case res of
         Just name -> putStr ("File does not exist: " ++ name ++ "\n")
-        Nothing   -> checkRelationsImpl genFname relFname
+        Nothing   -> checkRelationsImpl hdl genFname relFname

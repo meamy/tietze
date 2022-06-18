@@ -4,6 +4,7 @@
 module Main where
 
 import System.Environment
+import System.IO
 import LafontExe.CheckRelations
 
 -- | Parses and validates arguments before calling checkFiles.
@@ -12,4 +13,4 @@ main = do
     args <- getArgs
     if (not ((length args) == 2))
     then putStr ("usage: " ++ pname ++ " gen_file rel_file\n")
-    else checkRelations (args !! 0) (args !! 1)
+    else checkRelations stdout (args !! 0) (args !! 1)

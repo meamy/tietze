@@ -4,6 +4,7 @@
 module Main where
 
 import System.Environment
+import System.IO
 import LafontExe.CheckGenerators
 
 -- | Parses and validates arguments before calling checkGenerators.
@@ -12,4 +13,4 @@ main = do
     args <- getArgs
     if (not ((length args) == 1))
     then putStr ("usage: " ++ pname ++ " filename\n")
-    else checkGenerators (head args)
+    else checkGenerators stdout (head args)

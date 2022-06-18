@@ -3,6 +3,7 @@
 module LafontExe.CheckGenerators where
 
 import System.Directory
+import System.IO
 import Lafont.Generators.Semantics
 import Lafont.Parse.GeneratorFile
 import LafontExe.Logging.LineBased
@@ -31,14 +32,15 @@ processGeneratorLines fname lines =
         Left (errLn, err)               -> (logEitherMsg fname errLn err)
         Right (MonoidalGenSummary dict) -> logGenerators MonoidalSem dict 
 
--- | Consumes the name of a generator file (fname). If the generator file parses
--- correctly, then an internal representation of the generators is printed. Otherwise, a
--- parsing error is printed with file name and line number.
-checkGenerators :: String -> IO ()
-checkGenerators fname = do
+-- | Consumes a handle, the name of a generator file (fname). If the generator file
+-- parses correctly, then an internal representation of the generators is printed to the
+-- handle. Otherwise, a parsing error is printed to the handle with file name and line
+-- number.
+checkGenerators :: Handle -> String -> IO ()
+checkGenerators hdl fname = do
     exists <- doesFileExist fname
     if exists
     then do
         content <- readFile fname
-        putStr (processGeneratorLines fname (lines content))
+        hPutStr hdl (processGeneratorLines fname (lines content))
     else putStr ("File does not exist: " ++ fname ++ "\n")

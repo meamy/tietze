@@ -2,6 +2,7 @@
 
 module Main where
 
+import System.IO
 import System.Environment
 import LafontExe.ValidateDerivations
 
@@ -11,4 +12,4 @@ main = do
     args <- getArgs
     if (not ((length args) >= 3))
     then putStr ("usage: gen_file rel_file deriv_file ... deriv_file\n")
-    else validateDerivations (args !! 0) (args !! 1) (tail (tail args))
+    else validateDerivations stdout (args !! 0) (args !! 1) (tail (tail args))
