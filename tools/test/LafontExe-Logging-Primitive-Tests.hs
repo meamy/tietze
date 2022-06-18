@@ -5,7 +5,7 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Lafont.Common
 import Lafont.Rewrite.Rules
-import LafontExe.IO.PrimitiveLogging
+import LafontExe.Logging.Primitive
 
 -----------------------------------------------------------------------------------------
 -- logWord

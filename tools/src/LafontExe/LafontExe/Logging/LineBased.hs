@@ -1,6 +1,6 @@
 -- | Helper methods to format logs originating from a single line in a single file.
 
-module LafontExe.IO.LineBasedLogging where
+module LafontExe.Logging.LineBased where
 
 -----------------------------------------------------------------------------------------
 -- * Logging By: File and Line Number.

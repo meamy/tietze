@@ -10,6 +10,9 @@ category:            Math
 build-type:          Simple
 extra-source-files:  CHANGELOG.md
 
+-----------------------------------------------------------------------------------------
+-- Main library.
+
 library
   exposed-modules:     Lafont.Common
                        Lafont.Rewrite.Rules
@@ -32,15 +35,44 @@ library
   hs-source-dirs:      src/Lafont
   default-language:    Haskell2010
 
+-----------------------------------------------------------------------------------------
+-- Executable library and executables.
+
 library LafontExe
-  exposed-modules:     LafontExe.IO.Files
-                       LafontExe.IO.LineBasedLogging
-                       LafontExe.IO.PrimitiveLogging
+  exposed-modules:     LafontExe.CheckGenerators
+                       LafontExe.CheckRelations
+                       LafontExe.ValidateDerivations
+                       LafontExe.IO.Files
+                       LafontExe.Logging.LineBased
+                       LafontExe.Logging.Primitive
   build-depends:       base >=4.12 && <4.13,
                        directory,
                        Lafont
   hs-source-dirs:      src/LafontExe
   default-language:    Haskell2010
+
+common exe-with-file-io-props
+  hs-source-dirs:      exe
+  default-language:    Haskell2010
+  build-depends:       base >=4.12 && <4.13,
+                       directory,
+                       Lafont,
+                       LafontExe
+
+executable check_generators
+  import:              exe-with-file-io-props
+  main-is:             check_generators.hs
+
+executable check_relations
+  import:              exe-with-file-io-props
+  main-is:             check_relations.hs
+
+executable validate_derivations
+  import:              exe-with-file-io-props
+  main-is:             validate_derivations.hs
+
+-----------------------------------------------------------------------------------------
+-- Unit tests.
 
 common basic-unit-test-props
   hs-source-dirs:      test
@@ -54,14 +86,6 @@ common basic-unit-test-props
 common io-unit-test-props
   import:              basic-unit-test-props
   build-depends:       LafontExe
-
-common exe-with-file-io-props
-  hs-source-dirs:      exe
-  default-language:    Haskell2010
-  build-depends:       base >=4.12 && <4.13,
-                       directory,
-                       Lafont,
-                       LafontExe
 
 test-suite lafont-common-tests
   import:              basic-unit-test-props
@@ -94,16 +118,6 @@ test-suite lafont-generators-qubitgates-tests
   type:                exitcode-stdio-1.0
   build-depends:       newsynth
 
-test-suite lafontexe-io-linebasedlogging-tests
-  import:              io-unit-test-props
-  main-is:             LafontExe-IO-LineBasedLogging-Tests.hs
-  type:                exitcode-stdio-1.0
-
-test-suite lafontexe-io-primitivelogging-tests
-  import:              io-unit-test-props
-  main-is:             LafontExe-IO-PrimitiveLogging-Tests.hs
-  type:                exitcode-stdio-1.0
-
 test-suite lafont-parse-common-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Parse-Common-Tests.hs
@@ -134,14 +148,12 @@ test-suite lafont-parse-derivationfile-tests
   main-is:             Lafont-Parse-DerivationFile-Tests.hs
   type:                exitcode-stdio-1.0
 
-executable check_generators
-  import:              exe-with-file-io-props
-  main-is:             check_generators.hs
+test-suite lafontexe-logging-linebasedlogging-tests
+  import:              io-unit-test-props
+  main-is:             LafontExe-Logging-LineBased-Tests.hs
+  type:                exitcode-stdio-1.0
 
-executable check_relations
-  import:              exe-with-file-io-props
-  main-is:             check_relations.hs
-
-executable validate_derivations
-  import:              exe-with-file-io-props
-  main-is:             validate_derivations.hs
+test-suite lafontexe-logging-primitivelogging-tests
+  import:              io-unit-test-props
+  main-is:             LafontExe-Logging-Primitive-Tests.hs
+  type:                exitcode-stdio-1.0

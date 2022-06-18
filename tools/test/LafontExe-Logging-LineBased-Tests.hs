@@ -3,7 +3,7 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import LafontExe.IO.LineBasedLogging
+import LafontExe.Logging.LineBased
 
 -----------------------------------------------------------------------------------------
 -- fileLogPrefix
