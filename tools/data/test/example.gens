@@ -1,0 +1,9 @@
+-- A sample generator file for a free monoid with 5 symbols.
+
+Monoidal
+
+abc1
+abc2
+xyz1
+xyz2
+lmnop123

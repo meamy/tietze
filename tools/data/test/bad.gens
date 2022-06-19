@@ -1,0 +1,7 @@
+-- Example of a bad generator file.
+
+Monoidal
+
+abc
+1xyz -- A generator name must not start with a number.
+qrs

@@ -169,3 +169,26 @@ test-suite lafontexe-logging-primitivelogging-tests
   import:              io-unit-test-props
   main-is:             LafontExe-Logging-Primitive-Tests.hs
   type:                exitcode-stdio-1.0
+
+-----------------------------------------------------------------------------------------
+-- Executable test library and tests.
+
+library LafontExeTest
+  exposed-modules:     LafontExeTest.HandleTest
+  build-depends:       base >=4.12 && <4.13,
+                       directory
+  hs-source-dirs:      src/LafontExeTest
+  default-language:    Haskell2010
+
+common exe-test-props
+  hs-source-dirs:      test/exe
+  default-language:    Haskell2010
+  build-depends:       base,
+                       Lafont,
+                       LafontExe,
+                       LafontExeTest
+
+test-suite checkgenerators-tests
+  import:              exe-test-props
+  main-is:             CheckGenerators-Tests.hs
+  type:                exitcode-stdio-1.0
