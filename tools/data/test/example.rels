@@ -1,0 +1,8 @@
+-- Sample relations for example.gens with comments.
+
+-- Equational rules
+rel1 abc1.xyz1.abc2.xyz2 = lmnop123 -- example relation
+rel2 abc1.abc1.abc1.abc1 = lmnop123 -- abc1^4 = qwerty
+
+-- Production rules
+rel3 lmnop123.lmnop123 → ε          -- lmnop is a self-inverse.

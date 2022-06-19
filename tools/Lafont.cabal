@@ -192,3 +192,8 @@ test-suite checkgenerators-tests
   import:              exe-test-props
   main-is:             CheckGenerators-Tests.hs
   type:                exitcode-stdio-1.0
+
+test-suite checkrelations-tests
+  import:              exe-test-props
+  main-is:             CheckRelations-Tests.hs
+  type:                exitcode-stdio-1.0

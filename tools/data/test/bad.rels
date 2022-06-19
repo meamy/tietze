@@ -1,0 +1,6 @@
+-- Example of a bad relation file.
+-- Intended generators: example.gens
+
+rel1 abc1.xyz1.abc2.xyz2 = lmnop123
+rel2 abc1.xyz3.abc2.xyy2 = lmnop123 -- In example.gens the symbol xyz3 is undefined.
+rel3 lmnop123.lmnop123 → ε

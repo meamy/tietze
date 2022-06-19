@@ -44,7 +44,7 @@ runAllHandleTests []             = return True
 runAllHandleTests (htest:htests) = do
     -- Runs test and prints results.
     res <- runHandleTest htest
-    putStr ("[" ++ (name htest) ++ "]: ")
+    putStr ("    [" ++ (name htest) ++ "]: ")
     if res
     then putStr ("Success.\n")
     else putStr ("Fail! (" ++ (msg htest) ++ ")\n")
