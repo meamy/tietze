@@ -8,14 +8,14 @@ import Lafont.String
 -----------------------------------------------------------------------------------------
 -- Common files.
 
-gen_file :: FilePath
-gen_file = "data/test/example.gens" 
+goodGens :: FilePath
+goodGens = "data/test/example.gens" 
+
+goodRels :: FilePath
+goodRels = "data/test/example.rels"
 
 -----------------------------------------------------------------------------------------
 -- Good input.
-
-good_rel_file :: FilePath
-good_rel_file = "data/test/example.rels"
 
 check1 :: String -> Bool
 check1 str =
@@ -28,31 +28,50 @@ check1 str =
 
 test1 = (HandleTest "Good_Relations"
                     "Ensures that checkRelations can print all relations."
-                    (\x -> checkRelations x gen_file good_rel_file)
+                    (\x -> checkRelations x goodGens goodRels)
                     check1)
 
 -----------------------------------------------------------------------------------------
--- Bad input.
+-- Bad generators.
 
-bad_rel_file :: FilePath
-bad_rel_file = "data/test/bad.rels"
+badGens :: FilePath
+badGens = "data/test/bad.gens" 
 
 check2 :: String -> Bool
-check2 str = (and [-- The line at which the error should occur (see bad.rels).
+check2 str = (and [-- The line at which the error should occur (see bad.gens).
+                   ("data/test/bad.gens:5" `isSubstrOf` str),
+                   -- The expected error.
+                   ("invalid symbol" `isSubstrOf` str),
+                   -- Should be a single line.
+                   ((length (lines str)) == 1)])
+
+test2 = (HandleTest "Bad_generators"
+                    "Tests that a generator file with invalid symbol is rejected."
+                    (\x -> checkRelations x badGens goodRels)
+                    check2)
+
+-----------------------------------------------------------------------------------------
+-- Bad relations.
+
+badRels :: FilePath
+badRels = "data/test/bad.rels"
+
+check3 :: String -> Bool
+check3 str = (and [-- The line at which the error should occur (see bad.rels).
                    ("data/test/bad.rels:4" `isSubstrOf` str),
                    -- The unexpected generator.
                    ("xyz3" `isSubstrOf` str),
                    -- Should be a single line.
                    ((length (lines str)) == 1)])
 
-test2 = (HandleTest "Bad_Relation"
+test3 = (HandleTest "Bad_Relation"
                     "Tests that a relation file with invalid generator is rejected."
-                    (\x -> checkRelations x gen_file bad_rel_file)
-                    check2)
+                    (\x -> checkRelations x goodGens badRels)
+                    check3)
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
-tests = [test1, test2]
+tests = [test1, test2, test3]
 
 main = handleTestToMain $ runAllHandleTests tests

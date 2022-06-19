@@ -1,0 +1,11 @@
+-- This file is a variation of example.deriv which asserts an incorrect final string.
+
+-- Gives the relation a name so that it can be reused.
+@name DerivedRel
+
+-- Proof certificate.
+abc1.abc1.abc1.abc1.abc1.abc1.abc1.abc1
+rel2 → 4
+rel2 → 0
+rel3 0
+abc1.abc1 -- The derived word is ε.

@@ -1,0 +1,14 @@
+-- This is a variation on example.deriv: in example.deriv, it was necessary to apply the
+-- first relation at either position 0 or position 4. Applying rel2 anywhere else would
+-- yield a string of the form ((abc1)^i).lmnop.((abc1)^j) for some i > 0 and j > 0. From
+-- this string, the relation rel2 is no longer applicable.
+--
+-- In this file the first relation is applied at position 2. The second step of the
+-- derivation fails as a result.
+
+-- Proof structurem.
+abc1.abc1.abc1.abc1.abc1.abc1.abc1.abc1
+rel2 → 2
+rel2 → 0 -- This step is not applicable.
+rel3 0
+ε

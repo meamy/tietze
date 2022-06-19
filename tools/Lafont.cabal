@@ -197,3 +197,8 @@ test-suite checkrelations-tests
   import:              exe-test-props
   main-is:             CheckRelations-Tests.hs
   type:                exitcode-stdio-1.0
+
+test-suite validatederivations-tests
+  import:              exe-test-props
+  main-is:             ValidateDerivations-Tests.hs
+  type:                exitcode-stdio-1.0

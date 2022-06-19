@@ -1,0 +1,11 @@
+-- This file is a variation of example.deriv with a syntax error.
+
+-- Gives the relation a name so that it can be reused.
+@name DerivedRel
+
+-- Proof certificate.
+abc1.abc1.abc1.abc1.abc1.abc1.abc1.abc5 -- There is no such generator as abc5
+rel2 → 4
+rel2 → 0
+rel3 0
+ε

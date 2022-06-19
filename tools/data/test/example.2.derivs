@@ -1,0 +1,12 @@
+-- A second example of a proof.
+-- Intended generators: example.gens
+-- Intended relations: example.rels
+
+@name DerivedRel2
+
+lmnop123.abc1.xyz1.abc2.xyz2.lmnop123.abc1.abc1.abc1.abc1
+rel1 → 1
+rel2 → 3
+rel3 → 1
+rel3 → 0
+ε

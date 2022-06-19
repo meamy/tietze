@@ -1,0 +1,13 @@
+-- Proof that abc1^8 = ε.
+-- Intended generators: example.gens
+-- Intended relations: example.rels
+
+-- Gives the relation a name so that it can be reused.
+@name DerivedRel1
+
+-- Proof certificate.
+abc1.abc1.abc1.abc1.abc1.abc1.abc1.abc1
+rel2 → 4
+rel2 → 0
+rel3 0
+ε

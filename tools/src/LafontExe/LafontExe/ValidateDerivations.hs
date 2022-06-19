@@ -28,7 +28,7 @@ describeIncorrectResult fname exp act = fstLine ++ sndLine
     where expStr = logWord exp
           actStr = logWord act
           fstLine = "Failed to validate " ++ fname ++ ".\n"
-          sndLine = "Expected " ++ expStr ++ " but producted " ++ actStr ++ ".\n"
+          sndLine = "Expected " ++ expStr ++ " but produced " ++ actStr ++ ".\n"
 
 -- | Consumes the name of a derivation file (fname), the word obtain when a rewrite rule
 -- failed to apply (act), and the step number associated with this rewrite (step).
