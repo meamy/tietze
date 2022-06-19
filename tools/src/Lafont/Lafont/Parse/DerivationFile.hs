@@ -85,11 +85,12 @@ parseRewritePos rule isLeftToRight str =
 -- returned. Otherwise, the misalignment between rule and dir is described through an
 -- error value.
 parseRewriteDirAndPos :: RewriteRule -> String -> String -> Either DFPError Rewrite
-parseRewriteDirAndPos rule dir str = if dirMatchesRule
-                                then parseRewritePos rule isL2R (snd (trimSpacing str))
-                                else if isL2R
-                                     then Left (Right MissingRewriteDir)
-                                     else Left (Right InvalidRewriteDir)
+parseRewriteDirAndPos rule dir str =
+    if dirMatchesRule
+    then parseRewritePos rule isL2R (snd (trimSpacing str))
+    else if isL2R
+        then Left (Right MissingRewriteDir)
+        else Left (Right InvalidRewriteDir)
     where isDirected    = (not (dir == ""))
           isL2R         = (not (dir == "←"))
           dirMatchesRule = if (equational rule) then isDirected else isL2R

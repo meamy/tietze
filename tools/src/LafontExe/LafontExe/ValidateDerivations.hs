@@ -13,6 +13,9 @@ import LafontExe.IO.Files
 import LafontExe.Logging.LineBased
 import LafontExe.Logging.Primitive
 
+-----------------------------------------------------------------------------------------
+-- * Helpers.
+
 -- | Helper types to simplify code.
 type NamedDerivationData = (String, RewritePreamble, Derivation)
 type DerivationFileSummary = Either (String, Int, DFPError) [NamedDerivationData]
@@ -36,6 +39,9 @@ describeIncorrectStep fname act step = fstLine ++ sndLine
           stepStr = (show step)
           fstLine = "Failed to validate " ++ fname ++ ".\n"
           sndLine = "Obtained " ++ actStr ++ " at step " ++ stepStr ++ ".\n"
+
+-----------------------------------------------------------------------------------------
+-- * Logic.
 
 -- | Consumes a list 3-tuples, where each tuple contains the name of a derivation file,
 -- its preamble, and the derivation it describes. If a derivation is invalid, then a

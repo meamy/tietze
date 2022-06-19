@@ -1,3 +1,5 @@
+-- | General-purpose data types and functions.
+
 module Lafont.Common where
 
 -----------------------------------------------------------------------------------------

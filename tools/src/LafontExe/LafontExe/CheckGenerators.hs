@@ -8,6 +8,9 @@ import Lafont.Generators.Semantics
 import Lafont.Parse.GeneratorFile
 import LafontExe.Logging.LineBased
 
+-----------------------------------------------------------------------------------------
+-- * Helpers.
+
 -- | Generator logging function intended for use with foldGens. Consumes a generator
 -- symbol/semantic pair, together with the result so far (str). Appends the name of the
 -- generator, and a textual representation if its semantics (if present), to str. The new
@@ -21,6 +24,9 @@ logGenerator (name, Nothing)     str = str ++ name ++ " := (no semantic value)\n
 logGenerators :: (Show a) => SemModel -> GenDict a -> String
 logGenerators sem dict = foldGens logGenerator semstr dict
     where semstr = "Semantic Model : " ++ (show sem) ++ "\n"
+
+-----------------------------------------------------------------------------------------
+-- * Logic.
 
 -- | Consumes the name of a generator file (fnmae) and its contents split at each new
 -- line (lines). If the lines parse correctly, then returns a textual representation of

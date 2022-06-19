@@ -106,10 +106,11 @@ parseNat str
 -- | Consumes an input string (str). Returns the largest integral prefix of str coverted
 -- to an integer, if one exists. Otherwise, returns nothing.
 parseInt :: String -> Maybe (Int, String)
-parseInt ('-':str) = case (parseNat str) of
-                         Just (digit, post) -> Just ((-1) * digit, post)
-                         Nothing            -> Nothing
-parseInt str       = parseNat str
+parseInt ('-':str) =
+    case (parseNat str) of
+        Just (digit, post) -> Just ((-1) * digit, post)
+        Nothing            -> Nothing
+parseInt str = parseNat str
 
 -- | Consumes an input string (str). Returns (trimmed, post) where (pre, post) =
 -- splitAtFirst isSpacing str and trimmed = (pre != "").
@@ -131,9 +132,10 @@ parseId str
 -- is the maximal such prefix and str = pre + post. If post exists, then post is
 -- returned. Otherwise, nothing is returned. Requires that sep does not contain spacing.
 parseSep :: String -> String -> Maybe String
-parseSep sep str = case (stripPrefix sep trimmed) of
-                       Just post -> Just post
-                       Nothing   -> Nothing 
+parseSep sep str =
+    case (stripPrefix sep trimmed) of
+        Just post -> Just post
+        Nothing   -> Nothing 
     where trimmed = snd (trimSpacing str)
 
 -- | Consumes a list of separators (seps) and an input string. If seps if the first such
@@ -141,9 +143,10 @@ parseSep sep str = case (stripPrefix sep trimmed) of
 -- returned. Otherwise, nothing is returned.
 parseFromSeps :: [String] -> String -> Maybe (String, String)
 parseFromSeps []         str = Nothing
-parseFromSeps (sep:seps) str = case (parseSep sep str) of -- Can trim once to optimize.
-                                   Just post -> Just (sep, post)
-                                   Nothing   -> parseFromSeps seps str
+parseFromSeps (sep:seps) str =
+    case (parseSep sep str) of -- Can trim once to optimize.
+        Just post -> Just (sep, post)
+        Nothing   -> parseFromSeps seps str
 
 -- | Consumes a line and strips comments (postfixes starting with '--').
 stripComments :: String -> String
@@ -167,9 +170,10 @@ branchOnSpacing str lval rval = let trimmed = (snd (trimSpacing str))
 -- | Consumes a string (str), and two values of the same type (fval and tval). If str
 -- contains non-spacing characters, then fval is returned. Otherwise, rval is returned.
 iteOnSpacing :: String -> a -> a -> a
-iteOnSpacing str fval tval = case (branchOnSpacing str fval tval) of
-    Left v  -> v
-    Right v -> v
+iteOnSpacing str fval tval =
+    case (branchOnSpacing str fval tval) of
+        Left v  -> v
+        Right v -> v
 
 -----------------------------------------------------------------------------------------
 -- * Line Parsing.

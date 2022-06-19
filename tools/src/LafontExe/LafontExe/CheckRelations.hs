@@ -10,6 +10,9 @@ import LafontExe.IO.Files
 import LafontExe.Logging.LineBased
 import LafontExe.Logging.Primitive
 
+-----------------------------------------------------------------------------------------
+-- * Logic.
+
 -- | Consumes the name of a relation file (fname), a list of known generators (gens), and
 -- the lines of the relation file (lines). If the lines parse correctly with respect to
 -- gens, then returns a textual representation of the relations. Otherwise, the textual
