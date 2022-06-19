@@ -3,6 +3,7 @@
 module Lafont.Parse.MonWords where
 
 import Lafont.Common
+import Lafont.Maybe
 import Lafont.Parse.Common
 
 -----------------------------------------------------------------------------------------
@@ -13,10 +14,8 @@ parseParam :: String -> Maybe (Int, String)
 parseParam []        = Nothing
 parseParam ('[':str) =
     case (parseNat str) of
-        Just (n, post) -> case (parseFromSeps ["]"] post) of
-            Just (_, post') -> Just (n, post')
-            Nothing         -> Nothing
-        Nothing -> Nothing
+        Just (n, post) -> maybeApply (\(_, post) -> (n, post)) (parseFromSeps ["]"] post)
+        Nothing        -> Nothing
 parseParam _ = Nothing
 
 -- | Consumes a string (str). If there exists a string pre = [i1][i2][i3]...[in] such
@@ -37,11 +36,9 @@ parseParams str =
 -- str = pre + post, then returns (Symbol <ID> <PARAM>, post) where pre is the maximal
 -- such prefix. Otherwise, nothing is returned.
 parseSymbol :: String -> Maybe (Symbol, String)
-parseSymbol str = 
-    case (parseId str) of
-        Just (id, post) -> let (params, post') = (parseParams post)
-                           in Just ((Symbol id params), post')
-        Nothing -> Nothing
+parseSymbol str = maybeApply parseImpl (parseId str)
+    where parseImpl (id, post) = let (params, post') = parseParams post
+                                 in ((Symbol id params), post')
 
 -- | Consumes a list of generator names (gens) and a monoidal word (word). Returns the
 -- first symbol in monoidal word with either a non-zero number of parameters or a name
@@ -73,10 +70,8 @@ parseMonWordSep _          = Nothing
 --
 -- Mutually Depends On: parseNonEmptyMonWord
 joinAndParseMonWord :: Symbol -> String -> Maybe (MonWord, String)
-joinAndParseMonWord symb str =
-    case (parseNonEmptyMonWord str) of
-        Just (word, post) -> Just (symb:word, post)
-        Nothing           -> Nothing
+joinAndParseMonWord symb str = maybeApply (\(word, post) -> (symb:word, post)) maybeWord
+    where maybeWord = parseNonEmptyMonWord str
 
 -- | Consumes a string (str). If there exists a monoidal word pre = G1.G2.G3...Gn such
 -- that G1, G2, G3, ..., Gn are generator symbols, str = pre + post, and pre is the

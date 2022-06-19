@@ -15,6 +15,7 @@ extra-source-files:  CHANGELOG.md
 
 library
   exposed-modules:     Lafont.Common
+                       Lafont.Maybe
                        Lafont.Rewrite.Rules
                        Lafont.Rewrite.Simplification
                        Lafont.Rewrite.Lookup
@@ -90,6 +91,11 @@ common io-unit-test-props
 test-suite lafont-common-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Common-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-maybe-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Maybe-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite lafont-rewrite-rules-tests

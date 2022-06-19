@@ -3,6 +3,7 @@
 module Lafont.Parse.DerivationFile where
 
 import Lafont.Common
+import Lafont.Maybe
 import Lafont.Rewrite.Lookup
 import Lafont.Rewrite.Rules
 import Lafont.Parse.Common
@@ -176,10 +177,8 @@ parseFinalMonWord :: [String] -> Maybe ([String], MonWord)
 parseFinalMonWord []           = Nothing
 parseFinalMonWord (line:lines) =
     case (parseFinalMonWord lines) of
-        Nothing -> case (parseLineAsMonWord line) of
-            Just word -> Just ([], word)
-            Nothing   -> Nothing
         Just (body, word) -> Just ((line:body), word)
+        Nothing           -> maybeApply (\word -> ([], word)) (parseLineAsMonWord line)
 
 -- | Consumes a dictionary of known rules (dict) and the rewrite lines of a derivation
 -- file. If the lines are valid with respect to dict, then returns a list of rewrites in
