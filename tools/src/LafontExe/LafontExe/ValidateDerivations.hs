@@ -17,8 +17,9 @@ import LafontExe.Logging.Primitive
 -- * Helpers.
 
 -- | Helper types to simplify code.
-type NamedDerivationData = (String, Derivation)
-type DerivationFileSummary = Either (String, Int, DFPError) [NamedDerivationData]
+type NamedPreDerivation = (String, PreDerivation)
+type NamedDerivation = (String, Derivation)
+type ListParseRV a = Either (String, Int, DFPError) [a]
 
 -- | Consumes the name of a derivation file (fname), the word obtained from a derivation
 -- (act), and the expected word from the end of the file (exp). Returns a string
@@ -46,7 +47,7 @@ describeIncorrectStep fname act step = fstLine ++ sndLine
 -- | Consumes a list 3-tuples, where each tuple contains the name of a derivation file,
 -- its preamble, and the derivation it describes. If a derivation is invalid, then a
 -- summary of the failure is printed. Otherwise, a success message is printed.
-verifyDerivations :: [NamedDerivationData] -> String
+verifyDerivations :: [NamedDerivation] -> String
 verifyDerivations []                            = "Success.\n"
 verifyDerivations ((fname, derivation):derivations) = do
     if (success res)
@@ -57,23 +58,35 @@ verifyDerivations ((fname, derivation):derivations) = do
     where sum = (summary derivation)
           res = simplify (initial sum) (rewrites derivation)
 
--- | Consumes a list of derivation files (DerivFnames), a dictionary of rewrite rules
--- (rules), and a list of generators (gens). If all derivations parse correctly, then
--- returns a list of 3-tuples, where each tuple contains the name of a derivation file,
--- its preamble, and the derivation it describes. Otherwise, a parsing error is returned.
-readDerivationFiles :: [String] -> RuleDict -> [String] -> IO DerivationFileSummary
-readDerivationFiles []             _     _    = return (Right [])
-readDerivationFiles (fname:fnames) rules gens = do
+-- | Consumes a list of derivation files and a list of known generators (gens). If all
+-- derivations preparse correctly, then returns a list of pairs, where each pair contains
+-- the name of a file and the PreDerivation it describes. Otherwise, a parsing error is
+-- returned.
+readDerivationFiles :: [String] -> [String] -> IO (ListParseRV NamedPreDerivation)
+readDerivationFiles []             _    = return (Right [])
+readDerivationFiles (fname:fnames) gens = do
     content <- readFile fname
     case (preparseDerivationFile gens (lines content) 0) of
         Left (errLn, err) -> return (Left (fname, errLn, err))
-        Right pre         -> case (parseDerivationFile rules pre) of
-            Left (errLn, err) -> return (Left (fname, errLn, err))
-            Right deriv       -> do
-                ioRes <- readDerivationFiles fnames rules gens
-                case ioRes of
-                    Left err  -> return (Left err)
-                    Right res -> return (Right ((fname, deriv):res))
+        Right pre         -> do
+            ioRes <- readDerivationFiles fnames gens
+            case ioRes of
+                Left err  -> return (Left err)
+                Right res -> return (Right ((fname, pre):res))
+
+-- | Consumes a dictionary of rewrite rules (rules) and a list of pairs, where each pair
+-- contains the name of a file and the PreDerivation data it describes. If all files
+-- parse correctly, then returns a list of pairs, where each pair contains the name of a
+-- pair and the Derivation it describes. Otherwise, a parsing error is returned. Requires
+-- that all derived rules have already been recorded in rules
+parseRewriteSections :: RuleDict -> [NamedPreDerivation] -> ListParseRV NamedDerivation
+parseRewriteSections _     []                  = Right []
+parseRewriteSections rules ((fname, pre):rest) =
+    case (parseDerivationFile rules pre) of
+        Left (errLn, err) -> Left (fname, errLn, err)
+        Right deriv       -> case (parseRewriteSections rules rest) of
+            Left err  -> Left err
+            Right res -> Right ((fname, deriv):res)
 
 -- | Consumes a handle, a list of derivation files (DerivFnames), a dictionary of rewrite
 -- rules (rules), and a list of generators (gens). If all derivations parse correctly,
@@ -82,10 +95,12 @@ readDerivationFiles (fname:fnames) rules gens = do
 -- number.
 processDerivationFiles :: Handle -> [String] -> RuleDict -> [String] -> IO ()
 processDerivationFiles hdl fnames rules gens = do
-    readResult <- readDerivationFiles fnames rules gens
+    readResult <- readDerivationFiles fnames gens
     case readResult of
         Left (fname, errLn, err) -> hPutStr hdl (logEitherMsg fname errLn err)
-        Right derivations        -> hPutStr hdl (verifyDerivations derivations)
+        Right preDerivations     -> case (parseRewriteSections rules preDerivations) of
+            Left (fname, errLn, err) -> hPutStr hdl (logEitherMsg fname errLn err)
+            Right derivations        -> hPutStr hdl (verifyDerivations derivations)
 
 -- | Consumes a handle, the name of a relation file (relname), a list of derivation files
 -- (derivFnames), and a list of known generators (gens). If all files parse correctly,
