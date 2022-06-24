@@ -17,7 +17,7 @@ import LafontExe.Logging.Primitive
 -- * Helpers.
 
 -- | Helper types to simplify code.
-type NamedDerivationData = (String, RewritePreamble, Derivation)
+type NamedDerivationData = (String, Derivation)
 type DerivationFileSummary = Either (String, Int, DFPError) [NamedDerivationData]
 
 -- | Consumes the name of a derivation file (fname), the word obtained from a derivation
@@ -48,13 +48,14 @@ describeIncorrectStep fname act step = fstLine ++ sndLine
 -- summary of the failure is printed. Otherwise, a success message is printed.
 verifyDerivations :: [NamedDerivationData] -> String
 verifyDerivations []                            = "Success.\n"
-verifyDerivations ((fname, _, sum):derivations) = do
-    if (success result)
-    then if ((output result) == (final sum))
+verifyDerivations ((fname, derivation):derivations) = do
+    if (success res)
+    then if ((output res) == (final sum))
          then verifyDerivations derivations
-         else describeIncorrectResult fname (final sum) (output result)
-    else describeIncorrectStep fname (output result) (step result)
-    where result = simplify (initial sum) (rewrites sum)
+         else describeIncorrectResult fname (final sum) (output res)
+    else describeIncorrectStep fname (output res) (step res)
+    where sum = (summary derivation)
+          res = simplify (initial sum) (rewrites derivation)
 
 -- | Consumes a list of derivation files (DerivFnames), a dictionary of rewrite rules
 -- (rules), and a list of generators (gens). If all derivations parse correctly, then
@@ -64,13 +65,15 @@ readDerivationFiles :: [String] -> RuleDict -> [String] -> IO DerivationFileSumm
 readDerivationFiles []             _     _    = return (Right [])
 readDerivationFiles (fname:fnames) rules gens = do
     content <- readFile fname
-    case (parseDerivationFile rules gens (lines content) 0) of
+    case (preparseDerivationFile gens (lines content) 0) of
         Left (errLn, err) -> return (Left (fname, errLn, err))
-        Right (pre, sum)  -> do
-            ioRes <- readDerivationFiles fnames rules gens
-            case ioRes of
-                Left err  -> return (Left err)
-                Right res -> return (Right ((fname, pre, sum):res))
+        Right pre         -> case (parseDerivationFile rules pre) of
+            Left (errLn, err) -> return (Left (fname, errLn, err))
+            Right deriv       -> do
+                ioRes <- readDerivationFiles fnames rules gens
+                case ioRes of
+                    Left err  -> return (Left err)
+                    Right res -> return (Right ((fname, deriv):res))
 
 -- | Consumes a handle, a list of derivation files (DerivFnames), a dictionary of rewrite
 -- rules (rules), and a list of generators (gens). If all derivations parse correctly,

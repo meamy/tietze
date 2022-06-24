@@ -164,10 +164,25 @@ parseRewritePreamble = makePreambleParser rewriteProperties defaultPreamble
 -----------------------------------------------------------------------------------------
 -- * Derivation Body Parsing.
 
--- | Summary of the derivation in a derivation file.
-data Derivation = Derivation { initial :: MonWord
+-- | Factors out return value structure of a derivation file parser.
+type DParseRV a = Either (Int, DFPError) a
+
+-- | Summary of a derivation file.
+data Summary = Summary { meta :: RewritePreamble
+                       , initial :: MonWord
+                       , final :: MonWord
+                       } deriving (Eq,Show)
+
+-- | The summary of a derivation file (parsed) together with an unparsed rewrite section
+-- (unparsed) starting at the specified line number (linenum).
+data PreDerivation = ParDerivation { parsed :: Summary
+                                   , unparsed :: [String]
+                                   , linenum :: Int
+                                   } deriving (Eq,Show)
+
+-- | The summary of a derivation file together with the corresponding rewrites.
+data Derivation = Derivation { summary :: Summary
                              , rewrites :: [Rewrite]
-                             , final :: MonWord
                              } deriving (Eq,Show)
 
 -- | Consumes the body of a derivation file (excluding the initial word). Attempts to
@@ -183,7 +198,7 @@ parseFinalMonWord (line:lines) =
 -- | Consumes a dictionary of known rules (dict) and the rewrite lines of a derivation
 -- file. If the lines are valid with respect to dict, then returns a list of rewrites in
 -- the order they appear. Otherwise, returns a parsing exception.
-parseRewriteLines :: RuleDict -> [String] -> Int -> Either (Int, DFPError) [Rewrite]
+parseRewriteLines :: RuleDict -> [String] -> Int -> DParseRV [Rewrite]
 parseRewriteLines _     []           _   = Right []
 parseRewriteLines rules (line:lines) num =
     case (snd (trimSpacing stripped)) of
@@ -196,40 +211,43 @@ parseRewriteLines rules (line:lines) num =
     where stripped = stripComments line
           nextNum = num + 1
 
--- | Factors out the type of both derivation file parsers. Intended for internal use.
-type DParser a = RuleDict -> [String] -> [String] -> Int -> Either (Int, DFPError) a
-
--- | Consumes a dictionary of known relations (dict), a list of known generator names
--- (gens), and the lines of a derivation file immediately following its preamble. If the
--- lines are valid with respect to dict and gen, then a derivation is returned.
+-- | Consumes a list of known generator names (gens), the preamble of a derivation file
+-- (meta), and the lines of a derivation file immediately following its preamble.  If the
+-- lines include an inital word section, a rewrite section, and a final word section,
+-- with both the initial and final words valid, then a derivation summary is returned.
 -- Otherwise, returns a parsing exception. Requires that there is at least one line in
--- the body, and that the first line is the initial circuit. 
-parseDerivation :: DParser Derivation
-parseDerivation _     _    []              num = Left (num, Left UnexpectedEOF)
-parseDerivation rules gens (initLine:body) num =
+-- the body, and that the first line is the initial word.
+preparseBody :: [String] -> RewritePreamble -> [String] -> Int -> DParseRV PreDerivation
+preparseBody _    _    []                 num = Left (num, Left UnexpectedEOF)
+preparseBody gens meta (initLine:body) num =
     case (parseLineAsMonWord initLine) of
         Nothing   -> Left (num, Right MissingInitialWord)
         Just init -> case (findUnknownGenInMonWord gens init) of
             Just gen -> Left (num, Right (UnknownGenName (name gen)))
             Nothing  -> case (parseFinalMonWord body) of
-                Nothing              -> Left ((finalAt body), Right MissingFinalWord)
-                Just (rwtLines, final) -> case (findUnknownGenInMonWord gens final) of
-                    Just gen -> Left ((finalAt rwtLines), Right (UnknownGenName (name gen)))
-                    Nothing  -> case (parseRewriteLines rules rwtLines bodyLn) of
-                        Left err       -> Left err
-                        Right rewrites -> Right (Derivation init rewrites final)
-    where bodyLn = num + 1
-          finalAt body = bodyLn + (length body)
+                Nothing            -> Left ((finAt body), Right MissingFinalWord)
+                Just (rlines, fin) -> case (findUnknownGenInMonWord gens fin) of
+                    Just gen -> Left ((finAt rlines), Right (UnknownGenName (name gen)))
+                    Nothing  -> Right (ParDerivation (Summary meta init fin) rlines rln)
+    where rln = num + 1
+          finAt body = rln + (length body)
 
--- | Consumes a dictionary of known relations (dict), a list of known generator names
--- (gens), and the lines of a derivation file including the preamble. If the lines are
--- valid with respect to dict and gen, then a derivation is returned. Otherwise, returns
--- a parsing exception. Requires that there is at least one line in the body, and that
--- the first line is the initial circuit. 
-parseDerivationFile :: DParser (RewritePreamble, Derivation)
-parseDerivationFile rules gens lines num =
+-- | Consumes a list of known generator names (gens) and the lines of a derivation file
+-- including the preamble (lines). If the lines include a preamble section, an initial
+-- word section, a rewrite section, and a word string section, with the preamble,
+-- initial, and final words valid, then a then a derivation summary is returned.
+-- Otherwise, returns a parsing exception
+preparseDerivationFile :: [String] -> [String] -> Int -> DParseRV PreDerivation
+preparseDerivationFile gens lines num =
     case (parseRewritePreamble lines num) of
         Left (errLn, err)          -> Left (errLn, Left err)
-        Right (body, bodyLn, meta) -> case (parseDerivation rules gens body bodyLn) of
-            Left err         -> Left err
-            Right derivation -> Right (meta, derivation)
+        Right (body, bodyLn, meta) -> preparseBody gens meta body bodyLn
+
+-- | Consumes a dictionary of known rules, including derived rules (dict) and the summary
+-- of a derivation file. If the body is a valid rewrite section with respect to rules,
+-- then a derivation is returned. Otherwise, returns a parsing exception.
+parseDerivationFile :: RuleDict -> PreDerivation -> DParseRV Derivation
+parseDerivationFile rules pre =
+    case (parseRewriteLines rules (unparsed pre) (linenum pre)) of
+        Left  err      -> Left err
+        Right rewrites -> Right (Derivation (parsed pre) rewrites)
