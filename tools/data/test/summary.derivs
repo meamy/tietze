@@ -1,0 +1,12 @@
+-- Illustrates the use of derived rules.
+-- This proof assumes that example1.derivs and example2.derivs are also inlcuded.
+-- They are then available as DerivedRel1 and DerivedRel2.
+--
+-- Intended generators: example.gens
+-- Intended relations: example.rels
+-- Intended derivations: example1.derivs, example2.derivs
+
+abc1.abc1.abc1.abc1.abc1.abc1.abc1.abc1.lmnop123.abc1.xyz1.abc2.xyz2.lmnop123.abc1.abc1.abc1.abc1
+!apply DerivedRel1 0
+!apply DerivedRel2 0
+ε

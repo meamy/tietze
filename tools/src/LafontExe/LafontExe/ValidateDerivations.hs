@@ -76,6 +76,21 @@ readDerivationFiles (fname:fnames) gens = do
                 Left err  -> return (Left err)
                 Right res -> return (Right ((fname, pre):res))
 
+-- Consumes a dictionary of rewrite rules (rules) and a list of pairs, where each pair
+-- contains the name of a file and the PreDerivation data it describes. If each piece of
+-- PreDerivation data is either unnamed or has a unique name, then a new dictionary is
+-- returned as obtained by adding each derived rule to rules. Otherwise, the file name of
+-- the first derivation with a duplication relation name is returned.
+addDerivedRules :: RuleDict -> [NamedPreDerivation] -> Either String RuleDict
+addDerivedRules rules []                  = Right rules
+addDerivedRules rules ((fname, pre):rest) =
+    case (addDerivedRules rules rest) of
+        Left fname     -> Left fname
+        Right recRules -> case (summary `addSummaryToRules` recRules) of
+            Nothing           -> Left fname
+            Just updatedRules -> Right updatedRules
+    where summary = parsed pre
+
 -- | Consumes a dictionary of rewrite rules (rules) and a list of pairs, where each pair
 -- contains the name of a file and the PreDerivation data it describes. If all files
 -- parse correctly, then returns a list of pairs, where each pair contains the name of a
@@ -100,9 +115,11 @@ processDerivationFiles hdl fnames rules gens = do
     readResult <- readDerivationFiles fnames gens
     case readResult of
         Left (fname, errLn, err) -> hPutStr hdl (logEitherMsg fname errLn err)
-        Right preDerivations     -> case (parseRewriteSections rules preDerivations) of
-            Left (fname, errLn, err) -> hPutStr hdl (logEitherMsg fname errLn err)
-            Right derivations        -> hPutStr hdl (verifyDerivations derivations)
+        Right preDerivations     -> case (addDerivedRules rules preDerivations) of
+            Left fname     -> hPutStr hdl (logFromFile fname 0 "Duplicated rule name.")
+            Right sumRules -> case (parseRewriteSections sumRules preDerivations) of
+                Left (fname, errLn, err) -> hPutStr hdl (logEitherMsg fname errLn err)
+                Right derivations        -> hPutStr hdl (verifyDerivations derivations)
 
 -- | Consumes a handle, the name of a relation file (relname), a list of derivation files
 -- (derivFnames), and a list of known generators (gens). If all files parse correctly,

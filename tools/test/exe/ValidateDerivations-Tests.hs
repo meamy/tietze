@@ -23,12 +23,19 @@ goodProofTwo = "data/test/example.2.derivs"
 badProofOne :: FilePath
 badProofOne = "data/test/bad.1.derivs"
 
+trivialProof :: String
+trivialProof = "data/test/trivial.derivs"
+
 -----------------------------------------------------------------------------------------
 -- Helper methods.
 
 isFailure :: String -> Bool
 isFailure str = or [("Failed" `isSubstrOf` str),
                     ("failed" `isSubstrOf` str)]
+
+isDuplicated :: String -> Bool
+isDuplicated str = or [("Duplicated" `isSubstrOf` str),
+                       ("duplicated" `isSubstrOf` str)]
 
 isExpecting :: String -> String -> Bool
 isExpecting str exp = or [(("Expected " ++ exp) `isSubstrOf` str),
@@ -169,8 +176,74 @@ test8 = (HandleTest "Bad_Derivation_Mixed"
                     check5)
 
 -----------------------------------------------------------------------------------------
+-- Tests support for derived rules.
+
+derivedRuleProof :: String
+derivedRuleProof = "data/test/summary.derivs"
+
+derivedProofDeps = [goodProofOne, derivedRuleProof, goodProofTwo]
+
+check8 :: String -> Bool
+check8 str = (and [-- The line at which the error should occur (see summary.derivs).
+                   ("data/test/summary.derivs:9" `isSubstrOf` str),
+                   -- The missing relation name.
+                   ("DerivedRel1" `isSubstrOf` str),
+                   -- Should be a single line.
+                   ((length (lines str)) == 1)])
+
+test9 = (HandleTest "Derived_Rules_Pass"
+                    "Ensures that validateDerivations identifies derived rules (1/2)."
+                    (\x -> validateDerivations x goodGens goodRels [derivedRuleProof])
+                    check8)
+
+test10 = (HandleTest "Derived_Rules_Fail"
+                     "Ensures that validateDerivations identifies derived rules (2/2)."
+                     (\x -> validateDerivations x goodGens goodRels derivedProofDeps)
+                     (\str -> str == "Success.\n"))
+
+-----------------------------------------------------------------------------------------
+-- Tests that duplicate relation names are rejected.
+
+dupNameProof :: String
+dupNameProof = "data/test/example.3.derivs"
+
+twoProofsOneName = [dupNameProof, goodProofOne]
+
+check11 :: String -> Bool
+check11 str = (and [-- Defaults to the first line
+                    ("data/test/example.3.derivs:0" `isSubstrOf` str),
+                    -- Keyword in error.
+                    (isDuplicated str),
+                    -- Should be a single line.
+                    ((length (lines str)) == 1)])
+
+test11 = (HandleTest "Duplicate_Rel_Name"
+                     "Ensures that validateDerivations identifies name collisions."
+                     (\x -> validateDerivations x goodGens goodRels twoProofsOneName)
+                     check11)
+
+-----------------------------------------------------------------------------------------
+-- Tests that a trivial, unammed proof passes all of the checks.
+
+test12 = (HandleTest "Trivial_Unnamed"
+                     "Ensures that validateDerivations handles trivial unammed proofs."
+                     (\x -> validateDerivations x goodGens goodRels [trivialProof])
+                     (\str -> str == "Success.\n"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
-tests = [test1, test2, test3, test4, test5, test6, test7, test8]
+tests = [test1,
+         test2,
+         test3,
+         test4,
+         test5,
+         test6,
+         test7,
+         test8,
+         test9,
+         test10,
+         test11,
+         test12]
 
 main = handleTestToMain $ runAllHandleTests tests
