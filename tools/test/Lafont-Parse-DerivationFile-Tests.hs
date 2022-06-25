@@ -7,6 +7,7 @@ import Data.Either
 import Lafont.Common
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Lookup
+import Lafont.Rewrite.Summary
 import Lafont.Parse.Common
 import Lafont.Parse.DerivationFile
 
@@ -337,22 +338,22 @@ parseBody rules gens meta lines num =
         Right pre -> parseDerivationFile rules pre
 
 test53 = TestCase (assertEqual "preparseBody parses a full derivation (1/3)."
-                               exp
+                               (Right (Derivation sum rewriteList))
                                (parseBody dict3 gens defaultPreamble input 0))
     where input = goodBody ++ goodFinal1
-          exp = Right (Derivation (Summary defaultPreamble word1 word1) rewriteList)
+          sum = DerivationSummary defaultPreamble word1 word1
 
 test54 = TestCase (assertEqual "preparseBody parses a full derivation (2/3)."
-                               exp
+                               (Right (Derivation sum rewriteList))
                                (parseBody dict3 gens defaultPreamble input 0))
     where input = goodBody ++ goodFinal2
-          exp = Right (Derivation (Summary defaultPreamble word1 word2) rewriteList)
+          sum = DerivationSummary defaultPreamble word1 word2
 
 test55 = TestCase (assertEqual "preparseBody parses a full derivation (3/3)."
-                               exp
+                               (Right (Derivation sum rewriteList))
                                (parseBody dict3 gens defaultPreamble input 0))
     where input = goodFinal1 ++ goodRewrite ++ goodFinal1
-          exp = Right (Derivation (Summary defaultPreamble word1 word1) rewriteList)
+          sum = DerivationSummary defaultPreamble word1 word1
 
 test56 = TestCase (assertEqual "preparseBody detects missing initial word."
                                (Left (0, Right MissingInitialWord))
@@ -387,16 +388,16 @@ test62 = TestCase (assertEqual "preparseBody detects rewrite issues."
                                (parseBody dict3 gens defaultPreamble badBody 0))
 
 test63 = TestCase (assertEqual "preparseBody supports different preambles."
-                               exp
+                               (Right (Derivation sum rewriteList))
                                (parseBody dict3 gens expectedPreamble input 0))
     where input = goodBody ++ goodFinal1
-          exp = Right (Derivation (Summary expectedPreamble word1 word1) rewriteList)
+          sum = DerivationSummary expectedPreamble word1 word1
 
 -----------------------------------------------------------------------------------------
 -- parseDerivationFile
 
 validResult :: Derivation
-validResult = Derivation (Summary expectedPreamble word1 word2) rewriteList
+validResult = Derivation (DerivationSummary expectedPreamble word1 word2) rewriteList
 
 parseFile :: RuleDict -> [String] -> [String] -> Int -> FileParseRV
 parseFile rules gens lines num =

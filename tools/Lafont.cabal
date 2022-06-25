@@ -19,6 +19,7 @@ library
                        Lafont.String
                        Lafont.Rewrite.Rules
                        Lafont.Rewrite.Simplification
+                       Lafont.Rewrite.Summary
                        Lafont.Rewrite.Lookup
                        Lafont.Generators.Semantics
                        Lafont.Generators.QubitGates
@@ -112,6 +113,11 @@ test-suite lafont-rewrite-rules-tests
 test-suite lafont-rewrite-simplification-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Rewrite-Simplification-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-rewrite-summary-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Rewrite-Summary-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite lafont-rewrite-lookup-tests

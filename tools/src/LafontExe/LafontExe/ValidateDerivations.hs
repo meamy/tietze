@@ -5,7 +5,9 @@ module LafontExe.ValidateDerivations where
 import System.IO
 import Lafont.Common
 import Lafont.Rewrite.Lookup
+import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Simplification
+import Lafont.Rewrite.Summary
 import Lafont.Parse.GeneratorFile
 import Lafont.Parse.RelationFile
 import Lafont.Parse.DerivationFile
@@ -44,9 +46,9 @@ describeIncorrectStep fname act step = fstLine ++ sndLine
 -----------------------------------------------------------------------------------------
 -- * Logic.
 
--- | Consumes a list 3-tuples, where each tuple contains the name of a derivation file,
--- its preamble, and the derivation it describes. If a derivation is invalid, then a
--- summary of the failure is printed. Otherwise, a success message is printed.
+-- | Consumes a list of pairs, where each tuple contains the name of a derivation file
+-- and the Derivation it describes. If a derivation is invalid, then a summary of the
+-- failure is printed. Otherwise, a success message is printed.
 verifyDerivations :: [NamedDerivation] -> String
 verifyDerivations []                            = "Success.\n"
 verifyDerivations ((fname, derivation):derivations) = do

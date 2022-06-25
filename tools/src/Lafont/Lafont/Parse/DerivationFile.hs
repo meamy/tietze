@@ -6,6 +6,7 @@ import Lafont.Common
 import Lafont.Maybe
 import Lafont.Rewrite.Lookup
 import Lafont.Rewrite.Rules
+import Lafont.Rewrite.Summary
 import Lafont.Parse.Common
 import Lafont.Parse.MonWords
 import Lafont.Parse.Properties
@@ -138,10 +139,6 @@ parseRewriteLine dict str =
 -----------------------------------------------------------------------------------------
 -- * Preamble Parsing.
 
--- | Maintains metadata about a derivation file.
-data RewritePreamble = RewritePreamble { propName :: Maybe String
-                                       } deriving (Show,Eq)
-
 -- | Creates a RewritePreamble will all metadata set to N/A.
 defaultPreamble :: RewritePreamble
 defaultPreamble = RewritePreamble Nothing
@@ -167,21 +164,15 @@ parseRewritePreamble = makePreambleParser rewriteProperties defaultPreamble
 -- | Factors out return value structure of a derivation file parser.
 type DParseRV a = Either (Int, DFPError) a
 
--- | Summary of a derivation file.
-data Summary = Summary { meta :: RewritePreamble
-                       , initial :: MonWord
-                       , final :: MonWord
-                       } deriving (Eq,Show)
-
 -- | The summary of a derivation file (parsed) together with an unparsed rewrite section
 -- (unparsed) starting at the specified line number (linenum).
-data PreDerivation = ParDerivation { parsed :: Summary
+data PreDerivation = ParDerivation { parsed :: DerivationSummary
                                    , unparsed :: [String]
                                    , linenum :: Int
                                    } deriving (Eq,Show)
 
 -- | The summary of a derivation file together with the corresponding rewrites.
-data Derivation = Derivation { summary :: Summary
+data Derivation = Derivation { summary :: DerivationSummary
                              , rewrites :: [Rewrite]
                              } deriving (Eq,Show)
 
@@ -228,7 +219,8 @@ preparseBody gens meta (initLine:body) num =
                 Nothing            -> Left ((finAt body), Right MissingFinalWord)
                 Just (rlines, fin) -> case (findUnknownGenInMonWord gens fin) of
                     Just gen -> Left ((finAt rlines), Right (UnknownGenName (name gen)))
-                    Nothing  -> Right (ParDerivation (Summary meta init fin) rlines rln)
+                    Nothing  -> let sum = DerivationSummary meta init fin
+                                in Right (ParDerivation sum rlines rln)
     where rln = num + 1
           finAt body = rln + (length body)
 
