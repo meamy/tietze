@@ -78,7 +78,7 @@ parseRule str =
         Just (lhs, opStr) -> case (parseFromSeps ["→", "="] opStr) of
             Just (op, rhsStr) -> case (parseMonWord (snd (trimSpacing rhsStr))) of
                 Just (rhs, post) -> let lval = Left (UnexpectedSymbol (getErrPos str post))
-                                        rval = RewriteRule lhs rhs (op == "=") False
+                                        rval = RewriteRule lhs rhs (op == "=") Nothing
                                     in branchOnSpacing post lval rval
                 Nothing -> Left (Right RuleMissingRHS)
             Nothing -> Left (Right (InvalidRuleType (getErrPos str opStr)))

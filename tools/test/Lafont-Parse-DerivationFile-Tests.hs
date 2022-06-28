@@ -27,10 +27,10 @@ word2 :: MonWord
 word2 = [(Symbol "c" []), (Symbol "a" []), (Symbol "b" [])]
 
 primitiveRuleL2R :: RewriteRule
-primitiveRuleL2R = RewriteRule word1 word2 False False
+primitiveRuleL2R = RewriteRule word1 word2 False Nothing
 
 primitiveRuleEqn :: RewriteRule
-primitiveRuleEqn = RewriteRule word1 word2 True False
+primitiveRuleEqn = RewriteRule word1 word2 True Nothing
 
 test1 = TestCase (assertEqual "parseRewritePos rejects empty strings (1/2)."
                               (Left (Right InvalidRewritePos))
@@ -119,7 +119,7 @@ test20 = TestCase (assertEqual "parseRewriteDirAndPos accepts production rules w
 -- parseRewrite
 
 derivedRule :: RewriteRule
-derivedRule = RewriteRule word1 word2 False True
+derivedRule = RewriteRule word1 word2 False (Just "proof")
 
 dict0 :: RuleDict
 dict0 = empty

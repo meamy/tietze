@@ -4,6 +4,7 @@
 
 module Lafont.Rewrite.Rules where
 
+import Data.Maybe
 import Lafont.Common
 
 -----------------------------------------------------------------------------------------
@@ -13,13 +14,18 @@ import Lafont.Common
 -- denoted lhs → rhs (we refer to u → v as a production rule as it produces the word xvy
 -- from the word xuy for any words x and y). A relation is said to be **equational** if
 -- it is symmetric (that is, both lhs → rhs and rhs → lhs are valid). A relation u →* u'
--- may also be **derived** from a proof of the form u → v1 → v2 → ... → vk → u', where
--- each intermediate relation is valid.
-data RewriteRule = RewriteRule { lhs        :: MonWord
-                               , rhs        :: MonWord
-                               , equational :: Bool
-                               , derived    :: Bool
+-- may also be **derivedFrom** a proof of the form u → v1 → v2 → ... → vk → u', where
+-- each intermediate relation is valid. In this case, the derivedFrom field is assigned
+-- the name of the proof.
+data RewriteRule = RewriteRule { lhs         :: MonWord
+                               , rhs         :: MonWord
+                               , equational  :: Bool
+                               , derivedFrom :: Maybe String
                                } deriving (Show,Eq)
+
+-- | Consumes a rule. Returns true if the rule is derived.
+isDerivedRule :: RewriteRule -> Bool
+isDerivedRule rule = isJust (derivedFrom rule)
 
 -- | Consumes a monoidal word and the lhs of a production rule: lhs → rhs. True is
 -- returned if the rule is applicable at index .

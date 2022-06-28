@@ -126,12 +126,12 @@ parseRewriteLine dict str =
         Just ("!apply", rwStr) -> let trimmed = (snd (trimSpacing rwStr))
                                   in case (parseRewrite dict trimmed) of
                                          Left err -> Left (propDerErr str trimmed err)
-                                         Right rw -> if (derived (rule rw))
+                                         Right rw -> if (isDerivedRule (rule rw))
                                                      then Right rw
                                                      else Left (Right ApplyOnPrimitive)
         Nothing -> case (parseRewrite dict str) of
             Left err -> Left err
-            Right rw -> if (derived (rule rw))
+            Right rw -> if (isDerivedRule (rule rw))
                         then Left (Right RewriteOnDerived)
                         else Right rw
         Just ("!", _) -> Left (Right UnknownRewriteMod)

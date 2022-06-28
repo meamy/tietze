@@ -43,7 +43,7 @@ word1b :: MonWord
 word1b = [cx13, ccx123, cx23]
 
 rule1 :: RewriteRule
-rule1 = RewriteRule [ccx123, cx13] [cx13, ccx123] True False
+rule1 = RewriteRule [ccx123, cx13] [cx13, ccx123] True Nothing
 
 test1 = TestCase $ assertBool "Can apply CCX123.CX13 = CX13.CCX123 to CCX123.CX13.CX23"
                               (checkRewriteRule word1a rule1 True)
@@ -61,10 +61,10 @@ test4 = TestCase $ assertEqual "CX13.CCX123.CX23 =R1=> CCX123.CX13.CX23"
 -- Tests when a rewrite rule is not applicable.
 
 rule2 :: RewriteRule
-rule2 = RewriteRule [ccx123, cx13, cx23, cx12] [ccx123, cx13, cx23, cx12] True False
+rule2 = RewriteRule [ccx123, cx13, cx23, cx12] [ccx123, cx13, cx23, cx12] True Nothing
 
 rule3 :: RewriteRule
-rule3 = RewriteRule [ccx123, cx23] [cx23, ccx123] True False
+rule3 = RewriteRule [ccx123, cx23] [cx23, ccx123] True Nothing
 
 test5 = TestCase $ assertBool "The rule is too long and must be rejected"
                               (not (checkRewriteRule word1a rule2 True))
@@ -133,13 +133,34 @@ word4b :: MonWord
 word4b = []
 
 rule4 :: RewriteRule
-rule4 = RewriteRule [ccx123, ccx123] [] True False
+rule4 = RewriteRule [ccx123, ccx123] [] True Nothing
 
 test15 = TestCase $ assertEqual "Can support rules that eliminate symbols"
                                 word4b (applyRewriteRule word4a rule4 True)
 
 test16 = TestCase $ assertEqual "Can support rules that introduce symbols"
                                 word4a (applyRewriteRule word4b rule4 False)
+
+-----------------------------------------------------------------------------------------
+-- Checks that derived rules are identified.
+
+rule5 :: RewriteRule
+rule5 = RewriteRule [ccx123, cx13] [cx13, ccx123] True (Just "proof1")
+
+rule6 :: RewriteRule
+rule6 = RewriteRule [ccx123, cx13, cx23] [ccx123, cx13, cx23] True (Just "proof2")
+
+test17 = TestCase $ assertBool "Can deteect that a rule is not derived (1/2)"
+                               (not (isDerivedRule rule1))
+
+test18 = TestCase $ assertBool "Can deteect that a rule is not derived (2/2)"
+                               (not (isDerivedRule rule2))
+
+test19 = TestCase $ assertBool "Can deteect that a rule is derived (1/2)"
+                               (isDerivedRule rule5)
+
+test20 = TestCase $ assertBool "Can deteect that a rule is derived (2/2)"
+                               (isDerivedRule rule6)
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -159,6 +180,10 @@ tests = hUnitTestToTests $ TestList [TestLabel "CheckRuleForwards" test1,
                                      TestLabel "ApplyOpAt4Forwards" test13,
                                      TestLabel "ApplyOpAt4Backwards" test14,
                                      TestLabel "ApplyElimination" test15,
-                                     TestLabel "ApplyIntroduce" test16]
+                                     TestLabel "ApplyIntroduce" test16,
+                                     TestLabel "DetectsNonDerivedRulesOne" test17,
+                                     TestLabel "DetectsNonDerivedRulesTwo" test18,
+                                     TestLabel "DetectsDerivedRulesOne" test19,
+                                     TestLabel "DetectsDerivedRulesTwo" test20]
 
 main = defaultMain tests

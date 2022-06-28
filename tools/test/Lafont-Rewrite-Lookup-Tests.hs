@@ -21,7 +21,7 @@ word1b :: MonWord
 word1b = [(Symbol "b1" []), (Symbol "b2" []), (Symbol "b3" [])]
 
 rel1 :: (String, RewriteRule)
-rel1 = ("abc", (RewriteRule word1a word1b True False))
+rel1 = ("abc", (RewriteRule word1a word1b True Nothing))
 
 word2a :: MonWord
 word2a = [(Symbol "c1" []), (Symbol "c2" []), (Symbol "c3" [])]
@@ -30,7 +30,7 @@ word2b :: MonWord
 word2b = [(Symbol "d1" []), (Symbol "d2" []), (Symbol "d3" [])]
 
 rel2 :: (String, RewriteRule)
-rel2 = ("def", (RewriteRule word2a word2b True False))
+rel2 = ("def", (RewriteRule word2a word2b True Nothing))
 
 word3a :: MonWord
 word3a = [(Symbol "e1" []), (Symbol "e2" []), (Symbol "e3" [])]
@@ -39,7 +39,7 @@ word3b :: MonWord
 word3b = [(Symbol "f1" []), (Symbol "f2" []), (Symbol "f3" [])]
 
 rel3 :: (String, RewriteRule)
-rel3 = ("ab_12_ef", (RewriteRule word3a word3b True False))
+rel3 = ("ab_12_ef", (RewriteRule word3a word3b True Nothing))
 
 sampleDict0 :: RuleDict
 sampleDict0 = empty

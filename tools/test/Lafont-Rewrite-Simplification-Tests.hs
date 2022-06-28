@@ -47,7 +47,7 @@ test2 = TestCase $ assertEqual "Support for empty lists of rewrites"
                                (RewriteResult word1 0 True) (simplify word1 [])
 
 op1 :: Rewrite
-op1 = Rewrite (RewriteRule [] [x1, x1] True False) 0 True
+op1 = Rewrite (RewriteRule [] [x1, x1] True Nothing) 0 True
 
 test3 = TestCase $ assertEqual "Support for rewrites of an empty words"
                                (RewriteResult word1 1 True) (simplify [] [op1])
@@ -56,7 +56,7 @@ test3 = TestCase $ assertEqual "Support for rewrites of an empty words"
 -- Edge cases: failure.
 
 op2 :: Rewrite
-op2 = Rewrite (RewriteRule [x1, x2] [x1, x2] True False) 0 True
+op2 = Rewrite (RewriteRule [x1, x2] [x1, x2] True Nothing) 0 True
 
 test4 = TestCase $ assertEqual "Rejects rewrite when input string is empty"
                                (RewriteResult [] 0 False) (simplify [] [op2])
@@ -65,10 +65,10 @@ word2 :: MonWord
 word2 = [x1, x1, x1, x1, x2, x2]
 
 oplist1 :: [Rewrite]
-oplist1 = [(Rewrite (RewriteRule [] [x1, x1] True False) 0 True),
-           (Rewrite (RewriteRule [] [x2, x2] True False) 4 True),
-           (Rewrite (RewriteRule [x1, x2] [x1, x2] True False) 3 True),
-           (Rewrite (RewriteRule [x1, x2] [x1, x2] True False) 0 True)]
+oplist1 = [(Rewrite (RewriteRule [] [x1, x1] True Nothing) 0 True),
+           (Rewrite (RewriteRule [] [x2, x2] True Nothing) 4 True),
+           (Rewrite (RewriteRule [x1, x2] [x1, x2] True Nothing) 3 True),
+           (Rewrite (RewriteRule [x1, x2] [x1, x2] True Nothing) 0 True)]
 
 test5 = TestCase $ assertEqual "Reject rewrite after 3 steps"
                                (RewriteResult word2 3 False) (simplify word1 oplist1)
@@ -83,19 +83,19 @@ word3b :: MonWord
 word3b = [cx13, cx12, x2, ccx123]
 
 oplist2 :: [Rewrite]
-oplist2 = [(Rewrite (RewriteRule [] [x3, x3] True False) 3 True),
-           (Rewrite (RewriteRule [ccx123, x3] [x3, ccx123] True False) 2 True),
-           (Rewrite (RewriteRule [] [x3, x3] True False) 1 False),
-           (Rewrite (RewriteRule [z2, k12] [k12, x2] True False) 4 True),
-           (Rewrite (RewriteRule [k12, k12] [] True False) 3 True),
-           (Rewrite (RewriteRule [x3, x2] [x2, x3] True False) 2 True),
-           (Rewrite (RewriteRule [x3, x3] [] True False) 3 True),
-           (Rewrite (RewriteRule [cx13, cx13] [] True False) 2 False),
-           (Rewrite (RewriteRule [cx13, x2] [x2, cx13] True False) 3 True),
-           (Rewrite (RewriteRule [x2, ccx123] [ccx123, cx13, x2] True False) 1 False),
-           (Rewrite (RewriteRule [ccx123, cx13] [cx13, ccx123] True False) 2 True),
-           (Rewrite (RewriteRule [x2, cx13] [cx13, x2] True False) 1 True),
-           (Rewrite (RewriteRule [cx12, cx13] [cx13, cx12] True False) 0 True)]
+oplist2 = [(Rewrite (RewriteRule [] [x3, x3] True Nothing) 3 True),
+           (Rewrite (RewriteRule [ccx123, x3] [x3, ccx123] True Nothing) 2 True),
+           (Rewrite (RewriteRule [] [x3, x3] True Nothing) 1 False),
+           (Rewrite (RewriteRule [z2, k12] [k12, x2] True Nothing) 4 True),
+           (Rewrite (RewriteRule [k12, k12] [] True Nothing) 3 True),
+           (Rewrite (RewriteRule [x3, x2] [x2, x3] True Nothing) 2 True),
+           (Rewrite (RewriteRule [x3, x3] [] True Nothing) 3 True),
+           (Rewrite (RewriteRule [cx13, cx13] [] True Nothing) 2 False),
+           (Rewrite (RewriteRule [cx13, x2] [x2, cx13] True Nothing) 3 True),
+           (Rewrite (RewriteRule [x2, ccx123] [ccx123, cx13, x2] True Nothing) 1 False),
+           (Rewrite (RewriteRule [ccx123, cx13] [cx13, ccx123] True Nothing) 2 True),
+           (Rewrite (RewriteRule [x2, cx13] [cx13, x2] True Nothing) 1 True),
+           (Rewrite (RewriteRule [cx12, cx13] [cx13, cx12] True Nothing) 0 True)]
 
 test6 = TestCase $ assertEqual "Non-trivial rewrite success"
                                (RewriteResult word3b 13 True) (simplify word3a oplist2)

@@ -1,4 +1,5 @@
--- |
+-- | This module provides data-types to summarize derivations, and functions to convert
+-- summarizations into rules.
 
 module Lafont.Rewrite.Summary where
 
@@ -23,12 +24,13 @@ data DerivationSummary = DerivationSummary { meta :: RewritePreamble
 -- * Functions to Further Abstract Derivations as Rules.
 
 -- | Consumes a summary (sum). Returns a new derived rule which meets the specifications
--- of sum.
+-- of sum. Requires that sum is named.
 createSummaryRule :: DerivationSummary -> RewriteRule
-createSummaryRule sum = RewriteRule lhs rhs eqn True
-    where lhs = initial sum
-          rhs = final sum
-          eqn = False
+createSummaryRule sum = RewriteRule lhs rhs eqn from
+    where lhs  = initial sum
+          rhs  = final sum
+          eqn  = False
+          from = propName (meta sum)
 
 -- | Consumes a summary (sum) and a dictionary of rules (rules). If sum is unnamed, then
 -- the rules is unchanged. If sum is named, and the name does not appear in rules, then a
