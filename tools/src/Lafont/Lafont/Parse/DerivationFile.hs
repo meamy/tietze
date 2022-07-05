@@ -4,6 +4,7 @@ module Lafont.Parse.DerivationFile where
 
 import Lafont.Common
 import Lafont.Maybe
+import Lafont.Rewrite.Derivations
 import Lafont.Rewrite.Lookup
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Summary
@@ -170,11 +171,6 @@ data PreDerivation = ParDerivation { parsed :: DerivationSummary
                                    , unparsed :: [String]
                                    , linenum :: Int
                                    } deriving (Eq,Show)
-
--- | The summary of a derivation file together with the corresponding rewrites.
-data Derivation = Derivation { summary :: DerivationSummary
-                             , rewrites :: [Rewrite]
-                             } deriving (Eq,Show)
 
 -- | Consumes the body of a derivation file (excluding the initial word). Attempts to
 -- find the final word in the file. If the final word is found, then the word is returned

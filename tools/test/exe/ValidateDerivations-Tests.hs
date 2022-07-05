@@ -4,6 +4,7 @@ import Data.List
 import LafontExeTest.HandleTest
 import LafontExe.ValidateDerivations
 import Lafont.String
+import Lafont.Rewrite.Derivations
 
 -----------------------------------------------------------------------------------------
 -- Common files.

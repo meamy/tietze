@@ -5,6 +5,7 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Either
 import Lafont.Common
+import Lafont.Rewrite.Derivations
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Lookup
 import Lafont.Rewrite.Summary

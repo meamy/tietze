@@ -17,6 +17,7 @@ library
   exposed-modules:     Lafont.Common
                        Lafont.Maybe
                        Lafont.String
+                       Lafont.Rewrite.Derivations
                        Lafont.Rewrite.Rules
                        Lafont.Rewrite.Simplification
                        Lafont.Rewrite.Summary

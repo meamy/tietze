@@ -4,6 +4,7 @@ module LafontExe.ValidateDerivations where
 
 import System.IO
 import Lafont.Common
+import Lafont.Rewrite.Derivations
 import Lafont.Rewrite.Lookup
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Simplification
