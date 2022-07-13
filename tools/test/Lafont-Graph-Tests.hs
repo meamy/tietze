@@ -128,7 +128,7 @@ test79 = TestCase (assertEqual "Adding edges to a graph is an idempotent operati
                                (addEdge g15 (-2) 12))
 
 -----------------------------------------------------------------------------------------
--- Tests that edges must be between existing vertices
+-- Tests that edges must be between existing vertices.
 
 test80 = TestCase (assertEqual "Adding edges to a graph is an idempotent operation."
                                (Nothing :: Maybe (Digraph Int))
@@ -137,6 +137,94 @@ test80 = TestCase (assertEqual "Adding edges to a graph is an idempotent operati
 test81 = TestCase (assertEqual "Adding edges to a graph is an idempotent operation."
                                (Nothing :: Maybe (Digraph Int))
                                (addEdge g15 1 90))
+
+-----------------------------------------------------------------------------------------
+-- Tests extension to cycle.
+
+walk0 = listToWalk []
+walk1 = listToWalk [1]
+walk2 = listToWalk [2, 1]
+walk3 = listToWalk [3, 2, 1]
+walk4 = listToWalk [4, 3, 2, 1]
+walk5 = listToWalk [5, 4, 3, 2, 1]
+walk6 = listToWalk [1, 5, 4, 3, 2, 1]
+
+test82 = TestCase (assertEqual "Tests extending an empty walk to a cycle."
+                               walk1
+                               (extendToCycle walk0 1))
+
+test83 = TestCase (assertEqual "Tests extending one element walk to a cycle."
+                               walk2
+                               (extendToCycle walk1 2))
+
+test84 = TestCase (assertEqual "Tests extending 2+ element walk to a cycle (1/4)."
+                               walk3
+                               (extendToCycle walk2 3))
+
+test85 = TestCase (assertEqual "Tests extending 2+ element walk to a cycle (2/4)."
+                               walk4
+                               (extendToCycle walk3 4))
+
+test86 = TestCase (assertEqual "Tests extending 2+ element walk to a cycle (3/4)."
+                               walk5
+                               (extendToCycle walk4 5))
+
+test87 = TestCase (assertEqual "Tests extending 2+ element walk to a cycle (4/4)."
+                               walk6
+                               (extendToCycle walk5 1))
+
+test88 = TestCase (assertEqual "Tests extending a cycle to a cycle."
+                               walk6
+                               (extendToCycle walk6 5))
+
+-----------------------------------------------------------------------------------------
+-- Tests cycle detection.
+
+g16 = addVertex g15 100
+g17 = addVertex g16 200
+g18 = fromJust $ addEdge g17 1 100
+g19 = fromJust $ addEdge g18 100 200
+
+cycleFromV1 = listToWalk [5, 15, -2, 7, 5]
+
+makeVertexCycleTest :: Int -> GraphWalk Int -> Test.HUnit.Test
+makeVertexCycleTest v path = TestCase (assertEqual msg
+                                                  (Just path :: Maybe (GraphWalk Int))
+                                                  (findCycleFromVertex g19 v empty))
+    where msg = "Can detect path from vertex " ++ (show v ) ++ "."
+
+test89 = makeVertexCycleTest 12 (listToWalk [12, 12])
+test90 = makeVertexCycleTest (-2) (listToWalk [-2, 7, 5, 15, -2])
+test91 = makeVertexCycleTest 7 (listToWalk [7, 5, 15, -2, 7])
+test92 = makeVertexCycleTest 5 (listToWalk [5, 15, -2, 7, 5])
+test93 = makeVertexCycleTest 15 (listToWalk [15, -2, 7, 5, 15])
+test94 = makeVertexCycleTest 1 cycleFromV1
+
+test95 = TestCase (assertEqual "findCycleFromVertex handles vertex without cycle (1/2)."
+                               (Nothing :: Maybe (GraphWalk Int))
+                               (findCycleFromVertex g19 100 empty))
+
+test96 = TestCase (assertEqual "findCycleFromVertex handles vertex without cycle (2/2)."
+                               (Nothing :: Maybe (GraphWalk Int))
+                               (findCycleFromVertex g19 200 empty))
+
+test97 = TestCase (assertEqual "findCycleFromVertex handles invalid vertex."
+                               (Nothing :: Maybe (GraphWalk Int))
+                               (findCycleFromVertex g19 300 empty))
+
+test98 = TestCase (assertEqual "findCycleFromVertices returns first cycle."
+                               (Just cycleFromV1 :: Maybe (GraphWalk Int))
+                               (findCycleFromVertices g19 [100, 1, 12] empty))
+
+test99 = TestCase (assertEqual "findCycleFromVertices handles vertices without cycles."
+                               (Nothing :: Maybe (GraphWalk Int))
+                               (findCycleFromVertices g19 [100, 200, 300] empty))
+
+test100 = TestCase (assertBool "Can take a graph and return a cycle."
+                               (isJust $ findCycle g19))
+
+test101 = TestCase (assertBool "Can support graphs without cycles."
+                               (isNothing $ findCycle g5))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -221,6 +309,26 @@ tests = hUnitTestToTests $ TestList [TestLabel "Construction_Vertices_G0" test1,
                                      TestLabel "Idempotence_Vertices" test78,
                                      TestLabel "Idempotence_Edges" test79,
                                      TestLabel "Edges_Invalid_Head" test80,
-                                     TestLabel "Edges_Invalid_Tail" test81]
+                                     TestLabel "Edges_Invalid_Tail" test81,
+                                     TestLabel "Cycle_Extend_0" test82,
+                                     TestLabel "Cycle_Extend_1" test83,
+                                     TestLabel "Cycle_Extend_2" test84,
+                                     TestLabel "Cycle_Extend_3" test85,
+                                     TestLabel "Cycle_Extend_4" test86,
+                                     TestLabel "Cycle_Extend_5" test87,
+                                     TestLabel "Cycle_Extend_6" test88,
+                                     TestLabel "CycleDetection_V12" test89,
+                                     TestLabel "CycleDetection_V(-2)" test90,
+                                     TestLabel "CycleDetection_V7" test91,
+                                     TestLabel "CycleDetection_V5" test92,
+                                     TestLabel "CycleDetection_V15" test93,
+                                     TestLabel "CycleDetection_V1" test94,
+                                     TestLabel "CycleDetection_V100" test95,
+                                     TestLabel "CycleDetection_V200" test96,
+                                     TestLabel "CycleDetection_Invalid" test97,
+                                     TestLabel "CycleDetection_ListWCycle" test98,
+                                     TestLabel "CycleDetection_ListWOCycle" test99,
+                                     TestLabel "CycleDetection_GraphWCycle" test100,
+                                     TestLabel "CycleDetection_GraphWOCycle" test101]
 
 main = defaultMain tests
