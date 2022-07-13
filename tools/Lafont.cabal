@@ -15,6 +15,7 @@ extra-source-files:  CHANGELOG.md
 
 library
   exposed-modules:     Lafont.Common
+                       Lafont.Graph
                        Lafont.Maybe
                        Lafont.String
                        Lafont.Rewrite.Derivations
@@ -104,6 +105,11 @@ test-suite lafont-maybe-tests
 test-suite lafont-string-tests
   import:              basic-unit-test-props
   main-is:             Lafont-String-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-graph-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Graph-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite lafont-rewrite-rules-tests
