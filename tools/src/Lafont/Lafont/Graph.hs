@@ -21,7 +21,7 @@ type EdgeSet a = Data.Set.Set a
 type Digraph a = Data.Map.Map a (EdgeSet a)
 
 -- | Represents a walk as a bidirectional sequence of vertices.
-type GraphWalk = Data.Sequence.Seq
+type GraphWalk a = Data.Sequence.Seq a
 
 -----------------------------------------------------------------------------------------
 -- * Graph Construction.

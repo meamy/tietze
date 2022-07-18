@@ -62,24 +62,24 @@ reg2 = addVertex reg1 rel2
 reg3 = addVertex (addVertex (addVertex reg2 rel3) rel4) rel5
 
 test1 = TestCase (assertEqual "An empty list of derivation registers a null graph."
-                  reg0
-                  (registerDerivations list0))
+                              reg0
+                              (registerDerivations list0))
 
 test2 = TestCase (assertEqual "A single named derivation registers one vertex."
-                  reg1
-                  (registerDerivations list1))
+                              reg1
+                              (registerDerivations list1))
 
 test3 = TestCase (assertEqual "Two named derivation register two vertices."
-                  reg2
-                  (registerDerivations list2))
+                              reg2
+                              (registerDerivations list2))
 
 test4 = TestCase (assertEqual "Five named derivation register five vertices."
-                  reg3
-                  (registerDerivations list3))
+                              reg3
+                              (registerDerivations list3))
 
 test5 = TestCase (assertEqual "Unnamed derivations are not added to graphs."
-                  reg3
-                  (registerDerivations list4))
+                              reg3
+                              (registerDerivations list4))
 
 -----------------------------------------------------------------------------------------
 -- addDepToGraph
@@ -88,43 +88,45 @@ reg4 = fromJust $ addEdge reg3 rel2 rel1
 reg5 = fromJust $ addEdge reg4 rel2 rel3
 
 test6 = TestCase (assertEqual "Applying a known derivation is allowed (1/2)."
-                  (Right reg4)
-                  (addDepToGraph rel2 rwt1 reg3))
+                              (Right reg4)
+                              (addDepToGraph rel2 rwt1 reg3))
 
 test7 = TestCase (assertEqual "Applying a known derivation is allowed (2/2)."
-                  (Right reg5)
-                  (addDepToGraph rel2 rwt3 reg4))
+                              (Right reg5)
+                              (addDepToGraph rel2 rwt3 reg4))
 
 test8 = TestCase (assertEqual "Using a relation is a no-ops."
-                  (Right reg5)
-                  (addDepToGraph rel2 rwto reg5))
+                              (Right reg5)
+                              (addDepToGraph rel2 rwto reg5))
 
 test9 = TestCase (assertEqual "Apply must be used on a known relation."
-                  (Left relx)
+                  (Left (UnmetDep rel2 relx))
                   (addDepToGraph rel2 rwtx reg5))
 
 -----------------------------------------------------------------------------------------
 -- addDepsToGraph
 
 test10 = TestCase (assertEqual "addDepsToGraph supports empty lists of rewrites"
-                   (Right reg3)
-                   (addDepsToGraph rel2 [] reg3))
+                               (Right reg3)
+                               (addDepsToGraph rel2 [] reg3))
 
 test11 = TestCase (assertEqual "addDepsToGraph supports sinlgeton rewrite lists."
-                   (Right reg4)
-                   (addDepsToGraph rel2 [rwt1] reg3))
+                               (Right reg4)
+                               (addDepsToGraph rel2 [rwt1] reg3))
 
 test12 = TestCase (assertEqual "addDepsToGraph supports rewrite pairs."
-                   (Right reg5)
-                   (addDepsToGraph rel2 [rwt1, rwt3] reg3))
+                               (Right reg5)
+                               (addDepsToGraph rel2 [rwt1, rwt3] reg3))
 
 test13 = TestCase (assertEqual "addDepsToGraph supports no-ops."
-                   (Right reg5)
-                   (addDepsToGraph rel2 [rwto, rwt1, rwto, rwt3, rwto] reg3))
+                               (Right reg5)
+                               (addDepsToGraph rel2 rewrites reg3))
+    where rewrites = [rwto, rwt1, rwto, rwt3, rwto]
 
 test14 = TestCase (assertEqual "addDepsToGraph requires relations are known.."
-                   (Left relx)
-                   (addDepsToGraph rel2 [rwto, rwt1, rwto, rwt3, rwto, rwtx] reg5))
+                               (Left (UnmetDep rel2 relx))
+                               (addDepsToGraph rel2 rewrites reg5))
+    where rewrites = [rwto, rwt1, rwto, rwt3, rwto, rwtx]
 
 -----------------------------------------------------------------------------------------
 -- addDerivationToGraph
@@ -132,28 +134,28 @@ test14 = TestCase (assertEqual "addDepsToGraph requires relations are known.."
 reg6 = fromJust $ addEdge reg5 rel3 rel1
 
 test15 = TestCase (assertEqual "addDerivationToGraph supports unnamed derivations."
-                   (Right reg3)
-                   (addDerivationToGraph derivationo reg3))
+                               (Right reg3)
+                               (addDerivationToGraph derivationo reg3))
 
 test16 = TestCase (assertEqual "addDerivationToGraph rejects invalid unnamed derivations."
-                   (Left relx)
-                   (addDerivationToGraph derivationx reg3))
+                               (Left (UnmetDep "" relx))
+                               (addDerivationToGraph derivationx reg3))
 
 test17 = TestCase (assertEqual "addDerivationToGraph supports dep-free derivations."
-                   (Right reg3)
-                   (addDerivationToGraph namedDerivation1 reg3))
+                               (Right reg3)
+                               (addDerivationToGraph namedDerivation1 reg3))
 
 test18 = TestCase (assertEqual "addDerivationToGraph supports valid derivations (1/2)."
-                   (Right reg5)
-                   (addDerivationToGraph namedDerivation2 reg3))
+                               (Right reg5)
+                               (addDerivationToGraph namedDerivation2 reg3))
 
 test19 = TestCase (assertEqual "addDerivationToGraph supports valid derivations (2/2)."
-                   (Right reg6)
-                   (addDerivationToGraph namedDerivation3 reg5))
+                               (Right reg6)
+                               (addDerivationToGraph namedDerivation3 reg5))
 
 test20 = TestCase (assertEqual "addDerivationToGraph rejects invalid derivations."
-                   (Left relx)
-                   (addDerivationToGraph namedDerivationx reg5))
+                               (Left (UnmetDep "rel1" relx))
+                               (addDerivationToGraph namedDerivationx reg5))
 
 -----------------------------------------------------------------------------------------
 -- addDerivationsToGraph
@@ -165,28 +167,44 @@ reg10 = fromJust $ addEdge reg9 "" rel1
 reg11 = fromJust $ addEdge reg10 "" rel3
 
 test21 = TestCase (assertEqual "Can add edges for derivations in list0."
-                   (Right reg3)
-                   (addDerivationsToGraph list0 reg3))
+                               (Right reg3)
+                               (addDerivationsToGraph list0 reg3))
 
 test22 = TestCase (assertEqual "Can add edges for derivations in list1."
-                   (Right reg3)
-                   (addDerivationsToGraph list1 reg3))
+                               (Right reg3)
+                               (addDerivationsToGraph list1 reg3))
 
 test23 = TestCase (assertEqual "Can add edges for derivations in list2."
-                   (Right reg5)
-                   (addDerivationsToGraph list2 reg3))
+                               (Right reg5)
+                               (addDerivationsToGraph list2 reg3))
 
 test24 = TestCase (assertEqual "Can add edges for derivations in list3."
-                   (Right reg9)
-                   (addDerivationsToGraph list3 reg3))
+                               (Right reg9)
+                               (addDerivationsToGraph list3 reg3))
 
 test25 = TestCase (assertEqual "Can add edges for derivations in list4."
-                   (Right reg9)
-                   (addDerivationsToGraph list4 reg3))
+                               (Right reg9)
+                               (addDerivationsToGraph list4 reg3))
 
 test26 = TestCase (assertEqual "Unnamed derivations are still recorded in the graph."
-                   (Right reg11)
-                   (addDerivationsToGraph list5 reg3))
+                               (Right reg11)
+                               (addDerivationsToGraph list5 reg3))
+
+-----------------------------------------------------------------------------------------
+-- detectDerivationCycle
+
+test27 = TestCase (assertEqual "detectDerivationError returns nothing for valid graphs."
+                               Nothing
+                               (detectDerivationError list5))
+
+test28 = TestCase (assertEqual "detectDerivationError identifies missing dependencies."
+                               (Just (Left (UnmetDep "rel1" "unknown")))
+                               (detectDerivationError (namedDerivationx:list5)))
+
+test29 = TestCase (assertEqual "detectDerivationError identifies cycles."
+                               (Just (Right cycle))
+                               (detectDerivationError (namedDerivationc:list5)))
+    where cycle = listToWalk ["rel1", "rel2", "rel1"]
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -216,6 +234,9 @@ tests = hUnitTestToTests $ TestList [TestLabel "registerDerived_Empty" test1,
                                      TestLabel "addDerivationsToGraph_Double" test23,
                                      TestLabel "addDerivationsToGraph_Many" test24,
                                      TestLabel "addDerivationsToGraph_Unnamed1" test25,
-                                     TestLabel "addDerivationsToGraph_Unnamed2" test26]
+                                     TestLabel "addDerivationsToGraph_Unnamed2" test26,
+                                     TestLabel "detectDerivationError_Valid" test27,
+                                     TestLabel "detectDerivationError_UnmetDep" test28,
+                                     TestLabel "detectDerivationError_Cycle" test29]
 
 main = defaultMain tests
