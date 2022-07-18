@@ -132,6 +132,11 @@ test-suite lafont-rewrite-lookup-tests
   main-is:             Lafont-Rewrite-Lookup-Tests.hs
   type:                exitcode-stdio-1.0
 
+test-suite lafont-rewrite-derivations-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Rewrite-Derivations-Tests.hs
+  type:                exitcode-stdio-1.0
+
 test-suite lafont-generators-semantics-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Generators-Semantics-Tests.hs
