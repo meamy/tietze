@@ -232,6 +232,53 @@ test12 = (HandleTest "Trivial_Unnamed"
                      (\str -> str == "Success.\n"))
 
 -----------------------------------------------------------------------------------------
+-- Tests cycle detection.
+
+cycleRel1 :: String
+cycleRel1 = "data/test/cycle/rel.1.derivs"
+
+cycleRel2 :: String
+cycleRel2 = "data/test/cycle/rel.2.derivs"
+
+cycleRel3 :: String
+cycleRel3 = "data/test/cycle/rel.3.derivs"
+
+cycleRel4 :: String
+cycleRel4 = "data/test/cycle/rel.4.derivs"
+
+cycleRel5a :: String
+cycleRel5a = "data/test/cycle/rel.5.a.derivs"
+
+cycleRel5b :: String
+cycleRel5b = "data/test/cycle/rel.5.b.derivs"
+
+cyclicReasoningBad = [cycleRel1, cycleRel2, cycleRel3, cycleRel4, cycleRel5a]
+cyclicReasoningFix = [cycleRel1, cycleRel2, cycleRel3, cycleRel4, cycleRel5b]
+
+check13 :: String -> Bool
+check13 str = (and [-- The line at which the error should occur (see bad.rels).
+                    ("cycle detected" `isSubstrOf` str),
+                    -- The sequence of vertices in the cycle.
+                    ("1. Rel1" `isSubstrOf` str),
+                    ("2. Rel2" `isSubstrOf` str),
+                    ("3. Rel3" `isSubstrOf` str),
+                    ("4. Rel4" `isSubstrOf` str),
+                    ("5. Rel5" `isSubstrOf` str),
+                    ("6. Rel1" `isSubstrOf` str),
+                    -- Should be a single line.
+                    ((length (lines str)) == 7)])
+
+test13 = (HandleTest "Cyclic_Proof_Bad"
+                     "Ensures that cyclic proofs are detected."
+                     (\x -> validateDerivations x goodGens goodRels cyclicReasoningBad)
+                     check13)
+
+test14 = (HandleTest "Cyclic_Proof_Fix"
+                     "Ensures that a cyclic proof can be fixed by eliminating one link."
+                     (\x -> validateDerivations x goodGens goodRels cyclicReasoningFix)
+                     (\str -> str == "Success.\n"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = [test1,
@@ -245,6 +292,8 @@ tests = [test1,
          test9,
          test10,
          test11,
-         test12]
+         test12,
+         test13,
+         test14]
 
 main = handleTestToMain $ runAllHandleTests tests

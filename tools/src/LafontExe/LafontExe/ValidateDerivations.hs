@@ -4,6 +4,7 @@ module LafontExe.ValidateDerivations where
 
 import System.IO
 import Lafont.Common
+import Lafont.Graph
 import Lafont.Rewrite.Derivations
 import Lafont.Rewrite.Lookup
 import Lafont.Rewrite.Rules
@@ -44,18 +45,40 @@ describeIncorrectStep fname act step = fstLine ++ sndLine
           fstLine = "Failed to validate " ++ fname ++ ".\n"
           sndLine = "Obtained " ++ actStr ++ " at step " ++ stepStr ++ ".\n"
 
+-- | Displays an unmet dependency as a human-readable string.
+printUnmetDep :: UnmetDep -> String
+printUnmetDep (UnmetDep ""  dst) = dst
+printUnmetDep (UnmetDep src dst) = src ++ " -> " ++ dst
+
+-- | Displays a cycle as a humnan-readable list. The list starts on a new line.
+printCycle :: DepCycle -> String
+printCycle walk = foldPath f "" walk
+    where f n v str = "\n" ++ (show (n + 1)) ++ ". " ++ v ++ str
+
 -----------------------------------------------------------------------------------------
 -- * Logic.
 
 -- | Consumes a list of pairs, where each tuple contains the name of a derivation file
+-- and the Derivation it describes. If the dependency graph induced by the list of
+-- derivations is invalid, then the error is printed. Otherwise, if a step in a
+-- derivation is invalid, then a summary of the failure is printed. Otherwise, a success
+-- message is printed.
+verifyDerivations :: [NamedDerivation] -> String
+verifyDerivations derivations =
+    case (detectDerivationError (map snd derivations)) of
+        Just (Left unmet)  -> "Unmet dependency: " ++ (printUnmetDep unmet) ++ "\n"
+        Just (Right cycle) -> "Dependency cycle detected: " ++ (printCycle cycle) ++ "\n"
+        Nothing            -> verifyDerivationSteps derivations
+
+-- | Consumes a list of pairs, where each tuple contains the name of a derivation file
 -- and the Derivation it describes. If a derivation is invalid, then a summary of the
 -- failure is printed. Otherwise, a success message is printed.
-verifyDerivations :: [NamedDerivation] -> String
-verifyDerivations []                            = "Success.\n"
-verifyDerivations ((fname, derivation):derivations) = do
+verifyDerivationSteps :: [NamedDerivation] -> String
+verifyDerivationSteps []                                = "Success.\n"
+verifyDerivationSteps ((fname, derivation):derivations) = do
     if (success res)
     then if ((output res) == (final sum))
-         then verifyDerivations derivations
+         then verifyDerivationSteps derivations
          else describeIncorrectResult fname (final sum) (output res)
     else describeIncorrectStep fname (output res) (step res)
     where sum = (summary derivation)
