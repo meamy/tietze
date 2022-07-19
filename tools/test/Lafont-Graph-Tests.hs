@@ -227,6 +227,14 @@ test101 = TestCase (assertBool "Can support graphs without cycles."
                                (isNothing $ findCycle g5))
 
 -----------------------------------------------------------------------------------------
+-- Ability to fold paths.
+
+test102 = TestCase (assertEqual "Ensures that paths can be folded."
+                    "2 5 8 11 14 17 |"
+                    (foldPath (\n v str -> (show (n + v)) ++ " " ++ str) "|" seq))
+    where seq = listToWalk [2, 4, 6, 8, 10, 12]
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "Construction_Vertices_G0" test1,
@@ -329,6 +337,7 @@ tests = hUnitTestToTests $ TestList [TestLabel "Construction_Vertices_G0" test1,
                                      TestLabel "CycleDetection_ListWCycle" test98,
                                      TestLabel "CycleDetection_ListWOCycle" test99,
                                      TestLabel "CycleDetection_GraphWCycle" test100,
-                                     TestLabel "CycleDetection_GraphWOCycle" test101]
+                                     TestLabel "CycleDetection_GraphWOCycle" test101,
+                                     TestLabel "FoldPath" test102]
 
 main = defaultMain tests

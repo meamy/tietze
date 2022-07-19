@@ -72,6 +72,12 @@ edgeSet g v = fromMaybe empty (Data.Map.lookup v g)
 adjacencyList :: (Ord a) => Digraph a -> a -> [a]
 adjacencyList g v = Data.Set.toList (edgeSet g v)
 
+-- | Consumes a function of type a -> b -> b (f), a walk of type a (w), and a value of
+-- type b. If w is the empty path, then b is returned. Otherwise, if w = vw' where v is
+-- the first vertex in w, then (f v (foldpath f w' b)) is returned.
+foldPath :: (Int -> a -> b -> b) -> b -> GraphWalk a -> b
+foldPath = Data.Sequence.foldrWithIndex
+
 -----------------------------------------------------------------------------------------
 -- * Cycle Detection (Depth-First Search).
 
