@@ -9,14 +9,12 @@ import qualified Data.Map
 
 -- | All semantic model currently supported.
 data SemModel = MonoidalSem
-              | DyadicOneSem
               | DyadicTwoSem
               | DyadicThreeSem
               deriving (Eq)
 
 instance Show SemModel where
     show MonoidalSem    = "Monoidal"
-    show DyadicOneSem   = "Dyadic(1)"
     show DyadicTwoSem   = "Dyadic(2)"
     show DyadicThreeSem = "Dyadic(3)"
 

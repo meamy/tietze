@@ -93,7 +93,6 @@ updateGenerators parseSem dict str =
 -- | List of all semantic models as text.
 _semModelStrings :: [String]
 _semModelStrings = [(show MonoidalSem),
-                    (show DyadicOneSem),
                     (show DyadicTwoSem),
                     (show DyadicThreeSem)]
 
@@ -108,7 +107,6 @@ parseSemanticModel (line:lines) num =
         ""   -> (parseSemanticModel lines (num + 1))
         text -> case parseFromSeps _semModelStrings text of
             Just ("Monoidal",  post) -> (check MonoidalSem post text)
-            Just ("Dyadic(1)", post) -> (check DyadicOneSem post text)
             Just ("Dyadic(2)", post) -> (check DyadicTwoSem post text)
             Just ("Dyadic(3)", post) -> (check DyadicThreeSem post text)
             Nothing                  -> Left (num, (Right (UnknownSemModel text)))
@@ -143,6 +141,9 @@ parseGenDict parseSem (line:lines) num =
 --
 -- In the future, this might also carry on parameters that describe the generator file.
 data GenFileSummary = MonoidalGenSummary (GenDict ())
+                    | DyadicTwoSummary (GenDict TwoQubitDyadic)
+                    | DyadicThreeSummary (GenDict ThreeQubitDyadic)
+                    deriving (Eq,Show)
 
 -- | Consumes all lines of a generator file (lines). If the lines are valid, then returns
 -- a dictionary of all generators and their semantics, wrapped by their semantic model.
@@ -155,6 +156,12 @@ parseGenFileAsDict lines num =
             MonoidalSem -> case (parseGenDict parseMonoidalSem gens nextLn) of
                 Left err   -> Left err
                 Right dict -> Right (MonoidalGenSummary dict)
+            DyadicTwoSem -> case (parseGenDict interpret2QubitCliffordDTofGate gens nextLn) of
+                Left err   -> Left err
+                Right dict -> Right (DyadicTwoSummary dict)
+            DyadicThreeSem -> case (parseGenDict interpret3QubitCliffordDTofGate gens nextLn) of
+                Left err   -> Left err
+                Right dict -> Right (DyadicThreeSummary dict)
             otherwise -> Left (semLn, Right (SemModelWOImpl sem))
 
 -- | A GenFileSummary carries the type data of the underlying semantic model. This

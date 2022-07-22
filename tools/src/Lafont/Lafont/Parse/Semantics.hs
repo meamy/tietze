@@ -83,7 +83,9 @@ interpretNQubitGate sem str =
 -----------------------------------------------------------------------------------------
 -- * Quantum Operator Semantics: Clifford(D) on Two Qubits.
 
-interpretUnique2QubitDOp4x4 :: String -> Either String (Unitary Four Dyadic)
+type TwoQubitDyadic = Unitary Four Dyadic
+
+interpretUnique2QubitDOp4x4 :: String -> QGateSemRes Four Dyadic
 interpretUnique2QubitDOp4x4 "CZ"   = Right gate_cz
 interpretUnique2QubitDOp4x4 "K"    = Right gate_k
 interpretUnique2QubitDOp4x4 "SWAP" = Right gate_swap
@@ -117,11 +119,13 @@ sem2QubitDOp = QGateSem (gate_id `tensor` gate_id)
                         (Just interpret2QubitDOp4x4)
                         Nothing
 
-interpret2QubitCliffordDTofGate :: SemParser (Unitary Four Dyadic)
+interpret2QubitCliffordDTofGate :: SemParser TwoQubitDyadic
 interpret2QubitCliffordDTofGate = interpretNQubitGate sem2QubitDOp
 
 -----------------------------------------------------------------------------------------
 -- * Quantum Operator Semantics: Clifford(D)+Tof on Three Qubits.
+
+type ThreeQubitDyadic = Unitary Eight Dyadic
 
 make1QubitDOp8x8 :: String -> ThreeBitPos -> QGateSemRes Eight Dyadic
 make1QubitDOp8x8 "X" a = Right (prepare_gate_8x8 (OneQubitOp8x8 gate_x a))
@@ -173,5 +177,5 @@ sem3QubitDOp = QGateSem (gate_id `tensor` gate_id `tensor` gate_id)
                         (Just interpret2QubitDOp8x8)
                         (Just interpret3QubitDOp8x8)
 
-interpret3QubitCliffordDTofGate :: SemParser (Unitary Eight Dyadic)
+interpret3QubitCliffordDTofGate :: SemParser ThreeQubitDyadic
 interpret3QubitCliffordDTofGate = interpretNQubitGate sem3QubitDOp
