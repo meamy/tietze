@@ -170,12 +170,12 @@ test31 = TestCase (assertEqual "Checks CZ[0][1] sends |11> to -|11>."
 
 test32 = TestCase (assertEqual "Checks K[0][1] is H tensor H."
                                (gate_h `tensor` gate_h) gate_k01)
-         where typed_gate = gate_k :: Matrix Four Four DRootTwo
+         where typed_gate = gate_k :: Unitary Four DRootTwo
                gate_k01 = prepare_gate_4x4 (TwoQubitOp4x4 typed_gate TopBit)
 
 test33 = TestCase (assertEqual "Checks K[1][0] is H tensor H."
                                (gate_h `tensor` gate_h) gate_k10)
-         where typed_gate = gate_k :: Matrix Four Four DRootTwo
+         where typed_gate = gate_k :: Unitary Four DRootTwo
                gate_k10 = prepare_gate_4x4 (TwoQubitOp4x4 typed_gate BotBit)
 
 -----------------------------------------------------------------------------------------

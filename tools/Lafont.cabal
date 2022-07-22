@@ -178,6 +178,12 @@ test-suite lafont-parse-derivationfile-tests
   main-is:             Lafont-Parse-DerivationFile-Tests.hs
   type:                exitcode-stdio-1.0
 
+test-suite lafont-parse-semantics-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Parse-Semantics-Tests.hs
+  type:                exitcode-stdio-1.0
+  build-depends:       newsynth
+
 test-suite lafontexe-logging-linebasedlogging-tests
   import:              io-unit-test-props
   main-is:             LafontExe-Logging-LineBased-Tests.hs
