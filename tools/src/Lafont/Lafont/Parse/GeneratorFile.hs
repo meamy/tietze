@@ -2,6 +2,7 @@
 
 module Lafont.Parse.GeneratorFile where
 
+import Lafont.Common
 import Lafont.Generators.Semantics
 import Lafont.Parse.Common
 import Lafont.Parse.Semantics
@@ -16,15 +17,15 @@ data GenFileError = MissingSemModel
                   | InvalidGenName
                   | InvalidGenSem Int String
                   | DuplicateGenName String
-                  deriving (Eq)
+                  deriving (Eq,Show)
 
-instance Show GenFileError where
-    show MissingSemModel         = "Semantics model not provided."
-    show (UnknownSemModel model) = "Unknown semantic model (" ++ model ++ ")."
-    show (SemModelWOImpl model)  = (show model) ++ " not implemented."
-    show InvalidGenName          = "Generator name started with invalid symbol."
-    show (InvalidGenSem pos msg) = "Invalid semv at " ++ (show pos) ++ " (" ++ msg ++ ")."
-    show (DuplicateGenName name) = "Duplicate generator name (" ++ name ++ ")."
+instance Display GenFileError where
+    display MissingSemModel         = "Semantics model not provided."
+    display (UnknownSemModel model) = "Unknown semantic model (" ++ model ++ ")."
+    display (SemModelWOImpl model)  = (display model) ++ " not implemented."
+    display InvalidGenName          = "Generator name started with invalid symbol."
+    display (InvalidGenSem pos msg) = "Invalid semv at " ++ (show pos) ++ " (" ++ msg ++ ")."
+    display (DuplicateGenName name) = "Duplicate generator name (" ++ name ++ ")."
 
 -- | Errors returned during generator file parsing.
 type GFPError = Either ParserError GenFileError
@@ -92,9 +93,9 @@ updateGenerators parseSem dict str =
 
 -- | List of all semantic models as text.
 _semModelStrings :: [String]
-_semModelStrings = [(show MonoidalSem),
-                    (show DyadicTwoSem),
-                    (show DyadicThreeSem)]
+_semModelStrings = [(display MonoidalSem),
+                    (display DyadicTwoSem),
+                    (display DyadicThreeSem)]
 
 -- | Consumes all lines of a generator file (lines) and the current line number (num).
 -- Attempts to parse the semantic model declaration. If successful, then the semantic

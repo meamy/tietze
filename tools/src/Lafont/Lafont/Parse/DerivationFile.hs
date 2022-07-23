@@ -27,20 +27,20 @@ data DerFileError = UnknownRewriteMod
                   | UnknownRuleName String
                   | MissingInitialWord
                   | MissingFinalWord
-                  deriving (Eq)
+                  deriving (Eq,Show)
 
-instance Show DerFileError where
-    show UnknownRewriteMod      = "Unknown rewrite modifier (a symbol prefixed by !)."
-    show InvalidRuleName        = "Rewrite rule name starts with invalid symbol."
-    show InvalidRewritePos      = "Expected position at end of rewrite."
-    show InvalidRewriteDir      = "Non-equational rewrite rule applied right-to-left."
-    show MissingRewriteDir      = "Equational rewrite rule requires derivation direction."
-    show ApplyOnPrimitive       = "Applied use of a primitive rewrite rule."
-    show RewriteOnDerived       = "Primitive use of a derived rewrite rule."
-    show (UnknownGenName name)  = "Unknown generator name (" ++ name ++ ")."
-    show (UnknownRuleName name) = "Unknown rewrite rule (" ++ name ++ ")."
-    show MissingInitialWord     = "Initial word missing in derivation."
-    show MissingFinalWord       = "Final word missing in derivation."
+instance Display DerFileError where
+    display UnknownRewriteMod      = "Unknown rewrite modifier (a symbol prefixed by !)."
+    display InvalidRuleName        = "Rewrite rule name starts with invalid symbol."
+    display InvalidRewritePos      = "Expected position at end of rewrite."
+    display InvalidRewriteDir      = "Non-equational rewrite rule applied right-to-left."
+    display MissingRewriteDir      = "Equational rewrite rule requires derivation direction."
+    display ApplyOnPrimitive       = "Applied use of a primitive rewrite rule."
+    display RewriteOnDerived       = "Primitive use of a derived rewrite rule."
+    display (UnknownGenName name)  = "Unknown generator name (" ++ name ++ ")."
+    display (UnknownRuleName name) = "Unknown rewrite rule (" ++ name ++ ")."
+    display MissingInitialWord     = "Initial word missing in derivation."
+    display MissingFinalWord       = "Final word missing in derivation."
 
 -- | Errors returned during derivation file parsing.
 type DFPError = Either ParserError DerFileError

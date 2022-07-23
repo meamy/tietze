@@ -4,8 +4,10 @@ module LafontExe.CheckGenerators where
 
 import System.Directory
 import System.IO
+import Lafont.Common
 import Lafont.Generators.Semantics
 import Lafont.Parse.GeneratorFile
+import LafontExe.Logging.Generators
 import LafontExe.Logging.LineBased
 
 -----------------------------------------------------------------------------------------
@@ -15,15 +17,15 @@ import LafontExe.Logging.LineBased
 -- symbol/semantic pair, together with the result so far (str). Appends the name of the
 -- generator, and a textual representation if its semantics (if present), to str. The new
 -- string is returned.
-logGenerator :: (Show a) => (String, Maybe a) -> String -> String
-logGenerator (name, (Just semv)) str = str ++ name ++ " := " ++ (show semv) ++ "\n"
+logGenerator :: (Display a) => (String, Maybe a) -> String -> String
+logGenerator (name, (Just semv)) str = str ++ name ++ " := " ++ (display semv) ++ "\n"
 logGenerator (name, Nothing)     str = str ++ name ++ " := (no semantic value)\n"
 
 -- | Consumes a semantic model (sem) and a dictionary of generators (dict). Returns a
 -- textual representation of the generators and their semantics.
-logGenerators :: (Show a) => SemModel -> GenDict a -> String
+logGenerators :: (Display a) => SemModel -> GenDict a -> String
 logGenerators sem dict = foldGens logGenerator semstr dict
-    where semstr = "Semantic Model : " ++ (show sem) ++ "\n"
+    where semstr = "Semantic Model : " ++ (display sem) ++ "\n"
 
 -----------------------------------------------------------------------------------------
 -- * Logic.

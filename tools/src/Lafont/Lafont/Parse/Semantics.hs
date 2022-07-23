@@ -54,7 +54,7 @@ interpretNQubitSymbol (QGateSem _ sem0 sem1 sem2 sem3) sym =
         [a, b, c] -> maybe (Left err) (\f -> f op a b c) sem3
         otherwise -> Left err
     where op  = (name sym)
-          err = "Invalid argument count in: " ++ (show sym) ++ "."
+          err = "Invalid argument count in: " ++ (display sym) ++ "."
 
 -- | Consumes interpretation semantics (for up to 3 arguments) and a word. If the word is
 -- a valid gate with respect to the semantics, then that gate is returned. Otherwise, an

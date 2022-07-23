@@ -9,11 +9,11 @@ import Lafont.Rewrite.Rules
 -- * Array-Based Logging.
 
 -- | Converts a monoidal word into a dot concatenated string. Symbols are displayed using
--- their show function. Empty words are displayed as ε.
+-- their display function. Empty words are displayed as ε.
 logWord :: MonWord -> String
 logWord []          = "ε"
-logWord (symb:[])   = (show symb)
-logWord (symb:word) = (show symb) ++ "." ++ (logWord word)
+logWord (symb:[])   = (display symb)
+logWord (symb:word) = (display symb) ++ "." ++ (logWord word)
 
 -----------------------------------------------------------------------------------------
 -- * Tuple-Based Logging.

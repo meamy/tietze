@@ -4,6 +4,7 @@ module Lafont.Parse.Common where
 
 import Data.Char
 import Data.List
+import Lafont.Common
 import Lafont.Maybe
 
 -----------------------------------------------------------------------------------------
@@ -18,17 +19,17 @@ data ParserError = ImplError String
                  | UnexpectedEOF
                  | ExpectedEOF
                  | UnknownParseError
-                 deriving (Eq)
+                 deriving (Eq,Show)
 
-instance Show ParserError where
-    show (ImplError msg)        = "Implementation error! " ++ msg
-    show (DuplicateProp prop)   = "Property set twice (" ++ prop ++ ")."
-    show (UnknownProp prop)     = "Unknown property (" ++ prop ++ ")."
-    show (UnexpectedSymbol pos) = "Unexpected symbol at " ++ (show pos) ++ "."
-    show UnexpectedEOL          = "Unexpected end-of-line."
-    show UnexpectedEOF          = "Unexpected end-of-file."
-    show ExpectedEOF            = "Expected end-of-file."
-    show UnknownParseError      = "Parser failed unexpected."
+instance Display ParserError where
+    display (ImplError msg)        = "Implementation error! " ++ msg
+    display (DuplicateProp prop)   = "Property set twice (" ++ prop ++ ")."
+    display (UnknownProp prop)     = "Unknown property (" ++ prop ++ ")."
+    display (UnexpectedSymbol pos) = "Unexpected symbol at " ++ (show pos) ++ "."
+    display UnexpectedEOL          = "Unexpected end-of-line."
+    display UnexpectedEOF          = "Unexpected end-of-file."
+    display ExpectedEOF            = "Expected end-of-file."
+    display UnknownParseError      = "Parser failed unexpected."
 
 -- | Consumes a string (full) and the substring upon which parsing failed (unparsed).
 -- Returns the position in full at which parsing failed (zero indexed).

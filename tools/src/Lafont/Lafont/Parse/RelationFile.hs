@@ -18,15 +18,15 @@ data RelFileError = InvalidRuleName
                   | RuleMissingRHS
                   | UnknownGenName String
                   | DuplicateRuleName String
-                  deriving (Eq)
+                  deriving (Eq,Show)
 
-instance Show RelFileError where
-    show InvalidRuleName          = "Rule name started with invalid symbol."
-    show RuleMissingLHS           = "Rule missing left-hand side."
-    show (InvalidRuleType pos)    = "Invalid rule type at pos " ++ (show pos) ++ "."
-    show RuleMissingRHS           = "Rule missing right-hand side."
-    show (UnknownGenName name)    = "Unknown generator name (" ++ name ++ ")."
-    show (DuplicateRuleName name) = "Duplicate rule name (" ++ name ++ ")."
+instance Display RelFileError where
+    display InvalidRuleName          = "Rule name started with invalid symbol."
+    display RuleMissingLHS           = "Rule missing left-hand side."
+    display (InvalidRuleType pos)    = "Invalid rule type at pos " ++ (show pos) ++ "."
+    display RuleMissingRHS           = "Rule missing right-hand side."
+    display (UnknownGenName name)    = "Unknown generator name (" ++ name ++ ")."
+    display (DuplicateRuleName name) = "Duplicate rule name (" ++ name ++ ")."
 
 -- | Errors returned during generator file parsing.
 type RFPError = Either ParserError RelFileError
@@ -110,7 +110,7 @@ updateRules dict gens str =
     case (parseRuleDefn str) of
         Left err        -> Left err
         Right (id, rule) -> case (findUnknownGenInRule gens rule) of
-            Just gen -> Left (Right (UnknownGenName (show gen)))
+            Just gen -> Left (Right (UnknownGenName (display gen)))
             Nothing  -> if (dict `hasRule` id)
                         then Left (Right (DuplicateRuleName id))
                         else Right (dict `addRule` (id, rule))

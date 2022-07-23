@@ -3,6 +3,7 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
+import Lafont.Common
 import LafontExe.Logging.LineBased
 
 -----------------------------------------------------------------------------------------
@@ -41,6 +42,9 @@ test7 = TestCase (assertEqual "logFromFile (4/4)."
 
 -----------------------------------------------------------------------------------------
 -- logEitherMsg
+
+instance Display Int where
+    display n = show n
 
 lval1 :: Either Int Int
 lval1 = Left 5

@@ -3,6 +3,13 @@
 module Lafont.Common where
 
 -----------------------------------------------------------------------------------------
+-- * Common Classes
+
+-- |
+class Display a where
+    display :: a -> String
+
+-----------------------------------------------------------------------------------------
 -- * Common Word Types.
 
 -- | Specifies a symbol which represents a generator. Built-in generators may allow for
@@ -11,10 +18,10 @@ module Lafont.Common where
 -- as arguments.
 data Symbol = Symbol { name :: String
                      , args :: [Int]
-                     } deriving (Eq)
+                     } deriving (Eq,Show)
 
-instance Show Symbol where
-    show (Symbol name args) = foldl (\str n -> str ++ "[" ++ (show n) ++ "]") name args
+instance Display Symbol where
+    display (Symbol sym args) = foldl (\str n -> str ++ "[" ++ (show n) ++ "]") sym args
 
 -- | Type definition for a string of generators (i.e., a word in a free monoid).
 type MonWord = [Symbol]

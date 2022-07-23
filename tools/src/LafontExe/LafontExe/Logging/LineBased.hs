@@ -2,6 +2,8 @@
 
 module LafontExe.Logging.LineBased where
 
+import Lafont.Common
+
 -----------------------------------------------------------------------------------------
 -- * Logging By: File and Line Number.
 
@@ -15,9 +17,10 @@ fileLogPrefix fname n = "[" ++ fname ++ ":" ++ (show n) ++ "]"
 logFromFile :: String -> Int -> String -> String
 logFromFile fname n msg = (fileLogPrefix fname n) ++ " " ++ msg ++ "\n"
 
--- | Consumes a file name (fname), line number (n), and one of either two showable types.
--- If msg is the showable consumed, then returns (logFromFile fname n msg). For example,
--- logEitherMsg can be used to display exceptions of type (Either GeneralErr SpecificErr).
-logEitherMsg :: (Show a, Show b) => String -> Int -> Either a b -> String
-logEitherMsg fname n (Left msg)  = (logFromFile fname n (show msg))
-logEitherMsg fname n (Right msg) = (logFromFile fname n (show msg))
+-- | Consumes a file name (fname), line number (n), and one of either two displayable
+-- types. If msg is the displayable consumed, then returns (logFromFile fname n msg). For
+-- example, logEitherMsg can be used to display exceptions of type (Either GeneralErr
+-- SpecificErr).
+logEitherMsg :: (Display a, Display b) => String -> Int -> Either a b -> String
+logEitherMsg fname n (Left msg)  = (logFromFile fname n (display msg))
+logEitherMsg fname n (Right msg) = (logFromFile fname n (display msg))

@@ -3,6 +3,7 @@
 module Lafont.Generators.Semantics where
 
 import qualified Data.Map
+import Lafont.Common
 
 -----------------------------------------------------------------------------------------
 -- * Semantic Model Descriptions.
@@ -11,12 +12,12 @@ import qualified Data.Map
 data SemModel = MonoidalSem
               | DyadicTwoSem
               | DyadicThreeSem
-              deriving (Eq)
+              deriving (Eq,Show)
 
-instance Show SemModel where
-    show MonoidalSem    = "Monoidal"
-    show DyadicTwoSem   = "Dyadic(2)"
-    show DyadicThreeSem = "Dyadic(3)"
+instance Display SemModel where
+    display MonoidalSem    = "Monoidal"
+    display DyadicTwoSem   = "Dyadic(2)"
+    display DyadicThreeSem = "Dyadic(3)"
 
 -----------------------------------------------------------------------------------------
 -- * Generator Dictionary.
