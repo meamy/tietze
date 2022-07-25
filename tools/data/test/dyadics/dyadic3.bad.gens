@@ -1,0 +1,9 @@
+-- A generator file with Dyadic(3) gates.
+
+Dyadic(3)
+
+x0    := X[0]
+x1    := X[1].X[5]
+gate1 := CCX[0][1][2].K[0][1].CCX[0][2][1]
+gate2 := CCX[0][1][2].K[1][2]
+gate3 := CCX[0][2][1].X[0]

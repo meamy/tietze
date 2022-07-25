@@ -39,6 +39,9 @@ processGeneratorLines fname lines =
     case (parseGenFileAsDict lines 0) of
         Left (errLn, err)               -> (logEitherMsg fname errLn err)
         Right (MonoidalGenSummary dict) -> logGenerators MonoidalSem dict 
+        Right (DyadicTwoSummary dict)   -> logGenerators DyadicTwoSem dict
+        Right (DyadicThreeSummary dict) -> logGenerators DyadicThreeSem dict
+        otherwise                       -> "Semantic model not supported."
 
 -- | Consumes a handle, the name of a generator file (fname). If the generator file
 -- parses correctly, then an internal representation of the generators is printed to the
