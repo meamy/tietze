@@ -71,32 +71,32 @@ test12 = TestCase (assertEqual "Can interpret long strings as a 2 qubit circuit 
           gate = pref * gate_k * invs
 
 test13 = TestCase (assertEqual "Unknown operators rejected for 2 qubit circuits (1/2)."
-                               (Left "Unknown two qubit operator: MadeUp.")
+                               (Left "Unknown two qubit operator: MadeUp")
                                (interpret2QubitCliffordDTofGate word))
     where word = "X[0].X[1].Z[0].Z[1].MadeUp.Z[0].Z[1].X[0].X[1]"
 
 test14 = TestCase (assertEqual "Unknown operators rejected for 2 qubit circuits (2/2)."
-                               (Left "Unknown one qubit operator: MadeUp.")
+                               (Left "Unknown one qubit operator: MadeUp")
                                (interpret2QubitCliffordDTofGate word))
     where word = "X[0].X[1].Z[0].Z[1].MadeUp[0].Z[0].Z[1].X[0].X[1]"
 
 test15 = TestCase (assertEqual "OOB arguments rejected for 2 qubit circuits (1/2)."
-                               (Left "Invalid gate position: Z[5].")
+                               (Left "Invalid gate position: Z[5]")
                                (interpret2QubitCliffordDTofGate word))
     where word = "X[0].X[1].Z[0].Z[5].K.Z[0].Z[1].X[0].X[1]"
 
 test16 = TestCase (assertEqual "OOB arguments rejected for 2 qubit circuits (2/2)."
-                               (Left "Invalid gate position: CCX[1][1].")
+                               (Left "Invalid gate position: CCX[1][1]")
                                (interpret2QubitCliffordDTofGate word))
     where word = "X[0].X[1].Z[0].Z[1].CCX[1][1].Z[0].Z[1].X[0].X[1]"
 
 test17 = TestCase (assertEqual "Interpretation framework rejects non-words."
-                               (Left "Expected a word.")
+                               (Left "Expected a word")
                                (interpret2QubitCliffordDTofGate word))
     where word = "54 X[0].X[1].Z[0].Z[1].K.Z[0].Z[1].X[0].X[1]"
 
 test18 = TestCase (assertEqual "Interpretation framework requires a single word."
-                               (Left "Expected a single word.")
+                               (Left "Expected a single word")
                                (interpret2QubitCliffordDTofGate word))
     where word = "X[0].X[1].Z[0].Z[1].K.Z[0].Z[1].X[0].X[1] 54"
 
@@ -300,22 +300,22 @@ test57 = TestCase (assertEqual "Can interpret long strings as a 3 qubit circuit 
           gate = pref * k01_8x8 * invs
 
 test58 = TestCase (assertEqual "Unknown operators rejected for 3 qubit circuits (1/2)."
-                               (Left "Invalid argument count in: MadeUp.")
+                               (Left "Invalid argument count in: MadeUp")
                                (interpret3QubitCliffordDTofGate word))
     where word = "X[0].X[1].Z[0].Z[1].MadeUp.Z[0].Z[1].X[0].X[1]"
 
 test59 = TestCase (assertEqual "Unknown operators rejected for 3 qubit circuits (2/2)."
-                               (Left "Unknown one qubit operator: MadeUp.")
+                               (Left "Unknown one qubit operator: MadeUp")
                                (interpret3QubitCliffordDTofGate word))
     where word = "X[0].X[1].Z[0].Z[1].MadeUp[0].Z[0].Z[1].X[0].X[1]"
 
 test60 = TestCase (assertEqual "OOB arguments rejected for 3 qubit circuits (1/2)."
-                               (Left "Invalid gate position: Z[5].")
+                               (Left "Invalid gate position: Z[5]")
                                (interpret3QubitCliffordDTofGate word))
     where word = "X[0].X[1].Z[0].Z[5].K[0][1].Z[0].Z[1].X[0].X[1]"
 
 test61 = TestCase (assertEqual "OOB arguments rejected for 2 qubit circuits (2/2)."
-                               (Left "Invalid gate position: CCCX[0][1][1].")
+                               (Left "Invalid gate position: CCCX[0][1][1]")
                                (interpret3QubitCliffordDTofGate word))
     where word = "X[0].X[1].Z[0].Z[1].CCCX[0][1][1].Z[0].Z[1].X[0].X[1]"
 

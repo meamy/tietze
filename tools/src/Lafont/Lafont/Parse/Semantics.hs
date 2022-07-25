@@ -54,7 +54,7 @@ interpretNQubitSymbol (QGateSem _ sem0 sem1 sem2 sem3) sym =
         [a, b, c] -> maybe (Left err) (\f -> f op a b c) sem3
         otherwise -> Left err
     where op  = (name sym)
-          err = "Invalid argument count in: " ++ (display sym) ++ "."
+          err = "Invalid argument count in: " ++ (display sym)
 
 -- | Consumes interpretation semantics (for up to 3 arguments) and a word. If the word is
 -- a valid gate with respect to the semantics, then that gate is returned. Otherwise, an
@@ -76,8 +76,8 @@ interpretNQubitGate sem str =
     case (parseMonWord (snd (trimSpacing stripped))) of
         Just (word, eol) -> if ((snd (trimSpacing eol)) == "")
                             then interpretNQubitWord sem word
-                            else Left "Expected a single word."
-        Nothing -> Left "Expected a word."
+                            else Left "Expected a single word"
+        Nothing -> Left "Expected a word"
     where stripped = stripComments str
 
 -----------------------------------------------------------------------------------------
@@ -89,27 +89,27 @@ interpretUnique2QubitDOp4x4 :: String -> QGateSemRes Four Dyadic
 interpretUnique2QubitDOp4x4 "CZ"   = Right gate_cz
 interpretUnique2QubitDOp4x4 "K"    = Right gate_k
 interpretUnique2QubitDOp4x4 "SWAP" = Right gate_swap
-interpretUnique2QubitDOp4x4 op     = Left ("Unknown two qubit operator: " ++ op ++ ".")
+interpretUnique2QubitDOp4x4 op     = Left ("Unknown two qubit operator: " ++ op)
 
 make1QubitDOp4x4 :: String -> TwoBitPos -> QGateSemRes Four Dyadic
 make1QubitDOp4x4 "X" a = Right (prepare_gate_4x4 (OneQubitOp4x4 gate_x a))
 make1QubitDOp4x4 "Z" a = Right (prepare_gate_4x4 (OneQubitOp4x4 gate_z a))
-make1QubitDOp4x4 op  _ = Left ("Unknown one qubit operator: " ++ op ++ ".")
+make1QubitDOp4x4 op  _ = Left ("Unknown one qubit operator: " ++ op)
 
 interpret1QubitDOp4x4 :: String -> Int -> QGateSemRes Four Dyadic
 interpret1QubitDOp4x4 op 0 = make1QubitDOp4x4 op TopBit
 interpret1QubitDOp4x4 op 1 = make1QubitDOp4x4 op BotBit
-interpret1QubitDOp4x4 op a = Left ("Invalid gate position: " ++ op ++ posStr ++ ".")
+interpret1QubitDOp4x4 op a = Left ("Invalid gate position: " ++ op ++ posStr)
     where posStr = "[" ++ (show a) ++ "]"
 
 make2QubitDOp4x4 :: String -> TwoBitPos -> QGateSemRes Four Dyadic
 make2QubitDOp4x4 "CX" a = Right (prepare_gate_4x4 (TwoQubitOp4x4 gate_cx a))
-make2QubitDOp4x4 op   _ = Left ("Unknown two qubit operator: " ++ op ++ ".")
+make2QubitDOp4x4 op   _ = Left ("Unknown two qubit operator: " ++ op)
 
 interpret2QubitDOp4x4 :: String -> Int -> Int -> QGateSemRes Four Dyadic
 interpret2QubitDOp4x4 op 0 1 = make2QubitDOp4x4 op TopBit
 interpret2QubitDOp4x4 op 1 0 = make2QubitDOp4x4 op BotBit
-interpret2QubitDOp4x4 op a b = Left ("Invalid gate position: " ++ op ++ posStr ++ ".")
+interpret2QubitDOp4x4 op a b = Left ("Invalid gate position: " ++ op ++ posStr)
     where posStr = "[" ++ (show a) ++ "][" ++ (show b) ++ "]"
 
 sem2QubitDOp :: QGateSem Four Dyadic
@@ -130,13 +130,13 @@ type ThreeQubitDyadic = Unitary Eight Dyadic
 make1QubitDOp8x8 :: String -> ThreeBitPos -> QGateSemRes Eight Dyadic
 make1QubitDOp8x8 "X" a = Right (prepare_gate_8x8 (OneQubitOp8x8 gate_x a))
 make1QubitDOp8x8 "Z" a = Right (prepare_gate_8x8 (OneQubitOp8x8 gate_z a))
-make1QubitDOp8x8 op  _ = Left ("Unknown one qubit operator: " ++ op ++ ".")
+make1QubitDOp8x8 op  _ = Left ("Unknown one qubit operator: " ++ op)
 
 interpret1QubitDOp8x8 :: String -> Int -> QGateSemRes Eight Dyadic
 interpret1QubitDOp8x8 op 0 = make1QubitDOp8x8 op LBit
 interpret1QubitDOp8x8 op 1 = make1QubitDOp8x8 op MBit
 interpret1QubitDOp8x8 op 2 = make1QubitDOp8x8 op RBit
-interpret1QubitDOp8x8 op a = Left ("Invalid gate position: " ++ op ++ posStr ++ ".")
+interpret1QubitDOp8x8 op a = Left ("Invalid gate position: " ++ op ++ posStr)
     where posStr = "[" ++ (show a) ++ "]"
 
 make2QubitDOp8x8 :: String -> ThreeBitPos -> TwoBitPos -> QGateSemRes Eight Dyadic
@@ -144,7 +144,7 @@ make2QubitDOp8x8 "CX"   a b = Right (prepare_gate_8x8 (TwoQubitOp8x8 gate_cx a b
 make2QubitDOp8x8 "CZ"   a b = Right (prepare_gate_8x8 (TwoQubitOp8x8 gate_cz a b))
 make2QubitDOp8x8 "K"    a b = Right (prepare_gate_8x8 (TwoQubitOp8x8 gate_k a b))
 make2QubitDOp8x8 "SWAP" a b = Right (prepare_gate_8x8 (TwoQubitOp8x8 gate_swap a b))
-make2QubitDOp8x8 op     _ _ = Left ("Unknown two qubit operator: " ++ op ++ ".")
+make2QubitDOp8x8 op     _ _ = Left ("Unknown two qubit operator: " ++ op)
 
 interpret2QubitDOp8x8 :: String -> Int -> Int -> QGateSemRes Eight Dyadic
 interpret2QubitDOp8x8 op 0 1 = make2QubitDOp8x8 op LBit TopBit
@@ -153,12 +153,12 @@ interpret2QubitDOp8x8 op 1 0 = make2QubitDOp8x8 op MBit TopBit
 interpret2QubitDOp8x8 op 1 2 = make2QubitDOp8x8 op MBit BotBit
 interpret2QubitDOp8x8 op 2 0 = make2QubitDOp8x8 op RBit TopBit
 interpret2QubitDOp8x8 op 2 1 = make2QubitDOp8x8 op RBit BotBit
-interpret2QubitDOp8x8 op a b = Left ("Invalid gate position: " ++ op ++ posStr ++ ".")
+interpret2QubitDOp8x8 op a b = Left ("Invalid gate position: " ++ op ++ posStr)
     where posStr = "[" ++ (show a) ++ "][" ++ (show b) ++ "]"
 
 make3QubitDOp8x8 :: String -> ThreeBitPos -> TwoBitPos -> QGateSemRes Eight Dyadic
 make3QubitDOp8x8 "CCX" a b = Right (prepare_gate_8x8 (ThreeQubitOp8x8 gate_tof a b))
-make3QubitDOp8x8 op    _ _ = Left ("Unknown three qubit operator: " ++ op ++ ".")
+make3QubitDOp8x8 op    _ _ = Left ("Unknown three qubit operator: " ++ op)
 
 interpret3QubitDOp8x8 :: String -> Int -> Int ->Int -> QGateSemRes Eight Dyadic
 interpret3QubitDOp8x8 op 0 1 2 = make3QubitDOp8x8 op LBit TopBit
@@ -167,7 +167,7 @@ interpret3QubitDOp8x8 op 1 0 2 = make3QubitDOp8x8 op MBit TopBit
 interpret3QubitDOp8x8 op 1 2 0 = make3QubitDOp8x8 op MBit BotBit
 interpret3QubitDOp8x8 op 2 0 1 = make3QubitDOp8x8 op RBit TopBit
 interpret3QubitDOp8x8 op 2 1 0 = make3QubitDOp8x8 op RBit BotBit
-interpret3QubitDOp8x8 op a b c = Left ("Invalid gate position: " ++ op ++ posStr ++ ".")
+interpret3QubitDOp8x8 op a b c = Left ("Invalid gate position: " ++ op ++ posStr)
     where posStr = "[" ++ (show a) ++ "][" ++ (show b) ++ "][" ++ (show c) ++ "]"
 
 sem3QubitDOp :: QGateSem Eight Dyadic

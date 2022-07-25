@@ -316,7 +316,7 @@ test43 = TestCase (assertEqual "Tests parsing of valid Dyadic(2) file."
 test44 = TestCase (assertEqual "Tests parsing of valid Dyadic(2) file."
                                (Left (2, Right err))
                                (parseGenFileAsDict invalidTwoDyadicFile 0))
-      where err = InvalidGenSem 6 "Unknown two qubit operator: CCX."
+      where err = InvalidGenSem 6 "Unknown two qubit operator: CCX"
 
 -----------------------------------------------------------------------------------------
 -- Parsing Clifford(D)+Tof Semantics (3-Qubits).
@@ -341,7 +341,7 @@ test45 = TestCase (assertEqual "Tests parsing of valid Dyadic(3) file."
 test46 = TestCase (assertEqual "Tests parsing of valid Dyadic(3) file."
                                (Left (2, Right err))
                                (parseGenFileAsDict invalidThreeDyadicFile 0))
-      where err = InvalidGenSem 6 "Unknown two qubit operator: CCX."
+      where err = InvalidGenSem 6 "Unknown two qubit operator: CCX"
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
