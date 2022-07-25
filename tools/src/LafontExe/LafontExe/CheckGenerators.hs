@@ -5,9 +5,9 @@ module LafontExe.CheckGenerators where
 import System.Directory
 import System.IO
 import Lafont.Common
+import Lafont.Generators.Display
 import Lafont.Generators.Semantics
 import Lafont.Parse.GeneratorFile
-import LafontExe.Logging.Generators
 import LafontExe.Logging.LineBased
 
 -----------------------------------------------------------------------------------------
