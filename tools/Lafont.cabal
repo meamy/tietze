@@ -18,6 +18,7 @@ library
                        Lafont.Graph
                        Lafont.Maybe
                        Lafont.String
+                       Lafont.Ring
                        Lafont.Rewrite.Derivations
                        Lafont.Rewrite.Rules
                        Lafont.Rewrite.Simplification
@@ -102,6 +103,12 @@ test-suite lafont-maybe-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Maybe-Tests.hs
   type:                exitcode-stdio-1.0
+
+test-suite lafont-ring-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Ring-Tests.hs
+  type:                exitcode-stdio-1.0
+  build-depends:       newsynth
 
 test-suite lafont-string-tests
   import:              basic-unit-test-props
