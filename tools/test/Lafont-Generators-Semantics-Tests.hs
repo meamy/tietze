@@ -3,6 +3,7 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
+import Lafont.Common
 import Lafont.Generators.Semantics
 
 -----------------------------------------------------------------------------------------
@@ -167,6 +168,132 @@ test34 = TestCase (assertEqual "Can extract alphabet from sampleDict2."
                                (toAlphabet sampleDict3))
 
 -----------------------------------------------------------------------------------------
+-- Defines generators and words.
+
+genA = "a"
+genB = "b"
+genC = "c"
+genD = "d"
+genE = "e"
+genF = "f"
+
+gens = empty `addGen` (genA, Just 1)
+             `addGen` (genB, Just 2)
+             `addGen` (genC, Just 3)
+             `addGen` (genD, Just 6)
+             `addGen` (genE, Just 9)
+             `addGen` (genF, Nothing)
+
+symA = Symbol genA []
+symB = Symbol genB []
+symC = Symbol genC []
+symD = Symbol genD []
+symE = Symbol genE []
+symF = Symbol genF []
+
+wordA = [symA, symE, symA]              -- 1*9*1     = 9
+wordB = [symC, symC, symA]              -- 3*3*1     = 9
+wordC = [symC, symD, symF, symD]        -- 3*6*??*6  = ??
+wordD = [symB, symB, symC, symB]        -- 2*2*3*2   = 24
+wordE = [symA, symB, symD, symB, symA]  -- 1*2*6*2*1 = 24
+wordF = [symD, symB]                    -- 6*2       = 12
+wordG = [symC, symD, symE, symE]        -- 3*6*9*9   = 1458
+
+-----------------------------------------------------------------------------------------
+-- Tests: semEval
+
+test35 = TestCase (assertEqual "Empty string with id 1 had value 1."
+                               (Just 1)
+                               (semEval (*) 1 gens []))
+
+test36 = TestCase (assertEqual "Empty string with id 5 had value 5."
+                               (Just 5)
+                               (semEval (*) 5 gens []))
+
+test37 = TestCase (assertEqual "Tests evaluation of strings with multiplication (1/7)."
+                               (Just 9)
+                               (semEval (*) 1 gens wordA))
+
+test38 = TestCase (assertEqual "Tests evaluation of strings with multiplication (3/7)."
+                               (Just 9)
+                               (semEval (*) 1 gens wordB))
+
+test39 = TestCase (assertEqual "Tests evaluation of strings with multiplication (3/7)."
+                               Nothing
+                               (semEval (*) 1 gens wordC))
+
+test40 = TestCase (assertEqual "Tests evaluation of strings with multiplication (4/7)."
+                               (Just 24)
+                               (semEval (*) 1 gens wordD))
+
+test41 = TestCase (assertEqual "Tests evaluation of strings with multiplication (5/7)."
+                               (Just 24)
+                               (semEval (*) 1 gens wordE))
+
+test42 = TestCase (assertEqual "Tests evaluation of strings with multiplication (6/7)."
+                               (Just 12)
+                               (semEval (*) 1 gens wordF))
+
+test43 = TestCase (assertEqual "Tests evaluation of strings with multiplication (7/7)."
+                               (Just 1458)
+                               (semEval (*) 1 gens wordG))
+
+test44 = TestCase (assertEqual "Tests evaluation of strings with addition (1/2)."
+                               (Just 11)
+                               (semEval (+) 0 gens wordA))
+
+test45 = TestCase (assertEqual "Tests evaluation of strings with addition (2/2)."
+                               (Just 7)
+                               (semEval (+) 0 gens wordB))
+
+-----------------------------------------------------------------------------------------
+-- Tests: semComp
+
+test46 = TestCase (assertEqual "Tests semantic comparison of empty strings (1/2)."
+                               (Just True)
+                               (semComp (*) 1 gens [] []))
+
+test47 = TestCase (assertEqual "Tests semantic comparison of empty strings (2/2)."
+                               (Just True)
+                               (semComp (*) 5 gens [] []))
+
+test48 = TestCase (assertEqual "Tests semantic comparison is with respect to id element."
+                               (Just True)
+                               (semComp (*) 0 gens wordA wordD))
+
+test49 = TestCase (assertEqual "Tests semantic comparison of equal strings (1/2)."
+                               (Just True)
+                               (semComp (*) 1 gens wordA wordB))
+
+test50 = TestCase (assertEqual "Tests semantic comparison of equal strings (2/2)."
+                               (Just True)
+                               (semComp (*) 1 gens wordD wordE))
+
+test51 = TestCase (assertEqual "Tests semantic comparison of strings not equal (1/3)."
+                               (Just False)
+                               (semComp (*) 1 gens wordA wordD))
+
+test52 = TestCase (assertEqual "Tests semantic comparison of strings not equal (2/3)."
+                               (Just False)
+                               (semComp (*) 1 gens wordA wordE))
+
+test53 = TestCase (assertEqual "Tests semantic comparison of strings not equal (3/3)."
+                               (Just False)
+                               (semComp (*) 1 gens wordA wordF))
+
+test54 = TestCase (assertEqual "Tests semantic comparison with missing generators (1/3)."
+                               Nothing
+                               (semComp (*) 1 gens wordA wordC))
+
+test55 = TestCase (assertEqual "Tests semantic comparison with missing generators (2/3)."
+                               Nothing
+                               (semComp (*) 1 gens wordC wordA))
+
+test56 = TestCase (assertEqual "Tests semantic comparison with missing generators (3/3)."
+                               Nothing
+                               (semComp (*) 1 gens wordC wordC))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "GenDictDoesNotContain_Test0" test1,
@@ -202,6 +329,28 @@ tests = hUnitTestToTests $ TestList [TestLabel "GenDictDoesNotContain_Test0" tes
                                      TestLabel "GenToAlpha_Test0" test31,
                                      TestLabel "GenToAlpha_Test1" test32,
                                      TestLabel "GenToAlpha_Test2" test33,
-                                     TestLabel "GenToAlpha_Test3" test34]
+                                     TestLabel "GenToAlpha_Test3" test34,
+                                     TestLabel "SemEval_ID_1" test35,
+                                     TestLabel "SemEval_ID_2" test36,
+                                     TestLabel "SemEval_Mult_1" test37,
+                                     TestLabel "SemEval_Mult_2" test38,
+                                     TestLabel "SemEval_Mult_3" test39,
+                                     TestLabel "SemEval_Mult_4" test40,
+                                     TestLabel "SemEval_Mult_5" test41,
+                                     TestLabel "SemEval_Mult_6" test42,
+                                     TestLabel "SemEval_Mult_7" test43,
+                                     TestLabel "SemEval_Add_1" test44,
+                                     TestLabel "SemEval_Add_2" test45,
+                                     TestLabel "SemComp_Empty_1" test46,
+                                     TestLabel "SemComp_Empty_2" test47,
+                                     TestLabel "SemComp_ID" test48,
+                                     TestLabel "SemComp_EQ_1" test49,
+                                     TestLabel "SemComp_EQ_2" test50,
+                                     TestLabel "SemComp_NEQ_1" test51,
+                                     TestLabel "SemComp_NEQ_2" test52,
+                                     TestLabel "SemComp_NEQ_3" test53,
+                                     TestLabel "SemComp_Missing_1" test54,
+                                     TestLabel "SemComp_Missing_2" test55,
+                                     TestLabel "SemComp_Missing_3" test56]
 
 main = defaultMain tests
