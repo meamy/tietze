@@ -11,6 +11,10 @@ import Lafont.Rewrite.Rules
 -- | A mapping from rule names (strings) to the rewrite rules they represent.
 type RuleDict = Data.Map.Map String RewriteRule
 
+-- | Input function type for foldRules. Consumes a key-value pair and the accumulated
+-- value. Returns the updated accumulated value.
+type RuleDictFoldFn b = (String, RewriteRule) -> b -> b
+
 -- | Creates an empty RuleDict.
 empty :: RuleDict
 empty = Data.Map.empty
@@ -24,7 +28,7 @@ addRule :: RuleDict -> (String, RewriteRule) -> RuleDict
 addRule dict (id, rule) = Data.Map.insert id rule dict
 
 -- | Folds f over the (name, rule) entries of dict, and returns the accumulated value.
-foldRules :: ((String, RewriteRule) -> b -> b) -> b -> RuleDict -> b
+foldRules :: (RuleDictFoldFn b) -> b -> RuleDict -> b
 foldRules f init dict = Data.Map.foldrWithKey fadj init dict
     where fadj key semv acc = f (key, semv) acc
 

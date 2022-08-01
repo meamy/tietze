@@ -24,6 +24,7 @@ library
                        Lafont.Rewrite.Simplification
                        Lafont.Rewrite.Summary
                        Lafont.Rewrite.Lookup
+                       Lafont.Generators.RuleSem
                        Lafont.Generators.Semantics
                        Lafont.Generators.QubitGates
                        Lafont.Generators.Display
@@ -150,6 +151,11 @@ test-suite lafont-generators-display-tests
   main-is:             Lafont-Generators-Display-Tests.hs
   type:                exitcode-stdio-1.0
   build-depends:       newsynth
+
+test-suite lafont-generators-rulesem-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Generators-RuleSem-Tests.hs
+  type:                exitcode-stdio-1.0
 
 test-suite lafont-generators-semantics-tests
   import:              basic-unit-test-props
