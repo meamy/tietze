@@ -8,6 +8,7 @@ import Lafont.Common
 import Lafont.Generators.Display
 import Lafont.Generators.Semantics
 import Lafont.Parse.GeneratorFile
+import LafontExe.IO.Files
 import LafontExe.Logging.LineBased
 
 -----------------------------------------------------------------------------------------
@@ -34,8 +35,8 @@ logGenerators sem dict = foldGens logGenerator semstr dict
 -- line (lines). If the lines parse correctly, then returns a textual representation of
 -- the generators and their semantics. Otherwise, the textual representation of a parsing
 -- error is returned.
-processGeneratorLines :: String -> [String] -> String
-processGeneratorLines fname lines =
+processGeneratorLines :: FileData -> String
+processGeneratorLines (FileData fname lines) =
     case (parseGenFileAsDict lines 0) of
         Left (errLn, err)               -> (logEitherMsg fname errLn err)
         Right (MonoidalGenSummary dict) -> logGenerators MonoidalSem dict 
@@ -52,6 +53,6 @@ checkGenerators hdl fname = do
     exists <- doesFileExist fname
     if exists
     then do
-        content <- readFile fname
-        hPutStr hdl (processGeneratorLines fname (lines content))
+        content <- readNamedFile fname
+        hPutStr hdl (processGeneratorLines content)
     else putStr ("File does not exist: " ++ fname ++ "\n")
