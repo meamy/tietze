@@ -4,6 +4,7 @@ import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Lafont.Common
+import Lafont.Generators.Categories
 import Lafont.Generators.Semantics
 
 -----------------------------------------------------------------------------------------
@@ -168,6 +169,21 @@ test34 = TestCase (assertEqual "Can extract alphabet from sampleDict2."
                                (toAlphabet sampleDict3))
 
 -----------------------------------------------------------------------------------------
+-- Monoid semantics used in the test.
+
+data ZeroInt = ZeroInt Int deriving (Eq,Show)
+
+instance MonoidObj (ZeroInt) where
+    compose (ZeroInt x) (ZeroInt y) = ZeroInt (x * y)
+    identity                        = ZeroInt 0
+
+data BadInt = BadInt Int deriving (Eq,Show)
+
+instance MonoidObj (BadInt) where
+    compose (BadInt x) (BadInt y) = BadInt (x * y)
+    identity                      = BadInt 5
+
+-----------------------------------------------------------------------------------------
 -- Defines generators and words.
 
 genA = "a"
@@ -177,12 +193,26 @@ genD = "d"
 genE = "e"
 genF = "f"
 
-gens = empty `addGen` (genA, Just 1)
-             `addGen` (genB, Just 2)
-             `addGen` (genC, Just 3)
-             `addGen` (genD, Just 6)
-             `addGen` (genE, Just 9)
-             `addGen` (genF, Nothing)
+multIntGens = empty `addGen` (genA, Just (MultInt 1))
+                    `addGen` (genB, Just (MultInt 2))
+                    `addGen` (genC, Just (MultInt 3))
+                    `addGen` (genD, Just (MultInt 6))
+                    `addGen` (genE, Just (MultInt 9))
+                    `addGen` (genF, Nothing)
+
+addIntGens = empty `addGen` (genA, Just (AddInt 1))
+                   `addGen` (genB, Just (AddInt 2))
+                   `addGen` (genC, Just (AddInt 3))
+                   `addGen` (genD, Just (AddInt 6))
+                   `addGen` (genE, Just (AddInt 9))
+                   `addGen` (genF, Nothing)
+
+zeroIntGens = empty `addGen` (genA, Just (ZeroInt 1))
+                    `addGen` (genB, Just (ZeroInt 2))
+                    `addGen` (genC, Just (ZeroInt 3))
+                    `addGen` (genD, Just (ZeroInt 6))
+                    `addGen` (genE, Just (ZeroInt 9))
+                    `addGen` (genF, Nothing)
 
 symA = Symbol genA []
 symB = Symbol genB []
@@ -203,95 +233,95 @@ wordG = [symC, symD, symE, symE]        -- 3*6*9*9   = 1458
 -- Tests: semEval
 
 test35 = TestCase (assertEqual "Empty string with id 1 had value 1."
-                               (Just 1)
-                               (semEval (*) 1 gens []))
+                               (Just (MultInt 1))
+                               (semEval multIntGens []))
 
 test36 = TestCase (assertEqual "Empty string with id 5 had value 5."
-                               (Just 5)
-                               (semEval (*) 5 gens []))
+                               (Just (BadInt 5))
+                               (semEval (empty :: GenDict BadInt) []))
 
 test37 = TestCase (assertEqual "Tests evaluation of strings with multiplication (1/7)."
-                               (Just 9)
-                               (semEval (*) 1 gens wordA))
+                               (Just (MultInt 9))
+                               (semEval multIntGens wordA))
 
 test38 = TestCase (assertEqual "Tests evaluation of strings with multiplication (3/7)."
-                               (Just 9)
-                               (semEval (*) 1 gens wordB))
+                               (Just (MultInt 9))
+                               (semEval multIntGens wordB))
 
 test39 = TestCase (assertEqual "Tests evaluation of strings with multiplication (3/7)."
                                Nothing
-                               (semEval (*) 1 gens wordC))
+                               (semEval multIntGens wordC))
 
 test40 = TestCase (assertEqual "Tests evaluation of strings with multiplication (4/7)."
-                               (Just 24)
-                               (semEval (*) 1 gens wordD))
+                               (Just (MultInt 24))
+                               (semEval multIntGens wordD))
 
 test41 = TestCase (assertEqual "Tests evaluation of strings with multiplication (5/7)."
-                               (Just 24)
-                               (semEval (*) 1 gens wordE))
+                               (Just (MultInt 24))
+                               (semEval multIntGens wordE))
 
 test42 = TestCase (assertEqual "Tests evaluation of strings with multiplication (6/7)."
-                               (Just 12)
-                               (semEval (*) 1 gens wordF))
+                               (Just (MultInt 12))
+                               (semEval multIntGens wordF))
 
 test43 = TestCase (assertEqual "Tests evaluation of strings with multiplication (7/7)."
-                               (Just 1458)
-                               (semEval (*) 1 gens wordG))
+                               (Just (MultInt 1458))
+                               (semEval multIntGens wordG))
 
 test44 = TestCase (assertEqual "Tests evaluation of strings with addition (1/2)."
-                               (Just 11)
-                               (semEval (+) 0 gens wordA))
+                               (Just (AddInt 11))
+                               (semEval addIntGens wordA))
 
 test45 = TestCase (assertEqual "Tests evaluation of strings with addition (2/2)."
-                               (Just 7)
-                               (semEval (+) 0 gens wordB))
+                               (Just (AddInt 7))
+                               (semEval addIntGens wordB))
 
 -----------------------------------------------------------------------------------------
 -- Tests: semComp
 
 test46 = TestCase (assertEqual "Tests semantic comparison of empty strings (1/2)."
                                (Just True)
-                               (semComp (*) 1 gens [] []))
+                               (semComp multIntGens [] []))
 
 test47 = TestCase (assertEqual "Tests semantic comparison of empty strings (2/2)."
                                (Just True)
-                               (semComp (*) 5 gens [] []))
+                               (semComp (empty :: GenDict BadInt) [] []))
 
 test48 = TestCase (assertEqual "Tests semantic comparison is with respect to id element."
                                (Just True)
-                               (semComp (*) 0 gens wordA wordD))
+                               (semComp zeroIntGens wordA wordD))
 
 test49 = TestCase (assertEqual "Tests semantic comparison of equal strings (1/2)."
                                (Just True)
-                               (semComp (*) 1 gens wordA wordB))
+                               (semComp multIntGens wordA wordB))
 
 test50 = TestCase (assertEqual "Tests semantic comparison of equal strings (2/2)."
                                (Just True)
-                               (semComp (*) 1 gens wordD wordE))
+                               (semComp multIntGens wordD wordE))
 
 test51 = TestCase (assertEqual "Tests semantic comparison of strings not equal (1/3)."
                                (Just False)
-                               (semComp (*) 1 gens wordA wordD))
+                               (semComp multIntGens wordA wordD))
 
 test52 = TestCase (assertEqual "Tests semantic comparison of strings not equal (2/3)."
                                (Just False)
-                               (semComp (*) 1 gens wordA wordE))
+                               (semComp multIntGens wordA wordE))
 
 test53 = TestCase (assertEqual "Tests semantic comparison of strings not equal (3/3)."
                                (Just False)
-                               (semComp (*) 1 gens wordA wordF))
+                               (semComp multIntGens wordA wordF))
 
 test54 = TestCase (assertEqual "Tests semantic comparison with missing generators (1/3)."
                                Nothing
-                               (semComp (*) 1 gens wordA wordC))
+                               (semComp multIntGens wordA wordC))
 
 test55 = TestCase (assertEqual "Tests semantic comparison with missing generators (2/3)."
                                Nothing
-                               (semComp (*) 1 gens wordC wordA))
+                               (semComp multIntGens wordC wordA))
 
 test56 = TestCase (assertEqual "Tests semantic comparison with missing generators (3/3)."
                                Nothing
-                               (semComp (*) 1 gens wordC wordC))
+                               (semComp multIntGens wordC wordC))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.

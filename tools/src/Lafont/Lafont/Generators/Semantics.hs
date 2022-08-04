@@ -5,6 +5,7 @@ module Lafont.Generators.Semantics where
 import qualified Data.Map
 import Data.Maybe
 import Lafont.Common
+import Lafont.Generators.Categories
 
 -----------------------------------------------------------------------------------------
 -- * Semantic Model Descriptions.
@@ -55,28 +56,26 @@ interpretGen dict id = Data.Map.findWithDefault Nothing id dict
 -----------------------------------------------------------------------------------------
 -- * Semantic Comparison.
 
--- | Consumes a composition function, an identity element, a mapping of generators to
--- semantic values, and a word. If the word can be evaluated, then its semantic value is
--- returned. Otherwise (e.g., if a generator is missing a semantic value) then nothing is
--- returned.
-semEval :: (Eq a) => (a -> a -> a) -> a -> GenDict a -> MonWord -> Maybe a
-semEval _       id _    []         = Just id
-semEval compose id gens (sym:word) =
+-- | Consumes a mapping of generators to monoidal semantic values and a word. If the word
+-- can be evaluated, then its semantic value is returned. Otherwise (e.g., if a generator
+-- is missing a semantic value) then nothing is returned.
+semEval :: (MonoidObj a) => GenDict a -> MonWord -> Maybe a
+semEval _    []         = Just identity
+semEval gens (sym:word) =
     case (interpretGen gens $ name sym) of
-        Just lhs -> case (semEval compose id gens word) of
+        Just lhs -> case (semEval gens word) of
             Just rhs -> Just (compose lhs rhs)
             Nothing  -> Nothing
         Nothing -> Nothing
 
--- | Consumes a composition function, an identity element, a mapping of generators to
--- semantic values, and two words. If both words can be evaluated, and their semantic
--- values are equal, then true is returned. If both words can be evaluated, and their
--- semenatic values are not equal, then false is returned. Otherwise, nothing is returned.
-semComp :: (Eq a) => (a -> a -> a) -> a -> GenDict a -> MonWord -> MonWord -> Maybe Bool
-semComp compose id gens lhs rhs =
-    case (eval lhs) of
-        Just lhs -> case (eval rhs) of
+-- | Consumes a mapping of generators to monoidal semantic values and two words. If both
+-- words can be evaluated, and their semantic values are equal, then true is returned. If
+-- both words can be evaluated, and their semenatic values are not equal, then false is
+-- returned. Otherwise, nothing is returned.
+semComp :: (MonoidObj a) => GenDict a -> MonWord -> MonWord -> Maybe Bool
+semComp gens lhs rhs =
+    case (semEval gens lhs) of
+        Just lhs -> case (semEval gens rhs) of
             Just rhs -> Just (lhs == rhs)
             Nothing -> Nothing
         Nothing -> Nothing
-    where eval str = semEval compose id gens str
