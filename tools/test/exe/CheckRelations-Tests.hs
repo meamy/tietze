@@ -14,6 +14,12 @@ goodGens = "data/test/example.gens"
 goodRels :: FilePath
 goodRels = "data/test/example.rels"
 
+dyadic2Gens :: FilePath
+dyadic2Gens = "data/test/dyadics/dyadic2.good.gens"
+
+dyadic3Gens :: FilePath
+dyadic3Gens = "data/test/dyadics/dyadic3.good.gens"
+
 -----------------------------------------------------------------------------------------
 -- Good input.
 
@@ -70,8 +76,81 @@ test3 = (HandleTest "Bad_Relation"
                     check3)
 
 -----------------------------------------------------------------------------------------
+-- Validation functions for semantic tests.
+
+checkGoodSem :: String -> Bool
+checkGoodSem str = (and [-- Finding this symbol suggests a relation list was returned.
+                         ("→" `isSubstrOf` str),
+                         -- There should be 4 relations.
+                         ((length (lines str)) == 4)])
+
+checkBadSem :: String -> Bool
+checkBadSem str = (and [-- Correct error message was displayed.
+                       ("contradicts semantics" `isSubstrOf` str),
+                       -- Correct relation was displayed.
+                       ("rx" `isSubstrOf` str),
+                       -- Should be a single line.
+                       ((length (lines str)) == 1)])
+
+checkMissingSem :: String -> Bool
+checkMissingSem str = (and [-- Correct error message was displayed.
+                            ("contains an unknown generator:" `isSubstrOf` str),
+                            -- Correct relation was displayed.
+                            ("rx" `isSubstrOf` str),
+                            -- Should be a single line.
+                            ((length (lines str)) == 1)])
+
+-----------------------------------------------------------------------------------------
+-- Good semantics using dyadics.
+
+goodDyadicRels :: FilePath
+goodDyadicRels = "data/test/dyadics/dyadic.good.rels"
+
+test4 = (HandleTest "Good_RelSem_Dyadic2"
+                    "Tests that sound Dyadic(2) relations pass validation."
+                    (\x -> checkRelations x dyadic2Gens goodDyadicRels)
+                    checkGoodSem)
+
+test5 = (HandleTest "Good_RelSem_Dyadic3"
+                    "Tests that sound Dyadic(3) relations pass validation."
+                    (\x -> checkRelations x dyadic3Gens goodDyadicRels)
+                    checkGoodSem)
+
+-----------------------------------------------------------------------------------------
+-- Bad semantics using dyadics.
+
+badDyadicRels :: FilePath
+badDyadicRels = "data/test/dyadics/dyadic.bad.rels"
+
+test6 = (HandleTest "Bad_RelSem_Dyadic2"
+                    "Tests that unsound Dyadic(2) relations fail validation."
+                    (\x -> checkRelations x dyadic2Gens badDyadicRels)
+                    checkBadSem)
+
+test7 = (HandleTest "Bad_RelSem_Dyadic3"
+                    "Tests that unsound Dyadic(3) relations fail validation."
+                    (\x -> checkRelations x dyadic3Gens badDyadicRels)
+                    checkBadSem)
+
+-----------------------------------------------------------------------------------------
+-- Missing relations using dyadics.
+
+missingDyadicRels :: FilePath
+missingDyadicRels = "data/test/dyadics/dyadic.missing.rels"
+
+test8 = (HandleTest "Missing_RelSem_Dyadic2"
+                    "Tests that missing generators abort Dyadic(2) validation."
+                    (\x -> checkRelations x dyadic2Gens missingDyadicRels)
+                    checkMissingSem)
+
+test9 = (HandleTest "Missing_RelSem_Dyadic3"
+                    "Tests that missing generators abort Dyadic(3) validation."
+                    (\x -> checkRelations x dyadic3Gens missingDyadicRels)
+                    checkMissingSem)
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
-tests = [test1, test2, test3]
+tests = [test1, test2, test3, test4, test5, test6, test7, test8, test9]
 
 main = handleTestToMain $ runAllHandleTests tests

@@ -3,19 +3,17 @@
 module LafontExe.ValidateDerivations where
 
 import System.IO
-import Lafont.Common
 import Lafont.Graph
 import Lafont.Rewrite.Derivations
 import Lafont.Rewrite.Lookup
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Simplification
 import Lafont.Rewrite.Summary
-import Lafont.Parse.GeneratorFile
-import Lafont.Parse.RelationFile
 import Lafont.Parse.DerivationFile
 import LafontExe.IO.Files
+import LafontExe.Logic.Relations
+import LafontExe.Logging.ErrorFormat
 import LafontExe.Logging.LineBased
-import LafontExe.Logging.Primitive
 
 -----------------------------------------------------------------------------------------
 -- * Helpers.
@@ -24,26 +22,6 @@ import LafontExe.Logging.Primitive
 type NamedPreDerivation = (String, PreDerivation)
 type NamedDerivation = (String, Derivation)
 type ListParseRV a = Either (String, Int, DFPError) [a]
-
--- | Consumes the name of a derivation file (fname), the word obtained from a derivation
--- (act), and the expected word from the end of the file (exp). Returns a string
--- describing the error.
-describeIncorrectResult :: String -> MonWord -> MonWord -> String
-describeIncorrectResult fname exp act = fstLine ++ sndLine
-    where expStr = logWord exp
-          actStr = logWord act
-          fstLine = "Failed to validate " ++ fname ++ ".\n"
-          sndLine = "Expected " ++ expStr ++ " but produced " ++ actStr ++ ".\n"
-
--- | Consumes the name of a derivation file (fname), the word obtain when a rewrite rule
--- failed to apply (act), and the step number associated with this rewrite (step).
--- Returns a string describing the error.
-describeIncorrectStep :: String -> MonWord -> Int -> String
-describeIncorrectStep fname act step = fstLine ++ sndLine
-    where actStr = logWord act
-          stepStr = (show step)
-          fstLine = "Failed to validate " ++ fname ++ ".\n"
-          sndLine = "Obtained " ++ actStr ++ " at step " ++ stepStr ++ ".\n"
 
 -- | Displays an unmet dependency as a human-readable string.
 printUnmetDep :: UnmetDep -> String
@@ -145,26 +123,19 @@ processDerivationFiles hdl fnames rules gens = do
                 Left (fname, errLn, err) -> hPutStr hdl (logEitherMsg fname errLn err)
                 Right derivations        -> hPutStr hdl (verifyDerivations derivations)
 
--- | Consumes a handle, the name of a relation file (relname), a list of derivation files
--- (derivFnames), and a list of known generators (gens). If all files parse correctly,
--- then the derivations are validated and any invalid derivations are printed to the
--- handle. Otherwise, a parsing error is printed to the handle with file name and line
--- number.
-validateDerivationsGivenGens :: Handle -> String -> [String] -> [String] -> IO ()
-validateDerivationsGivenGens hdl relFname derivFnames gens = do
-    content <- readFile relFname
-    case (parseRelFile gens (lines content) 0) of
-        (Left (errLn, err)) -> hPutStr hdl (logEitherMsg relFname errLn err)
-        (Right dict)        -> processDerivationFiles hdl derivFnames dict gens
-
 -- | See validateDerivations. Requires that both files exist, whereas validateDerivations
 -- does not imporse this assumption
 validateDerivationsImpl :: Handle -> String -> String  -> [String] -> IO ()
 validateDerivationsImpl hdl genFname relFname derivFnames = do
-    content <- readFile genFname
-    case (parseGenFileAsAlphabet (lines content) 0) of
-        Left (errLn, err) -> hPutStr hdl (logEitherMsg genFname errLn err)
-        Right gens        -> validateDerivationsGivenGens hdl relFname derivFnames gens
+    genFile <- readNamedFile genFname
+    relFile <- readNamedFile relFname
+    case (readGeneratorsAndRules genFile relFile) of
+        UnknownSem             -> hPutStr hdl "Impl Error: Unknown semantic model."
+        BadGenFile fn ln err   -> hPutStr hdl (logEitherMsg fn ln err)
+        BadRelFile fn ln err   -> hPutStr hdl (logEitherMsg fn ln err)
+        InvalidRel rname       -> hPutStr hdl (reportInvalidRule rname)
+        MissingGen rname       -> hPutStr hdl (reportUnknownGen rname)
+        GenRulePair gens rules -> processDerivationFiles hdl derivFnames rules gens
 
 -- | Consumes a handle, the name of a generator file (genFname), the name of a relation
 -- file (relFname), and list of derivation file names (derivFnames). If all files parse

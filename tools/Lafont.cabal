@@ -52,6 +52,8 @@ library LafontExe
                        LafontExe.CheckRelations
                        LafontExe.ValidateDerivations
                        LafontExe.IO.Files
+                       LafontExe.Logic.Relations
+                       LafontExe.Logging.ErrorFormat
                        LafontExe.Logging.LineBased
                        LafontExe.Logging.Primitive
   build-depends:       base >=4.12 && <4.13,

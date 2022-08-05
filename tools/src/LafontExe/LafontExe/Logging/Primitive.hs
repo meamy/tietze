@@ -4,6 +4,7 @@ module LafontExe.Logging.Primitive where
 
 import Lafont.Common
 import Lafont.Rewrite.Rules
+import Lafont.Rewrite.Lookup
 
 -----------------------------------------------------------------------------------------
 -- * Array-Based Logging.
@@ -26,3 +27,11 @@ logRule (name, rule) = name ++ ": " ++ lstr ++ " " ++ ostr ++ " " ++ rstr
     where lstr = logWord (lhs rule)
           ostr = if (equational rule) then "=" else "→"
           rstr = logWord (rhs rule)
+
+-----------------------------------------------------------------------------------------
+-- * Dictionary-based Logging.
+
+-- | Converts a dictionary of rules into a string. Each line of the string is an ASCII
+-- representation of the relation.
+logRuleDict :: RuleDict -> String
+logRuleDict dict = foldRules (\g str -> (logRule g) ++ "\n" ++ str) "" dict

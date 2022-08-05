@@ -279,6 +279,55 @@ test14 = (HandleTest "Cyclic_Proof_Fix"
                      (\str -> str == "Success.\n"))
 
 -----------------------------------------------------------------------------------------
+-- Tests semantic validation.
+
+semGens :: FilePath
+semGens = "data/test/dyadics/dyadic2.good.gens"
+
+goodSemRels :: FilePath
+goodSemRels = "data/test/dyadics/dyadic.good.rels"
+
+badSemRels :: FilePath
+badSemRels = "data/test/dyadics/dyadic.bad.rels"
+
+missingSemRels :: FilePath
+missingSemRels = "data/test/dyadics/dyadic.missing.rels"
+
+semProof :: FilePath
+semProof = "data/test/dyadics/dyadic.derivs"
+
+checkBadSem :: String -> Bool
+checkBadSem str = (and [-- Correct error message was displayed.
+                       ("contradicts semantics" `isSubstrOf` str),
+                       -- Correct relation was displayed.
+                       ("rx" `isSubstrOf` str),
+                       -- Should be a single line.
+                       ((length (lines str)) == 1)])
+
+checkMissingSem :: String -> Bool
+checkMissingSem str = (and [-- Correct error message was displayed.
+                            ("contains an unknown generator:" `isSubstrOf` str),
+                            -- Correct relation was displayed.
+                            ("rx" `isSubstrOf` str),
+                            -- Should be a single line.
+                            ((length (lines str)) == 1)])
+
+test15 = (HandleTest "RelSem_Valid"
+                     "Ensures that derivations can pass when the semantics are valid."
+                     (\x -> validateDerivations x semGens goodSemRels [semProof])
+                     (\str -> str == "Success.\n"))
+
+test16 = (HandleTest "RelSem_Invalid"
+                     "Ensures that derivations fail when semantic checks fail (1/2)."
+                     (\x -> validateDerivations x semGens badSemRels [semProof])
+                     checkBadSem)
+
+test17 = (HandleTest "RelSem_Missing"
+                     "Ensures that derivations fail when semantic checks fail (2/2)."
+                     (\x -> validateDerivations x semGens missingSemRels [semProof])
+                     checkMissingSem)
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = [test1,
@@ -294,6 +343,9 @@ tests = [test1,
          test11,
          test12,
          test13,
-         test14]
+         test14,
+         test15,
+         test16,
+         test17]
 
 main = handleTestToMain $ runAllHandleTests tests

@@ -69,7 +69,7 @@ check3 str = (and [-- The model name.
                    -- The gate3 matrix.
                    ("gate3 := [[0, 0, 1, 0], [0, 0, 0, 1], [0, 1, 0, 0], [1, 0, 0, 0]]" `isSubstrOf` str),
                    -- Should be a single line.
-                   ((length (lines str)) == 6)])
+                   ((length (lines str)) == 7)])
 
 test3 = (HandleTest "Good_Dyadic(2)"
                     "Tests that Clifford(D)+Tof circuits can be parsed with 2 qubits."
@@ -117,7 +117,7 @@ check5 str = (and [-- The model name.
                    -- The gate3 matrix.
                    ("gate3 := [[0, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0]]" `isSubstrOf` str),
                    -- Should be a single line.
-                   ((length (lines str)) == 6)])
+                   ((length (lines str)) == 7)])
 
 test5 = (HandleTest "Good_Dyadic(3)"
                     "Tests that Clifford(D)+Tof circuits can be parsed with 3 qubits."
