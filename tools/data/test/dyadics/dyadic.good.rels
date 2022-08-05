@@ -1,0 +1,7 @@
+-- Example of a good Dyadic(3) relation file.
+-- Intended generators: dyadic3.good.gens
+
+r1 x0.x0 → ε
+r2 x1.x1 → ε
+r3 gate3.x0.gate3.x0 = ε
+r4 x0.x1 = x1.x0

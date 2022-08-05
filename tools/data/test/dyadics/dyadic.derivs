@@ -1,0 +1,12 @@
+-- Simple proof using dyadic relations.
+-- Intended generators: dyadic2.good.gens or dyadic3.good.gens
+-- Intended relations: dyadic2.good.rels or dyadic3.good.rels
+
+@name DyadicTest
+
+-- Proof certificate.
+gate3.x0.gate3.x1.x0.x1.gate1
+r4 ← 3                          -- gate3.x0.gate3.x0.x1.x1.gate1
+r3 → 0                          -- x1.x1.gate1
+r2 → 0                          -- gate1
+gate1
