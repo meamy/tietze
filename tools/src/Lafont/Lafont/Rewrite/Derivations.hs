@@ -32,7 +32,7 @@ data UnmetDep = UnmetDep Dependency Dependency deriving (Eq,Show)
 registerDerivations :: [Derivation] -> DepGraph
 registerDerivations []                = addVertex nullgraph ""
 registerDerivations (derivation:list) =
-    case (propName (meta (summary derivation))) of
+    case propName $ meta $ summary derivation of
         Just name -> addVertex g name
         Nothing   -> g
     where g = registerDerivations list
@@ -44,8 +44,8 @@ registerDerivations (derivation:list) =
 -- derivation, then g is returned.
 addDepToGraph :: Dependency -> Rewrite -> DepGraph -> Either UnmetDep DepGraph
 addDepToGraph src rewrite g =
-    case (derivedFrom (rule rewrite)) of
-        Just dep -> case (addEdge g src dep) of
+    case derivedFrom $ rule rewrite of
+        Just dep -> case addEdge g src dep of
             Just g' -> Right g'
             Nothing -> Left (UnmetDep src dep)
         Nothing -> Right g
@@ -57,7 +57,7 @@ addDepToGraph src rewrite g =
 addDepsToGraph :: Dependency -> [Rewrite] -> DepGraph -> Either UnmetDep DepGraph
 addDepsToGraph _   []                 g = Right g
 addDepsToGraph src (rewrite:rewrites) g = 
-    case (addDepToGraph src rewrite g) of
+    case addDepToGraph src rewrite g of
         Left dep -> Left dep
         Right g' -> addDepsToGraph src rewrites g'
 
@@ -67,7 +67,7 @@ addDepsToGraph src (rewrite:rewrites) g =
 -- derivation.
 addDerivationToGraph :: Derivation -> DepGraph -> Either UnmetDep DepGraph
 addDerivationToGraph derivation g = 
-    case (propName (meta (summary derivation))) of
+    case propName $ meta $ summary derivation of
         Just src -> addDepsToGraph src (rewrites derivation) g
         Nothing  -> addDepsToGraph "" (rewrites derivation) g
 
@@ -78,7 +78,7 @@ addDerivationToGraph derivation g =
 addDerivationsToGraph :: [Derivation] -> DepGraph -> Either UnmetDep DepGraph
 addDerivationsToGraph []                       g = Right g
 addDerivationsToGraph (derivation:derivations) g =
-    case (addDerivationToGraph derivation g) of
+    case addDerivationToGraph derivation g of
         Left dep -> Left dep
         Right g' -> addDerivationsToGraph derivations g'
 
@@ -94,9 +94,9 @@ type DepCycle = GraphWalk Dependency
 -- Otherwise, nothing is returned.
 detectDerivationError :: [Derivation] -> Maybe (Either UnmetDep DepCycle)
 detectDerivationError derivations =
-    case (addDerivationsToGraph derivations g) of
+    case addDerivationsToGraph derivations g of
         Left unmet -> Just (Left unmet)
-        Right g'   -> case (findCycle g') of
+        Right g'   -> case findCycle g' of
             Just cycle -> Just (Right cycle)
             Nothing    -> Nothing
     where g = registerDerivations derivations

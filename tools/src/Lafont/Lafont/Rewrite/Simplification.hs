@@ -21,8 +21,8 @@ data RewriteResult = RewriteResult { output :: MonWord
 -- performing all rewrites in order, or failure data.
 simplify :: MonWord -> [Rewrite] -> RewriteResult
 simplify str []    = RewriteResult str 0 True
-simplify str rules = if (checkRewrite str rule)
-                     then let res = (simplify (applyRewrite str rule) (tail rules))
-                          in RewriteResult (output res) ((step res) + 1) (success res)
+simplify str rules = if checkRewrite str rule
+                     then let res = simplify (applyRewrite str rule) (tail rules)
+                          in RewriteResult (output res) (step res + 1) (success res)
                      else RewriteResult str 0 False
-    where rule = (head rules)
+    where rule = head rules

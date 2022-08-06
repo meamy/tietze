@@ -1,3 +1,5 @@
+{- HLINT ignore RewritePreamble "Use newtype instead of data" -}
+
 -- | This module provides data-types to summarize derivations, and functions to convert
 -- summarizations into rules.
 
@@ -38,9 +40,8 @@ createSummaryRule sum = RewriteRule lhs rhs eqn from
 -- rules. If sum is named, and the name appears in rules, then nothing is returned.
 addSummaryToRules :: DerivationSummary -> RuleDict -> Maybe RuleDict
 addSummaryToRules sum rules =
-    case (propName (meta sum)) of
+    case propName $ meta sum of
         Nothing   -> Just rules
-        Just name -> if (rules `hasRule` name)
+        Just name -> if rules `hasRule` name
                      then Nothing
-                     else let r = createSummaryRule sum
-                          in Just (rules `addRule` (name, r))
+                     else Just (rules `addRule` (name, createSummaryRule sum))

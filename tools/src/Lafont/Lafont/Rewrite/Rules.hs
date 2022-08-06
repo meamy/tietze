@@ -32,9 +32,8 @@ isDerivedRule rule = isJust (derivedFrom rule)
 doesRewriteTermMatch :: MonWord -> MonWord -> Bool
 doesRewriteTermMatch _   []  = True
 doesRewriteTermMatch []  _   = False
-doesRewriteTermMatch str lhs = if (head str) == (head lhs)
-                               then doesRewriteTermMatch (tail str) (tail lhs)
-                               else False
+doesRewriteTermMatch str lhs = head str == head lhs && match
+    where match = doesRewriteTermMatch (tail str) (tail lhs)
 
 -- | Consumes a monoidal word, a rewrite rule, and a boolean flag indicating if the rule
 -- is to be applied from left-to-right. Returns true if rule matches a prefix of the
@@ -48,7 +47,7 @@ checkRewriteRule str rule False = doesRewriteTermMatch str (rhs rule)
 -- index. Assumes that doesRewriteTermMatch is true.
 applyProductionRule :: MonWord -> MonWord -> MonWord -> MonWord
 applyProductionRule str []  []  = str
-applyProductionRule str []  rhs = (head rhs) : (applyProductionRule str [] (tail rhs))
+applyProductionRule str []  rhs = head rhs : applyProductionRule str [] (tail rhs)
 applyProductionRule str lhs rhs = applyProductionRule (tail str) (tail lhs) rhs
 
 -- | Consumes a monoidal word, a rewrite rule, and a boolean flag indicating if the rule
@@ -73,9 +72,7 @@ checkRewrite :: MonWord -> Rewrite -> Bool
 checkRewrite str rw = impl str (pos rw)
     where impl substr n = if n == 0
                           then checkRewriteRule substr (rule rw) (isLhsToRhs rw)
-                          else if substr == []
-                               then False
-                               else impl (tail substr) (n - 1)
+                          else not (null substr) && impl (tail substr) (n - 1)
 
 -- | Consumes a monoidal word and a rewrite. Returns the string obtained by applying the
 -- rewrite. Assumes that checkRewrite is true. 
@@ -83,4 +80,4 @@ applyRewrite :: MonWord -> Rewrite -> MonWord
 applyRewrite str rw = impl str (pos rw)
     where impl substr n = if n == 0
                           then applyRewriteRule substr (rule rw) (isLhsToRhs rw)
-                          else (head substr) : (impl (tail substr) (n - 1))
+                          else head substr : impl (tail substr) (n - 1)

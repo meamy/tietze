@@ -25,8 +25,8 @@ addRule dict (id, rule) = Data.Map.insert id rule dict
 
 -- | Folds f over the (name, rule) entries of dict, and returns the accumulated value.
 foldRules :: ((String, RewriteRule) -> b -> b) -> b -> RuleDict -> b
-foldRules f init dict = Data.Map.foldrWithKey fadj init dict
-    where fadj key semv acc = f (key, semv) acc
+foldRules f = Data.Map.foldrWithKey adjust
+    where adjust key semv acc = f (key, semv) acc
 
 -- | Returns a rule by its name. If the rule does not exist, then nothing is returned. To
 -- check if a generator is recorded, then use (hasRule dict id).
