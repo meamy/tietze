@@ -2,15 +2,15 @@
 
 module Lafont.Ring where
 
-import Quantum.Synthesis.Ring
+import qualified Quantum.Synthesis.Ring as QRing
 
 -----------------------------------------------------------------------------------------
 -- Dyadic Value Manipulation.
 
 -- | Consume a dyadic integer (Dyadic a n). Returns a new dyadic integer (Dyadic a' n')
 -- such that (Dyadic a n) == (Dyadic a' n') with n' minimal.
-reduceDyadic :: Dyadic -> Dyadic
-reduceDyadic (Dyadic a 0) = Dyadic a 0
-reduceDyadic (Dyadic a n) = if even a
-                            then reduceDyadic (Dyadic (a `div` 2) (n - 1))
-                            else Dyadic a n
+reduceDyadic :: QRing.Dyadic -> QRing.Dyadic
+reduceDyadic (QRing.Dyadic a 0) = QRing.Dyadic a 0
+reduceDyadic (QRing.Dyadic a n)
+    | even a    = reduceDyadic (QRing.Dyadic (a `div` 2) (n - 1))
+    | otherwise = QRing.Dyadic a n

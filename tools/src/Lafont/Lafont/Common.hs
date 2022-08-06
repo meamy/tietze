@@ -5,7 +5,7 @@ module Lafont.Common where
 -----------------------------------------------------------------------------------------
 -- * Common Classes
 
--- |
+-- | Describes a type that admits a user-friendly ASCII format.
 class Display a where
     display :: a -> String
 

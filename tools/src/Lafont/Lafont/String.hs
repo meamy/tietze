@@ -2,9 +2,9 @@
 
 module Lafont.String where
 
-import Data.List
-import Data.Maybe
-import Lafont.Maybe
+import           Data.List
+import           Data.Maybe
+import           Lafont.Maybe
 
 -----------------------------------------------------------------------------------------
 -- Substring Functions.

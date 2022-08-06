@@ -3,80 +3,80 @@
 
 module Lafont.Graph where
 
-import qualified Data.Set
-import Data.Sequence (Seq (..), (<|), (|>))
-import qualified Data.Sequence
-import qualified Data.Map
-import Data.Maybe
-import Lafont.Maybe
+import qualified Data.Map      as Map
+import           Data.Maybe
+import           Data.Sequence (Seq (..), (<|), (|>))
+import qualified Data.Sequence as Seq
+import qualified Data.Set      as Set
+import           Lafont.Maybe
 
 -----------------------------------------------------------------------------------------
 -- * Graph Types
 
 -- | Represents the set of edges originating a vertex v. Each element u represents a
 -- directed edge (u, v).
-type EdgeSet a = Data.Set.Set a
+type EdgeSet a = Set.Set a
 
 -- | Represents a graph as a mapping from vertex names to edge sets.
-type Digraph a = Data.Map.Map a (EdgeSet a)
+type Digraph a = Map.Map a (EdgeSet a)
 
 -- | Represents a walk as a bidirectional sequence of vertices.
-type GraphWalk a = Data.Sequence.Seq a
+type GraphWalk a = Seq.Seq a
 
 -----------------------------------------------------------------------------------------
 -- * Graph Construction.
 
 -- | Creates an empty edge set.
 empty :: EdgeSet a
-empty = Data.Set.empty
+empty = Set.empty
 
 -- | Creates an edge set from a list.
 fromList :: (Ord a) => [a] -> EdgeSet a
-fromList = Data.Set.fromList
+fromList = Set.fromList
 
 -- | Create an empty (null) graph.
 nullgraph :: (Ord a) => Digraph a
-nullgraph = Data.Map.empty
+nullgraph = Map.empty
 
 -- | Consumes a graph (g) and a vertex (v). Returns a new graph obtained by adding v to
 -- g. If v is already in g, then g is returned.
 addVertex :: (Ord a) => Digraph a -> a -> Digraph a
-addVertex g v = if Data.Map.member v g
-                then g
-                else Data.Map.insert v empty g
+addVertex g v
+    | v `Map.member` g = g
+    | otherwise        = Map.insert v empty g
 
 -- | Consumes a graph (g) and two vertices (u, v). If u and v are vertices in g, then new
 -- graph obtained by adding edge (u, v) to g is returned. Otherwise, nothing is returned.
 addEdge :: (Ord a) => Digraph a -> a -> a -> Maybe (Digraph a)
-addEdge g u v = if edgesExist
-                then Just (Data.Map.adjust (Data.Set.insert v) u g)
-                else Nothing
-    where edgesExist = u `Data.Map.member` g && v `Data.Map.member` g
+addEdge g u v
+    | edgesExist = Just (Map.adjust (Set.insert v) u g)
+    | otherwise  = Nothing
+    where edgesExist = u `Map.member` g && v `Map.member` g
 
 -- | Converts a list to a path.
 listToWalk :: [a] -> GraphWalk a
-listToWalk = Data.Sequence.fromList
+listToWalk = Seq.fromList
 
 -----------------------------------------------------------------------------------------
 -- * Graph Inspection.
 
 -- | Consumes a graph. Returns the list of vertices in the graph.
 vertexList :: Digraph a -> [a]
-vertexList = Data.Map.keys
+vertexList = Map.keys
 
 -- | Consumes a graph and a vertex. Returns the set of edges originating from the vertex.
 edgeSet :: (Ord a) => Digraph a -> a -> EdgeSet a
-edgeSet g v = fromMaybe empty (Data.Map.lookup v g)
+edgeSet g v = fromMaybe empty (Map.lookup v g)
 
 -- | Consumes a graph and a vertex. Returns the list of all adjacent vertices.
 adjacencyList :: (Ord a) => Digraph a -> a -> [a]
-adjacencyList g v = Data.Set.toList (edgeSet g v)
+adjacencyList g v = Set.toList (edgeSet g v)
 
 -- | Consumes a function of type a -> b -> b (f), a walk of type a (w), and a value of
 -- type b. If w is the empty path, then b is returned. Otherwise, if w = vw' where v is
 -- the first vertex in w, then (f v (foldpath f w' b)) is returned.
 foldPath :: (Int -> a -> b -> b) -> b -> GraphWalk a -> b
-foldPath = Data.Sequence.foldrWithIndex
+foldPath = Seq.foldrWithIndex
 
 -----------------------------------------------------------------------------------------
 -- * Cycle Detection (Depth-First Search).
@@ -84,10 +84,12 @@ foldPath = Data.Sequence.foldrWithIndex
 -- | Consumes a walk (w) and a vertex (v). If w starts and ends at the same vertex, then
 -- w is returned. Otherwise, v is returned.
 extendToCycle :: (Eq a) => GraphWalk a -> a -> GraphWalk a
-extendToCycle Empty                v = Data.Sequence.singleton v
+extendToCycle Empty                v = Seq.singleton v
 extendToCycle (a :<| Empty)        v = v <| (a <| Empty)
-extendToCycle ((l :<| rest) :|> r) v = let seq = ((l :<| rest) :|> r)
-                                       in if l == r then seq else v <| seq
+extendToCycle ((l :<| rest) :|> r) v
+    | l == r    = seq
+    | otherwise = v <| seq
+    where seq = ((l :<| rest) :|> r)
 
 -- | Consumes a graph (g), a vertex in the graph (v), and a set of previously visited
 -- vertices (seen). That is, there exists a walk w to v that visits all vertices in seen.
@@ -99,12 +101,12 @@ extendToCycle ((l :<| rest) :|> r) v = let seq = ((l :<| rest) :|> r)
 --
 -- Note: Mutually depends on findCycleFromVertices
 findCycleFromVertex :: (Ord a) => Digraph a -> a -> EdgeSet a -> Maybe (GraphWalk a)
-findCycleFromVertex g v seen = if v `Data.Set.member` seen
-                               then Just (extendToCycle Empty v)
-                               else let frontier = adjacencyList g v
-                                        seenHere = Data.Set.insert v seen
-                                        res = findCycleFromVertices g frontier seenHere
-                                    in maybeApply (`extendToCycle` v) res
+findCycleFromVertex g v seen
+    | v `Set.member` seen = Just (extendToCycle Empty v)
+    | otherwise           = let frontier = adjacencyList g v
+                                seenHere = Set.insert v seen
+                                res = findCycleFromVertices g frontier seenHere
+                            in maybeApply (`extendToCycle` v) res
 
 -- | Consumes a graph (g), a frontier of vertices in the graph (list), and a set of
 -- previously visited vertices (seen). That is, there exists a walk w to each v in list
