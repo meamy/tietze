@@ -4,17 +4,17 @@
 
 module LafontExeTest.HandleTest where
 
-import System.Directory
-import System.Exit
-import System.IO
+import           System.Directory
+import           System.Exit
+import           System.IO
 
 -- | Group together a test name, its description (printed on failure), a function under
 -- test that produces output to a handle, and a function to validate all data written to
 -- the handle. For proper formatting, both name and msg should be free from newline
 -- characters.
-data HandleTest = HandleTest { name :: String
-                             , msg :: String
-                             , testFn :: Handle -> IO ()
+data HandleTest = HandleTest { name    :: String
+                             , msg     :: String
+                             , testFn  :: Handle -> IO ()
                              , checkFn :: String -> Bool
                              }
 
