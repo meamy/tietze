@@ -12,10 +12,10 @@ import Quantum.Synthesis.Matrix
 -- * Single Abstract Categories (Abstract Algebraic Types).
 
 -- | Additive Integers: the abelian group of integers under addition.
-data AddInt = AddInt Int deriving (Eq,Show)
+newtype AddInt = AddInt Int deriving (Eq,Show)
 
 -- | Multiplicative Integers: the commutative monoid of integers under multiplication.
-data MultInt = MultInt Int deriving (Eq,Show)
+newtype MultInt = MultInt Int deriving (Eq,Show)
 
 -- | A monoid in the sense of abstract algebra. Typically, this class describes a set of
 -- elements that are equipped with an association composition operator and an identity
@@ -36,8 +36,8 @@ instance MonoidObj AddInt where
 
 instance MonoidObj (Matrix Four Four Dyadic) where
     compose a b = a * b
-    identity    = fromInteger 1
+    identity    = 1
 
 instance MonoidObj (Matrix Eight Eight Dyadic) where
     compose a b = a * b
-    identity    = fromInteger 1
+    identity    = 1

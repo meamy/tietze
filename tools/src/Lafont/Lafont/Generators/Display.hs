@@ -19,21 +19,21 @@ instance Display () where
 -- * Clifford(D)+Tof Semantics.
 
 instance Display Dyadic where
-    display d = case (reduceDyadic d) of
-        (Dyadic a 0) -> (show a)
+    display d = case reduceDyadic d of
+        (Dyadic a 0) -> show a
         (Dyadic 0 n) -> "0"
-        (Dyadic a 1) -> (show a) ++ "/2"
-        (Dyadic a n) -> (show a) ++ "/2^" ++ (show n)
+        (Dyadic a 1) -> show a ++ "/2"
+        (Dyadic a n) -> show a ++ "/2^" ++ show n
 
 displayRow :: (Display a) => [a] -> String
 displayRow []      = ""
 displayRow [a]     = display a
-displayRow (a:row) = (display a) ++ ", " ++ (displayRow row)
+displayRow (a:row) = display a ++ ", " ++ displayRow row
 
 displayRows :: (Display a) => [[a]] -> String
 displayRows []       = ""
-displayRows [r]      = "[" ++ (displayRow r) ++ "]"
-displayRows (r:rows) = "[" ++ (displayRow r) ++ "], " ++ (displayRows rows)
+displayRows [r]      = "[" ++ displayRow r ++ "]"
+displayRows (r:rows) = "[" ++ displayRow r ++ "], " ++ displayRows rows
 
 instance (Nat n, Nat m, Display a) => Display (Matrix n m a) where
-    display mat = "[" ++ (displayRows (rows_of_matrix mat)) ++ "]"
+    display mat = "[" ++ displayRows (rows_of_matrix mat) ++ "]"

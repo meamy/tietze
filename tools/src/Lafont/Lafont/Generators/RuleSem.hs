@@ -28,9 +28,9 @@ isRuleDictStatusGood _            = False
 -- missing generator for a rule in dict, then IncompleteGenSet is returned with the name
 -- of the rule. Otherwise, GoodRuleDict is returned.
 checkRuleSem :: (MonoidObj a) => GenDict a -> RuleDict -> RuleDictStatus
-checkRuleSem gens dict = foldRules fn GoodRuleDict dict
-    where fn (name, rule) res = if (isRuleDictStatusGood res)
-                                then case (semComp gens (lhs rule) (rhs rule)) of
+checkRuleSem gens = foldRules fn GoodRuleDict
+    where fn (name, rule) res = if isRuleDictStatusGood res
+                                then case semComp gens (lhs rule) (rhs rule) of
                                     Nothing    -> IncompleteGenSet name
                                     Just False -> InvalidRuleSem name
                                     Just True  -> GoodRuleDict

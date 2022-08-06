@@ -41,12 +41,12 @@ addGen dict (id, semv) = Data.Map.insert id semv dict
 
 -- | Folds f over the (name, semv) entries of dict, and returns the accumulated value.
 foldGens :: ((String, Maybe a) -> b -> b) -> b -> GenDict a -> b
-foldGens f init dict = Data.Map.foldrWithKey fadj init dict
-    where fadj key semv acc = f (key, semv) acc
+foldGens f = Data.Map.foldrWithKey adjust
+    where adjust key semv acc = f (key, semv) acc
 
 -- | Returns the alphabet described by the generators.
 toAlphabet :: GenDict a -> [String]
-toAlphabet dict = Data.Map.keys dict
+toAlphabet = Data.Map.keys
 
 -- | Returns the semantic value of a generator. If the generator does not exist, then
 -- nothing is returned. To check if a generator is recorded, then use (hasGen dict id).
@@ -62,11 +62,12 @@ interpretGen dict id = Data.Map.findWithDefault Nothing id dict
 semEval :: (MonoidObj a) => GenDict a -> MonWord -> Maybe a
 semEval _    []         = Just identity
 semEval gens (sym:word) =
-    case (interpretGen gens $ name sym) of
-        Just lhs -> case (semEval gens word) of
+    case interpretGen gens symName of
+        Just lhs -> case semEval gens word of
             Just rhs -> Just (compose lhs rhs)
             Nothing  -> Nothing
         Nothing -> Nothing
+    where symName = name sym
 
 -- | Consumes a mapping of generators to monoidal semantic values and two words. If both
 -- words can be evaluated, and their semantic values are equal, then true is returned. If
@@ -74,8 +75,8 @@ semEval gens (sym:word) =
 -- returned. Otherwise, nothing is returned.
 semComp :: (MonoidObj a) => GenDict a -> MonWord -> MonWord -> Maybe Bool
 semComp gens lhs rhs =
-    case (semEval gens lhs) of
-        Just lhs -> case (semEval gens rhs) of
+    case semEval gens lhs of
+        Just lhs -> case semEval gens rhs of
             Just rhs -> Just (lhs == rhs)
             Nothing -> Nothing
         Nothing -> Nothing
