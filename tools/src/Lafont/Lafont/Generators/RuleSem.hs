@@ -2,10 +2,10 @@
 
 module Lafont.Generators.RuleSem where
 
-import Lafont.Generators.Categories
-import Lafont.Generators.Semantics
-import Lafont.Rewrite.Lookup
-import Lafont.Rewrite.Rules
+import           Lafont.Generators.Categories
+import           Lafont.Generators.Semantics
+import           Lafont.Rewrite.Lookup
+import           Lafont.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
 -- * Data types and functions to validate rule dictionaries.

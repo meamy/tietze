@@ -5,8 +5,8 @@
 
 module Lafont.Generators.Categories where
 
-import Quantum.Synthesis.Ring
-import Quantum.Synthesis.Matrix
+import qualified Quantum.Synthesis.Matrix as QMat
+import qualified Quantum.Synthesis.Ring as QRing
 
 -----------------------------------------------------------------------------------------
 -- * Single Abstract Categories (Abstract Algebraic Types).
@@ -34,10 +34,10 @@ instance MonoidObj AddInt where
     compose (AddInt x) (AddInt y) = AddInt (x + y)
     identity                      = AddInt 0
 
-instance MonoidObj (Matrix Four Four Dyadic) where
+instance MonoidObj (QMat.Matrix QMat.Four QMat.Four QRing.Dyadic) where
     compose a b = a * b
     identity    = 1
 
-instance MonoidObj (Matrix Eight Eight Dyadic) where
+instance MonoidObj (QMat.Matrix QMat.Eight QMat.Eight QRing.Dyadic) where
     compose a b = a * b
     identity    = 1

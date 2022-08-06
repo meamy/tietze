@@ -2,10 +2,10 @@
 
 module Lafont.Generators.Semantics where
 
-import qualified Data.Map
-import Data.Maybe
-import Lafont.Common
-import Lafont.Generators.Categories
+import qualified Data.Map as Map
+import           Data.Maybe
+import           Lafont.Common
+import           Lafont.Generators.Categories
 
 -----------------------------------------------------------------------------------------
 -- * Semantic Model Descriptions.
@@ -25,33 +25,33 @@ instance Display SemModel where
 -- * Generator Dictionary.
 
 -- | A mapping from generator symbols (strings) to their semantic values of type a.
-type GenDict a = Data.Map.Map String (Maybe a)
+type GenDict a = Map.Map String (Maybe a)
 
 -- | Creates an empty GenDict.
 empty :: GenDict a
-empty = Data.Map.empty
+empty = Map.empty
 
 -- | Returns true if a generator is already recorded.
 hasGen :: GenDict a -> String -> Bool
-hasGen dict id = Data.Map.member id dict
+hasGen dict id = Map.member id dict
 
 -- | Records a identifier/semv pair inside a generator dictionary.
 addGen :: GenDict a -> (String, Maybe a) -> GenDict a
-addGen dict (id, semv) = Data.Map.insert id semv dict
+addGen dict (id, semv) = Map.insert id semv dict
 
 -- | Folds f over the (name, semv) entries of dict, and returns the accumulated value.
 foldGens :: ((String, Maybe a) -> b -> b) -> b -> GenDict a -> b
-foldGens f = Data.Map.foldrWithKey adjust
+foldGens f = Map.foldrWithKey adjust
     where adjust key semv acc = f (key, semv) acc
 
 -- | Returns the alphabet described by the generators.
 toAlphabet :: GenDict a -> [String]
-toAlphabet = Data.Map.keys
+toAlphabet = Map.keys
 
 -- | Returns the semantic value of a generator. If the generator does not exist, then
 -- nothing is returned. To check if a generator is recorded, then use (hasGen dict id).
 interpretGen :: GenDict a -> String -> Maybe a
-interpretGen dict id = Data.Map.findWithDefault Nothing id dict
+interpretGen dict id = Map.findWithDefault Nothing id dict
 
 -----------------------------------------------------------------------------------------
 -- * Semantic Comparison.
@@ -78,5 +78,5 @@ semComp gens lhs rhs =
     case semEval gens lhs of
         Just lhs -> case semEval gens rhs of
             Just rhs -> Just (lhs == rhs)
-            Nothing -> Nothing
+            Nothing  -> Nothing
         Nothing -> Nothing

@@ -3,11 +3,11 @@
 
 module Lafont.Generators.Display where
 
-import Quantum.Synthesis.Ring
-import Quantum.Synthesis.Matrix
-import Lafont.Common
-import Lafont.Ring
-import Lafont.Generators.QubitGates
+import           Lafont.Common
+import           Lafont.Generators.QubitGates
+import           Lafont.Ring
+import qualified Quantum.Synthesis.Matrix as QMat
+import qualified Quantum.Synthesis.Ring as QRing
 
 -----------------------------------------------------------------------------------------
 -- * Monoid Semantics.
@@ -18,12 +18,12 @@ instance Display () where
 -----------------------------------------------------------------------------------------
 -- * Clifford(D)+Tof Semantics.
 
-instance Display Dyadic where
+instance Display QRing.Dyadic where
     display d = case reduceDyadic d of
-        (Dyadic a 0) -> show a
-        (Dyadic 0 n) -> "0"
-        (Dyadic a 1) -> show a ++ "/2"
-        (Dyadic a n) -> show a ++ "/2^" ++ show n
+        (QRing.Dyadic a 0) -> show a
+        (QRing.Dyadic 0 n) -> "0"
+        (QRing.Dyadic a 1) -> show a ++ "/2"
+        (QRing.Dyadic a n) -> show a ++ "/2^" ++ show n
 
 displayRow :: (Display a) => [a] -> String
 displayRow []      = ""
@@ -35,5 +35,5 @@ displayRows []       = ""
 displayRows [r]      = "[" ++ displayRow r ++ "]"
 displayRows (r:rows) = "[" ++ displayRow r ++ "], " ++ displayRows rows
 
-instance (Nat n, Nat m, Display a) => Display (Matrix n m a) where
-    display mat = "[" ++ displayRows (rows_of_matrix mat) ++ "]"
+instance (QMat.Nat n, QMat.Nat m, Display a) => Display (QMat.Matrix n m a) where
+    display mat = "[" ++ displayRows (QMat.rows_of_matrix mat) ++ "]"
