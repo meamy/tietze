@@ -4,15 +4,15 @@
 
 module Lafont.Parse.DerivationFile where
 
-import Lafont.Common
-import Lafont.Maybe
-import Lafont.Rewrite.Derivations
-import Lafont.Rewrite.Lookup
-import Lafont.Rewrite.Rules
-import Lafont.Rewrite.Summary
-import Lafont.Parse.Common
-import Lafont.Parse.MonWords
-import Lafont.Parse.Properties
+import           Lafont.Common
+import           Lafont.Maybe
+import           Lafont.Parse.Common
+import           Lafont.Parse.MonWords
+import           Lafont.Parse.Properties
+import           Lafont.Rewrite.Derivations
+import           Lafont.Rewrite.Lookup
+import           Lafont.Rewrite.Rules
+import           Lafont.Rewrite.Summary
 
 -----------------------------------------------------------------------------------------
 -- * Generator File Parsing Errors.
@@ -120,7 +120,7 @@ parseRewrite dict str =
 -- | Consumes a dictionary of known rules (dict) and a rewrite line of a derivation file
 -- (str). Attempts to parse str, taking into account all modifiers applied to the line.
 -- If parsing is successful, then the corresponding rewrite is returned. Otherwise, an
--- error is returned. 
+-- error is returned.
 parseRewriteLine :: RuleDict -> String -> Either DFPError Rewrite
 parseRewriteLine dict str =
     case parseFromSeps ["!apply", "!"] str of
@@ -167,9 +167,9 @@ type DParseRV a = Either (Int, DFPError) a
 
 -- | The summary of a derivation file (parsed) together with an unparsed rewrite section
 -- (unparsed) starting at the specified line number (linenum).
-data PreDerivation = ParDerivation { parsed :: DerivationSummary
+data PreDerivation = ParDerivation { parsed   :: DerivationSummary
                                    , unparsed :: [String]
-                                   , linenum :: Int
+                                   , linenum  :: Int
                                    } deriving (Eq,Show)
 
 -- | Consumes the body of a derivation file (excluding the initial word). Attempts to

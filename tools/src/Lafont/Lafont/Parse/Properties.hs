@@ -3,8 +3,8 @@
 
 module Lafont.Parse.Properties where
 
-import qualified Data.Map
-import Lafont.Parse.Common
+import qualified Data.Map            as Map
+import           Lafont.Parse.Common
 
 -----------------------------------------------------------------------------------------
 -- * Generic Parsing Types.
@@ -42,16 +42,16 @@ makePropPair name read set = (name, updater)
 -- * Property Lookup.
 
 -- | Dictionary structure to store all properties and their parsers.
-type PropertyDict b = Data.Map.Map String (PropUpdater b)
+type PropertyDict b = Map.Map String (PropUpdater b)
 
 -- | Creates an empty property dictionary.
 noProps :: PropertyDict b
-noProps = Data.Map.empty
+noProps = Map.empty
 
 -- | Consume a dictionary (dict) and a property pair (name, updater). Returns a new
--- dictionary that maps 
+-- dictionary that maps
 addProp :: PropertyDict b -> (String, PropUpdater b) -> PropertyDict b
-addProp dict (name, updater) = Data.Map.insert name updater dict
+addProp dict (name, updater) = Map.insert name updater dict
 
 -- | Consumes a dictionary (dict) and a list of property pairs (props). Adds each element
 -- to dict, in the other they appear, according to addProp.
@@ -62,13 +62,13 @@ addProps = foldl addProp
 -- the list, with the prefix @. The string "@" is added to the end of the list as a
 -- parsing fallthrough (@ corresponds to an unknown property).
 propsToSeps :: PropertyDict b -> [String]
-propsToSeps = Data.Map.foldrWithKey (\name _ names -> ('@':name):names) ["@"]
+propsToSeps = Map.foldrWithKey (\name _ names -> ('@':name):names) ["@"]
 
 -- | Consumes a dictionary (dict) and a property name (dict). Returns the updater in dict
 -- which corresponds to name. If no entry exists, then a parsing error is raised.
 parseFromPropDict :: PropertyDict b -> String -> String -> b -> Either ParserError b
 parseFromPropDict dict name str container =
-    case Data.Map.lookup name dict of
+    case Map.lookup name dict of
         Just update -> update str container
         Nothing     -> Left (UnknownProp name)
 
@@ -119,4 +119,4 @@ parsePreamble seps dict container (line:lines) num
 -- (empty). Returns the parser produced by parsePreamble when called correctly using dict
 -- and empty.
 makePreambleParser :: PropertyDict b -> b -> PropParser b
-makePreambleParser dict = parsePreamble (propsToSeps dict) dict    
+makePreambleParser dict = parsePreamble (propsToSeps dict) dict

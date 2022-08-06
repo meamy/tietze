@@ -2,11 +2,11 @@
 
 module Lafont.Parse.Common where
 
-import Data.Bifunctor
-import Data.Char
-import Data.List
-import Lafont.Common
-import Lafont.Maybe
+import           Data.Bifunctor
+import           Data.Char
+import           Data.List
+import           Lafont.Common
+import           Lafont.Maybe
 
 -----------------------------------------------------------------------------------------
 -- * Common Parsing Errors.
@@ -110,7 +110,7 @@ parseNat str
 -- to an integer, if one exists. Otherwise, returns nothing.
 parseInt :: String -> Maybe (Int, String)
 parseInt ('-':str) = maybeApply (Data.Bifunctor.first ((-1) *)) (parseNat str)
-parseInt str = parseNat str
+parseInt str       = parseNat str
 
 -- | Consumes an input string (str). Returns (trimmed, post) where (pre, post) =
 -- splitAtFirst isSpacing str and trimmed = (pre != "").

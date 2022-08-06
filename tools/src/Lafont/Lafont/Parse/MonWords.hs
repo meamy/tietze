@@ -2,10 +2,10 @@
 
 module Lafont.Parse.MonWords where
 
-import Data.Bifunctor
-import Lafont.Common
-import Lafont.Maybe
-import Lafont.Parse.Common
+import           Data.Bifunctor
+import           Lafont.Common
+import           Lafont.Maybe
+import           Lafont.Parse.Common
 
 -----------------------------------------------------------------------------------------
 -- * Utilities to Parse Symbol Arguments.

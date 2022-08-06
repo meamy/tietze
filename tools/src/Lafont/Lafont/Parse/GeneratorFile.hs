@@ -2,10 +2,10 @@
 
 module Lafont.Parse.GeneratorFile where
 
-import Lafont.Common
-import Lafont.Generators.Semantics
-import Lafont.Parse.Common
-import Lafont.Parse.Semantics
+import           Lafont.Common
+import           Lafont.Generators.Semantics
+import           Lafont.Parse.Common
+import           Lafont.Parse.Semantics
 
 -----------------------------------------------------------------------------------------
 -- * Generator File Parsing Errors.

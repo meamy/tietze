@@ -2,18 +2,18 @@
 
 module Lafont.Parse.RelationFile where
 
-import Lafont.Common
-import Lafont.Rewrite.Rules
-import Lafont.Rewrite.Lookup
-import Lafont.Parse.Common
-import Lafont.Parse.MonWords
+import           Lafont.Common
+import           Lafont.Parse.Common
+import           Lafont.Parse.MonWords
+import           Lafont.Rewrite.Lookup
+import           Lafont.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
 -- * Generator File Parsing Errors.
 
 -- | Errors unique to generator file parsing.
 data RelFileError = InvalidRuleName
-                  | RuleMissingLHS 
+                  | RuleMissingLHS
                   | InvalidRuleType Int
                   | RuleMissingRHS
                   | UnknownGenName String
