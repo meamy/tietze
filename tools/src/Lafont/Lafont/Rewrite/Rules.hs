@@ -4,8 +4,8 @@
 
 module Lafont.Rewrite.Rules where
 
-import Data.Maybe
-import Lafont.Common
+import           Data.Maybe
+import           Lafont.Common
 
 -----------------------------------------------------------------------------------------
 -- * RewriteRules.
@@ -52,7 +52,7 @@ applyProductionRule str lhs rhs = applyProductionRule (tail str) (tail lhs) rhs
 
 -- | Consumes a monoidal word, a rewrite rule, and a boolean flag indicating if the rule
 -- is to be applied from left-to-right. Returns the string obtained by applying the
--- rewrite rule. Assumes that checkRewriteRule is true. 
+-- rewrite rule. Assumes that checkRewriteRule is true.
 applyRewriteRule :: MonWord -> RewriteRule -> Bool -> MonWord
 applyRewriteRule str rule True  = applyProductionRule str (lhs rule) (rhs rule)
 applyRewriteRule str rule False = applyProductionRule str (rhs rule) (lhs rule)
@@ -61,8 +61,8 @@ applyRewriteRule str rule False = applyProductionRule str (rhs rule) (lhs rule)
 -- * Rewrites.
 
 -- | Applies a rewrite rule at the specified position, in the specified direction.
-data Rewrite = Rewrite { rule :: RewriteRule
-                       , pos :: Int
+data Rewrite = Rewrite { rule       :: RewriteRule
+                       , pos        :: Int
                        , isLhsToRhs :: Bool
                        } deriving (Show,Eq)
 
@@ -75,7 +75,7 @@ checkRewrite str rw = impl str (pos rw)
                           else not (null substr) && impl (tail substr) (n - 1)
 
 -- | Consumes a monoidal word and a rewrite. Returns the string obtained by applying the
--- rewrite. Assumes that checkRewrite is true. 
+-- rewrite. Assumes that checkRewrite is true.
 applyRewrite :: MonWord -> Rewrite -> MonWord
 applyRewrite str rw = impl str (pos rw)
     where impl substr n = if n == 0

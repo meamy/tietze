@@ -3,8 +3,8 @@
 
 module Lafont.Rewrite.Simplification where
 
-import Lafont.Common
-import Lafont.Rewrite.Rules
+import           Lafont.Common
+import           Lafont.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
 -- * Rewrite Evaluation.
@@ -12,8 +12,8 @@ import Lafont.Rewrite.Rules
 -- | Describes the result of a derivation sequence. States the final string obtian, the
 -- step at which this string was obtained, and whether or not this corresponds to the
 -- final step in the derivation sequence.
-data RewriteResult = RewriteResult { output :: MonWord
-                                   , step :: Int
+data RewriteResult = RewriteResult { output  :: MonWord
+                                   , step    :: Int
                                    , success :: Bool
                                    } deriving (Show,Eq)
 

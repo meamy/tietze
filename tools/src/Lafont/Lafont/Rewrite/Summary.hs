@@ -5,9 +5,9 @@
 
 module Lafont.Rewrite.Summary where
 
-import Lafont.Common
-import Lafont.Rewrite.Lookup
-import Lafont.Rewrite.Rules
+import           Lafont.Common
+import           Lafont.Rewrite.Lookup
+import           Lafont.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
 -- * Abstract Summaries of a Derivation.
@@ -17,9 +17,9 @@ data RewritePreamble = RewritePreamble { propName :: Maybe String
                                        } deriving (Show,Eq)
 
 -- | A description of a derivation that abstracts away all proof details (rewrites).
-data DerivationSummary = DerivationSummary { meta :: RewritePreamble
+data DerivationSummary = DerivationSummary { meta    :: RewritePreamble
                                            , initial :: MonWord
-                                           , final :: MonWord
+                                           , final   :: MonWord
                                            } deriving (Eq,Show)
 
 -----------------------------------------------------------------------------------------

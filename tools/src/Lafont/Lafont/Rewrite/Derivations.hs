@@ -3,15 +3,15 @@
 
 module Lafont.Rewrite.Derivations where
 
-import Lafont.Graph
-import Lafont.Rewrite.Rules
-import Lafont.Rewrite.Summary
+import           Lafont.Graph
+import           Lafont.Rewrite.Rules
+import           Lafont.Rewrite.Summary
 
 -----------------------------------------------------------------------------------------
 -- * Types to Represent a Derivation
 
 -- | A concrete description of a derivation (i.e., includes all rewrite data).
-data Derivation = Derivation { summary :: DerivationSummary
+data Derivation = Derivation { summary  :: DerivationSummary
                              , rewrites :: [Rewrite]
                              } deriving (Eq,Show)
 
@@ -56,7 +56,7 @@ addDepToGraph src rewrite g =
 -- folding rewrites using (addDepToGraph dep).
 addDepsToGraph :: Dependency -> [Rewrite] -> DepGraph -> Either UnmetDep DepGraph
 addDepsToGraph _   []                 g = Right g
-addDepsToGraph src (rewrite:rewrites) g = 
+addDepsToGraph src (rewrite:rewrites) g =
     case addDepToGraph src rewrite g of
         Left dep -> Left dep
         Right g' -> addDepsToGraph src rewrites g'
@@ -66,7 +66,7 @@ addDepsToGraph src (rewrite:rewrites) g =
 -- returns the results of addDepsToGraph using the name "" and the rewrites of the
 -- derivation.
 addDerivationToGraph :: Derivation -> DepGraph -> Either UnmetDep DepGraph
-addDerivationToGraph derivation g = 
+addDerivationToGraph derivation g =
     case propName $ meta $ summary derivation of
         Just src -> addDepsToGraph src (rewrites derivation) g
         Nothing  -> addDepsToGraph "" (rewrites derivation) g
