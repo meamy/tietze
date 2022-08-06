@@ -1,3 +1,4 @@
+# Ignored from cabal projects.
 dist
 dist-*
 cabal-dev
@@ -20,3 +21,6 @@ cabal.project.local
 cabal.project.local~
 .HTF/
 .ghc.environment.*
+
+# Ignored from hlint
+report.html
