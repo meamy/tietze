@@ -32,7 +32,7 @@ empty = Data.Set.empty
 
 -- | Creates an edge set from a list.
 fromList :: (Ord a) => [a] -> EdgeSet a
-fromList list = Data.Set.fromList list
+fromList = Data.Set.fromList
 
 -- | Create an empty (null) graph.
 nullgraph :: (Ord a) => Digraph a
@@ -41,7 +41,7 @@ nullgraph = Data.Map.empty
 -- | Consumes a graph (g) and a vertex (v). Returns a new graph obtained by adding v to
 -- g. If v is already in g, then g is returned.
 addVertex :: (Ord a) => Digraph a -> a -> Digraph a
-addVertex g v = if (Data.Map.member v g)
+addVertex g v = if Data.Map.member v g
                 then g
                 else Data.Map.insert v empty g
 
@@ -49,20 +49,20 @@ addVertex g v = if (Data.Map.member v g)
 -- graph obtained by adding edge (u, v) to g is returned. Otherwise, nothing is returned.
 addEdge :: (Ord a) => Digraph a -> a -> a -> Maybe (Digraph a)
 addEdge g u v = if edgesExist
-                then Just (Data.Map.adjust (\edges -> Data.Set.insert v edges) u g)
+                then Just (Data.Map.adjust (Data.Set.insert v) u g)
                 else Nothing
-    where edgesExist = (Data.Map.member u g) && (Data.Map.member v g)
+    where edgesExist = u `Data.Map.member` g && v `Data.Map.member` g
 
 -- | Converts a list to a path.
 listToWalk :: [a] -> GraphWalk a
-listToWalk list = Data.Sequence.fromList list
+listToWalk = Data.Sequence.fromList
 
 -----------------------------------------------------------------------------------------
 -- * Graph Inspection.
 
 -- | Consumes a graph. Returns the list of vertices in the graph.
 vertexList :: Digraph a -> [a]
-vertexList g = Data.Map.keys g
+vertexList = Data.Map.keys
 
 -- | Consumes a graph and a vertex. Returns the set of edges originating from the vertex.
 edgeSet :: (Ord a) => Digraph a -> a -> EdgeSet a
@@ -87,7 +87,7 @@ extendToCycle :: (Eq a) => GraphWalk a -> a -> GraphWalk a
 extendToCycle Empty                v = Data.Sequence.singleton v
 extendToCycle (a :<| Empty)        v = v <| (a <| Empty)
 extendToCycle ((l :<| rest) :|> r) v = let seq = ((l :<| rest) :|> r)
-                                       in if (l == r) then seq else (v <| seq)
+                                       in if l == r then seq else v <| seq
 
 -- | Consumes a graph (g), a vertex in the graph (v), and a set of previously visited
 -- vertices (seen). That is, there exists a walk w to v that visits all vertices in seen.
@@ -99,12 +99,12 @@ extendToCycle ((l :<| rest) :|> r) v = let seq = ((l :<| rest) :|> r)
 --
 -- Note: Mutually depends on findCycleFromVertices
 findCycleFromVertex :: (Ord a) => Digraph a -> a -> EdgeSet a -> Maybe (GraphWalk a)
-findCycleFromVertex g v seen = if (v `Data.Set.member` seen)
+findCycleFromVertex g v seen = if v `Data.Set.member` seen
                                then Just (extendToCycle Empty v)
                                else let frontier = adjacencyList g v
                                         seenHere = Data.Set.insert v seen
                                         res = findCycleFromVertices g frontier seenHere
-                                    in maybeApply (\path -> extendToCycle path v) res
+                                    in maybeApply (`extendToCycle` v) res
 
 -- | Consumes a graph (g), a frontier of vertices in the graph (list), and a set of
 -- previously visited vertices (seen). That is, there exists a walk w to each v in list
@@ -119,7 +119,7 @@ findCycleFromVertex g v seen = if (v `Data.Set.member` seen)
 findCycleFromVertices :: (Ord a) => Digraph a -> [a] -> EdgeSet a -> Maybe (GraphWalk a)
 findCycleFromVertices _ []       _    = Nothing
 findCycleFromVertices g (v:list) seen =
-    case (findCycleFromVertex g v seen) of
+    case findCycleFromVertex g v seen of
         Nothing    -> findCycleFromVertices g list seen
         Just cycle -> Just cycle
 

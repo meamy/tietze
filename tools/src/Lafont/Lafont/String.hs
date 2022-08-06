@@ -15,12 +15,12 @@ isSubstrAt :: String -> String -> Maybe Int
 isSubstrAt []  _  = Just 0
 isSubstrAt _   [] = Nothing
 isSubstrAt sub str
-    | (null sub)             = Just 0
-    | (null str)             = Nothing
-    | (sub `isPrefixOf` str) = Just 0
-    | otherwise              = maybeApply (\n -> n + 1) (sub `isSubstrAt` (tail str))
+    | null sub             = Just 0
+    | null str             = Nothing
+    | sub `isPrefixOf` str = Just 0
+    | otherwise            = maybeApply (+ 1) (sub `isSubstrAt` tail str)
 
 -- | Consumes two strings (sub and str). Returns true if and only if sub is a substring
 -- of str.
 isSubstrOf :: String -> String -> Bool
-isSubstrOf sub str = isJust $ (sub `isSubstrAt` str)
+isSubstrOf sub str = isJust (sub `isSubstrAt` str)

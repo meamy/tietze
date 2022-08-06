@@ -21,7 +21,8 @@ data Symbol = Symbol { name :: String
                      } deriving (Eq,Show)
 
 instance Display Symbol where
-    display (Symbol sym args) = foldl (\str n -> str ++ "[" ++ (show n) ++ "]") sym args
+    display (Symbol sym args) = foldl fn sym args
+        where fn str n = str ++ "[" ++ show n ++ "]"
 
 -- | Type definition for a string of generators (i.e., a word in a free monoid).
 type MonWord = [Symbol]
