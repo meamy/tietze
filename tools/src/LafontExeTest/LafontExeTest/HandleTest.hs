@@ -14,8 +14,8 @@ import System.IO
 -- characters.
 data HandleTest = HandleTest { name :: String
                              , msg :: String
-                             , testFn :: (Handle -> IO ())
-                             , checkFn :: (String -> Bool)
+                             , testFn :: Handle -> IO ()
+                             , checkFn :: String -> Bool
                              }
 
 -- | Consumes a HandleTest with testing function test and validation function check. The
@@ -29,11 +29,11 @@ runHandleTest htest = do
     tmpDir <- getTemporaryDirectory
     (tmpFn, hdl) <- openTempFile tmpDir "test_out.txt"
     -- Runs test.
-    ((testFn htest) hdl)
+    testFn htest hdl
     hClose hdl
     -- Processes result and cleanup.
     content <- readFile tmpFn
-    let res = ((checkFn htest) content) in do
+    let res = checkFn htest content in do
         removeFile tmpFn
         return res
 
@@ -44,10 +44,10 @@ runAllHandleTests []             = return True
 runAllHandleTests (htest:htests) = do
     -- Runs test and prints results.
     res <- runHandleTest htest
-    putStr ("    [" ++ (name htest) ++ "]: ")
+    putStr ("    [" ++ name htest ++ "]: ")
     if res
-    then putStr ("Success.\n")
-    else putStr ("Fail! (" ++ (msg htest) ++ ")\n")
+    then putStr "Success.\n"
+    else putStr ("Fail! (" ++ msg htest ++ ")\n")
     -- Accumulates results.
     acc <- runAllHandleTests htests
     return (res && acc)
@@ -59,5 +59,5 @@ handleTestToMain :: IO Bool -> IO Bool
 handleTestToMain io = do
     res <- io
     if res
-    then exitWith ExitSuccess
+    then exitSuccess
     else exitWith (ExitFailure 1)
