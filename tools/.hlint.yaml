@@ -1,0 +1,12 @@
+# HLint configuration file
+# https://github.com/ndmitchell/hlint
+##########################
+
+# Consistency of imports
+- modules:
+  - {name: [Data.Map], as: Map}
+  - {name: [Data.Sequence], as: Seq}
+  - {name: [Data.Set, Data.HashSet], as: Set}
+  - {name: [Quantum.Synthesis.Matrix], as: QMat}
+  - {name: [Quantum.Synthesis.Ring], as: QRing}
+

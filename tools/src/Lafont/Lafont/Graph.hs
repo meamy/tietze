@@ -89,7 +89,7 @@ extendToCycle (a :<| Empty)        v = v <| (a <| Empty)
 extendToCycle ((l :<| rest) :|> r) v
     | l == r    = seq
     | otherwise = v <| seq
-    where seq = ((l :<| rest) :|> r)
+    where seq = (l :<| rest) :|> r
 
 -- | Consumes a graph (g), a vertex in the graph (v), and a set of previously visited
 -- vertices (seen). That is, there exists a walk w to v that visits all vertices in seen.
