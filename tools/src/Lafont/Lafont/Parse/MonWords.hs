@@ -83,7 +83,7 @@ parseNonEmptyMonWord :: String -> Maybe (MonWord, String)
 parseNonEmptyMonWord str =
     case (parseSymbol str) of
         Just (symb, post) -> case (parseMonWordSep post) of
-            Just (MonWordEnd, post') -> Just (symb:[], post')
+            Just (MonWordEnd, post') -> Just ([symb], post')
             Just (MonWordDot, post') -> (joinAndParseMonWord symb post')
             Nothing                  -> Nothing
         Nothing -> Nothing

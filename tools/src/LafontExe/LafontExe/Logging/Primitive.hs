@@ -13,7 +13,7 @@ import Lafont.Rewrite.Lookup
 -- their display function. Empty words are displayed as ε.
 logWord :: MonWord -> String
 logWord []          = "ε"
-logWord (symb:[])   = (display symb)
+logWord [symb]      = (display symb)
 logWord (symb:word) = (display symb) ++ "." ++ (logWord word)
 
 -----------------------------------------------------------------------------------------
