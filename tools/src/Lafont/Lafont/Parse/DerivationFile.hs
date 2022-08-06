@@ -1,3 +1,5 @@
+{-# LANGUAGE TupleSections #-}
+
 -- | Implements a parser for derivation files.
 
 module Lafont.Parse.DerivationFile where
@@ -76,7 +78,7 @@ propDerErr str substr (Right err) =
 -- remaining input, and that str has no leading spacing.
 parseRewritePos :: RewriteRule -> Bool -> String -> Either DFPError Rewrite
 parseRewritePos rule isLeftToRight str =
-    case (parseNat str) of
+    case parseNat str of
         Just (pos, post) -> let lval = Left (UnexpectedSymbol (getErrPos str post))
                                 rval = Rewrite rule pos isLeftToRight
                             in branchOnSpacing post lval rval
@@ -88,15 +90,13 @@ parseRewritePos rule isLeftToRight str =
 -- returned. Otherwise, the misalignment between rule and dir is described through an
 -- error value.
 parseRewriteDirAndPos :: RewriteRule -> String -> String -> Either DFPError Rewrite
-parseRewriteDirAndPos rule dir str =
-    if dirMatchesRule
-    then parseRewritePos rule isL2R (snd (trimSpacing str))
-    else if isL2R
-        then Left (Right MissingRewriteDir)
-        else Left (Right InvalidRewriteDir)
-    where isDirected    = (not (dir == ""))
-          isL2R         = (not (dir == "←"))
-          dirMatchesRule = if (equational rule) then isDirected else isL2R
+parseRewriteDirAndPos rule dir str
+    | dirMatchesRule = parseRewritePos rule isL2R (snd (trimSpacing str))
+    | isL2R          = Left (Right MissingRewriteDir)
+    | otherwise      = Left (Right InvalidRewriteDir)
+    where isDirected    = dir /= ""
+          isL2R         = dir /= "←"
+          dirMatchesRule = if equational rule then isDirected else isL2R
 
 -----------------------------------------------------------------------------------------
 -- * Line Parsing Methods.
@@ -107,10 +107,10 @@ parseRewriteDirAndPos rule dir str =
 -- is returned.
 parseRewrite :: RuleDict -> String -> Either DFPError Rewrite
 parseRewrite dict str =
-    case (parseId str) of
-        Just (id, detStr) -> case (interpretRule dict id) of
-            Just rule -> case (parseFromSeps ["→", "←", ""] detStr) of
-                Just (dir, natStr) -> case (parseRewriteDirAndPos rule dir natStr) of
+    case parseId str of
+        Just (id, detStr) -> case interpretRule dict id of
+            Just rule -> case parseFromSeps ["→", "←", ""] detStr of
+                Just (dir, natStr) -> case parseRewriteDirAndPos rule dir natStr of
                     Left err -> Left (propDerErr str natStr err)
                     Right rw -> Right rw
                 Nothing ->  Left (Left UnknownParseError) -- Should be unreachable.
@@ -123,16 +123,16 @@ parseRewrite dict str =
 -- error is returned. 
 parseRewriteLine :: RuleDict -> String -> Either DFPError Rewrite
 parseRewriteLine dict str =
-    case (parseFromSeps ["!apply", "!"] str) of
-        Just ("!apply", rwStr) -> let trimmed = (snd (trimSpacing rwStr))
-                                  in case (parseRewrite dict trimmed) of
+    case parseFromSeps ["!apply", "!"] str of
+        Just ("!apply", rwStr) -> let (_, trimmed) = trimSpacing rwStr
+                                  in case parseRewrite dict trimmed of
                                          Left err -> Left (propDerErr str trimmed err)
-                                         Right rw -> if (isDerivedRule (rule rw))
+                                         Right rw -> if isDerivedRule (rule rw)
                                                      then Right rw
                                                      else Left (Right ApplyOnPrimitive)
-        Nothing -> case (parseRewrite dict str) of
+        Nothing -> case parseRewrite dict str of
             Left err -> Left err
-            Right rw -> if (isDerivedRule (rule rw))
+            Right rw -> if isDerivedRule (rule rw)
                         then Left (Right RewriteOnDerived)
                         else Right rw
         Just ("!", _) -> Left (Right UnknownRewriteMod)
@@ -153,7 +153,7 @@ setName _   (RewritePreamble (Just _)) = Nothing
 
 -- | A dictionary of all preamble properties.
 rewriteProperties :: PropertyDict RewritePreamble
-rewriteProperties = noProps `addProp` (makePropPair "name" parseId setName)
+rewriteProperties = noProps `addProp` makePropPair "name" parseId setName
 
 -- | A parser for rewriteProperties.
 parseRewritePreamble :: PropParser RewritePreamble
@@ -178,24 +178,24 @@ data PreDerivation = ParDerivation { parsed :: DerivationSummary
 parseFinalMonWord :: [String] -> Maybe ([String], MonWord)
 parseFinalMonWord []           = Nothing
 parseFinalMonWord (line:lines) =
-    case (parseFinalMonWord lines) of
-        Just (body, word) -> Just ((line:body), word)
-        Nothing           -> maybeApply (\word -> ([], word)) (parseLineAsMonWord line)
+    case parseFinalMonWord lines of
+        Just (body, word) -> Just (line : body, word)
+        Nothing           -> maybeApply ([],) (parseLineAsMonWord line)
 
 -- | Consumes a dictionary of known rules (dict) and the rewrite lines of a derivation
 -- file. If the lines are valid with respect to dict, then returns a list of rewrites in
 -- the order they appear. Otherwise, returns a parsing exception.
 parseRewriteLines :: RuleDict -> [String] -> Int -> DParseRV [Rewrite]
 parseRewriteLines _     []           _   = Right []
-parseRewriteLines rules (line:lines) num =
-    case (snd (trimSpacing stripped)) of
-        ""   -> parseRewriteLines rules lines nextNum
-        text -> case (parseRewriteLine rules text) of
-            Left err      -> Left (num, (propDerErr stripped text err))
-            Right rewrite -> case (parseRewriteLines rules lines nextNum) of
-                Left (errLn, err) -> Left (errLn, (propDerErr stripped text err))
-                Right rewrites    -> Right (rewrite:rewrites)
+parseRewriteLines rules (line:lines) num
+    | trimmed == "" = parseRewriteLines rules lines nextNum
+    | otherwise     = case parseRewriteLine rules trimmed of
+        Left err      -> Left (num, propDerErr stripped trimmed err)
+        Right rewrite -> case parseRewriteLines rules lines nextNum of
+            Left (errLn, err) -> Left (errLn, propDerErr stripped trimmed err)
+            Right rewrites    -> Right (rewrite : rewrites)
     where stripped = stripComments line
+          (_, trimmed) = trimSpacing stripped
           nextNum = num + 1
 
 -- | Consumes a list of known generator names (gens), the preamble of a derivation file
@@ -207,18 +207,18 @@ parseRewriteLines rules (line:lines) num =
 preparseBody :: [String] -> RewritePreamble -> [String] -> Int -> DParseRV PreDerivation
 preparseBody _    _    []                 num = Left (num, Left UnexpectedEOF)
 preparseBody gens meta (initLine:body) num =
-    case (parseLineAsMonWord initLine) of
+    case parseLineAsMonWord initLine of
         Nothing   -> Left (num, Right MissingInitialWord)
-        Just init -> case (findUnknownGenInMonWord gens init) of
+        Just init -> case findUnknownGenInMonWord gens init of
             Just gen -> Left (num, Right (UnknownGenName (name gen)))
-            Nothing  -> case (parseFinalMonWord body) of
-                Nothing            -> Left ((finAt body), Right MissingFinalWord)
-                Just (rlines, fin) -> case (findUnknownGenInMonWord gens fin) of
-                    Just gen -> Left ((finAt rlines), Right (UnknownGenName (name gen)))
+            Nothing  -> case parseFinalMonWord body of
+                Nothing            -> Left (finAt body, Right MissingFinalWord)
+                Just (rlines, fin) -> case findUnknownGenInMonWord gens fin of
+                    Just gen -> Left (finAt rlines, Right (UnknownGenName (name gen)))
                     Nothing  -> let sum = DerivationSummary meta init fin
                                 in Right (ParDerivation sum rlines rln)
     where rln = num + 1
-          finAt body = rln + (length body)
+          finAt body = rln + length body
 
 -- | Consumes a list of known generator names (gens) and the lines of a derivation file
 -- including the preamble (lines). If the lines include a preamble section, an initial
@@ -227,7 +227,7 @@ preparseBody gens meta (initLine:body) num =
 -- Otherwise, returns a parsing exception
 preparseDerivationFile :: [String] -> [String] -> Int -> DParseRV PreDerivation
 preparseDerivationFile gens lines num =
-    case (parseRewritePreamble lines num) of
+    case parseRewritePreamble lines num of
         Left (errLn, err)          -> Left (errLn, Left err)
         Right (body, bodyLn, meta) -> preparseBody gens meta body bodyLn
 
@@ -236,6 +236,6 @@ preparseDerivationFile gens lines num =
 -- then a derivation is returned. Otherwise, returns a parsing exception.
 parseDerivationFile :: RuleDict -> PreDerivation -> DParseRV Derivation
 parseDerivationFile rules pre =
-    case (parseRewriteLines rules (unparsed pre) (linenum pre)) of
+    case parseRewriteLines rules (unparsed pre) (linenum pre) of
         Left  err      -> Left err
         Right rewrites -> Right (Derivation (parsed pre) rewrites)

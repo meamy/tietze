@@ -2,6 +2,7 @@
 
 module Lafont.Parse.MonWords where
 
+import Data.Bifunctor
 import Lafont.Common
 import Lafont.Maybe
 import Lafont.Parse.Common
@@ -13,7 +14,7 @@ import Lafont.Parse.Common
 parseParam :: String -> Maybe (Int, String)
 parseParam []        = Nothing
 parseParam ('[':str) =
-    case (parseNat str) of
+    case parseNat str of
         Just (n, post) -> maybeApply (\(_, post) -> (n, post)) (parseFromSeps ["]"] post)
         Nothing        -> Nothing
 parseParam _ = Nothing
@@ -24,9 +25,9 @@ parseParam _ = Nothing
 -- returned.
 parseParams :: String -> ([Int], String)
 parseParams str =
-    case (parseParam str) of
-        Just (param, post) -> let (params, post') = (parseParams post)
-                              in (param:params, post')
+    case parseParam str of
+        Just (param, post) -> let (params, post') = parseParams post
+                              in (param : params, post')
         Nothing -> ([], str)
 
 -----------------------------------------------------------------------------------------
@@ -38,17 +39,17 @@ parseParams str =
 parseSymbol :: String -> Maybe (Symbol, String)
 parseSymbol str = maybeApply parseImpl (parseId str)
     where parseImpl (id, post) = let (params, post') = parseParams post
-                                 in ((Symbol id params), post')
+                                 in (Symbol id params, post')
 
 -- | Consumes a list of generator names (gens) and a monoidal word (word). Returns the
 -- first symbol in monoidal word with either a non-zero number of parameters or a name
 -- not in gens. If no such symbol exists, then nothing is returned.
 findUnknownGenInMonWord :: [String] -> MonWord -> Maybe Symbol
 findUnknownGenInMonWord gens []          = Nothing
-findUnknownGenInMonWord gens (symb:word) = if symbolIsValid
-                                           then findUnknownGenInMonWord gens word
-                                           else Just symb
-    where symbolIsValid = ((args symb) == []) && ((name symb) `elem` gens)
+findUnknownGenInMonWord gens (symb:word)
+    | symbolIsValid = findUnknownGenInMonWord gens word
+    | otherwise     = Just symb
+    where symbolIsValid = null (args symb) && name symb `elem` gens
 
 -----------------------------------------------------------------------------------------
 -- * Monoidal Word Parsing Functions.
@@ -70,7 +71,7 @@ parseMonWordSep _          = Nothing
 --
 -- Mutually Depends On: parseNonEmptyMonWord
 joinAndParseMonWord :: Symbol -> String -> Maybe (MonWord, String)
-joinAndParseMonWord symb str = maybeApply (\(word, post) -> (symb:word, post)) maybeWord
+joinAndParseMonWord symb str = maybeApply (Data.Bifunctor.first (symb :)) maybeWord
     where maybeWord = parseNonEmptyMonWord str
 
 -- | Consumes a string (str). If there exists a monoidal word pre = G1.G2.G3...Gn such
@@ -81,10 +82,10 @@ joinAndParseMonWord symb str = maybeApply (\(word, post) -> (symb:word, post)) m
 -- Mutually Depends On: joinAndParseMonWord
 parseNonEmptyMonWord :: String -> Maybe (MonWord, String)
 parseNonEmptyMonWord str =
-    case (parseSymbol str) of
-        Just (symb, post) -> case (parseMonWordSep post) of
+    case parseSymbol str of
+        Just (symb, post) -> case parseMonWordSep post of
             Just (MonWordEnd, post') -> Just ([symb], post')
-            Just (MonWordDot, post') -> (joinAndParseMonWord symb post')
+            Just (MonWordDot, post') -> joinAndParseMonWord symb post'
             Nothing                  -> Nothing
         Nothing -> Nothing
 
@@ -101,7 +102,7 @@ parseMonWord str        = parseNonEmptyMonWord str
 -- and comments), then the monoidal word is returned. Otherwise, nothing is returned.
 parseLineAsMonWord :: String -> Maybe MonWord
 parseLineAsMonWord line =
-    case (parseMonWord cleaned) of
+    case parseMonWord cleaned of
         Just (word, post) -> iteOnSpacing post Nothing (Just word)
         Nothing           -> Nothing
     where cleaned = cleanLine line

@@ -22,9 +22,9 @@ data GenFileError = MissingSemModel
 instance Display GenFileError where
     display MissingSemModel         = "Semantics model not provided."
     display (UnknownSemModel model) = "Unknown semantic model (" ++ model ++ ")."
-    display (SemModelWOImpl model)  = (display model) ++ " not implemented."
+    display (SemModelWOImpl model)  = display model ++ " not implemented."
     display InvalidGenName          = "Generator name started with invalid symbol."
-    display (InvalidGenSem pos msg) = "Invalid semv at " ++ (show pos) ++ " (" ++ msg ++ ")."
+    display (InvalidGenSem pos msg) = "Invalid semv at " ++ show pos ++ " (" ++ msg ++ ")."
     display (DuplicateGenName name) = "Duplicate generator name (" ++ name ++ ")."
 
 -- | Errors returned during generator file parsing.
@@ -64,15 +64,16 @@ propGenErr str substr (Right err) =
 -- trailing whitespace.
 parseGenerator :: SemParser a -> String -> Either GFPError (String, Maybe a)
 parseGenerator parseSem str =
-    case (parseId (snd (trimSpacing str))) of
-        Just (id, defStr) -> case (parseSep ":=" defStr) of
-            Just semStr -> case (parseSem semStr) of
+    case parseId trimmed of
+        Just (id, defStr) -> case parseSep ":=" defStr of
+            Just semStr -> case parseSem semStr of
                 Left err  -> Left (Right (InvalidGenSem (getErrPos str semStr) err))
                 Right sem -> Right (id, Just sem)
             Nothing -> let lval = Left (UnexpectedSymbol (getErrPos str defStr))
                            rval = (id, Nothing)
                        in branchOnSpacing defStr lval rval
         Nothing -> Left (Right InvalidGenName)
+    where (_, trimmed) = trimSpacing str
 
 -- | Consumes a semantic model parser (parseSem), a partial map of generators (dict), and
 -- a single line of a generator file (str). Attemps to call (parseGenerator parseSem str)
@@ -82,9 +83,9 @@ parseGenerator parseSem str =
 -- dict. The resulting dict is returned.
 updateGenerators :: SemParser a -> GenDict a -> String -> Either GFPError (GenDict a)
 updateGenerators parseSem dict str =
-    case (parseGenerator parseSem str) of
+    case parseGenerator parseSem str of
         Left err         -> Left err
-        Right (id, semv) -> if (dict `hasGen` id)
+        Right (id, semv) -> if dict `hasGen` id
                             then Left (Right (DuplicateGenName id))
                             else Right (dict `addGen` (id, semv))
 
@@ -93,25 +94,23 @@ updateGenerators parseSem dict str =
 
 -- | List of all semantic models as text.
 _semModelStrings :: [String]
-_semModelStrings = [(display MonoidalSem),
-                    (display DyadicTwoSem),
-                    (display DyadicThreeSem)]
+_semModelStrings = [display MonoidalSem, display DyadicTwoSem, display DyadicThreeSem]
 
 -- | Consumes all lines of a generator file (lines) and the current line number (num).
 -- Attempts to parse the semantic model declaration. If successful, then the semantic
 -- model, the number of lines parsed, and all remaining lines are returned. Otherwise, a
 -- parsing error is returned along with the line number.
 parseSemanticModel :: [String] -> Int -> Either (Int, GFPError) (SemModel, Int, [String])
-parseSemanticModel []           num = Left (num, (Right MissingSemModel))
-parseSemanticModel (line:lines) num =
-    case (cleanLine line) of
-        ""   -> (parseSemanticModel lines (num + 1))
-        text -> case parseFromSeps _semModelStrings text of
-            Just ("Monoidal",  post) -> (check MonoidalSem post text)
-            Just ("Dyadic(2)", post) -> (check DyadicTwoSem post text)
-            Just ("Dyadic(3)", post) -> (check DyadicThreeSem post text)
-            Nothing                  -> Left (num, (Right (UnknownSemModel text)))
-    where check sem post text = let lval = (num, Right (UnknownSemModel text))
+parseSemanticModel []           num = Left (num, Right MissingSemModel)
+parseSemanticModel (line:lines) num
+    | cleaned == "" = parseSemanticModel lines (num + 1)
+    | otherwise     = case parseFromSeps _semModelStrings cleaned of
+        Just ("Monoidal",  post) -> check MonoidalSem post cleaned
+        Just ("Dyadic(2)", post) -> check DyadicTwoSem post cleaned
+        Just ("Dyadic(3)", post) -> check DyadicThreeSem post cleaned
+        Nothing                  -> Left (num, Right (UnknownSemModel cleaned))
+    where cleaned = cleanLine line
+          check sem post text = let lval = (num, Right (UnknownSemModel text))
                                     rval = (sem, num, lines)
                                 in branchOnSpacing post lval rval
 
@@ -125,14 +124,15 @@ parseSemanticModel (line:lines) num =
 parseGenDict :: SemParser a -> [String] -> Int -> Either (Int, GFPError) (GenDict a)
 parseGenDict _        []           _   = Right empty
 parseGenDict parseSem (line:lines) num =
-    case (parseGenDict parseSem lines (num + 1)) of
+    case parseGenDict parseSem lines (num + 1) of
         Left  err  -> Left err
-        Right dict -> case (snd (trimSpacing stripped)) of
-            ""   -> Right dict
-            text -> case (updateGenerators parseSem dict text) of
-                Left err   -> Left (num, (propGenErr stripped text err))
-                Right dict -> Right dict
+        Right dict -> if trimmed == ""
+                      then Right dict
+                      else case updateGenerators parseSem dict trimmed of
+                                Left err   -> Left (num, propGenErr stripped trimmed err)
+                                Right dict -> Right dict
     where stripped = stripComments line
+          (_, trimmed) = trimSpacing stripped
 
 -----------------------------------------------------------------------------------------
 -- * Full Generator File Parsing.
@@ -151,19 +151,19 @@ data GenFileSummary = MonoidalGenSummary (GenDict ())
 -- Otherwise, returns a parsing exception.
 parseGenFileAsDict :: [String] -> Int -> Either (Int, GFPError) GenFileSummary
 parseGenFileAsDict lines num =
-    case (parseSemanticModel lines 0) of
+    case parseSemanticModel lines 0 of
         Left err                 -> Left err
         Right (sem, semLn, gens) -> let nextLn = semLn + 1 in case sem of
-            MonoidalSem -> case (parseGenDict parseMonoidalSem gens nextLn) of
+            MonoidalSem -> case parseGenDict parseMonoidalSem gens nextLn of
                 Left err   -> Left err
                 Right dict -> Right (MonoidalGenSummary dict)
-            DyadicTwoSem -> case (parseGenDict interpret2QubitCliffordDTofGate gens nextLn) of
+            DyadicTwoSem -> case parseGenDict interpret2QubitCliffordDTofGate gens nextLn of
                 Left err   -> Left err
                 Right dict -> Right (DyadicTwoSummary dict)
-            DyadicThreeSem -> case (parseGenDict interpret3QubitCliffordDTofGate gens nextLn) of
+            DyadicThreeSem -> case parseGenDict interpret3QubitCliffordDTofGate gens nextLn of
                 Left err   -> Left err
                 Right dict -> Right (DyadicThreeSummary dict)
-            otherwise -> Left (semLn, Right (SemModelWOImpl sem))
+            _ -> Left (semLn, Right (SemModelWOImpl sem))
 
 -- | A GenFileSummary carries the type data of the underlying semantic model. This
 -- function allows all semantic data to be stripped away, returning instead a list of
@@ -171,6 +171,6 @@ parseGenFileAsDict lines num =
 -- valid, then returns a list of all generator symbols. Otherwise, returns a parsing
 -- exception.
 parseGenFileAsAlphabet :: [String] -> Int -> Either (Int, GFPError) [String]
-parseGenFileAsAlphabet lines num = case (parseGenFileAsDict lines num) of
+parseGenFileAsAlphabet lines num = case parseGenFileAsDict lines num of
     Left err                        -> Left err
     Right (MonoidalGenSummary dict) -> Right (toAlphabet dict)

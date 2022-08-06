@@ -23,7 +23,7 @@ data RelFileError = InvalidRuleName
 instance Display RelFileError where
     display InvalidRuleName          = "Rule name started with invalid symbol."
     display RuleMissingLHS           = "Rule missing left-hand side."
-    display (InvalidRuleType pos)    = "Invalid rule type at pos " ++ (show pos) ++ "."
+    display (InvalidRuleType pos)    = "Invalid rule type at pos " ++ show pos ++ "."
     display RuleMissingRHS           = "Rule missing right-hand side."
     display (UnknownGenName name)    = "Unknown generator name (" ++ name ++ ")."
     display (DuplicateRuleName name) = "Duplicate rule name (" ++ name ++ ")."
@@ -39,9 +39,9 @@ type RFPError = Either ParserError RelFileError
 -- findUnknownGenInMonWord. If no such symbol exists, then nothing is returned.
 findUnknownGenInRule :: [String] -> RewriteRule -> Maybe Symbol
 findUnknownGenInRule gens rule =
-    case (findUnknownGenInMonWord gens (lhs rule)) of
+    case findUnknownGenInMonWord gens (lhs rule) of
         Just gen -> Just gen
-        Nothing  -> (findUnknownGenInMonWord gens (rhs rule))
+        Nothing  -> findUnknownGenInMonWord gens (rhs rule)
 
 -----------------------------------------------------------------------------------------
 -- * Line Parsing Helper Methods.
@@ -74,9 +74,9 @@ propRelErr str substr (Right err) =
 -- str.
 parseRule :: String -> Either RFPError RewriteRule
 parseRule str =
-    case (parseMonWord str) of
-        Just (lhs, opStr) -> case (parseFromSeps ["→", "="] opStr) of
-            Just (op, rhsStr) -> case (parseMonWord (snd (trimSpacing rhsStr))) of
+    case parseMonWord str of
+        Just (lhs, opStr) -> case parseFromSeps ["→", "="] opStr of
+            Just (op, rhsStr) -> case parseMonWord $ snd $ trimSpacing rhsStr of
                 Just (rhs, post) -> let lval = Left (UnexpectedSymbol (getErrPos str post))
                                         rval = RewriteRule lhs rhs (op == "=") Nothing
                                     in branchOnSpacing post lval rval
@@ -89,10 +89,10 @@ parseRule str =
 -- rewrite rule and id is its name. Otherwise, an error type is returned.
 parseRuleDefn :: String -> Either RFPError (String, RewriteRule)
 parseRuleDefn str =
-    case (parseId (snd (trimSpacing str))) of
+    case parseId $ snd $ trimSpacing str of
         Just (id, ruleStr) -> let (isTrimmed, trimmed) = trimSpacing ruleStr
                               in if isTrimmed
-                                 then case (parseRule trimmed) of
+                                 then case parseRule trimmed of
                                           Left err   -> Left (propRelErr str trimmed err)
                                           Right rule -> Right (id, rule)
                                  else Left (Left (UnexpectedSymbol (getErrPos str ruleStr)))
@@ -107,11 +107,11 @@ parseRuleDefn str =
 -- are added to dict. The resulting dict is returned.
 updateRules :: RuleDict -> [String] -> String -> Either RFPError RuleDict
 updateRules dict gens str =
-    case (parseRuleDefn str) of
+    case parseRuleDefn str of
         Left err        -> Left err
-        Right (id, rule) -> case (findUnknownGenInRule gens rule) of
+        Right (id, rule) -> case findUnknownGenInRule gens rule of
             Just gen -> Left (Right (UnknownGenName (display gen)))
-            Nothing  -> if (dict `hasRule` id)
+            Nothing  -> if dict `hasRule` id
                         then Left (Right (DuplicateRuleName id))
                         else Right (dict `addRule` (id, rule))
 
@@ -124,11 +124,12 @@ updateRules dict gens str =
 parseRelFile :: [String] -> [String] -> Int -> Either (Int, RFPError) RuleDict
 parseRelFile _    []           _   = Right empty
 parseRelFile gens (line:lines) num =
-    case (parseRelFile gens lines (num + 1)) of
+    case parseRelFile gens lines (num + 1) of
         Left  err  -> Left err
-        Right dict -> case (snd (trimSpacing stripped)) of
-            ""   -> Right dict
-            text -> case (updateRules dict gens text) of
-                Left err   -> Left (num, (propRelErr stripped text err))
-                Right dict -> Right dict
+        Right dict -> if trimmed == ""
+                      then Right dict
+                      else case updateRules dict gens trimmed of
+                                Left err   -> Left (num, propRelErr stripped trimmed err)
+                                Right dict -> Right dict
     where stripped = stripComments line
+          (_, trimmed) = trimSpacing stripped

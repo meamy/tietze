@@ -24,13 +24,12 @@ type PropUpdater b = (String -> b -> Either ParserError b)
 -- error hanlding.
 makePropUpdater :: String -> PropReader a -> PropSetter a b -> PropUpdater b
 makePropUpdater name read set str container =
-    case (read trimmed) of
-        Just (prop, post) -> case (set prop container) of
-            Just res -> let lval = (UnexpectedSymbol (getErrPos str post))
-                        in branchOnSpacing post lval res
+    case read trimmed of
+        Just (prop, post) -> case set prop container of
+            Just res -> branchOnSpacing post (UnexpectedSymbol (getErrPos str post)) res
             Nothing -> Left (DuplicateProp name)
         Nothing -> Left (UnexpectedSymbol (getErrPos str trimmed))
-    where trimmed = snd (trimSpacing str)
+    where (_, trimmed) = trimSpacing str
 
 -- | Helper function. Consumes a property name, property reader (read), and property
 -- setter (set). Returns a tuple (name, (makePropUpdater name read set)). This will be
@@ -57,21 +56,20 @@ addProp dict (name, updater) = Data.Map.insert name updater dict
 -- | Consumes a dictionary (dict) and a list of property pairs (props). Adds each element
 -- to dict, in the other they appear, according to addProp.
 addProps :: PropertyDict b -> [(String, PropUpdater b)] -> PropertyDict b
-addProps dict []           = dict
-addProps dict (prop:props) = addProps (addProp dict prop) props
+addProps = foldl addProp
 
 -- | Converts a dictionary to the list of seperators it represents. Each key is added to
 -- the list, with the prefix @. The string "@" is added to the end of the list as a
 -- parsing fallthrough (@ corresponds to an unknown property).
 propsToSeps :: PropertyDict b -> [String]
-propsToSeps dict = Data.Map.foldrWithKey (\name _ names -> (('@':name):names)) ["@"] dict
+propsToSeps = Data.Map.foldrWithKey (\name _ names -> ('@':name):names) ["@"]
 
 -- | Consumes a dictionary (dict) and a property name (dict). Returns the updater in dict
 -- which corresponds to name. If no entry exists, then a parsing error is raised.
 parseFromPropDict :: PropertyDict b -> String -> String -> b -> Either ParserError b
 parseFromPropDict dict name str container =
-    case (Data.Map.lookup name dict) of
-        Just update -> (update str container)
+    case Data.Map.lookup name dict of
+        Just update -> update str container
         Nothing     -> Left (UnknownProp name)
 
 -----------------------------------------------------------------------------------------
@@ -90,10 +88,10 @@ type PropParser b = ([String] -> Int -> Either (Int, ParserError) ([String], Int
 -- is free from comments.
 parsePropLine :: [String] -> PropertyDict b -> b -> String -> Either ParserError (Maybe b)
 parsePropLine seps dict container line =
-    case (parseFromSeps seps line) of
-        Just ("@", post) -> let prop = fst (splitAtFirst (\c -> not $ isSpacing c) post)
+    case parseFromSeps seps line of
+        Just ("@", post) -> let prop = fst $ splitAtFirst (not . isSpacing) post
                             in Left (UnknownProp prop)
-        Just ('@':prop, post) -> case (parseFromPropDict dict prop post container) of
+        Just ('@':prop, post) -> case parseFromPropDict dict prop post container of
             Left err  -> Left (propCommonErr line post err)
             Right res -> Right (Just res)
         Just _  -> Left (ImplError "Property not prefixed with @.")
@@ -108,17 +106,17 @@ parsePropLine seps dict container line =
 -- error is returned. Requires that seps == (propsToSeps dict).
 parsePreamble :: [String] -> PropertyDict b -> b -> PropParser b
 parsePreamble _    _    container []           num = Right ([], num, container)
-parsePreamble seps dict container (line:lines) num =
-    case (snd (trimSpacing stripped)) of
-        ""   -> parsePreamble seps dict container lines (num + 1)
-        text -> case (parsePropLine seps dict container text) of
-            Left  err        -> Left (num, (propCommonErr stripped text err))
-            Right (Just res) -> parsePreamble seps dict res lines (num + 1)
-            Right Nothing    -> Right ((line:lines), num, container)
+parsePreamble seps dict container (line:lines) num
+    | trimmed == "" = parsePreamble seps dict container lines (num + 1)
+    | otherwise     = case parsePropLine seps dict container trimmed of
+        Left  err        -> Left (num, propCommonErr stripped trimmed err)
+        Right (Just res) -> parsePreamble seps dict res lines (num + 1)
+        Right Nothing    -> Right (line : lines, num, container)
     where stripped = stripComments line
+          (_, trimmed) = trimSpacing stripped
 
 -- | Helper function. Consumes a dictionary of properties (dict) and an empty container
 -- (empty). Returns the parser produced by parsePreamble when called correctly using dict
 -- and empty.
 makePreambleParser :: PropertyDict b -> b -> PropParser b
-makePreambleParser dict empty = parsePreamble (propsToSeps dict) dict empty    
+makePreambleParser dict = parsePreamble (propsToSeps dict) dict    
