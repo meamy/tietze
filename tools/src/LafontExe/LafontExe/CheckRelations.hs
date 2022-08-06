@@ -2,12 +2,12 @@
 
 module LafontExe.CheckRelations where
 
-import System.IO
-import LafontExe.IO.Files
-import LafontExe.Logging.ErrorFormat
-import LafontExe.Logging.LineBased
-import LafontExe.Logging.Primitive
-import LafontExe.Logic.Relations
+import           LafontExe.IO.Files
+import           LafontExe.Logging.ErrorFormat
+import           LafontExe.Logging.LineBased
+import           LafontExe.Logging.Primitive
+import           LafontExe.Logic.Relations
+import           System.IO
 
 -----------------------------------------------------------------------------------------
 -- * Logic.

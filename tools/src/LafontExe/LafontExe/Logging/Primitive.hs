@@ -2,9 +2,9 @@
 
 module LafontExe.Logging.Primitive where
 
-import Lafont.Common
-import Lafont.Rewrite.Rules
-import Lafont.Rewrite.Lookup
+import           Lafont.Common
+import           Lafont.Rewrite.Lookup
+import           Lafont.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
 -- * Array-Based Logging.

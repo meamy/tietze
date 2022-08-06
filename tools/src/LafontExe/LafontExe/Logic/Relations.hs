@@ -2,13 +2,13 @@
 
 module LafontExe.Logic.Relations where
 
-import Lafont.Generators.Categories
-import Lafont.Generators.RuleSem
-import Lafont.Generators.Semantics
-import Lafont.Parse.GeneratorFile
-import Lafont.Parse.RelationFile
-import Lafont.Rewrite.Lookup
-import LafontExe.IO.Files
+import           Lafont.Generators.Categories
+import           Lafont.Generators.RuleSem
+import           Lafont.Generators.Semantics
+import           Lafont.Parse.GeneratorFile
+import           Lafont.Parse.RelationFile
+import           Lafont.Rewrite.Lookup
+import           LafontExe.IO.Files
 
 -----------------------------------------------------------------------------------------
 -- * Type-specialized parsing and validation of generators and relations.
@@ -29,7 +29,7 @@ data GenRuleReadResult = UnknownSem
 -- | Consumes a relation file and a dictionary of generators. If the relation file is
 -- parsed successfully, relative to the generators, then a GenRulePair status is returned.
 -- Otherwise, and error is propogated via the return status BadRelFile.
--- 
+--
 -- Note: This method is said to be unchecked, as semantic validity is ignored.
 readRulesUnchecked :: FileData -> GenDict a -> GenRuleReadResult
 readRulesUnchecked (FileData relFname relLines) gens =
@@ -48,14 +48,14 @@ readAndCheckRules :: (MonoidObj a) => FileData -> GenDict a -> GenRuleReadResult
 readAndCheckRules relFile gens =
     case readRulesUnchecked relFile gens of
         GenRulePair language rules -> case checkRuleSem gens rules of
-            InvalidRuleSem id      -> InvalidRel id
-            IncompleteGenSet id    -> MissingGen id
-            GoodRuleDict           -> GenRulePair language rules
+            InvalidRuleSem id   -> InvalidRel id
+            IncompleteGenSet id -> MissingGen id
+            GoodRuleDict        -> GenRulePair language rules
         badResult -> badResult
 
 -- | Consumes a generator file and a relation file. If the generator fail is invalid,
 -- then the BadGenFile status is returned. Otherwise, the rules are parsed relative to
--- the generators, in adherence to readAndCheckRules. 
+-- the generators, in adherence to readAndCheckRules.
 readGeneratorsAndRules :: FileData -> FileData -> GenRuleReadResult
 readGeneratorsAndRules (FileData genFname genLines) relFile =
     case parseGenFileAsDict genLines 0 of

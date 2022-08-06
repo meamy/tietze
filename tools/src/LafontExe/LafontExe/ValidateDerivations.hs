@@ -2,18 +2,18 @@
 
 module LafontExe.ValidateDerivations where
 
-import System.IO
-import Lafont.Graph
-import Lafont.Rewrite.Derivations
-import Lafont.Rewrite.Lookup
-import Lafont.Rewrite.Rules
-import Lafont.Rewrite.Simplification
-import Lafont.Rewrite.Summary
-import Lafont.Parse.DerivationFile
-import LafontExe.IO.Files
-import LafontExe.Logic.Relations
-import LafontExe.Logging.ErrorFormat
-import LafontExe.Logging.LineBased
+import           Lafont.Graph
+import           Lafont.Parse.DerivationFile
+import           Lafont.Rewrite.Derivations
+import           Lafont.Rewrite.Lookup
+import           Lafont.Rewrite.Rules
+import           Lafont.Rewrite.Simplification
+import           Lafont.Rewrite.Summary
+import           LafontExe.IO.Files
+import           LafontExe.Logging.ErrorFormat
+import           LafontExe.Logging.LineBased
+import           LafontExe.Logic.Relations
+import           System.IO
 
 -----------------------------------------------------------------------------------------
 -- * Helpers.

@@ -2,7 +2,7 @@
 
 module LafontExe.IO.Files where
 
-import System.Directory
+import           System.Directory
 
 -----------------------------------------------------------------------------------------
 -- * Reading/Writing.

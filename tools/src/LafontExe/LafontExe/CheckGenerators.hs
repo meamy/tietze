@@ -2,14 +2,14 @@
 
 module LafontExe.CheckGenerators where
 
-import System.Directory
-import System.IO
-import Lafont.Common
-import Lafont.Generators.Display
-import Lafont.Generators.Semantics
-import Lafont.Parse.GeneratorFile
-import LafontExe.IO.Files
-import LafontExe.Logging.LineBased
+import           Lafont.Common
+import           Lafont.Generators.Display
+import           Lafont.Generators.Semantics
+import           Lafont.Parse.GeneratorFile
+import           LafontExe.IO.Files
+import           LafontExe.Logging.LineBased
+import           System.Directory
+import           System.IO
 
 -----------------------------------------------------------------------------------------
 -- * Helpers.
@@ -39,7 +39,7 @@ processGeneratorLines :: FileData -> String
 processGeneratorLines (FileData fname lines) =
     case parseGenFileAsDict lines 0 of
         Left (errLn, err)               -> logEitherMsg fname errLn err
-        Right (MonoidalGenSummary dict) -> logGenerators MonoidalSem dict 
+        Right (MonoidalGenSummary dict) -> logGenerators MonoidalSem dict
         Right (DyadicTwoSummary dict)   -> logGenerators DyadicTwoSem dict
         Right (DyadicThreeSummary dict) -> logGenerators DyadicThreeSem dict
         _                               -> "Semantic model not supported."

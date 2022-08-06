@@ -2,8 +2,8 @@
 
 module LafontExe.Logging.ErrorFormat where
 
-import Lafont.Common
-import LafontExe.Logging.Primitive
+import           Lafont.Common
+import           LafontExe.Logging.Primitive
 
 -----------------------------------------------------------------------------------------
 -- * Miscellaneous Error Logging.

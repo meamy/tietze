@@ -2,7 +2,7 @@
 
 module LafontExe.Logging.LineBased where
 
-import Lafont.Common
+import           Lafont.Common
 
 -----------------------------------------------------------------------------------------
 -- * Logging By: File and Line Number.
