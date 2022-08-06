@@ -46,13 +46,13 @@ test7 = TestCase (assertEqual "Can determine the identity of the 4x4 dyadic matr
                               (identity :: Matrix Four Four Dyadic))
 
 test8 = TestCase (assertEqual "Can compose 4x4 dyadic matrices (1/2)."
-                              (gate_cx * gate :: Matrix Four Four Dyadic)
-                              (compose gate_cx gate))
-    where gate = gate_x `tensor` gate_z
+                              (gateCX * gate :: Matrix Four Four Dyadic)
+                              (compose gateCX gate))
+    where gate = gateX `tensor` gateZ
 
 test9 = TestCase (assertEqual "Can compose 4x4 dyadic matrices (2/2)."
-                              (gate_swap * gate_k :: Matrix Four Four Dyadic)
-                              (compose gate_swap gate_k))
+                              (gateSwap * gateK :: Matrix Four Four Dyadic)
+                              (compose gateSwap gateK))
 
 
 -----------------------------------------------------------------------------------------
@@ -63,15 +63,15 @@ test10 = TestCase (assertEqual "Can determine the identity of the 8x8 dyadic mat
                                (identity :: Matrix Eight Eight Dyadic))
 
 test11 = TestCase (assertEqual "Can compose 8x8 dyadic matrices (1/2)."
-                               (gate_tof * gate :: Matrix Eight Eight Dyadic)
-                               (compose gate_tof gate))
-    where gate = gate_x `tensor` gate_k
+                               (gateTof * gate :: Matrix Eight Eight Dyadic)
+                               (compose gateTof gate))
+    where gate = gateX `tensor` gateK
 
 test12 = TestCase (assertEqual "Can compose 8x8 dyadic matrices (2/2)."
                                (gate1 * gate2 :: Matrix Eight Eight Dyadic)
                                (compose gate1 gate2))
-    where gate1 = gate_x `tensor` gate_cx
-          gate2 = gate_k `tensor` gate_z
+    where gate1 = gateX `tensor` gateCX
+          gate2 = gateK `tensor` gateZ
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.

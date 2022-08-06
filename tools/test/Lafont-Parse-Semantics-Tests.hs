@@ -10,14 +10,14 @@ import Lafont.Parse.Semantics
 -----------------------------------------------------------------------------------------
 -- Quantum Operator Semantics Parsing.
 
-x0_4x4 = gate_x `tensor` gate_id
-x1_4x4 = gate_id `tensor` gate_x
-z0_4x4 = gate_z `tensor` gate_id
-z1_4x4 = gate_id `tensor` gate_z
-cx10_4x4 = gate_swap * gate_cx * gate_swap
+x0_4x4 = gateX `tensor` gateId
+x1_4x4 = gateId `tensor` gateX
+z0_4x4 = gateZ `tensor` gateId
+z1_4x4 = gateId `tensor` gateZ
+cx10_4x4 = gateSwap * gateCX * gateSwap
 
 test1 = TestCase (assertEqual "Can interpret the empty string as a 2 qubit circuit."
-                              (Right (gate_id `tensor` gate_id))
+                              (Right (gateId `tensor` gateId))
                               (interpret2QubitCliffordDTofGate "  ε  -- test"))
 
 test2 = TestCase (assertEqual "Can interpret X[0] as a 2 qubit circuit."
@@ -37,19 +37,19 @@ test5 = TestCase (assertEqual "Can interpret Z[1] as a 2 qubit circuit."
                               (interpret2QubitCliffordDTofGate "Z[1]"))
 
 test6 = TestCase (assertEqual "Can interpret CZ as a 2 qubit circuit."
-                              (Right gate_cz)
+                              (Right gateCZ)
                               (interpret2QubitCliffordDTofGate "CZ"))
 
 test7 = TestCase (assertEqual "Can interpret K as a 2 qubit circuit."
-                              (Right gate_k)
+                              (Right gateK)
                               (interpret2QubitCliffordDTofGate "K"))
 
 test8 = TestCase (assertEqual "Can interpret SWAP as a 2 qubit circuit."
-                              (Right gate_swap)
+                              (Right gateSwap)
                               (interpret2QubitCliffordDTofGate "SWAP"))
 
 test9 = TestCase (assertEqual "Can interpret CX[0][1] as a 2 qubit circuit."
-                              (Right gate_cx)
+                              (Right gateCX)
                               (interpret2QubitCliffordDTofGate "CX[0][1]"))
 
 test10 = TestCase (assertEqual "Can interpret CX[1][0] as a 2 qubit circuit."
@@ -60,7 +60,7 @@ test11 = TestCase (assertEqual "Can interpret long strings as a 2 qubit circuit 
                                (Right gate)
                                (interpret2QubitCliffordDTofGate word))
     where word = "SWAP.CX[1][0].X[0].Z[1].K.CZ.SWAP.SWAP"
-          gate = gate_swap * cx10_4x4 * x0_4x4 * z1_4x4 * gate_k * gate_cz
+          gate = gateSwap * cx10_4x4 * x0_4x4 * z1_4x4 * gateK * gateCZ
 
 test12 = TestCase (assertEqual "Can interpret long strings as a 2 qubit circuit (2/2)."
                                (Right gate)
@@ -68,7 +68,7 @@ test12 = TestCase (assertEqual "Can interpret long strings as a 2 qubit circuit 
     where word = "X[0].X[1].Z[0].Z[1].K.Z[0].Z[1].X[0].X[1]"
           pref = x0_4x4 * x1_4x4 * z0_4x4 * z1_4x4
           invs = z0_4x4 * z1_4x4 * x0_4x4 * x1_4x4
-          gate = pref * gate_k * invs
+          gate = pref * gateK * invs
 
 test13 = TestCase (assertEqual "Unknown operators rejected for 2 qubit circuits (1/2)."
                                (Left "Unknown two qubit operator: MadeUp")
@@ -100,45 +100,45 @@ test18 = TestCase (assertEqual "Interpretation framework requires a single word.
                                (interpret2QubitCliffordDTofGate word))
     where word = "X[0].X[1].Z[0].Z[1].K.Z[0].Z[1].X[0].X[1] 54"
 
-x0_8x8 = gate_x `tensor` gate_id `tensor` gate_id
-x1_8x8 = gate_id `tensor` gate_x `tensor` gate_id
-x2_8x8 = gate_id `tensor` gate_id `tensor` gate_x
-z0_8x8 = gate_z `tensor` gate_id `tensor` gate_id
-z1_8x8 = gate_id `tensor` gate_z `tensor` gate_id
-z2_8x8 = gate_id `tensor` gate_id `tensor` gate_z
-swap01_8x8 = gate_swap `tensor` gate_id
-swap10_8x8 = gate_swap `tensor` gate_id
-swap12_8x8 = gate_id `tensor` gate_swap
-swap21_8x8 = gate_id `tensor` gate_swap
+x0_8x8 = gateX `tensor` gateId `tensor` gateId
+x1_8x8 = gateId `tensor` gateX `tensor` gateId
+x2_8x8 = gateId `tensor` gateId `tensor` gateX
+z0_8x8 = gateZ `tensor` gateId `tensor` gateId
+z1_8x8 = gateId `tensor` gateZ `tensor` gateId
+z2_8x8 = gateId `tensor` gateId `tensor` gateZ
+swap01_8x8 = gateSwap `tensor` gateId
+swap10_8x8 = gateSwap `tensor` gateId
+swap12_8x8 = gateId `tensor` gateSwap
+swap21_8x8 = gateId `tensor` gateSwap
 swap02_8x8 = swap12_8x8 * swap01_8x8 * swap21_8x8
 swap20_8x8 = swap01_8x8 * swap21_8x8 * swap10_8x8
-cx01_8x8 = gate_cx `tensor` gate_id
-cx10_8x8 = cx10_4x4 `tensor` gate_id
-cx12_8x8 = gate_id `tensor` gate_cx
-cx21_8x8 = gate_id `tensor` cx10_4x4
+cx01_8x8 = gateCX `tensor` gateId
+cx10_8x8 = cx10_4x4 `tensor` gateId
+cx12_8x8 = gateId `tensor` gateCX
+cx21_8x8 = gateId `tensor` cx10_4x4
 cx02_8x8 = swap12_8x8 * cx01_8x8 * swap21_8x8
 cx20_8x8 = swap01_8x8 * cx21_8x8 * swap01_8x8
-cz01_8x8 = gate_cz `tensor` gate_id
-cz10_8x8 = gate_cz `tensor` gate_id
-cz12_8x8 = gate_id `tensor` gate_cz
-cz21_8x8 = gate_id `tensor` gate_cz
+cz01_8x8 = gateCZ `tensor` gateId
+cz10_8x8 = gateCZ `tensor` gateId
+cz12_8x8 = gateId `tensor` gateCZ
+cz21_8x8 = gateId `tensor` gateCZ
 cz02_8x8 = swap12_8x8 * cz01_8x8 * swap21_8x8
 cz20_8x8 = swap01_8x8 * cz21_8x8 * swap10_8x8
-k01_8x8 = gate_k `tensor` gate_id
-k10_8x8 = gate_k `tensor` gate_id
-k12_8x8 = gate_id `tensor` gate_k
-k21_8x8 = gate_id `tensor` gate_k
+k01_8x8 = gateK `tensor` gateId
+k10_8x8 = gateK `tensor` gateId
+k12_8x8 = gateId `tensor` gateK
+k21_8x8 = gateId `tensor` gateK
 k02_8x8 = swap12_8x8 * k01_8x8 * swap21_8x8
 k20_8x8 = swap01_8x8 * k21_8x8 * swap10_8x8
-ccx012_8x8 = gate_tof
-ccx021_8x8 = swap12_8x8 * gate_tof * swap21_8x8
-ccx102_8x8 = swap01_8x8 * gate_tof * swap10_8x8
+ccx012_8x8 = gateTof
+ccx021_8x8 = swap12_8x8 * gateTof * swap21_8x8
+ccx102_8x8 = swap01_8x8 * gateTof * swap10_8x8
 ccx120_8x8 = swap02_8x8 * ccx102_8x8 * swap20_8x8
 ccx201_8x8 = swap12_8x8 * ccx102_8x8 * swap21_8x8
 ccx210_8x8 = swap01_8x8 * ccx201_8x8 * swap10_8x8
 
 test19 = TestCase (assertEqual "Can interpret the empty string as a 3 qubit circuit."
-                               (Right (gate_id `tensor` gate_id `tensor` gate_id))
+                               (Right (gateId `tensor` gateId `tensor` gateId))
                                (interpret3QubitCliffordDTofGate "  ε  -- test"))
 
 test20 = TestCase (assertEqual "Can interpret X[0] as a 3 qubit circuit."
@@ -289,7 +289,7 @@ test56 = TestCase (assertEqual "Can interpret long strings as a 3 qubit circuit 
                                (Right gate)
                                (interpret3QubitCliffordDTofGate word))
     where word = "CCX[0][1][2].CCX[2][1][0].SWAP[1][2].Z[1].CZ[0][2].CX[0][1]"
-          gate = gate_tof * ccx210_8x8 * swap12_8x8 * z1_8x8 * cz02_8x8 * cx01_8x8
+          gate = gateTof * ccx210_8x8 * swap12_8x8 * z1_8x8 * cz02_8x8 * cx01_8x8
 
 test57 = TestCase (assertEqual "Can interpret long strings as a 3 qubit circuit (2/2)."
                                (Right gate)

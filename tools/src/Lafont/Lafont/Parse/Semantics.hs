@@ -86,14 +86,14 @@ interpretNQubitGate sem str =
 type TwoQubitDyadic = Unitary Four Dyadic
 
 interpretUnique2QubitDOp4x4 :: String -> QGateSemRes Four Dyadic
-interpretUnique2QubitDOp4x4 "CZ"   = Right gate_cz
-interpretUnique2QubitDOp4x4 "K"    = Right gate_k
-interpretUnique2QubitDOp4x4 "SWAP" = Right gate_swap
+interpretUnique2QubitDOp4x4 "CZ"   = Right gateCZ
+interpretUnique2QubitDOp4x4 "K"    = Right gateK
+interpretUnique2QubitDOp4x4 "SWAP" = Right gateSwap
 interpretUnique2QubitDOp4x4 op     = Left ("Unknown two qubit operator: " ++ op)
 
 make1QubitDOp4x4 :: String -> TwoBitPos -> QGateSemRes Four Dyadic
-make1QubitDOp4x4 "X" a = Right (prepare_gate_4x4 (OneQubitOp4x4 gate_x a))
-make1QubitDOp4x4 "Z" a = Right (prepare_gate_4x4 (OneQubitOp4x4 gate_z a))
+make1QubitDOp4x4 "X" a = Right (prepare_gate_4x4 (OneQubitOp4x4 gateX a))
+make1QubitDOp4x4 "Z" a = Right (prepare_gate_4x4 (OneQubitOp4x4 gateZ a))
 make1QubitDOp4x4 op  _ = Left ("Unknown one qubit operator: " ++ op)
 
 interpret1QubitDOp4x4 :: String -> Int -> QGateSemRes Four Dyadic
@@ -103,7 +103,7 @@ interpret1QubitDOp4x4 op a = Left ("Invalid gate position: " ++ op ++ posStr)
     where posStr = "[" ++ show a ++ "]"
 
 make2QubitDOp4x4 :: String -> TwoBitPos -> QGateSemRes Four Dyadic
-make2QubitDOp4x4 "CX" a = Right (prepare_gate_4x4 (TwoQubitOp4x4 gate_cx a))
+make2QubitDOp4x4 "CX" a = Right (prepare_gate_4x4 (TwoQubitOp4x4 gateCX a))
 make2QubitDOp4x4 op   _ = Left ("Unknown two qubit operator: " ++ op)
 
 interpret2QubitDOp4x4 :: String -> Int -> Int -> QGateSemRes Four Dyadic
@@ -113,7 +113,7 @@ interpret2QubitDOp4x4 op a b = Left ("Invalid gate position: " ++ op ++ posStr)
     where posStr = "[" ++ show a ++ "][" ++ show b ++ "]"
 
 sem2QubitDOp :: QGateSem Four Dyadic
-sem2QubitDOp = QGateSem (gate_id `tensor` gate_id)
+sem2QubitDOp = QGateSem (gateId `tensor` gateId)
                         (Just interpretUnique2QubitDOp4x4)
                         (Just interpret1QubitDOp4x4)
                         (Just interpret2QubitDOp4x4)
@@ -128,8 +128,8 @@ interpret2QubitCliffordDTofGate = interpretNQubitGate sem2QubitDOp
 type ThreeQubitDyadic = Unitary Eight Dyadic
 
 make1QubitDOp8x8 :: String -> ThreeBitPos -> QGateSemRes Eight Dyadic
-make1QubitDOp8x8 "X" a = Right (prepare_gate_8x8 (OneQubitOp8x8 gate_x a))
-make1QubitDOp8x8 "Z" a = Right (prepare_gate_8x8 (OneQubitOp8x8 gate_z a))
+make1QubitDOp8x8 "X" a = Right (prepare_gate_8x8 (OneQubitOp8x8 gateX a))
+make1QubitDOp8x8 "Z" a = Right (prepare_gate_8x8 (OneQubitOp8x8 gateZ a))
 make1QubitDOp8x8 op  _ = Left ("Unknown one qubit operator: " ++ op)
 
 interpret1QubitDOp8x8 :: String -> Int -> QGateSemRes Eight Dyadic
@@ -140,10 +140,10 @@ interpret1QubitDOp8x8 op a = Left ("Invalid gate position: " ++ op ++ posStr)
     where posStr = "[" ++ show a ++ "]"
 
 make2QubitDOp8x8 :: String -> ThreeBitPos -> TwoBitPos -> QGateSemRes Eight Dyadic
-make2QubitDOp8x8 "CX"   a b = Right (prepare_gate_8x8 (TwoQubitOp8x8 gate_cx a b))
-make2QubitDOp8x8 "CZ"   a b = Right (prepare_gate_8x8 (TwoQubitOp8x8 gate_cz a b))
-make2QubitDOp8x8 "K"    a b = Right (prepare_gate_8x8 (TwoQubitOp8x8 gate_k a b))
-make2QubitDOp8x8 "SWAP" a b = Right (prepare_gate_8x8 (TwoQubitOp8x8 gate_swap a b))
+make2QubitDOp8x8 "CX"   a b = Right (prepare_gate_8x8 (TwoQubitOp8x8 gateCX a b))
+make2QubitDOp8x8 "CZ"   a b = Right (prepare_gate_8x8 (TwoQubitOp8x8 gateCZ a b))
+make2QubitDOp8x8 "K"    a b = Right (prepare_gate_8x8 (TwoQubitOp8x8 gateK a b))
+make2QubitDOp8x8 "SWAP" a b = Right (prepare_gate_8x8 (TwoQubitOp8x8 gateSwap a b))
 make2QubitDOp8x8 op     _ _ = Left ("Unknown two qubit operator: " ++ op)
 
 interpret2QubitDOp8x8 :: String -> Int -> Int -> QGateSemRes Eight Dyadic
@@ -157,7 +157,7 @@ interpret2QubitDOp8x8 op a b = Left ("Invalid gate position: " ++ op ++ posStr)
     where posStr = "[" ++ show a ++ "][" ++ show b ++ "]"
 
 make3QubitDOp8x8 :: String -> ThreeBitPos -> TwoBitPos -> QGateSemRes Eight Dyadic
-make3QubitDOp8x8 "CCX" a b = Right (prepare_gate_8x8 (ThreeQubitOp8x8 gate_tof a b))
+make3QubitDOp8x8 "CCX" a b = Right (prepare_gate_8x8 (ThreeQubitOp8x8 gateTof a b))
 make3QubitDOp8x8 op    _ _ = Left ("Unknown three qubit operator: " ++ op)
 
 interpret3QubitDOp8x8 :: String -> Int -> Int ->Int -> QGateSemRes Eight Dyadic
@@ -171,7 +171,7 @@ interpret3QubitDOp8x8 op a b c = Left ("Invalid gate position: " ++ op ++ posStr
     where posStr = "[" ++ show a ++ "][" ++ show b ++ "][" ++ show c ++ "]"
 
 sem3QubitDOp :: QGateSem Eight Dyadic
-sem3QubitDOp = QGateSem (gate_id `tensor` gate_id `tensor` gate_id)
+sem3QubitDOp = QGateSem (gateId `tensor` gateId `tensor` gateId)
                         Nothing
                         (Just interpret1QubitDOp8x8)
                         (Just interpret2QubitDOp8x8)

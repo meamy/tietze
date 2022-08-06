@@ -45,35 +45,35 @@ state_minus = matrix_of_columns [[roothalf, -roothalf]]
 state_1c :: Matrix Two One DRComplex
 state_1c = matrix_map fromDyadic state_1
 
-test1 = TestCase (assertEqual "Checks gate_id sends |0> to |0>."
-                              state_0 (gate_id .*. state_0))
+test1 = TestCase (assertEqual "Checks gateId sends |0> to |0>."
+                              state_0 (gateId .*. state_0))
 
-test2 = TestCase (assertEqual "Checks gate_id sends |1> to |1>."
-                              state_1 (gate_id .*. state_1))
+test2 = TestCase (assertEqual "Checks gateId sends |1> to |1>."
+                              state_1 (gateId .*. state_1))
 
-test3 = TestCase (assertEqual "Checks gate_x sends |0> to |1>."
-                              state_1 (gate_x .*. state_0))
+test3 = TestCase (assertEqual "Checks gateX sends |0> to |1>."
+                              state_1 (gateX .*. state_0))
 
-test4 = TestCase (assertEqual "Checks gate_x sends |1> to |0>."
-                              state_0 (gate_x .*. state_1))
+test4 = TestCase (assertEqual "Checks gateX sends |1> to |0>."
+                              state_0 (gateX .*. state_1))
 
-test5 = TestCase (assertEqual "Checks gate_y sends |0> to i|1>."
-                              (drcPhase i state_1) (gate_y .*. (drcPhase 1 state_0)))
+test5 = TestCase (assertEqual "Checks gateY sends |0> to i|1>."
+                              (drcPhase i state_1) (gateY .*. (drcPhase 1 state_0)))
 
-test6 = TestCase (assertEqual "Checks gate_y sends |1> to -i|0>."
-                              (drcPhase (-i) state_0) (gate_y .*. (drcPhase 1 state_1)))
+test6 = TestCase (assertEqual "Checks gateY sends |1> to -i|0>."
+                              (drcPhase (-i) state_0) (gateY .*. (drcPhase 1 state_1)))
 
-test7 = TestCase (assertEqual "Checks gate_x sends |0> to |0>."
-                              state_0 (gate_z .*. state_0))
+test7 = TestCase (assertEqual "Checks gateX sends |0> to |0>."
+                              state_0 (gateZ .*. state_0))
 
-test8 = TestCase (assertEqual "Checks gate_x sends |1> to -|1>."
-                              (dyadPhase (-1) state_1) (gate_z .*. state_1))
+test8 = TestCase (assertEqual "Checks gateX sends |1> to -|1>."
+                              (dyadPhase (-1) state_1) (gateZ .*. state_1))
 
-test9 = TestCase (assertEqual "Checks gate_h sends |0> to |+>."
-                              state_plus (gate_h .*. (drPhase 1 state_0)))
+test9 = TestCase (assertEqual "Checks gateH sends |0> to |+>."
+                              state_plus (gateH .*. (drPhase 1 state_0)))
 
-test10 = TestCase (assertEqual "Checks gate_h sends |0> to |->."
-                               state_minus (gate_h .*. (drPhase 1 state_1)))
+test10 = TestCase (assertEqual "Checks gateH sends |0> to |->."
+                               state_minus (gateH .*. (drPhase 1 state_1)))
 
 -----------------------------------------------------------------------------------------
 -- Tests the implementation of the two-qubit templates.
@@ -83,100 +83,100 @@ state_01 = state_0 `tensor` state_1
 state_10 = state_1 `tensor` state_0
 state_11 = state_1 `tensor` state_1
 
-test11 = TestCase (assertEqual "Checks X[0] is gate_x `tensor` gate_id."
-                               (gate_x `tensor` gate_id) gate_x0)
-         where gate_x0 = prepare_gate_4x4 (OneQubitOp4x4 gate_x TopBit)
+test11 = TestCase (assertEqual "Checks X[0] is gateX `tensor` gateId."
+                               (gateX `tensor` gateId) gateX0)
+         where gateX0 = prepare_gate_4x4 (OneQubitOp4x4 gateX TopBit)
 
-test12 = TestCase (assertEqual "Checks X[1] is gate_id `tensor` gate_x."
-                               (gate_id `tensor` gate_x) gate_x1)
-         where gate_x1 = prepare_gate_4x4 (OneQubitOp4x4 gate_x BotBit)
+test12 = TestCase (assertEqual "Checks X[1] is gateId `tensor` gateX."
+                               (gateId `tensor` gateX) gateX1)
+         where gateX1 = prepare_gate_4x4 (OneQubitOp4x4 gateX BotBit)
 
 test13 = TestCase (assertEqual "Checks SWP[0][1] = SWP."
-                              gate_swap gate_swap01)
-         where gate_swap01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_swap TopBit)
+                              gateSwap gateSwap01)
+         where gateSwap01 = prepare_gate_4x4 (TwoQubitOp4x4 gateSwap TopBit)
 
 test14 = TestCase (assertEqual "Checks SWP[1][0] = SWP."
-                              gate_swap gate_swap10)
-         where gate_swap10 = prepare_gate_4x4 (TwoQubitOp4x4 gate_swap BotBit)
+                              gateSwap gateSwap10)
+         where gateSwap10 = prepare_gate_4x4 (TwoQubitOp4x4 gateSwap BotBit)
 
 test15 = TestCase (assertEqual "Checks SWP[0][1] sends |00> to |00>."
-                              state_00 (gate_swap01 .*. state_00))
-         where gate_swap01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_swap TopBit)
+                              state_00 (gateSwap01 .*. state_00))
+         where gateSwap01 = prepare_gate_4x4 (TwoQubitOp4x4 gateSwap TopBit)
 
 test16 = TestCase (assertEqual "Checks SWP[0][1] sends |01> to |10>."
-                              state_10 (gate_swap01 .*. state_01))
-         where gate_swap01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_swap TopBit)
+                              state_10 (gateSwap01 .*. state_01))
+         where gateSwap01 = prepare_gate_4x4 (TwoQubitOp4x4 gateSwap TopBit)
 
 test17 = TestCase (assertEqual "Checks SWP[0][1] sends |10> to |01>."
-                              state_01 (gate_swap01 .*. state_10))
-         where gate_swap01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_swap TopBit)
+                              state_01 (gateSwap01 .*. state_10))
+         where gateSwap01 = prepare_gate_4x4 (TwoQubitOp4x4 gateSwap TopBit)
 
 test18 = TestCase (assertEqual "Checks SWP[0][1] sends |11> to |11>."
-                              state_11 (gate_swap01 .*. state_11))
-         where gate_swap01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_swap TopBit)
+                              state_11 (gateSwap01 .*. state_11))
+         where gateSwap01 = prepare_gate_4x4 (TwoQubitOp4x4 gateSwap TopBit)
 
 test19 = TestCase (assertEqual "Checks CX[0][1] sends |00> to |00>."
-                               state_00 (gate_cx01 .*. state_00))
-         where gate_cx01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cx TopBit)
+                               state_00 (gateCX01 .*. state_00))
+         where gateCX01 = prepare_gate_4x4 (TwoQubitOp4x4 gateCX TopBit)
 
 test20 = TestCase (assertEqual "Checks CX[0][1] sends |01> to |01>."
-                              state_01 (gate_cx01 .*. state_01))
-         where gate_cx01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cx TopBit)
+                              state_01 (gateCX01 .*. state_01))
+         where gateCX01 = prepare_gate_4x4 (TwoQubitOp4x4 gateCX TopBit)
 
 test21 = TestCase (assertEqual "Checks CX[0][1] sends |10> to |11>."
-                              state_11 (gate_cx01 .*. state_10))
-         where gate_cx01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cx TopBit)
+                              state_11 (gateCX01 .*. state_10))
+         where gateCX01 = prepare_gate_4x4 (TwoQubitOp4x4 gateCX TopBit)
 
 test22 = TestCase (assertEqual "Checks CX[0][1] sends |11> to |10>."
-                              state_10 (gate_cx01 .*. state_11))
-         where gate_cx01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cx TopBit)
+                              state_10 (gateCX01 .*. state_11))
+         where gateCX01 = prepare_gate_4x4 (TwoQubitOp4x4 gateCX TopBit)
 
 test23 = TestCase (assertEqual "Checks CX[1][0] sends |00> to |00>."
-                               state_00 (gate_cx10 .*. state_00))
-         where gate_cx10 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cx BotBit)
+                               state_00 (gateCX10 .*. state_00))
+         where gateCX10 = prepare_gate_4x4 (TwoQubitOp4x4 gateCX BotBit)
 
 test24 = TestCase (assertEqual "Checks CX[1][0] sends |01> to |11>."
-                              state_11 (gate_cx10 .*. state_01))
-         where gate_cx10 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cx BotBit)
+                              state_11 (gateCX10 .*. state_01))
+         where gateCX10 = prepare_gate_4x4 (TwoQubitOp4x4 gateCX BotBit)
 
 test25 = TestCase (assertEqual "Checks CX[1][0] sends |10> to |10>."
-                              state_10 (gate_cx10 .*. state_10))
-         where gate_cx10 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cx BotBit)
+                              state_10 (gateCX10 .*. state_10))
+         where gateCX10 = prepare_gate_4x4 (TwoQubitOp4x4 gateCX BotBit)
 
 test26 = TestCase (assertEqual "Checks CX[0][1] sends |11> to |01>."
-                              state_01 (gate_cx10 .*. state_11))
-         where gate_cx10 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cx BotBit)
+                              state_01 (gateCX10 .*. state_11))
+         where gateCX10 = prepare_gate_4x4 (TwoQubitOp4x4 gateCX BotBit)
 
 test27 = TestCase (assertEqual "Checks CZ[0][1] is CZ[1][0]."
-                              gate_cz01 gate_cz10)
-         where gate_cz01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cz TopBit)
-               gate_cz10 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cz BotBit)
+                              gateCZ01 gateCZ10)
+         where gateCZ01 = prepare_gate_4x4 (TwoQubitOp4x4 gateCZ TopBit)
+               gateCZ10 = prepare_gate_4x4 (TwoQubitOp4x4 gateCZ BotBit)
 
 test28 = TestCase (assertEqual "Checks CZ[0][1] sends |00> to |00>."
-                               state_00 (gate_cz01 .*. state_00))
-         where gate_cz01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cz TopBit)
+                               state_00 (gateCZ01 .*. state_00))
+         where gateCZ01 = prepare_gate_4x4 (TwoQubitOp4x4 gateCZ TopBit)
 
 test29 = TestCase (assertEqual "Checks CZ[0][1] sends |01> to |01>."
-                               state_01 (gate_cz01 .*. state_01))
-         where gate_cz01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cz TopBit)
+                               state_01 (gateCZ01 .*. state_01))
+         where gateCZ01 = prepare_gate_4x4 (TwoQubitOp4x4 gateCZ TopBit)
 
 test30 = TestCase (assertEqual "Checks CZ[0][1] sends |10> to |10>."
-                               state_10 (gate_cz01 .*. state_10))
-         where gate_cz01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cz TopBit)
+                               state_10 (gateCZ01 .*. state_10))
+         where gateCZ01 = prepare_gate_4x4 (TwoQubitOp4x4 gateCZ TopBit)
 
 test31 = TestCase (assertEqual "Checks CZ[0][1] sends |11> to -|11>."
-                               ((-1) `scalarmult` state_11) (gate_cz01 .*. state_11))
-         where gate_cz01 = prepare_gate_4x4 (TwoQubitOp4x4 gate_cz TopBit)
+                               ((-1) `scalarmult` state_11) (gateCZ01 .*. state_11))
+         where gateCZ01 = prepare_gate_4x4 (TwoQubitOp4x4 gateCZ TopBit)
 
 test32 = TestCase (assertEqual "Checks K[0][1] is H tensor H."
-                               (gate_h `tensor` gate_h) gate_k01)
-         where typed_gate = gate_k :: Unitary Four DRootTwo
-               gate_k01 = prepare_gate_4x4 (TwoQubitOp4x4 typed_gate TopBit)
+                               (gateH `tensor` gateH) gateK01)
+         where typed_gate = gateK :: Unitary Four DRootTwo
+               gateK01 = prepare_gate_4x4 (TwoQubitOp4x4 typed_gate TopBit)
 
 test33 = TestCase (assertEqual "Checks K[1][0] is H tensor H."
-                               (gate_h `tensor` gate_h) gate_k10)
-         where typed_gate = gate_k :: Unitary Four DRootTwo
-               gate_k10 = prepare_gate_4x4 (TwoQubitOp4x4 typed_gate BotBit)
+                               (gateH `tensor` gateH) gateK10)
+         where typed_gate = gateK :: Unitary Four DRootTwo
+               gateK10 = prepare_gate_4x4 (TwoQubitOp4x4 typed_gate BotBit)
 
 -----------------------------------------------------------------------------------------
 -- Tests the implementation of the tree-qubit templates.
@@ -190,76 +190,76 @@ state_101 = state_10 `tensor` state_1
 state_110 = state_11 `tensor` state_0
 state_111 = state_11 `tensor` state_1
 
-test34 = TestCase (assertEqual "Checks X[0] is gate_x `tensor` gate_id `tensor` gate_id."
-                               (gate_x `tensor` gate_id `tensor` gate_id) gate_x0)
-         where gate_x0 = prepare_gate_8x8 (OneQubitOp8x8 gate_x LBit)
+test34 = TestCase (assertEqual "Checks X[0] is gateX `tensor` gateId `tensor` gateId."
+                               (gateX `tensor` gateId `tensor` gateId) gateX0)
+         where gateX0 = prepare_gate_8x8 (OneQubitOp8x8 gateX LBit)
 
-test35 = TestCase (assertEqual "Checks X[1] is gate_id `tensor` gate_x `tensor` gate_id."
-                               (gate_id `tensor` gate_x `tensor` gate_id) gate_x1)
-         where gate_x1 = prepare_gate_8x8 (OneQubitOp8x8 gate_x MBit)
+test35 = TestCase (assertEqual "Checks X[1] is gateId `tensor` gateX `tensor` gateId."
+                               (gateId `tensor` gateX `tensor` gateId) gateX1)
+         where gateX1 = prepare_gate_8x8 (OneQubitOp8x8 gateX MBit)
 
-test36 = TestCase (assertEqual "Checks X[2] is gate_id `tensor` gate_id `tensor` gate_x."
-                               (gate_id `tensor` gate_id `tensor` gate_x) gate_x2)
-         where gate_x2 = prepare_gate_8x8 (OneQubitOp8x8 gate_x RBit)
+test36 = TestCase (assertEqual "Checks X[2] is gateId `tensor` gateId `tensor` gateX."
+                               (gateId `tensor` gateId `tensor` gateX) gateX2)
+         where gateX2 = prepare_gate_8x8 (OneQubitOp8x8 gateX RBit)
 
-test37 = TestCase (assertEqual "Checks CX[0][1] is gate_cx `tensor` gate_id."
-                               (gate_cx `tensor` gate_id) actual_gate)
-         where actual_gate = prepare_gate_8x8 (TwoQubitOp8x8 gate_cx LBit TopBit)
+test37 = TestCase (assertEqual "Checks CX[0][1] is gateCX `tensor` gateId."
+                               (gateCX `tensor` gateId) actual_gate)
+         where actual_gate = prepare_gate_8x8 (TwoQubitOp8x8 gateCX LBit TopBit)
 
 test38 = TestCase (assertEqual "Checks CX[0][2] is SWP[1][2].CX[0][1].SWP[1][2]."
                                expected_gate actual_gate)
-         where actual_gate = prepare_gate_8x8 (TwoQubitOp8x8 gate_cx LBit BotBit)
-               gate_swap12 = (gate_id `tensor` gate_swap)
-               expected_gate = gate_swap12 * (gate_cx `tensor` gate_id) * gate_swap12
+         where actual_gate = prepare_gate_8x8 (TwoQubitOp8x8 gateCX LBit BotBit)
+               gateSwap12 = (gateId `tensor` gateSwap)
+               expected_gate = gateSwap12 * (gateCX `tensor` gateId) * gateSwap12
 
 test39 = TestCase (assertEqual "Checks CX[1][0] is SWP[0][1].CX[0][1].SWP[0][1]."
                                expected_gate actual_gate)
-         where actual_gate = prepare_gate_8x8 (TwoQubitOp8x8 gate_cx MBit TopBit)
-               expected_gate = (gate_swap * gate_cx * gate_swap) `tensor` gate_id
+         where actual_gate = prepare_gate_8x8 (TwoQubitOp8x8 gateCX MBit TopBit)
+               expected_gate = (gateSwap * gateCX * gateSwap) `tensor` gateId
 
-test40 = TestCase (assertEqual "Checks CX[1][2] is gate_id `tensor` gate_cx."
+test40 = TestCase (assertEqual "Checks CX[1][2] is gateId `tensor` gateCX."
                                expected_gate actual_gate)
-         where actual_gate = prepare_gate_8x8 (TwoQubitOp8x8 gate_cx MBit BotBit)
-               expected_gate = gate_id `tensor` gate_cx
+         where actual_gate = prepare_gate_8x8 (TwoQubitOp8x8 gateCX MBit BotBit)
+               expected_gate = gateId `tensor` gateCX
 
 test41 = TestCase (assertEqual "Checks CX[2][0] is SWP[1][2].CX[1][0].SWP[1][2]."
                                expected_gate actual_gate)
-         where actual_gate = prepare_gate_8x8 (TwoQubitOp8x8 gate_cx RBit TopBit)
-               gate_cx10 = (gate_swap * gate_cx * gate_swap) `tensor` gate_id
-               gate_swap12 = gate_id `tensor` gate_swap
-               expected_gate = gate_swap12 * gate_cx10 * gate_swap12
+         where actual_gate = prepare_gate_8x8 (TwoQubitOp8x8 gateCX RBit TopBit)
+               gateCX10 = (gateSwap * gateCX * gateSwap) `tensor` gateId
+               gateSwap12 = gateId `tensor` gateSwap
+               expected_gate = gateSwap12 * gateCX10 * gateSwap12
 
-test42 = TestCase (assertEqual "Checks CX[2][1] is gate_id `tensor` CX[1][0]."
+test42 = TestCase (assertEqual "Checks CX[2][1] is gateId `tensor` CX[1][0]."
                                expected_gate actual_gate)
-         where actual_gate = prepare_gate_8x8 (TwoQubitOp8x8 gate_cx RBit BotBit)
-               expected_gate = gate_id `tensor` (gate_swap * gate_cx * gate_swap)
+         where actual_gate = prepare_gate_8x8 (TwoQubitOp8x8 gateCX RBit BotBit)
+               expected_gate = gateId `tensor` (gateSwap * gateCX * gateSwap)
 
 test43 = TestCase (assertEqual "Checks CCX sends |000> to |000>."
-                               state_000 (gate_tof .*. state_000))
+                               state_000 (gateTof .*. state_000))
 
 test44 = TestCase (assertEqual "Checks CCX sends |001> to |001>."
-                               state_001 (gate_tof .*. state_001))
+                               state_001 (gateTof .*. state_001))
 
 test45 = TestCase (assertEqual "Checks CCX sends |010> to |010>."
-                               state_010 (gate_tof .*. state_010))
+                               state_010 (gateTof .*. state_010))
 
 test46 = TestCase (assertEqual "Checks CCX sends |011> to |011>."
-                               state_011 (gate_tof .*. state_011))
+                               state_011 (gateTof .*. state_011))
 
 test47 = TestCase (assertEqual "Checks CCX sends |100> to |100>."
-                               state_100 (gate_tof .*. state_100))
+                               state_100 (gateTof .*. state_100))
 
 test48 = TestCase (assertEqual "Checks CCX sends |101> to |101>."
-                               state_101 (gate_tof .*. state_101))
+                               state_101 (gateTof .*. state_101))
 
 test49 = TestCase (assertEqual "Checks CCX sends |110> to |111>."
-                               state_111 (gate_tof .*. state_110))
+                               state_111 (gateTof .*. state_110))
 
 test50 = TestCase (assertEqual "Checks CCX sends |111> to |110>."
-                               state_110 (gate_tof .*. state_111))
+                               state_110 (gateTof .*. state_111))
 
 -- The Tofolli gate is invariant under swapping the two controls. This gate is not.
-asym_gate = (gate_id `tensor` gate_x `tensor` gate_id) * gate_tof
+asym_gate = (gateId `tensor` gateX `tensor` gateId) * gateTof
 
 test51 = TestCase (assertEqual "Checks GATE[0][1][2] is GATE."
                                asym_gate actual_gate)
@@ -268,40 +268,40 @@ test51 = TestCase (assertEqual "Checks GATE[0][1][2] is GATE."
 test52 = TestCase (assertEqual "Checks GATE[0][1][2] is SWP[1][2].GATE.SWP[1][2]"
                                expected_gate actual_gate)
          where actual_gate = prepare_gate_8x8 (ThreeQubitOp8x8 asym_gate LBit BotBit)
-               gate_swap12 = gate_id `tensor` gate_swap
-               expected_gate = gate_swap12 * asym_gate * gate_swap12
+               gateSwap12 = gateId `tensor` gateSwap
+               expected_gate = gateSwap12 * asym_gate * gateSwap12
 
 test53 = TestCase (assertEqual "Checks GATE[1][0][2] is SWP[0][1].GATE.SWP[0][1]"
                                expected_gate actual_gate)
          where actual_gate = prepare_gate_8x8 (ThreeQubitOp8x8 asym_gate MBit TopBit)
-               gate_swap01 = gate_swap `tensor` gate_id
-               expected_gate = gate_swap01 * asym_gate * gate_swap01
+               gateSwap01 = gateSwap `tensor` gateId
+               expected_gate = gateSwap01 * asym_gate * gateSwap01
 
 test54 = TestCase (assertEqual "Checks GATE[1][2][0] with SWP[0][1].SWP[1][2]."
                                expected_gate actual_gate)
          where actual_gate = prepare_gate_8x8 (ThreeQubitOp8x8 asym_gate MBit BotBit)
-               gate_swap01 = gate_swap `tensor` gate_id
-               gate_swap12 = gate_id `tensor` gate_swap
-               gate_lhs = gate_swap01 * gate_swap12
-               gate_rhs = gate_swap12 * gate_swap01
+               gateSwap01 = gateSwap `tensor` gateId
+               gateSwap12 = gateId `tensor` gateSwap
+               gate_lhs = gateSwap01 * gateSwap12
+               gate_rhs = gateSwap12 * gateSwap01
                expected_gate = gate_lhs * asym_gate * gate_rhs
 
 test55 = TestCase (assertEqual "Checks GATE[2][0][1] with SWP[1][2].SWP[0][1]."
                                expected_gate actual_gate)
          where actual_gate = prepare_gate_8x8 (ThreeQubitOp8x8 asym_gate RBit TopBit)
-               gate_swap01 = gate_swap `tensor` gate_id
-               gate_swap12 = gate_id `tensor` gate_swap
-               gate_lhs = gate_swap12 * gate_swap01
-               gate_rhs = gate_swap01 * gate_swap12
+               gateSwap01 = gateSwap `tensor` gateId
+               gateSwap12 = gateId `tensor` gateSwap
+               gate_lhs = gateSwap12 * gateSwap01
+               gate_rhs = gateSwap01 * gateSwap12
                expected_gate = gate_lhs * asym_gate * gate_rhs
 
 test56 = TestCase (assertEqual "Checks GATE[2][1][0] with SWP[1][2].SWP[0][1].SWP[1][2]."
                                expected_gate actual_gate)
          where actual_gate = prepare_gate_8x8 (ThreeQubitOp8x8 asym_gate RBit BotBit)
-               gate_swap01 = gate_swap `tensor` gate_id
-               gate_swap12 = gate_id `tensor` gate_swap
-               gate_lhs = gate_swap12 * gate_swap01 * gate_swap12
-               gate_rhs = gate_swap12 * gate_swap01 * gate_swap12
+               gateSwap01 = gateSwap `tensor` gateId
+               gateSwap12 = gateId `tensor` gateSwap
+               gate_lhs = gateSwap12 * gateSwap01 * gateSwap12
+               gate_rhs = gateSwap12 * gateSwap01 * gateSwap12
                expected_gate = gate_lhs * asym_gate * gate_rhs
 
 -----------------------------------------------------------------------------------------

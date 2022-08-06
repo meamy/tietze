@@ -301,11 +301,11 @@ validTwoDyadicFile = ["Dyadic(2)", "abc := X[0].X[1].CZ", "cdf := X[0]", "xyz_12
 invalidTwoDyadicFile :: [String]
 invalidTwoDyadicFile = ["Dyadic(2)", "abc := X[0]", "cdf := CCX[0][1]", "xyz_123"]
 
-x0_4x4 = prepare_gate_4x4 (OneQubitOp4x4 gate_x TopBit)
-x1_4x4 = prepare_gate_4x4 (OneQubitOp4x4 gate_x BotBit)
+x0_4x4 = prepare_gate_4x4 (OneQubitOp4x4 gateX TopBit)
+x1_4x4 = prepare_gate_4x4 (OneQubitOp4x4 gateX BotBit)
 
 twoQubitDict :: GenDict TwoQubitDyadic
-twoQubitDict = empty `addGen` ("abc", Just (x0_4x4 * x1_4x4 * gate_cz))
+twoQubitDict = empty `addGen` ("abc", Just (x0_4x4 * x1_4x4 * gateCZ))
                      `addGen` ("cdf", Just x0_4x4)
                      `addGen` ("xyz_123", Nothing)
 
@@ -327,10 +327,10 @@ validThreeDyadicFile = ["Dyadic(3)", "abc := CCX[0][1][2]", "cdf := X[0]", "xyz_
 invalidThreeDyadicFile :: [String]
 invalidThreeDyadicFile = ["Dyadic(3)", "abc := X[0]", "cdf := CCX[0][1]", "xyz_123"]
 
-x0_8x8 = prepare_gate_8x8 (OneQubitOp8x8 gate_x LBit)
+x0_8x8 = prepare_gate_8x8 (OneQubitOp8x8 gateX LBit)
 
 threeQubitDict :: GenDict ThreeQubitDyadic
-threeQubitDict = empty `addGen` ("abc", Just gate_tof)
+threeQubitDict = empty `addGen` ("abc", Just gateTof)
                        `addGen` ("cdf", Just x0_8x8)
                        `addGen` ("xyz_123", Nothing)
 
