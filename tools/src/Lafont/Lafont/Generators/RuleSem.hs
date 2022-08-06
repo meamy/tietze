@@ -1,4 +1,4 @@
--- | Data types and functions to facilitate semantic evaluation of relations.
+-- | Data types and functions to facilitate semantic evaluation of rules.
 
 module Lafont.Generators.RuleSem where
 

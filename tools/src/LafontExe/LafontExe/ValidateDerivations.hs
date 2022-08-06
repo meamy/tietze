@@ -82,7 +82,7 @@ readDerivationFiles (fname:fnames) gens = do
 -- contains the name of a file and the PreDerivation data it describes. If each piece of
 -- PreDerivation data is either unnamed or has a unique name, then a new dictionary is
 -- returned as obtained by adding each derived rule to rules. Otherwise, the file name of
--- the first derivation with a duplication relation name is returned.
+-- the first derivation with a duplication rule name is returned.
 addDerivedRules :: RuleDict -> [NamedPreDerivation] -> Either String RuleDict
 addDerivedRules rules []                  = Right rules
 addDerivedRules rules ((fname, pre):rest) =

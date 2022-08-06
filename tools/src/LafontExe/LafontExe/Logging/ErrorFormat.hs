@@ -31,9 +31,9 @@ describeIncorrectStep fname act step = fstLine ++ sndLine
 -- | Consumes the name of a rule, and returns an error message stating that the rule is
 -- semantically invalid.
 reportInvalidRule :: String -> String
-reportInvalidRule rname = "Relation contradicts semantics: " ++ rname ++ "\n"
+reportInvalidRule rname = "Rule contradicts semantics: " ++ rname ++ "\n"
 
 -- | Consumes the name of a rule, and returns an error message stating that the rule
 -- contains an unknown generator.
 reportUnknownGen :: String -> String
-reportUnknownGen rname = "Relation contains an unknown generator: " ++ rname ++ "\n"
+reportUnknownGen rname = "Rule contains an unknown generator: " ++ rname ++ "\n"

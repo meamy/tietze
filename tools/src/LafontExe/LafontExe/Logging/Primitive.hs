@@ -32,6 +32,6 @@ logRule (name, rule) = name ++ ": " ++ lstr ++ " " ++ ostr ++ " " ++ rstr
 -- * Dictionary-based Logging.
 
 -- | Converts a dictionary of rules into a string. Each line of the string is an ASCII
--- representation of the relation.
+-- representation of the rule.
 logRuleDict :: RuleDict -> String
 logRuleDict dict = foldRules (\g str -> (logRule g) ++ "\n" ++ str) "" dict

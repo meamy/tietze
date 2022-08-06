@@ -29,6 +29,6 @@ foldRules f init dict = Data.Map.foldrWithKey fadj init dict
     where fadj key semv acc = f (key, semv) acc
 
 -- | Returns a rule by its name. If the rule does not exist, then nothing is returned. To
--- check if a generator is recorded, then use (hasRel dict id).
+-- check if a generator is recorded, then use (hasRule dict id).
 interpretRule :: RuleDict -> String -> Maybe RewriteRule
 interpretRule dict id = Data.Map.lookup id dict

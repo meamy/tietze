@@ -41,7 +41,7 @@ readRulesUnchecked (FileData relFname relLines) gens =
 -- | Consumes a relation file and a dictionary of generators whose semantics are given by
 -- elements of a monoid. This function adheres to readRulesUnchecked, except that the
 -- semantics validity of each rules is also checked. The following two cases are
--- introduced. If a relation is semantically invalid, then the InvalidRule status is
+-- introduced. If a rule is semantically invalid, then the InvalidRule status is
 -- returned. If the semantics of a generator are undefined, then the MissingGen status is
 -- returned.
 readAndCheckRules :: (MonoidObj a) => FileData -> GenDict a -> GenRuleReadResult
@@ -54,8 +54,8 @@ readAndCheckRules relFile gens =
         badResult -> badResult
 
 -- | Consumes a generator file and a relation file. If the generator fail is invalid,
--- then the BadGenFile status is returned. Otherwise, the relations are parsed relative
--- to the generators, in adherence to readAndCheckRules. 
+-- then the BadGenFile status is returned. Otherwise, the rules are parsed relative to
+-- the generators, in adherence to readAndCheckRules. 
 readGeneratorsAndRules :: FileData -> FileData -> GenRuleReadResult
 readGeneratorsAndRules (FileData genFname genLines) relFile =
     case (parseGenFileAsDict genLines 0) of
