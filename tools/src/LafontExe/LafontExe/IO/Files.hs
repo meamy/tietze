@@ -14,7 +14,7 @@ data FileData = FileData String [String]
 readNamedFile :: String -> IO FileData
 readNamedFile name = do
     contents <- readFile name
-    return (FileData name (lines contents))
+    return (FileData name $ lines contents)
 
 -----------------------------------------------------------------------------------------
 -- * Existence Checking.

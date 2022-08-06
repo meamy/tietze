@@ -24,7 +24,7 @@ describeIncorrectResult fname exp act = fstLine ++ sndLine
 describeIncorrectStep :: String -> MonWord -> Int -> String
 describeIncorrectStep fname act step = fstLine ++ sndLine
     where actStr = logWord act
-          stepStr = (show step)
+          stepStr = show step
           fstLine = "Failed to validate " ++ fname ++ ".\n"
           sndLine = "Obtained " ++ actStr ++ " at step " ++ stepStr ++ ".\n"
 

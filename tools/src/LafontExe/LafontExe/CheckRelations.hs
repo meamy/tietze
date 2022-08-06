@@ -18,13 +18,13 @@ checkRelationsImpl :: Handle -> String -> String -> IO ()
 checkRelationsImpl hdl genFname relFname = do
     genFile <- readNamedFile genFname
     relFile <- readNamedFile relFname
-    case (readGeneratorsAndRules genFile relFile) of
+    case readGeneratorsAndRules genFile relFile of
         UnknownSem           -> hPutStr hdl "Impl Error: Unknown semantic model."
-        BadGenFile fn ln err -> hPutStr hdl (logEitherMsg fn ln err)
-        BadRelFile fn ln err -> hPutStr hdl (logEitherMsg fn ln err)
-        InvalidRel rname     -> hPutStr hdl (reportInvalidRule rname)
-        MissingGen rname     -> hPutStr hdl (reportUnknownGen rname)
-        GenRulePair _ rules  -> hPutStr hdl (logRuleDict rules)
+        BadGenFile fn ln err -> hPutStr hdl $ logEitherMsg fn ln err
+        BadRelFile fn ln err -> hPutStr hdl $ logEitherMsg fn ln err
+        InvalidRel rname     -> hPutStr hdl $ reportInvalidRule rname
+        MissingGen rname     -> hPutStr hdl $ reportUnknownGen rname
+        GenRulePair _ rules  -> hPutStr hdl $ logRuleDict rules
 
 -- | Consumes a handle, the name of a generator file (genFname) and the name of a
 -- relation file (relFname). If the generator and relation files parse correctly, then an

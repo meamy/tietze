@@ -19,14 +19,14 @@ import LafontExe.Logging.LineBased
 -- generator, and a textual representation if its semantics (if present), to str. The new
 -- string is returned.
 logGenerator :: (Display a) => (String, Maybe a) -> String -> String
-logGenerator (name, (Just semv)) str = str ++ name ++ " := " ++ (display semv) ++ "\n"
-logGenerator (name, Nothing)     str = str ++ name ++ " := (no semantic value)\n"
+logGenerator (name, Just semv) str = str ++ name ++ " := " ++ display semv ++ "\n"
+logGenerator (name, Nothing)   str = str ++ name ++ " := (no semantic value)\n"
 
 -- | Consumes a semantic model (sem) and a dictionary of generators (dict). Returns a
 -- textual representation of the generators and their semantics.
 logGenerators :: (Display a) => SemModel -> GenDict a -> String
-logGenerators sem dict = foldGens logGenerator semstr dict
-    where semstr = "Semantic Model : " ++ (display sem) ++ "\n"
+logGenerators sem = foldGens logGenerator semstr
+    where semstr = "Semantic Model : " ++ display sem ++ "\n"
 
 -----------------------------------------------------------------------------------------
 -- * Logic.
@@ -37,12 +37,12 @@ logGenerators sem dict = foldGens logGenerator semstr dict
 -- error is returned.
 processGeneratorLines :: FileData -> String
 processGeneratorLines (FileData fname lines) =
-    case (parseGenFileAsDict lines 0) of
-        Left (errLn, err)               -> (logEitherMsg fname errLn err)
+    case parseGenFileAsDict lines 0 of
+        Left (errLn, err)               -> logEitherMsg fname errLn err
         Right (MonoidalGenSummary dict) -> logGenerators MonoidalSem dict 
         Right (DyadicTwoSummary dict)   -> logGenerators DyadicTwoSem dict
         Right (DyadicThreeSummary dict) -> logGenerators DyadicThreeSem dict
-        otherwise                       -> "Semantic model not supported."
+        _                               -> "Semantic model not supported."
 
 -- | Consumes a handle, the name of a generator file (fname). If the generator file
 -- parses correctly, then an internal representation of the generators is printed to the
@@ -54,5 +54,5 @@ checkGenerators hdl fname = do
     if exists
     then do
         content <- readNamedFile fname
-        hPutStr hdl (processGeneratorLines content)
+        hPutStr hdl $ processGeneratorLines content
     else putStr ("File does not exist: " ++ fname ++ "\n")

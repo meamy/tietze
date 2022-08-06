@@ -13,8 +13,8 @@ import Lafont.Rewrite.Lookup
 -- their display function. Empty words are displayed as ε.
 logWord :: MonWord -> String
 logWord []          = "ε"
-logWord [symb]      = (display symb)
-logWord (symb:word) = (display symb) ++ "." ++ (logWord word)
+logWord [symb]      = display symb
+logWord (symb:word) = display symb ++ "." ++ logWord word
 
 -----------------------------------------------------------------------------------------
 -- * Tuple-Based Logging.
@@ -25,7 +25,7 @@ logWord (symb:word) = (display symb) ++ "." ++ (logWord word)
 logRule :: (String, RewriteRule) -> String
 logRule (name, rule) = name ++ ": " ++ lstr ++ " " ++ ostr ++ " " ++ rstr
     where lstr = logWord (lhs rule)
-          ostr = if (equational rule) then "=" else "→"
+          ostr = if equational rule then "=" else "→"
           rstr = logWord (rhs rule)
 
 -----------------------------------------------------------------------------------------
@@ -34,4 +34,4 @@ logRule (name, rule) = name ++ ": " ++ lstr ++ " " ++ ostr ++ " " ++ rstr
 -- | Converts a dictionary of rules into a string. Each line of the string is an ASCII
 -- representation of the rule.
 logRuleDict :: RuleDict -> String
-logRuleDict dict = foldRules (\g str -> (logRule g) ++ "\n" ++ str) "" dict
+logRuleDict = foldRules (\g str -> logRule g ++ "\n" ++ str) ""
