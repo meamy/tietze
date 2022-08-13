@@ -13,12 +13,6 @@ import Lafont.Parse.Common
 import Lafont.Parse.DerivationFile
 
 -----------------------------------------------------------------------------------------
--- Helper types.
-
--- The return type of all full derivation file parsing tests.
-type FileParseRV = DParseRV Derivation
-
------------------------------------------------------------------------------------------
 -- parseRewritePos
 
 word1 :: MonWord
@@ -332,67 +326,67 @@ badBody = ["a.b.c",
            "",
            "a.b.c"]
 
-parseBody :: RuleDict -> [String] -> RewritePreamble -> [String] -> Int -> FileParseRV
-parseBody rules gens meta lines num =
-    case preparseSectionSkeleton lines num of
+parseBody :: RuleDict -> [String] -> RewritePreamble -> [String] -> DParseRV Derivation
+parseBody rules gens meta lines =
+    case preparseSectionSkeleton lines 0 of
         Left err               -> Left err
-        Right (skeleton, rest) -> case preparseSection gens meta skeleton num of
+        Right (skeleton, rest) -> case preparseSection gens meta skeleton 0 of
             Left err  -> Left err
             Right pre -> parseDerivationFile rules pre
 
 test53 = TestCase (assertEqual "preparseBody parses a full derivation (1/3)."
                                (Right (Derivation sum rewriteList))
-                               (parseBody dict3 gens defaultPreamble input 0))
+                               (parseBody dict3 gens defaultPreamble input))
     where input = goodBody ++ goodFinal1
           sum = DerivationSummary defaultPreamble word1 word1
 
 test54 = TestCase (assertEqual "preparseBody parses a full derivation (2/3)."
                                (Right (Derivation sum rewriteList))
-                               (parseBody dict3 gens defaultPreamble input 0))
+                               (parseBody dict3 gens defaultPreamble input))
     where input = goodBody ++ goodFinal2
           sum = DerivationSummary defaultPreamble word1 word2
 
 test55 = TestCase (assertEqual "preparseBody parses a full derivation (3/3)."
                                (Right (Derivation sum rewriteList))
-                               (parseBody dict3 gens defaultPreamble input 0))
+                               (parseBody dict3 gens defaultPreamble input))
     where input = goodFinal1 ++ goodRewrite ++ goodFinal1
           sum = DerivationSummary defaultPreamble word1 word1
 
 test56 = TestCase (assertEqual "preparseBody detects missing initial word."
                                (Left (0, Right MissingInitialWord))
-                               (parseBody dict3 gens defaultPreamble input 0))
+                               (parseBody dict3 gens defaultPreamble input))
     where input = goodRewrite ++ goodFinal1
 
 test57 = TestCase (assertEqual "preparseBody detects delayed initial word."
                                (Left (0, Right MissingInitialWord))
-                               (parseBody dict3 gens defaultPreamble input 0))
+                               (parseBody dict3 gens defaultPreamble input))
     where input = [""] ++ goodFinal1 ++ goodRewrite ++ goodFinal1
 
 test58 = TestCase (assertEqual "preparseBody detects empty inputs."
                                (Left (0, Left UnexpectedEOF))
-                               (parseBody dict3 gens defaultPreamble [] 0))
+                               (parseBody dict3 gens defaultPreamble []))
 
 test59 = TestCase (assertEqual "preparseBody detects bad generators in initial word."
                                (Left (0, Right (UnknownGenName "c")))
-                               (parseBody dict3 ["a", "b"] defaultPreamble input 0))
+                               (parseBody dict3 ["a", "b"] defaultPreamble input))
     where input = goodBody ++ goodFinal1
 
 test60 = TestCase (assertEqual "preparseBody detects bad generators in final word."
                                (Left (7, Right (UnknownGenName "c")))
-                               (parseBody dict3 ["a", "b"] defaultPreamble input 0))
+                               (parseBody dict3 ["a", "b"] defaultPreamble input))
     where input = ["ε"] ++ goodRewrite ++ goodFinal1
 
 test61 = TestCase (assertEqual "preparseBody detects missing final word."
                                (Left (7, Right MissingFinalWord))
-                               (parseBody dict3 gens defaultPreamble goodBody 0))
+                               (parseBody dict3 gens defaultPreamble goodBody))
 
 test62 = TestCase (assertEqual "preparseBody detects rewrite issues."
                                (Left (3, Right InvalidRuleName))
-                               (parseBody dict3 gens defaultPreamble badBody 0))
+                               (parseBody dict3 gens defaultPreamble badBody))
 
 test63 = TestCase (assertEqual "preparseBody supports different preambles."
                                (Right (Derivation sum rewriteList))
-                               (parseBody dict3 gens expectedPreamble input 0))
+                               (parseBody dict3 gens expectedPreamble input))
     where input = goodBody ++ goodFinal1
           sum = DerivationSummary expectedPreamble word1 word1
 
@@ -402,26 +396,30 @@ test63 = TestCase (assertEqual "preparseBody supports different preambles."
 validResult :: Derivation
 validResult = Derivation (DerivationSummary expectedPreamble word1 word2) rewriteList
 
-parseFile :: RuleDict -> [String] -> [String] -> Int -> FileParseRV
+parseFile :: RuleDict -> [String] -> [String] -> Int -> DParseRV [DParseRV Derivation]
 parseFile rules gens lines num =
     case (preparseDerivationFile gens lines num) of
-        Left err  -> Left err
-        Right pre -> parseDerivationFile rules pre
+        Left err      -> Left err
+        Right preList -> Right (map (parseDerivationFile rules) preList)
 
 test64 = TestCase (assertEqual "parseDerivationFile parses a full derivation file."
-                               (Right validResult)
+                               (Right [Right validResult])
                                (parseFile dict3 gens input 0))
     where input = goodPreamble ++ goodBody ++ goodFinal2
 
-test65 = TestCase (assertEqual "parseDerivationFile propogates preamble errors."
+test65 = TestCase (assertEqual "preparseDerivationFile propogates preamble errors."
                                (Left (1, Left (DuplicateProp "name")))
                                (parseFile dict3 gens input 0))
     where input = badPreambleOne ++ goodBody ++ goodFinal2
 
-test66 = TestCase (assertEqual "parseDerivationFile propogates body errors."
+test66 = TestCase (assertEqual "preparseDerivationFile propogates body errors."
                                (Left (13, Right (UnknownGenName "c")))
                                (parseFile dict3 ["a", "b"] input 0))
     where input = goodPreamble ++ ["ε"] ++ goodRewrite ++ goodFinal1
+
+test67 = TestCase (assertEqual "preparseDerivationFile propogates body errors."
+                               (Right [Left (3, Right InvalidRuleName)])
+                               (parseFile dict3 gens badBody 0))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -490,6 +488,7 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" 
                                      TestLabel "preparseBody_InvalidRewrite" test62,
                                      TestLabel "parseDerivationFile_Valid" test64,
                                      TestLabel "parseDerivationFile_BadPreamble" test65,
-                                     TestLabel "parseDerivationFile_BadBody" test66]
+                                     TestLabel "parseDerivationFile_BadWord" test66,
+                                     TestLabel "parseDerivationFile_BadBody" test67]
 
 main = defaultMain tests

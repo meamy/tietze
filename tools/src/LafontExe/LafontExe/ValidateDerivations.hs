@@ -53,7 +53,7 @@ verifyDerivations derivations =
 -- failure is printed. Otherwise, a success message is printed.
 verifyDerivationSteps :: [NamedDerivation] -> String
 verifyDerivationSteps []                                = "Success.\n"
-verifyDerivationSteps ((fname, derivation):derivations) = do
+verifyDerivationSteps ((fname, derivation):derivations) =
     if success res
     then if output res == final sum
          then verifyDerivationSteps derivations
@@ -72,11 +72,12 @@ readDerivationFiles (fname:fnames) gens = do
     content <- readFile fname
     case preparseDerivationFile gens (lines content) 0 of
         Left (errLn, err) -> return (Left (fname, errLn, err))
-        Right pre         -> do
+        Right preList     -> do
             ioRes <- readDerivationFiles fnames gens
             case ioRes of
                 Left err  -> return (Left err)
-                Right res -> return (Right ((fname, pre) : res))
+                Right res -> return (Right (foldr f res preList))
+    where f pre list = (fname, pre) : list
 
 -- Consumes a dictionary of rewrite rules (rules) and a list of pairs, where each pair
 -- contains the name of a file and the PreDerivation data it describes. If each piece of

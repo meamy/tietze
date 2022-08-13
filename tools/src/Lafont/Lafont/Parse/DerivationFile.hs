@@ -237,15 +237,17 @@ preparseSection gens meta (init, steps, final) num =
 -- | Consumes a list of known generator names (gens) and the lines of a derivation file
 -- including the preamble (lines). If the lines include a preamble section, an initial
 -- word section, a rewrite section, and a word string section, with the preamble,
--- initial, and final words valid, then a then a derivation summary is returned.
--- Otherwise, returns a parsing exception
-preparseDerivationFile :: [String] -> [String] -> Int -> DParseRV PreDerivation
+-- initial, and final words valid, then a list of summaries for all derivations in the
+-- file are returned. Otherwise, returns a parsing exception
+preparseDerivationFile :: [String] -> [String] -> Int -> DParseRV [PreDerivation]
 preparseDerivationFile gens lines num =
     case parseRewritePreamble lines num of
         Left (errLn, err)          -> Left (errLn, Left err)
         Right (body, bodyLn, meta) -> case preparseSectionSkeleton body bodyLn of
-            Left err               -> Left err
-            Right (skeleton, rest) -> preparseSection gens meta skeleton bodyLn
+            Left err           -> Left err
+            Right (skel, rest) -> case preparseSection gens meta skel bodyLn of
+                Left err  -> Left err
+                Right pre -> Right [pre]
 
 -- | Consumes a dictionary of known rules, including derived rules (dict) and the summary
 -- of a derivation file. If the body is a valid rewrite section with respect to rules,
