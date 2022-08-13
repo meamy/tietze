@@ -165,6 +165,10 @@ parseRewritePreamble = makePreambleParser rewriteProperties defaultPreamble
 -- | Factors out return value structure of a derivation file parser.
 type DParseRV a = Either (Int, DFPError) a
 
+-- | The skeleton of a derivation, consisting of an initial word subsection, a rewrite
+-- subsection, and a final word subsection
+type DSkel = (MonWord, [String], MonWord)
+
 -- | The summary of a derivation file (parsed) together with an unparsed rewrite section
 -- (unparsed) starting at the specified line number (linenum).
 data PreDerivation = ParDerivation { parsed   :: DerivationSummary
@@ -198,27 +202,37 @@ parseRewriteLines rules (line:lines) num
           (_, trimmed) = trimSpacing stripped
           nextNum = num + 1
 
--- | Consumes a list of known generator names (gens), the preamble of a derivation file
--- (meta), and the lines of a derivation file immediately following its preamble.  If the
--- lines include an inital word section, a rewrite section, and a final word section,
--- with both the initial and final words valid, then a derivation summary is returned.
--- Otherwise, returns a parsing exception. Requires that there is at least one line in
--- the body, and that the first line is the initial word.
-preparseBody :: [String] -> RewritePreamble -> [String] -> Int -> DParseRV PreDerivation
-preparseBody _    _    []                 num = Left (num, Left UnexpectedEOF)
-preparseBody gens meta (initLine:body) num =
+-- | Consumes the lines of a derivation file immediately following its preamble. If the
+-- lines include an initial word subsection, a rewrite subsection, and a final word
+-- subsection,  then a skeleton of the derivation section is returned. Otherwise, returns
+-- a parsing exception. Requires that there is at least one line in the body, and that
+-- the first line is the initial word.
+--
+-- Note: The initial and final words may be invalid. This is checked by preparseSection.
+preparseSectionSkeleton :: [String] -> Int -> DParseRV (DSkel, [String])
+preparseSectionSkeleton []              num = Left (num, Left UnexpectedEOF)
+preparseSectionSkeleton (initLine:body) num =
     case parseLineAsMonWord initLine of
         Nothing   -> Left (num, Right MissingInitialWord)
-        Just init -> case findUnknownGenInMonWord gens init of
-            Just gen -> Left (num, Right (UnknownGenName (name gen)))
-            Nothing  -> case parseFinalMonWord body of
-                Nothing            -> Left (finAt body, Right MissingFinalWord)
-                Just (rlines, fin) -> case findUnknownGenInMonWord gens fin of
-                    Just gen -> Left (finAt rlines, Right (UnknownGenName (name gen)))
-                    Nothing  -> let sum = DerivationSummary meta init fin
-                                in Right (ParDerivation sum rlines rln)
-    where rln = num + 1
-          finAt body = rln + length body
+        Just init -> case parseFinalMonWord body of
+            Nothing             -> Left (eofNum, Right MissingFinalWord)
+            Just (steps, final) -> Right ((init, steps, final), [])
+    where eofNum = num + length body + 1
+
+-- | Consumes a list of known generator names (gens), the preamble of a derivation file
+-- (meta), and a skeleton of the derivation. If the initial word subsection and the final
+-- word subsection are valid, then a derivation summary is returned. Otherwise, returns a
+-- parsing exception.
+preparseSection :: [String] -> RewritePreamble -> DSkel -> Int -> DParseRV PreDerivation
+preparseSection gens meta (init, steps, final) num =
+    case findUnknownGenInMonWord gens init of
+        Just gen -> Left (num, Right (UnknownGenName (name gen)))
+        Nothing  -> case findUnknownGenInMonWord gens final of
+            Just gen -> Left (finalNum, Right (UnknownGenName (name gen)))
+            Nothing  -> let summary = DerivationSummary meta init final
+                        in Right (ParDerivation summary steps stepsNum)
+    where stepsNum = num + 1
+          finalNum = stepsNum + length steps
 
 -- | Consumes a list of known generator names (gens) and the lines of a derivation file
 -- including the preamble (lines). If the lines include a preamble section, an initial
@@ -229,7 +243,9 @@ preparseDerivationFile :: [String] -> [String] -> Int -> DParseRV PreDerivation
 preparseDerivationFile gens lines num =
     case parseRewritePreamble lines num of
         Left (errLn, err)          -> Left (errLn, Left err)
-        Right (body, bodyLn, meta) -> preparseBody gens meta body bodyLn
+        Right (body, bodyLn, meta) -> case preparseSectionSkeleton body bodyLn of
+            Left err               -> Left err
+            Right (skeleton, rest) -> preparseSection gens meta skeleton bodyLn
 
 -- | Consumes a dictionary of known rules, including derived rules (dict) and the summary
 -- of a derivation file. If the body is a valid rewrite section with respect to rules,

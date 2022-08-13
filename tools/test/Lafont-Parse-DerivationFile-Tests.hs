@@ -334,9 +334,11 @@ badBody = ["a.b.c",
 
 parseBody :: RuleDict -> [String] -> RewritePreamble -> [String] -> Int -> FileParseRV
 parseBody rules gens meta lines num =
-    case (preparseBody gens meta lines num) of
-        Left err  -> Left err
-        Right pre -> parseDerivationFile rules pre
+    case preparseSectionSkeleton lines num of
+        Left err               -> Left err
+        Right (skeleton, rest) -> case preparseSection gens meta skeleton num of
+            Left err  -> Left err
+            Right pre -> parseDerivationFile rules pre
 
 test53 = TestCase (assertEqual "preparseBody parses a full derivation (1/3)."
                                (Right (Derivation sum rewriteList))
