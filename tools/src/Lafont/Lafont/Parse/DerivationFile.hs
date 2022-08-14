@@ -1,5 +1,3 @@
-{-# LANGUAGE TupleSections #-}
-
 -- | Implements a parser for derivation files.
 
 module Lafont.Parse.DerivationFile where
@@ -179,12 +177,13 @@ data PreDerivation = ParDerivation { parsed   :: DerivationSummary
 -- | Consumes the body of a derivation file (excluding the initial word). Attempts to
 -- find the final word in the file. If the final word is found, then the word is returned
 -- along with all lines which follow the word. Otherwise, nothing is returned.
-parseFinalMonWord :: [String] -> Maybe ([String], MonWord)
+parseFinalMonWord :: [String] -> Maybe ([String], MonWord, [String])
 parseFinalMonWord []           = Nothing
 parseFinalMonWord (line:lines) =
-    case parseFinalMonWord lines of
-        Just (body, word) -> Just (line : body, word)
-        Nothing           -> maybeApply ([],) (parseLineAsMonWord line)
+    case parseLineAsMonWord line of
+        Just word -> Just ([], word, lines)
+        Nothing   -> maybeApply f $ parseFinalMonWord lines
+    where f (body, word, rest) = (line : body, word, rest)
 
 -- | Consumes a dictionary of known rules (dict) and the rewrite lines of a derivation
 -- file. If the lines are valid with respect to dict, then returns a list of rewrites in
@@ -215,8 +214,8 @@ preparseSectionSkeleton (initLine:body) num =
     case parseLineAsMonWord initLine of
         Nothing   -> Left (num, Right MissingInitialWord)
         Just init -> case parseFinalMonWord body of
-            Nothing             -> Left (eofNum, Right MissingFinalWord)
-            Just (steps, final) -> Right ((init, steps, final), [])
+            Nothing                   -> Left (eofNum, Right MissingFinalWord)
+            Just (steps, final, rest) -> Right ((init, steps, final), rest)
     where eofNum = num + length body + 1
 
 -- | Consumes a list of known generator names (gens), the preamble of a derivation file
@@ -234,20 +233,32 @@ preparseSection gens meta (init, steps, final) num =
     where stepsNum = num + 1
           finalNum = stepsNum + length steps
 
--- | Consumes a list of known generator names (gens) and the lines of a derivation file
--- including the preamble (lines). If the lines include a preamble section, an initial
--- word section, a rewrite section, and a word string section, with the preamble,
--- initial, and final words valid, then a list of summaries for all derivations in the
--- file are returned. Otherwise, returns a parsing exception
-preparseDerivationFile :: [String] -> [String] -> Int -> DParseRV [PreDerivation]
-preparseDerivationFile gens lines num =
+-- |
+preparseDerivation :: [String] -> [String] -> Int -> DParseRV (PreDerivation, [String])
+preparseDerivation gens lines num =
     case parseRewritePreamble lines num of
         Left (errLn, err)          -> Left (errLn, Left err)
         Right (body, bodyLn, meta) -> case preparseSectionSkeleton body bodyLn of
             Left err           -> Left err
             Right (skel, rest) -> case preparseSection gens meta skel bodyLn of
                 Left err  -> Left err
-                Right pre -> Right [pre]
+                Right pre -> Right (pre, rest)
+
+-- | Consumes a list of known generator names (gens) and the lines of a derivation file
+-- including the preamble (lines). If the lines include a preamble section, an initial
+-- word section, a rewrite section, and a word string section, with the preamble,
+-- initial, and final words valid, then a list of summaries for all derivations in the
+-- file are returned. Otherwise, returns a parsing exception.
+preparseDerivationFile :: [String] -> [String] -> Int -> DParseRV [PreDerivation]
+preparseDerivationFile gens lines num =
+    case preparseDerivation gens lines num of
+        Left err          -> Left err
+        Right (pre, rest) -> if isEOFSpacing rest
+                             then Right [pre]
+                             else let nextNum = num + length lines - length rest
+                                  in case preparseDerivationFile gens rest nextNum of
+                                      Left err  -> Left err
+                                      Right res -> Right (pre : res)
 
 -- | Consumes a dictionary of known rules, including derived rules (dict) and the summary
 -- of a derivation file. If the body is a valid rewrite section with respect to rules,

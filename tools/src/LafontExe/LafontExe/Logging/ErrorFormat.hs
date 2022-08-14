@@ -8,25 +8,32 @@ import           LafontExe.Logging.Primitive
 -----------------------------------------------------------------------------------------
 -- * Miscellaneous Error Logging.
 
--- | Consumes the name of a derivation file (fname), the word obtained from a derivation
--- (act), and the expected word from the end of the file (exp). Returns a string
--- describing the error.
-describeIncorrectResult :: String -> MonWord -> MonWord -> String
-describeIncorrectResult fname exp act = fstLine ++ sndLine
+-- | Consumes the name of a derivation file (fname), the index of a derivation (num), the
+-- word obtained from a derivation (act), and the expected word from the end of the file
+-- (exp). Returns a string describing the error.
+describeIncorrectResult :: String -> Int -> MonWord -> MonWord -> String
+describeIncorrectResult fname num exp act = fstLine ++ "\n" ++ sndLine ++ "\n"
     where expStr = logWord exp
           actStr = logWord act
-          fstLine = "Failed to validate " ++ fname ++ ".\n"
-          sndLine = "Expected " ++ expStr ++ " but produced " ++ actStr ++ ".\n"
+          index = show num
+          fstLine = "Failed to validate derivation(" ++ index ++ ") in " ++ fname ++ "."
+          sndLine = "Expected " ++ expStr ++ " but produced " ++ actStr ++ "."
 
--- | Consumes the name of a derivation file (fname), the word obtain when a rewrite rule
--- failed to apply (act), and the step number associated with this rewrite (step).
--- Returns a string describing the error.
-describeIncorrectStep :: String -> MonWord -> Int -> String
-describeIncorrectStep fname act step = fstLine ++ sndLine
+-- | Consumes the name of a derivation file (fname), the index of a derivation (num), the
+-- word obtain when a rewrite rule failed to apply (act), and the step number associated
+-- with this rewrite (step). Returns a string describing the error.
+describeIncorrectStep :: String -> Int -> MonWord -> Int -> String
+describeIncorrectStep fname num act step = fstLine ++ "\n" ++ sndLine ++ "\n"
     where actStr = logWord act
           stepStr = show step
-          fstLine = "Failed to validate " ++ fname ++ ".\n"
-          sndLine = "Obtained " ++ actStr ++ " at step " ++ stepStr ++ ".\n"
+          index = show num
+          fstLine = "Failed to validate derivation(" ++ index ++ ") in " ++ fname ++ "."
+          sndLine = "Obtained " ++ actStr ++ " at step " ++ stepStr ++ "."
+
+-- | Consumes the index of a derivation (num). Returns a message stating that this
+-- derivation has a duplication name.
+reportDupRule :: Int -> String
+reportDupRule num = "Rule at index " ++ show num ++ " has duplicate name."
 
 -- | Consumes the name of a rule, and returns an error message stating that the rule is
 -- semantically invalid.

@@ -35,8 +35,8 @@ isFailure str = or [("Failed" `isSubstrOf` str),
                     ("failed" `isSubstrOf` str)]
 
 isDuplicated :: String -> Bool
-isDuplicated str = or [("Duplicated" `isSubstrOf` str),
-                       ("duplicated" `isSubstrOf` str)]
+isDuplicated str = or [("Duplicate" `isSubstrOf` str),
+                       ("duplicate" `isSubstrOf` str)]
 
 isExpecting :: String -> String -> Bool
 isExpecting str exp = or [(("Expected " ++ exp) `isSubstrOf` str),
@@ -215,6 +215,7 @@ check11 str = (and [-- Defaults to the first line
                     ("data/test/example.3.derivs:0" `isSubstrOf` str),
                     -- Keyword in error.
                     (isDuplicated str),
+                    ("index 0" `isSubstrOf` str),
                     -- Should be a single line.
                     ((length (lines str)) == 1)])
 
@@ -328,6 +329,38 @@ test17 = (HandleTest "RelSem_Missing"
                      checkMissingSem)
 
 -----------------------------------------------------------------------------------------
+-- Tests that a file can contain multiple proofs.
+
+manyInFileGood :: String
+manyInFileGood = "data/test/many.good.derivs"
+
+test18 = (HandleTest "Many_Good"
+                     "Ensures that a derivation file can contain multiple proofs."
+                     (\x -> validateDerivations x goodGens goodRels [manyInFileGood])
+                     (\str -> str == "Success.\n"))
+
+-----------------------------------------------------------------------------------------
+-- Tests that derivation errors can be pinpointed in a multi-derivation file.
+
+manyInFileBad :: String
+manyInFileBad = "data/test/many.bad.derivs"
+
+check19 :: String -> Bool
+check19 str =
+    if ((length outputLines) == 2)
+    then (and [-- The error and its location.
+               (isFailure (outputLines !! 0)),
+               -- The error details.
+               ("derivation(2)" `isSubstrOf` (outputLines !! 0))])
+    else False
+    where outputLines = lines str
+
+test19 = (HandleTest "Many_Good"
+                     "Ensures that errors are located properly within multiple proofs."
+                     (\x -> validateDerivations x goodGens goodRels [manyInFileBad])
+                     check19)
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = [test1,
@@ -346,6 +379,8 @@ tests = [test1,
          test14,
          test15,
          test16,
-         test17]
+         test17,
+         test18,
+         test19]
 
 main = handleTestToMain $ runAllHandleTests tests

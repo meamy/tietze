@@ -1,0 +1,30 @@
+-- Ensures that multiple derivations can appear in a single file.
+-- Intended generators: example.gens
+-- Intended relations: example.rels
+
+@name DerivedRel1
+abc1.abc1.abc1.abc1.abc1.abc1.abc1.abc1
+rel2 → 4
+rel2 → 0
+rel3 0
+ε
+
+@name DerivedRel2
+lmnop123.abc1.xyz1.abc2.xyz2.lmnop123.abc1.abc1.abc1.abc1
+rel1 → 1
+rel2 → 3
+rel3 → 1
+rel3 → 0
+ε
+
+@name FaultyTule
+lmnop123.abc1.xyz1.abc2.xyz2.lmnop123.abc1.abc1.abc1.abc1
+rel1 → 1
+rel3 → 1
+rel3 → 0
+ε
+
+abc1.abc1.abc1.abc1.abc1.abc1.abc1.abc1.lmnop123.abc1.xyz1.abc2.xyz2.lmnop123.abc1.abc1.abc1.abc1
+!apply DerivedRel1 0
+!apply DerivedRel2 0
+ε

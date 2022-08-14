@@ -237,6 +237,14 @@ test40 = TestCase (assertEqual "Rewrite preamble parser works on valid files."
 -----------------------------------------------------------------------------------------
 -- parseFinalMonWord
 
+altBody :: [String]
+altBody = ["",
+           "abc 0",
+           "xyz → 5",
+           "!apply derived 10",
+           "",
+           ""]
+
 goodEOF :: [String]
 goodEOF = ["\t\t", "-- END OF FILE."]
 
@@ -254,16 +262,16 @@ test41 = TestCase (assertEqual "parseFinalMonWord supports empty files."
                                (parseFinalMonWord []))
 
 test42 = TestCase (assertEqual "parseFinalMonWord extracts final words (1/3)."
-                               (Just (goodBody, word1))
-                               (parseFinalMonWord (goodBody ++ goodFinal1)))
+                               (Just (altBody, word1, goodEOF))
+                               (parseFinalMonWord (altBody ++ goodFinal1)))
 
 test43 = TestCase (assertEqual "parseFinalMonWord extracts final words (2/3)."
-                               (Just (goodBody, word2))
-                               (parseFinalMonWord (goodBody ++ goodFinal2)))
+                               (Just (altBody, word2, goodEOF))
+                               (parseFinalMonWord (altBody ++ goodFinal2)))
 
-test44 = TestCase (assertEqual "parseFinalMonWord extracts final words (2/3)."
-                               (Just (goodBody ++ goodFinal2, word1))
-                               (parseFinalMonWord (goodBody ++ goodFinal2 ++ goodFinal1)))
+test44 = TestCase (assertEqual "parseFinalMonWord extracts final words (3/3)."
+                               (Just (altBody, word2, goodEOF ++ goodFinal1))
+                               (parseFinalMonWord (altBody ++ goodFinal2 ++ goodFinal1)))
 
 test45 = TestCase (assertEqual "parseFinalMonWord without final mon word works."
                                Nothing
@@ -393,8 +401,11 @@ test63 = TestCase (assertEqual "preparseBody supports different preambles."
 -----------------------------------------------------------------------------------------
 -- parseDerivationFile
 
-validResult :: Derivation
-validResult = Derivation (DerivationSummary expectedPreamble word1 word2) rewriteList
+validResult1 :: Derivation
+validResult1 = Derivation (DerivationSummary expectedPreamble word1 word2) rewriteList
+
+validResult2 :: Derivation
+validResult2 = Derivation (DerivationSummary defaultPreamble word1 word1) rewriteList
 
 parseFile :: RuleDict -> [String] -> [String] -> Int -> DParseRV [DParseRV Derivation]
 parseFile rules gens lines num =
@@ -403,7 +414,7 @@ parseFile rules gens lines num =
         Right preList -> Right (map (parseDerivationFile rules) preList)
 
 test64 = TestCase (assertEqual "parseDerivationFile parses a full derivation file."
-                               (Right [Right validResult])
+                               (Right [Right validResult1])
                                (parseFile dict3 gens input 0))
     where input = goodPreamble ++ goodBody ++ goodFinal2
 
@@ -420,6 +431,11 @@ test66 = TestCase (assertEqual "preparseDerivationFile propogates body errors."
 test67 = TestCase (assertEqual "preparseDerivationFile propogates body errors."
                                (Right [Left (3, Right InvalidRuleName)])
                                (parseFile dict3 gens badBody 0))
+
+test68 = TestCase (assertEqual "parseDerivationFile supports multiple derivations."
+                               (Right [Right validResult1, Right validResult2])
+                               (parseFile dict3 gens input  0))
+    where input = goodPreamble ++ goodBody ++ goodFinal2 ++ goodBody ++ goodFinal1
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -486,9 +502,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" 
                                      TestLabel "preparseBody_FinalWordBadGen" test60,
                                      TestLabel "preparseBody_MissingFinalWord" test61,
                                      TestLabel "preparseBody_InvalidRewrite" test62,
+                                     TestLabel "preparseBody_DifferentPreamble" test63,
                                      TestLabel "parseDerivationFile_Valid" test64,
                                      TestLabel "parseDerivationFile_BadPreamble" test65,
                                      TestLabel "parseDerivationFile_BadWord" test66,
-                                     TestLabel "parseDerivationFile_BadBody" test67]
+                                     TestLabel "parseDerivationFile_BadBody" test67,
+                                     TestLabel "parseDerivationFile_Many" test68]
 
 main = defaultMain tests
