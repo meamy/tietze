@@ -153,7 +153,7 @@ stripComments (c:line)    = c : stripComments line
 
 -- | Consumes a line and removes both leading spacing a trailing comments.
 cleanLine :: String -> String
-cleanLine str = stripComments (snd (trimSpacing str))
+cleanLine line = stripComments $ snd $ trimSpacing line
 
 -----------------------------------------------------------------------------------------
 -- * Conditional Parsing.
@@ -180,7 +180,7 @@ iteOnSpacing str fval tval =
 -- | Consumes a string. If the string is empty after stripping comments and whitespace,
 -- then True is returned. Otherwise, False is returned.
 isBlankLine :: String -> Bool
-isBlankLine line = snd (trimSpacing $ stripComments line) == ""
+isBlankLine line = cleanLine line == ""
 
 -- | Consumes a list of lines in a file. If all lines are empty after stripping comments
 -- and whitespace, then True is returned. Otherwise, False is returned.
