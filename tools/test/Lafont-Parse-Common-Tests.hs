@@ -404,6 +404,87 @@ test90 = TestCase (assertEqual "iteOnSpacing detects non-spacing characters late
                                (iteOnSpacing "  \t   a" 1 5))
 
 -----------------------------------------------------------------------------------------
+-- isBlankLine
+
+wLine :: String
+wLine = "   \t\t    \t"
+
+cLine :: String
+cLine = "-- this is a comment"
+
+wcLine :: String
+wcLine = "   \t\t    \t -- this is a comment"
+
+nLine :: String
+nLine = "xyz"
+
+wcnLine :: String
+wcnLine = "   \t\t  xyz  \t -- this is a comment"
+
+test91 = TestCase (assertBool "isBlankLine accepts blank lines."
+                              (isBlankLine ""))
+
+test92 = TestCase (assertBool "isBlankLine accepts whitespace."
+                              (isBlankLine wLine))
+
+test93 = TestCase (assertBool "isBlankLine accepts comments."
+                              (isBlankLine cLine))
+
+test94 = TestCase (assertBool "isBlankLine accepts whitespace and comments."
+                              (isBlankLine wcLine))
+
+test95 = TestCase (assertBool "isBlankLine rejects non-whitespace characters (1/2)."
+                              (not (isBlankLine nLine)))
+
+test96 = TestCase (assertBool "isBlankLine accepts whitespace and comments (2/2)."
+                              (not (isBlankLine wcnLine)))
+
+-----------------------------------------------------------------------------------------
+-- isEOFSpacing
+
+test97 = TestCase (assertBool "isEOFSpacing accepts empty files."
+                              (isEOFSpacing []))
+
+test98 = TestCase (assertBool "isEOFSpacing accepts a single blank line."
+                              (isEOFSpacing [wcLine]))
+
+test99 = TestCase (assertBool "isEOFSpacing accepts many blank lines."
+                              (isEOFSpacing [wLine, wLine, wcLine, cLine]))
+
+test100 = TestCase (assertBool "isEOFSpacing rejects a single line with content."
+                               (not (isEOFSpacing [wcnLine])))
+
+test101 = TestCase (assertBool "isEOFSpacing rejects a mix of lines with content."
+                               (not (isEOFSpacing [wLine, wcnLine, wcLine, cLine])))
+
+-----------------------------------------------------------------------------------------
+-- parseEOFSpacing
+
+test102 = TestCase (assertEqual "parseEOFSpacing accepts empty files."
+                                (Nothing :: Maybe (Int, ParserError))
+                                (parseEOFSpacing [] 0))
+
+test103 = TestCase (assertEqual "parseEOFSpacing accepts a single blank line."
+                                (Nothing :: Maybe (Int, ParserError))
+                                (parseEOFSpacing [wcLine] 0))
+
+test104 = TestCase (assertEqual "parseEOFSpacing accepts many blank lines."
+                                (Nothing :: Maybe (Int, ParserError))
+                                (parseEOFSpacing [wLine, wLine, wcLine, cLine] 0))
+
+test105 = TestCase (assertEqual "parseEOFSpacing rejects a single line with content."
+                                (Just (0, ExpectedEOF) :: Maybe (Int, ParserError))
+                                (parseEOFSpacing [wcnLine] 0))
+
+test106 = TestCase (assertEqual "parseEOFSpacing can locate a line with content."
+                                (Just (1, ExpectedEOF) :: Maybe (Int, ParserError))
+                                (parseEOFSpacing [wLine, wcnLine, wcLine, cLine] 0))
+
+test107 = TestCase (assertEqual "parseEOFSpacing supports offsets."
+                                (Just (6, ExpectedEOF) :: Maybe (Int, ParserError))
+                                (parseEOFSpacing [wLine, wcnLine, wcLine, cLine] 5))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" test1,
@@ -495,6 +576,23 @@ tests = hUnitTestToTests $ TestList [TestLabel "splitAtFirst_TruePred_EmptyStr" 
                                      TestLabel "iteOnSpacing_Tab" test87,
                                      TestLabel "iteOnSpacing_NonSpacing" test88,
                                      TestLabel "iteOnSpacing_MixedSpacing" test89,
-                                     TestLabel "iteOnSpacing_MixedNonSpacing" test90]
+                                     TestLabel "iteOnSpacing_MixedNonSpacing" test90,
+                                     TestLabel "isBlankLine_Empty" test91,
+                                     TestLabel "isBlankLine_Whitespace" test92,
+                                     TestLabel "isBlankLine_Comment" test93,
+                                     TestLabel "isBlankLine_WhitespaceAndComment" test94,
+                                     TestLabel "isBlankLine_NonWhitespace" test95,
+                                     TestLabel "isBlankLine_Mix" test96,
+                                     TestLabel "isEOFSpacing_Empty" test97,
+                                     TestLabel "isEOFSpacing_OneWhitespace" test98,
+                                     TestLabel "isEOFSpacing_ManyWhitespace" test99,
+                                     TestLabel "isEOFSpacing_Content" test100,
+                                     TestLabel "isEOFSpacing_Mix" test101,
+                                     TestLabel "parseEOFSpacing_Empty" test102,
+                                     TestLabel "parseEOFSpacing_OneWhitespace" test103,
+                                     TestLabel "parseEOFSpacing_ManyWhitespace" test104,
+                                     TestLabel "parseEOFSpacing_Content" test105,
+                                     TestLabel "parseEOFSpacing_LocateContent" test106,
+                                     TestLabel "parseEOFSpacing_LocateContent" test107]
 
 main = defaultMain tests

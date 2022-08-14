@@ -177,12 +177,21 @@ iteOnSpacing str fval tval =
 -----------------------------------------------------------------------------------------
 -- * Line Parsing.
 
+-- | Consumes a string. If the string is empty after stripping comments and whitespace,
+-- then True is returned. Otherwise, False is returned.
+isBlankLine :: String -> Bool
+isBlankLine line = snd (trimSpacing $ stripComments line) == ""
+
+-- | Consumes a list of lines in a file. If all lines are empty after stripping comments
+-- and whitespace, then True is returned. Otherwise, False is returned.
+isEOFSpacing :: [String] -> Bool
+isEOFSpacing = all isBlankLine
+
 -- | Consumes a list of lines in a file. If all lines are empty after stripping comments
 -- and whitespace, then nothing is retrned. Otherwise, an ExpectedEOF error is returned
 -- with the number of the non-empty line.
 parseEOFSpacing :: [String] -> Int -> Maybe (Int, ParserError)
 parseEOFSpacing []           _   = Nothing
 parseEOFSpacing (line:lines) num
-    | trimmed == "" = parseEOFSpacing lines (num + 1)
-    | otherwise     = Just (num, ExpectedEOF)
-    where (_, trimmed) = trimSpacing $ stripComments line
+    | isBlankLine line = parseEOFSpacing lines (num + 1)
+    | otherwise        = Just (num, ExpectedEOF)
