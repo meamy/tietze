@@ -1,0 +1,13 @@
+-- This example considers strings with three generators.
+-- We name these generaotrs x, y, and z.
+
+-- This line tells Lafont that we are working with quotients of free monoids.
+-- This means that the generators are merely symbols and nothing more.
+-- In later examples we will look at giving semantic meaning to generators.
+Monoidal
+
+-- The simplest generator file is just a list of unique alphanumeric symbols.
+-- Each symbol must start with an alphabetical character.
+x
+y
+z

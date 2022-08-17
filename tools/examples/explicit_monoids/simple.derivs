@@ -1,0 +1,19 @@
+-- To run: [path_to_lafont] generators.gens relations.rels simple.derivs
+--
+-- A proof in Lafont consists of one or more derivations.
+-- Multiple derivations can appear in a single file.
+-- For now we will focus on a single derivation.
+
+-- A derivational proof from y.x.x.x.y.y.y.x.x.x.x.x.y.z.z.y.y.y.z.y to
+-- y.x.y.z.z.z.y using elim_x, elim_y, and elim_z.
+@name lemma1 -- Derivations can be named, and reused later in other proofs.
+             -- In this example, the derivation is named lemma1.
+y.x.x.x.y.y.y.x.x.x.x.x.y.z.z.y.y.y.z.y
+elim_y →  4 -- At position 4 (zero-indexed) there is a substring of three y's.
+            -- From left-to-right (l2r), the rule elim_y derives ε from y.y.y.
+            -- Then `elim_y →  4` applies elim_y from l2r at position 4.
+            -- We yield the string: y.x.x.x.x.x.x.x.x.y.z.z.y.y.y.z.y
+elim_x →  1 -- Now there is a substring of eight x's at position 1.
+            -- Applying elim_x l2r yields: y.x.y.z.z.y.y.y.z.y
+elim_y →  5 -- Next we yield the string: y.x.y.z.z.z.y
+y.x.y.z.z.z.y

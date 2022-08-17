@@ -1,0 +1,13 @@
+-- A relation file is a list of named equations over strings.
+-- Strings are over generators, and concatenation is denoted by a dot.
+-- The empty string is denoted by ε and must appear on its own.
+-- For now we assume that all relations are equational.
+-- This is in contrast a formal Thue-system, where relations are directed.
+
+-- Let's define relations to eliminate repetitions of generators.
+-- In particular, let's require that x^7, y^3, and z^5 all reduce to ε.
+-- This is captured by the following three relations.
+-- The equal sign indicates that the relations are equational.
+elim_x x.x.x.x.x.x.x = ε
+elim_y y.y.y         = ε
+elim_z z.z.z.z.z     = ε
