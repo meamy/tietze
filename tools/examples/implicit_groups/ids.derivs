@@ -1,0 +1,25 @@
+-- To run: [path_to_lafont] generators.gens relations.rels ids.derivs
+--
+-- It turns out that every element already has an inverse.
+-- For example, y.y.y = ε, so iy = y.y.
+-- This follows from the uniqueness of inverses in groups.
+-- Instead, let's prove this explicitly through derivations!
+
+@name id_ix
+ix
+elim_x ← 0 -- We can also apply equational rules from right-to-left (r2l).
+           -- We yield the string: x.x.x.x.x.x.x.ix
+rinv_x → 6 -- We yield the string: x.x.x.x.x.x
+x.x.x.x.x.x
+
+@name id_iy
+iy
+elim_y ← 0 -- We yield the string: y.y.y.iy
+rinv_y → 2 -- We yield the string: y.y
+y.y
+
+@name id_iz
+iz
+elim_z ← 1 -- We yield the string: iz.z.z.z.z.z
+linv_z → 0 -- We yield the string: z.z.z.z
+z.z.z.z

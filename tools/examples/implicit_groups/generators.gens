@@ -1,0 +1,13 @@
+-- Every monoid presentation extends to a group presentation.
+-- First we must introduce formal inverses.
+-- Each generator in the monoid must have a unique formal inverse.
+-- For now, the formal inverse is just a special symbol.
+
+Monoidal
+
+x
+y
+z
+ix -- the formal inverse to x
+iy -- the formal inverse to y
+iz -- the formal inverse to z

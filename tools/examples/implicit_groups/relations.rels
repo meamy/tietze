@@ -1,0 +1,17 @@
+-- We must now impose that the formal inverses are in fact inverse elements.
+-- An element and its inverse must compose to the identity.
+-- This must be true whether the formal inverse is on the left or right.
+-- Then the quotient monoid is necessarily a group.
+
+-- The formal inverse relations.
+rinv_x x.ix = ε
+linv_x ix.x = ε
+rinv_y y.iy = ε
+linv_y iy.y = ε
+rinv_z z.iz = ε
+linv_z iz.z = ε
+
+-- The relations from Tutorial 1.
+elim_x x.x.x.x.x.x.x = ε
+elim_y y.y.y         = ε
+elim_z z.z.z.z.z     = ε
