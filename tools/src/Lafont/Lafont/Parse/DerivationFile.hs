@@ -102,21 +102,30 @@ parseRewriteAtDirAndPos isEqn dir str
 -----------------------------------------------------------------------------------------
 -- * Line Parsing Methods.
 
+-- | Consumes the textual representation of a rewrite rule (str). Attempts to tokenize
+-- the string into <ID> <DIR> <POS>. If tokenizing is successful, then the three strings
+-- are returned. Otherwise, the corresponding error is returned.
+splitRewrite :: String -> Either DFPError (String, String, String)
+splitRewrite str =
+    case parseId str of
+        Just (id, details) -> case parseFromSeps ["→", "←", ""] details of
+            Just (dir, pos) -> Right (id, dir, pos)
+            Nothing         ->  Left (Left UnknownParseError) -- Should be unreachable. 
+        Nothing -> Left (Right InvalidRuleName)
+
 -- | Consumes a dictionary of known rules (dict) and an input string (str). Attempts to
 -- parse a primitive rewrite of either the form <ID> <DIR> <POS> or <ID> <POS>. If
 -- parsing is successful, then the corresponding rewrite is returned. Otherwise, an error
 -- is returned.
 parseRewrite :: RuleDict -> String -> Either DFPError Rewrite
 parseRewrite dict str =
-    case parseId str of
-        Just (id, detStr) -> case interpretRule dict id of
-            Just rule -> case parseFromSeps ["→", "←", ""] detStr of
-                Just (dir, posStr) -> case parseRewriteAtDirAndPos (equational rule) dir posStr of
-                    Left err         -> Left (propDerErr str posStr err)
-                    Right (pos, dir) -> Right (Rewrite rule pos dir)
-                Nothing ->  Left (Left UnknownParseError) -- Should be unreachable.
+    case splitRewrite str of
+        Right (id, dirStr, posStr) -> case interpretRule dict id of
+            Just rule -> case parseRewriteAtDirAndPos (equational rule) dirStr posStr of
+                Left err         -> Left (propDerErr str posStr err)
+                Right (pos, dir) -> Right (Rewrite rule pos dir)
             Nothing -> Left (Right (UnknownRuleName id))
-        Nothing -> Left (Right InvalidRuleName)
+        Left err -> Left err
 
 -- | Consumes a dictionary of known rules (dict), an apply line of a derivation file
 -- (str), and the substring of str containing the modified rule line (rwStr). If parsing
@@ -128,8 +137,8 @@ parseApplyLine dict str rwStr =
         Left err -> Left (propDerErr str trimmed err)
         Right rw -> let (Rewrite rule _ _) = rw
                     in if isDerivedRule rule
-                          then Right rw
-                          else Left (Right ApplyOnPrimitive)
+                       then Right rw
+                       else Left (Right ApplyOnPrimitive)
     where (_, trimmed) = trimSpacing rwStr
 
 -- | Consumes a dictionary of known rules (dict) and a rule line of a derivation file
