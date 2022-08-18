@@ -73,30 +73,31 @@ propDerErr str substr (Right err) =
     where update pos = relToAbsErrPos str substr pos
 
 -- | Helper function to parse the position at the end of a rewrite. Assumes that a rule
--- and derivation direction (isLeftToRight) have already been parsed, str is the
--- remaining input, and that str has no leading spacing.
-parseRewritePos :: RewriteRule -> Bool -> String -> Either DFPError Rewrite
-parseRewritePos rule isLeftToRight str =
+-- and derivation direction (dir) have already been parsed, str is the remaining input,
+-- and that str has no leading spacing.
+parseRewriteAtPos :: Bool -> String -> Either DFPError (RulePos, RuleDir)
+parseRewriteAtPos isLeftToRight str =
     case parseNat str of
         Just (pos, post) -> let lval = Left (UnexpectedSymbol (getErrPos str post))
-                                rval = Rewrite rule pos dir
+                                rval = (pos, dir)
                             in branchOnSpacing post lval rval
         Nothing -> Left (Right InvalidRewritePos)
     where dir = if isLeftToRight then L2R else R2L
 
--- | Consumes a rule a requested derivation rule derivation direction (dir),
--- and the remaining input to be parsed (str). If the requested dir aligns with rule,
--- then the rewrite position is parsed from str and the resulting rewrite (or error) is
+-- | Consumes whether a rule is equational (applies are assumed to be equational at this
+-- step), a requested derivation rule derivation direction (dir),  and the remaining
+-- input to be parsed (str). If the requested dir aligns with rule, then the rewrite
+-- position is parsed from str and the resulting rewrite description (or error) is
 -- returned. Otherwise, the misalignment between rule and dir is described through an
 -- error value.
-parseRewriteDirAndPos :: RewriteRule -> String -> String -> Either DFPError Rewrite
-parseRewriteDirAndPos rule dir str
-    | dirMatchesRule = parseRewritePos rule isL2R (snd (trimSpacing str))
+parseRewriteAtDirAndPos :: Bool -> String -> String -> Either DFPError (RulePos, RuleDir)
+parseRewriteAtDirAndPos isEqn dir str
+    | dirMatchesRule = parseRewriteAtPos isL2R (snd (trimSpacing str))
     | isL2R          = Left (Right MissingRewriteDir)
     | otherwise      = Left (Right InvalidRewriteDir)
-    where isDirected    = dir /= ""
-          isL2R         = dir /= "←"
-          dirMatchesRule = if equational rule then isDirected else isL2R
+    where isDirected     = dir /= ""
+          isL2R          = dir /= "←"
+          dirMatchesRule = if isEqn then isDirected else isL2R
 
 -----------------------------------------------------------------------------------------
 -- * Line Parsing Methods.
@@ -110,9 +111,9 @@ parseRewrite dict str =
     case parseId str of
         Just (id, detStr) -> case interpretRule dict id of
             Just rule -> case parseFromSeps ["→", "←", ""] detStr of
-                Just (dir, natStr) -> case parseRewriteDirAndPos rule dir natStr of
-                    Left err -> Left (propDerErr str natStr err)
-                    Right rw -> Right rw
+                Just (dir, posStr) -> case parseRewriteAtDirAndPos (equational rule) dir posStr of
+                    Left err         -> Left (propDerErr str posStr err)
+                    Right (pos, dir) -> Right (Rewrite rule pos dir)
                 Nothing ->  Left (Left UnknownParseError) -- Should be unreachable.
             Nothing -> Left (Right (UnknownRuleName id))
         Nothing -> Left (Right InvalidRuleName)

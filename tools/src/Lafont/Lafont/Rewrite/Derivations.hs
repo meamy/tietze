@@ -11,9 +11,7 @@ import           Lafont.Rewrite.Summary
 -- * Types to Represent a Derivation
 
 -- | A concrete description of a derivation (i.e., includes all rewrite data).
-data Derivation = Derivation { summary  :: DerivationSummary
-                             , rewrites :: [Rewrite]
-                             } deriving (Eq,Show)
+data Derivation = Derivation DerivationSummary [Rewrite] deriving (Eq,Show)
 
 -----------------------------------------------------------------------------------------
 -- * Derivation to Graph Conversion
@@ -31,8 +29,8 @@ data UnmetDep = UnmetDep Dependency Dependency deriving (Eq,Show)
 -- each derivation in list. A special vertex is added for unnamed derivations ("").
 registerDerivations :: [Derivation] -> DepGraph
 registerDerivations []                = addVertex nullgraph ""
-registerDerivations (derivation:list) =
-    case propName $ meta $ summary derivation of
+registerDerivations ((Derivation summary _):list) =
+    case propName $ meta summary of
         Just name -> addVertex g name
         Nothing   -> g
     where g = registerDerivations list
@@ -66,10 +64,10 @@ addDepsToGraph src (rewrite:rewrites) g =
 -- returns the results of addDepsToGraph using the name "" and the rewrites of the
 -- derivation.
 addDerivationToGraph :: Derivation -> DepGraph -> Either UnmetDep DepGraph
-addDerivationToGraph derivation g =
-    case propName $ meta $ summary derivation of
-        Just src -> addDepsToGraph src (rewrites derivation) g
-        Nothing  -> addDepsToGraph "" (rewrites derivation) g
+addDerivationToGraph (Derivation summary rewrites) g =
+    case propName $ meta summary of
+        Just src -> addDepsToGraph src rewrites g
+        Nothing  -> addDepsToGraph "" rewrites g
 
 -- | Consumes a list of derivations (derivations) and a graph (g). If there exists a
 -- derivation (d) in rewrites such that (addDerivationToGraph d g) returns an error, then

@@ -63,12 +63,12 @@ verifyDerivationSteps :: [NamedDerivation] -> String
 verifyDerivationSteps []                                     = "Success.\n"
 verifyDerivationSteps ((fname, num, derivation):derivations) =
     if success res
-    then if output res == final sum
+    then if output res == final summary
          then verifyDerivationSteps derivations
-         else describeIncorrectResult fname num (final sum) (output res)
+         else describeIncorrectResult fname num (final summary) (output res)
     else describeIncorrectStep fname num (output res) (step res)
-    where sum = summary derivation
-          res = simplify (initial sum) (rewrites derivation)
+    where Derivation summary rewrites = derivation
+          res = simplify (initial summary) rewrites
 
 -- | Consumes a list of derivation files and a list of known generators (gens). If all
 -- derivations preparse correctly, then returns a list of pairs, where each pair contains

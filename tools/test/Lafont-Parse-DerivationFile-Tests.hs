@@ -14,7 +14,93 @@ import Lafont.Parse.Common
 import Lafont.Parse.DerivationFile
 
 -----------------------------------------------------------------------------------------
--- parseRewritePos
+-- parseRewriteAtPos
+
+test1 = TestCase (assertEqual "parseRewriteAtPos rejects empty strings (1/2)."
+                              (Left (Right InvalidRewritePos))
+                              (parseRewriteAtPos False ""))
+
+test2 = TestCase (assertEqual "parseRewriteAtPos rejects empty strings (2/2)."
+                              (Left (Right InvalidRewritePos))
+                              (parseRewriteAtPos True ""))
+
+test3 = TestCase (assertEqual "parseRewriteAtPos rejects bad positions (1/4)."
+                              (Left (Right InvalidRewritePos))
+                              (parseRewriteAtPos False "asd"))
+
+test4 = TestCase (assertEqual "parseRewriteAtPos rejects bad positions (2/4)."
+                              (Left (Right InvalidRewritePos))
+                              (parseRewriteAtPos True "asd"))
+
+test5 = TestCase (assertEqual "parseRewriteAtPos rejects bad positions (3/4)."
+                              (Left (Right InvalidRewritePos))
+                              (parseRewriteAtPos False "-4"))
+
+test6 = TestCase (assertEqual "parseRewriteAtPos rejects bad positions (4/4)."
+                              (Left (Right InvalidRewritePos))
+                              (parseRewriteAtPos True "-4"))
+
+test7 = TestCase (assertEqual "parseRewriteAtPos accepts natural numbers (1/5)."
+                              (Right (10, L2R))
+                              (parseRewriteAtPos True "10"))
+
+test8 = TestCase (assertEqual "parseRewriteAtPos accepts natural numbers (2/5)."
+                              (Right (10, R2L))
+                              (parseRewriteAtPos False "10"))
+
+test9 = TestCase (assertEqual "parseRewriteAtPos accepts natural numbers (3/5)."
+                              (Right (10, L2R))
+                              (parseRewriteAtPos True "10"))
+
+test10 = TestCase (assertEqual "parseRewriteAtPos accepts natural numbers (4/5)."
+                               (Right (10, R2L))
+                               (parseRewriteAtPos False "10"))
+
+test11 = TestCase (assertEqual "parseRewriteAtPos accepts natural numbers (5/5)."
+                               (Right (5, L2R))
+                               (parseRewriteAtPos True "5"))
+
+test12 = TestCase (assertEqual "parseRewriteAtPos handles trailing spacing."
+                               (Right (1234, L2R))
+                               (parseRewriteAtPos True "1234  \t\t   "))
+
+test13 = TestCase (assertEqual "parseRewriteAtPos rejects symbols after trailing spacing."
+                               (Left (Left (UnexpectedSymbol 4)))
+                               (parseRewriteAtPos True "1234  \t\t   xyz"))
+
+-----------------------------------------------------------------------------------------
+-- parseRewriteAtDirAndPos
+
+test14 = TestCase (assertEqual "parseRewriteAtDirAndPos propgates errors correctly."
+                               (Left (Right InvalidRewritePos))
+                               (parseRewriteAtDirAndPos False "" "asd"))
+
+test15 = TestCase (assertEqual "parseRewriteAtDirAndPos direction misalignment (1/2)."
+                               (Left (Right InvalidRewriteDir))
+                               (parseRewriteAtDirAndPos False "←" "10"))
+
+test16 = TestCase (assertEqual "parseRewriteAtDirAndPos direction misalignment (2/2)."
+                               (Left (Right MissingRewriteDir))
+                               (parseRewriteAtDirAndPos True "" "10"))
+
+test17 = TestCase (assertEqual "parseRewriteAtDirAndPos accepts equational rules with →."
+                               (Right (10, L2R))
+                               (parseRewriteAtDirAndPos True "→" "10  \t"))
+
+test18 = TestCase (assertEqual "parseRewriteAtDirAndPos accepts equational rules with ←."
+                               (Right (10, R2L))
+                               (parseRewriteAtDirAndPos True "←" "10  \t"))
+
+test19 = TestCase (assertEqual "parseRewriteAtDirAndPos accepts production rules without dirs."
+                               (Right (0, L2R))
+                               (parseRewriteAtDirAndPos False "" "0  \t"))
+
+test20 = TestCase (assertEqual "parseRewriteAtDirAndPos accepts production rules with →."
+                               (Right (0, L2R))
+                               (parseRewriteAtDirAndPos False "→" "0  \t"))
+
+-----------------------------------------------------------------------------------------
+-- parseRewrite
 
 word1 :: MonWord
 word1 = [(Symbol "a" []), (Symbol "b" []), (Symbol "c" [])]
@@ -27,92 +113,6 @@ primitiveRuleL2R = RewriteRule word1 word2 False Nothing
 
 primitiveRuleEqn :: RewriteRule
 primitiveRuleEqn = RewriteRule word1 word2 True Nothing
-
-test1 = TestCase (assertEqual "parseRewritePos rejects empty strings (1/2)."
-                              (Left (Right InvalidRewritePos))
-                              (parseRewritePos primitiveRuleL2R False ""))
-
-test2 = TestCase (assertEqual "parseRewritePos rejects empty strings (2/2)."
-                              (Left (Right InvalidRewritePos))
-                              (parseRewritePos primitiveRuleL2R True ""))
-
-test3 = TestCase (assertEqual "parseRewritePos rejects bad positions (1/4)."
-                              (Left (Right InvalidRewritePos))
-                              (parseRewritePos primitiveRuleL2R False "asd"))
-
-test4 = TestCase (assertEqual "parseRewritePos rejects bad positions (2/4)."
-                              (Left (Right InvalidRewritePos))
-                              (parseRewritePos primitiveRuleL2R True "asd"))
-
-test5 = TestCase (assertEqual "parseRewritePos rejects bad positions (3/4)."
-                              (Left (Right InvalidRewritePos))
-                              (parseRewritePos primitiveRuleL2R False "-4"))
-
-test6 = TestCase (assertEqual "parseRewritePos rejects bad positions (4/4)."
-                              (Left (Right InvalidRewritePos))
-                              (parseRewritePos primitiveRuleL2R True "-4"))
-
-test7 = TestCase (assertEqual "parseRewritePos accepts natural numbers (1/5)."
-                              (Right (Rewrite primitiveRuleL2R 10 L2R))
-                              (parseRewritePos primitiveRuleL2R True "10"))
-
-test8 = TestCase (assertEqual "parseRewritePos accepts natural numbers (2/5)."
-                              (Right (Rewrite primitiveRuleL2R 10 R2L))
-                              (parseRewritePos primitiveRuleL2R False "10"))
-
-test9 = TestCase (assertEqual "parseRewritePos accepts natural numbers (3/5)."
-                              (Right (Rewrite primitiveRuleEqn 10 L2R))
-                              (parseRewritePos primitiveRuleEqn True "10"))
-
-test10 = TestCase (assertEqual "parseRewritePos accepts natural numbers (4/5)."
-                               (Right (Rewrite primitiveRuleEqn 10 R2L))
-                               (parseRewritePos primitiveRuleEqn False "10"))
-
-test11 = TestCase (assertEqual "parseRewritePos accepts natural numbers (5/5)."
-                               (Right (Rewrite primitiveRuleL2R 5 L2R))
-                               (parseRewritePos primitiveRuleL2R True "5"))
-
-test12 = TestCase (assertEqual "parseRewritePos handles trailing spacing."
-                               (Right (Rewrite primitiveRuleL2R 1234 L2R))
-                               (parseRewritePos primitiveRuleL2R True "1234  \t\t   "))
-
-test13 = TestCase (assertEqual "parseRewritePos rejects symbols after trailing spacing."
-                               (Left (Left (UnexpectedSymbol 4)))
-                               (parseRewritePos primitiveRuleL2R True "1234  \t\t   xyz"))
-
------------------------------------------------------------------------------------------
--- parseRewriteDirAndPos
-
-test14 = TestCase (assertEqual "parseRewriteDirAndPos propgates errors correctly."
-                               (Left (Right InvalidRewritePos))
-                               (parseRewriteDirAndPos primitiveRuleL2R "" "asd"))
-
-test15 = TestCase (assertEqual "parseRewriteDirAndPos direction misalignment (1/2)."
-                               (Left (Right InvalidRewriteDir))
-                               (parseRewriteDirAndPos primitiveRuleL2R "←" "10"))
-
-test16 = TestCase (assertEqual "parseRewriteDirAndPos direction misalignment (2/2)."
-                               (Left (Right MissingRewriteDir))
-                               (parseRewriteDirAndPos primitiveRuleEqn "" "10"))
-
-test17 = TestCase (assertEqual "parseRewriteDirAndPos accepts equational rules with →."
-                               (Right (Rewrite primitiveRuleEqn 10 L2R))
-                               (parseRewriteDirAndPos primitiveRuleEqn "→" "10  \t"))
-
-test18 = TestCase (assertEqual "parseRewriteDirAndPos accepts equational rules with ←."
-                               (Right (Rewrite primitiveRuleEqn 10 R2L))
-                               (parseRewriteDirAndPos primitiveRuleEqn "←" "10  \t"))
-
-test19 = TestCase (assertEqual "parseRewriteDirAndPos accepts production rules without dirs."
-                               (Right (Rewrite primitiveRuleL2R 0 L2R))
-                               (parseRewriteDirAndPos primitiveRuleL2R "" "0  \t"))
-
-test20 = TestCase (assertEqual "parseRewriteDirAndPos accepts production rules with →."
-                               (Right (Rewrite primitiveRuleL2R 0 L2R))
-                               (parseRewriteDirAndPos primitiveRuleL2R "→" "0  \t"))
-
------------------------------------------------------------------------------------------
--- parseRewrite
 
 derivedRule :: RewriteRule
 derivedRule = RewriteRule word1 word2 False (Just "proof")
