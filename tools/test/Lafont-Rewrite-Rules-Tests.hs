@@ -4,6 +4,7 @@ import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Lafont.Common
+import Lafont.Rewrite.Common
 import Lafont.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
@@ -46,16 +47,16 @@ rule1 :: RewriteRule
 rule1 = RewriteRule [ccx123, cx13] [cx13, ccx123] True Nothing
 
 test1 = TestCase $ assertBool "Can apply CCX123.CX13 = CX13.CCX123 to CCX123.CX13.CX23"
-                              (checkRewriteRule word1a rule1 True)
+                              (checkRewriteRule word1a rule1 L2R)
 
 test2 = TestCase $ assertBool "Can apply CCX123.CX13 = CX13.CCX123 to CX13.CCX123.CX23"
-                              (checkRewriteRule word1b rule1 False)
+                              (checkRewriteRule word1b rule1 R2L)
 
 test3 = TestCase $ assertEqual "CCX123.CX13.CX23 =R1=> CX13.CCX123.CX23"
-                               word1b (applyRewriteRule word1a rule1 True)
+                               word1b (applyRewriteRule word1a rule1 L2R)
 
 test4 = TestCase $ assertEqual "CX13.CCX123.CX23 =R1=> CCX123.CX13.CX23"
-                               word1a (applyRewriteRule word1b rule1 False)
+                               word1a (applyRewriteRule word1b rule1 R2L)
 
 -----------------------------------------------------------------------------------------
 -- Tests when a rewrite rule is not applicable.
@@ -67,10 +68,10 @@ rule3 :: RewriteRule
 rule3 = RewriteRule [ccx123, cx23] [cx23, ccx123] True Nothing
 
 test5 = TestCase $ assertBool "The rule is too long and must be rejected"
-                              (not (checkRewriteRule word1a rule2 True))
+                              (not (checkRewriteRule word1a rule2 L2R))
 
 test6 = TestCase $ assertBool "The rule does not match and must be rejected"
-                              (not (checkRewriteRule word1a rule3 True))
+                              (not (checkRewriteRule word1a rule3 L2R))
 
 -----------------------------------------------------------------------------------------
 -- Tests when a rewrite operation is applicable (in either direction).
@@ -82,10 +83,10 @@ word2b :: MonWord
 word2b = [x1, x2, z1, cx13, ccx123, cx23]
 
 op1a :: Rewrite
-op1a = Rewrite rule1 3 True
+op1a = Rewrite rule1 3 L2R
 
 op1b :: Rewrite
-op1b = Rewrite rule1 3 False
+op1b = Rewrite rule1 3 R2L
 
 test7 = TestCase $ assertBool "Can apply CCX123.CX13 = CX13.CCX123 forward at index 3"
                               (checkRewrite word2a op1a)
@@ -106,10 +107,10 @@ word3b :: MonWord
 word3b = [k12, x1, x2, z1, cx13, ccx123, cx23]
 
 op2a :: Rewrite
-op2a = Rewrite rule1 4 True
+op2a = Rewrite rule1 4 L2R
 
 op2b :: Rewrite
-op2b = Rewrite rule1 4 False
+op2b = Rewrite rule1 4 R2L
 
 test11 = TestCase $ assertBool "Can apply CCX123.CX13 = CX13.CCX123 forward at index 4"
                                (checkRewrite word3a op2a)
@@ -136,10 +137,10 @@ rule4 :: RewriteRule
 rule4 = RewriteRule [ccx123, ccx123] [] True Nothing
 
 test15 = TestCase $ assertEqual "Can support rules that eliminate symbols"
-                                word4b (applyRewriteRule word4a rule4 True)
+                                word4b (applyRewriteRule word4a rule4 L2R)
 
 test16 = TestCase $ assertEqual "Can support rules that introduce symbols"
-                                word4a (applyRewriteRule word4b rule4 False)
+                                word4a (applyRewriteRule word4b rule4 R2L)
 
 -----------------------------------------------------------------------------------------
 -- Checks that derived rules are identified.

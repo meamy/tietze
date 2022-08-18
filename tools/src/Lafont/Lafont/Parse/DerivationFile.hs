@@ -7,6 +7,7 @@ import           Lafont.Maybe
 import           Lafont.Parse.Common
 import           Lafont.Parse.MonWords
 import           Lafont.Parse.Properties
+import           Lafont.Rewrite.Common
 import           Lafont.Rewrite.Derivations
 import           Lafont.Rewrite.Lookup
 import           Lafont.Rewrite.Rules
@@ -78,9 +79,10 @@ parseRewritePos :: RewriteRule -> Bool -> String -> Either DFPError Rewrite
 parseRewritePos rule isLeftToRight str =
     case parseNat str of
         Just (pos, post) -> let lval = Left (UnexpectedSymbol (getErrPos str post))
-                                rval = Rewrite rule pos isLeftToRight
+                                rval = Rewrite rule pos dir
                             in branchOnSpacing post lval rval
         Nothing -> Left (Right InvalidRewritePos)
+    where dir = if isLeftToRight then L2R else R2L
 
 -- | Consumes a rule a requested derivation rule derivation direction (dir),
 -- and the remaining input to be parsed (str). If the requested dir aligns with rule,
@@ -115,6 +117,32 @@ parseRewrite dict str =
             Nothing -> Left (Right (UnknownRuleName id))
         Nothing -> Left (Right InvalidRuleName)
 
+-- | Consumes a dictionary of known rules (dict), an apply line of a derivation file
+-- (str), and the substring of str containing the modified rule line (rwStr). If parsing
+-- is successful, then the corresponding rewrite is returned. Otherwise, an error is
+-- returned.
+parseApplyLine :: RuleDict -> String -> String -> Either DFPError Rewrite
+parseApplyLine dict str rwStr =
+    case parseRewrite dict trimmed of
+        Left err -> Left (propDerErr str trimmed err)
+        Right rw -> let (Rewrite rule _ _) = rw
+                    in if isDerivedRule rule
+                          then Right rw
+                          else Left (Right ApplyOnPrimitive)
+    where (_, trimmed) = trimSpacing rwStr
+
+-- | Consumes a dictionary of known rules (dict) and a rule line of a derivation file
+-- (str). Attempts to parse str. If parsing is successful, then the corresponding rewrite
+-- is returned. Otherwise, an error is returned.
+parseRuleLine :: RuleDict -> String -> Either DFPError Rewrite
+parseRuleLine dict str =
+    case parseRewrite dict str of
+        Left err -> Left err
+        Right rw -> let (Rewrite rule _ _) = rw
+                    in if isDerivedRule rule
+                       then Left (Right RewriteOnDerived)
+                       else Right rw
+
 -- | Consumes a dictionary of known rules (dict) and a rewrite line of a derivation file
 -- (str). Attempts to parse str, taking into account all modifiers applied to the line.
 -- If parsing is successful, then the corresponding rewrite is returned. Otherwise, an
@@ -122,18 +150,9 @@ parseRewrite dict str =
 parseRewriteLine :: RuleDict -> String -> Either DFPError Rewrite
 parseRewriteLine dict str =
     case parseFromSeps ["!apply", "!"] str of
-        Just ("!apply", rwStr) -> let (_, trimmed) = trimSpacing rwStr
-                                  in case parseRewrite dict trimmed of
-                                         Left err -> Left (propDerErr str trimmed err)
-                                         Right rw -> if isDerivedRule (rule rw)
-                                                     then Right rw
-                                                     else Left (Right ApplyOnPrimitive)
-        Nothing -> case parseRewrite dict str of
-            Left err -> Left err
-            Right rw -> if isDerivedRule (rule rw)
-                        then Left (Right RewriteOnDerived)
-                        else Right rw
-        Just ("!", _) -> Left (Right UnknownRewriteMod)
+        Just ("!apply", rwStr) -> parseApplyLine dict str rwStr
+        Nothing                -> parseRuleLine dict str
+        Just ("!", _)          -> Left (Right UnknownRewriteMod)
 
 -----------------------------------------------------------------------------------------
 -- * Preamble Parsing.

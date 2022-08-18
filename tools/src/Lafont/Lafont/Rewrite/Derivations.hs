@@ -43,8 +43,8 @@ registerDerivations (derivation:list) =
 -- by adding an edge from dep to dep' is returned. If rewrite does not apply a
 -- derivation, then g is returned.
 addDepToGraph :: Dependency -> Rewrite -> DepGraph -> Either UnmetDep DepGraph
-addDepToGraph src rewrite g =
-    case derivedFrom $ rule rewrite of
+addDepToGraph src (Rewrite rule _ _) g =
+    case derivedFrom rule of
         Just dep -> case addEdge g src dep of
             Just g' -> Right g'
             Nothing -> Left (UnmetDep src dep)

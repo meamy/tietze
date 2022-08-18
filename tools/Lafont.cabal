@@ -19,6 +19,7 @@ library
                        Lafont.Maybe
                        Lafont.String
                        Lafont.Ring
+                       Lafont.Rewrite.Common
                        Lafont.Rewrite.Derivations
                        Lafont.Rewrite.Rules
                        Lafont.Rewrite.Simplification

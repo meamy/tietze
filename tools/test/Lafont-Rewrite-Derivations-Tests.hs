@@ -5,6 +5,7 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Maybe
 import Lafont.Graph
+import Lafont.Rewrite.Common
 import Lafont.Rewrite.Derivations
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Summary
@@ -26,13 +27,13 @@ summary3 = DerivationSummary (RewritePreamble (Just rel3)) [] []
 summary4 = DerivationSummary (RewritePreamble (Just rel4)) [] []
 summary5 = DerivationSummary (RewritePreamble (Just rel5)) [] []
 
-rwto = Rewrite (RewriteRule [] [] True Nothing) 0 True
-rwtx = Rewrite (RewriteRule [] [] True (Just relx)) 0 True
-rwt1 = Rewrite (RewriteRule [] [] True (Just rel1)) 0 True
-rwt2 = Rewrite (RewriteRule [] [] True (Just rel2)) 0 True
-rwt3 = Rewrite (RewriteRule [] [] True (Just rel3)) 0 True
-rwt4 = Rewrite (RewriteRule [] [] True (Just rel4)) 0 True
-rwt5 = Rewrite (RewriteRule [] [] True (Just rel5)) 0 True
+rwto = Rewrite (RewriteRule [] [] True Nothing) 0 L2R
+rwtx = Rewrite (RewriteRule [] [] True (Just relx)) 0 L2R
+rwt1 = Rewrite (RewriteRule [] [] True (Just rel1)) 0 L2R
+rwt2 = Rewrite (RewriteRule [] [] True (Just rel2)) 0 L2R
+rwt3 = Rewrite (RewriteRule [] [] True (Just rel3)) 0 L2R
+rwt4 = Rewrite (RewriteRule [] [] True (Just rel4)) 0 L2R
+rwt5 = Rewrite (RewriteRule [] [] True (Just rel5)) 0 L2R
 
 derivationo = Derivation summaryo [rwto, rwto, rwto, rwto, rwto, rwto]
 derivation1 = Derivation summaryo [rwto, rwt1, rwto, rwto, rwt3, rwto]

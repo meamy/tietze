@@ -6,6 +6,7 @@ module Lafont.Rewrite.Rules where
 
 import           Data.Maybe
 import           Lafont.Common
+import           Lafont.Rewrite.Common
 
 -----------------------------------------------------------------------------------------
 -- * RewriteRules.
@@ -38,9 +39,9 @@ doesRewriteTermMatch str lhs = head str == head lhs && match
 -- | Consumes a monoidal word, a rewrite rule, and a boolean flag indicating if the rule
 -- is to be applied from left-to-right. Returns true if rule matches a prefix of the
 -- monoidal world.
-checkRewriteRule :: MonWord -> RewriteRule -> Bool -> Bool
-checkRewriteRule str rule True  = doesRewriteTermMatch str (lhs rule)
-checkRewriteRule str rule False = doesRewriteTermMatch str (rhs rule)
+checkRewriteRule :: MonWord -> RewriteRule -> RuleDir -> Bool
+checkRewriteRule str rule L2R = doesRewriteTermMatch str (lhs rule)
+checkRewriteRule str rule R2L = doesRewriteTermMatch str (rhs rule)
 
 -- | Consumes a monoidal word, together with the lhs and rhs of a production rule:
 -- lhs → rhs. Returns the monoidal word obtained by applying the production rule at
@@ -53,31 +54,28 @@ applyProductionRule str lhs rhs = applyProductionRule (tail str) (tail lhs) rhs
 -- | Consumes a monoidal word, a rewrite rule, and a boolean flag indicating if the rule
 -- is to be applied from left-to-right. Returns the string obtained by applying the
 -- rewrite rule. Assumes that checkRewriteRule is true.
-applyRewriteRule :: MonWord -> RewriteRule -> Bool -> MonWord
-applyRewriteRule str rule True  = applyProductionRule str (lhs rule) (rhs rule)
-applyRewriteRule str rule False = applyProductionRule str (rhs rule) (lhs rule)
+applyRewriteRule :: MonWord -> RewriteRule -> RuleDir -> MonWord
+applyRewriteRule str rule L2R = applyProductionRule str (lhs rule) (rhs rule)
+applyRewriteRule str rule R2L = applyProductionRule str (rhs rule) (lhs rule)
 
 -----------------------------------------------------------------------------------------
 -- * Rewrites.
 
 -- | Applies a rewrite rule at the specified position, in the specified direction.
-data Rewrite = Rewrite { rule       :: RewriteRule
-                       , pos        :: Int
-                       , isLhsToRhs :: Bool
-                       } deriving (Show,Eq)
+data Rewrite = Rewrite RewriteRule RulePos RuleDir deriving (Show,Eq)
 
 -- | Consumes a monoidal word and a rewrite. Returns true if rule matches at the position
 -- indicated by the rewrite.
 checkRewrite :: MonWord -> Rewrite -> Bool
-checkRewrite str rw = impl str (pos rw)
+checkRewrite str (Rewrite rule pos dir) = impl str pos
     where impl substr n = if n == 0
-                          then checkRewriteRule substr (rule rw) (isLhsToRhs rw)
+                          then checkRewriteRule substr rule dir
                           else not (null substr) && impl (tail substr) (n - 1)
 
 -- | Consumes a monoidal word and a rewrite. Returns the string obtained by applying the
 -- rewrite. Assumes that checkRewrite is true.
 applyRewrite :: MonWord -> Rewrite -> MonWord
-applyRewrite str rw = impl str (pos rw)
+applyRewrite str (Rewrite rule pos dir) = impl str pos
     where impl substr n = if n == 0
-                          then applyRewriteRule substr (rule rw) (isLhsToRhs rw)
+                          then applyRewriteRule substr rule dir
                           else head substr : impl (tail substr) (n - 1)

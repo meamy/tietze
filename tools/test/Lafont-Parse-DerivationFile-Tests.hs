@@ -5,6 +5,7 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Either
 import Lafont.Common
+import Lafont.Rewrite.Common
 import Lafont.Rewrite.Derivations
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Lookup
@@ -52,27 +53,27 @@ test6 = TestCase (assertEqual "parseRewritePos rejects bad positions (4/4)."
                               (parseRewritePos primitiveRuleL2R True "-4"))
 
 test7 = TestCase (assertEqual "parseRewritePos accepts natural numbers (1/5)."
-                              (Right (Rewrite primitiveRuleL2R 10 True))
+                              (Right (Rewrite primitiveRuleL2R 10 L2R))
                               (parseRewritePos primitiveRuleL2R True "10"))
 
 test8 = TestCase (assertEqual "parseRewritePos accepts natural numbers (2/5)."
-                              (Right (Rewrite primitiveRuleL2R 10 False))
+                              (Right (Rewrite primitiveRuleL2R 10 R2L))
                               (parseRewritePos primitiveRuleL2R False "10"))
 
 test9 = TestCase (assertEqual "parseRewritePos accepts natural numbers (3/5)."
-                              (Right (Rewrite primitiveRuleEqn 10 True))
+                              (Right (Rewrite primitiveRuleEqn 10 L2R))
                               (parseRewritePos primitiveRuleEqn True "10"))
 
 test10 = TestCase (assertEqual "parseRewritePos accepts natural numbers (4/5)."
-                               (Right (Rewrite primitiveRuleEqn 10 False))
+                               (Right (Rewrite primitiveRuleEqn 10 R2L))
                                (parseRewritePos primitiveRuleEqn False "10"))
 
 test11 = TestCase (assertEqual "parseRewritePos accepts natural numbers (5/5)."
-                               (Right (Rewrite primitiveRuleL2R 5 True))
+                               (Right (Rewrite primitiveRuleL2R 5 L2R))
                                (parseRewritePos primitiveRuleL2R True "5"))
 
 test12 = TestCase (assertEqual "parseRewritePos handles trailing spacing."
-                               (Right (Rewrite primitiveRuleL2R 1234 True))
+                               (Right (Rewrite primitiveRuleL2R 1234 L2R))
                                (parseRewritePos primitiveRuleL2R True "1234  \t\t   "))
 
 test13 = TestCase (assertEqual "parseRewritePos rejects symbols after trailing spacing."
@@ -95,19 +96,19 @@ test16 = TestCase (assertEqual "parseRewriteDirAndPos direction misalignment (2/
                                (parseRewriteDirAndPos primitiveRuleEqn "" "10"))
 
 test17 = TestCase (assertEqual "parseRewriteDirAndPos accepts equational rules with →."
-                               (Right (Rewrite primitiveRuleEqn 10 True))
+                               (Right (Rewrite primitiveRuleEqn 10 L2R))
                                (parseRewriteDirAndPos primitiveRuleEqn "→" "10  \t"))
 
 test18 = TestCase (assertEqual "parseRewriteDirAndPos accepts equational rules with ←."
-                               (Right (Rewrite primitiveRuleEqn 10 False))
+                               (Right (Rewrite primitiveRuleEqn 10 R2L))
                                (parseRewriteDirAndPos primitiveRuleEqn "←" "10  \t"))
 
 test19 = TestCase (assertEqual "parseRewriteDirAndPos accepts production rules without dirs."
-                               (Right (Rewrite primitiveRuleL2R 0 True))
+                               (Right (Rewrite primitiveRuleL2R 0 L2R))
                                (parseRewriteDirAndPos primitiveRuleL2R "" "0  \t"))
 
 test20 = TestCase (assertEqual "parseRewriteDirAndPos accepts production rules with →."
-                               (Right (Rewrite primitiveRuleL2R 0 True))
+                               (Right (Rewrite primitiveRuleL2R 0 L2R))
                                (parseRewriteDirAndPos primitiveRuleL2R "→" "0  \t"))
 
 -----------------------------------------------------------------------------------------
@@ -143,19 +144,19 @@ test25 = TestCase (assertEqual "parseRewrite propogates errors correctly."
                                (parseRewrite dict3 "abc 10 x"))
 
 test26 = TestCase (assertEqual "parseRewrite supports rewrites without directions."
-                               (Right (Rewrite primitiveRuleL2R 0 True))
+                               (Right (Rewrite primitiveRuleL2R 0 L2R))
                                (parseRewrite dict3 "abc  0   "))
 
 test27 = TestCase (assertEqual "parseRewrite supports rewrites with direction →."
-                               (Right (Rewrite primitiveRuleEqn 0 True))
+                               (Right (Rewrite primitiveRuleEqn 0 L2R))
                                (parseRewrite dict3 "xyz  →   0   "))
 
 test28 = TestCase (assertEqual "parseRewrite supports rewrites with direction ←."
-                               (Right (Rewrite primitiveRuleEqn 0 False))
+                               (Right (Rewrite primitiveRuleEqn 0 R2L))
                                (parseRewrite dict3 "xyz  ←   0   "))
 
 test29 = TestCase (assertEqual "parseRewrite can support different rewrite positions."
-                               (Right (Rewrite primitiveRuleL2R 1 True))
+                               (Right (Rewrite primitiveRuleL2R 1 L2R))
                                (parseRewrite dict3 "abc 1"))
 
 -----------------------------------------------------------------------------------------
@@ -186,11 +187,11 @@ test35 = TestCase (assertEqual ""
                                (parseRewriteLine dict3 "!apply abc 10"))
 
 test36 = TestCase (assertEqual ""
-                               (Right (Rewrite primitiveRuleEqn 0 False))
+                               (Right (Rewrite primitiveRuleEqn 0 R2L))
                                (parseRewriteLine dict3 "xyz  ←   0   "))
 
 test37 = TestCase (assertEqual ""
-                               (Right (Rewrite derivedRule 10 True))
+                               (Right (Rewrite derivedRule 10 L2R))
                                (parseRewriteLine dict3 "!apply  derived   →    10     "))
 
 -----------------------------------------------------------------------------------------
@@ -287,7 +288,7 @@ test46 = TestCase (assertEqual "parseRewriteLines supports empty files."
                                (parseRewriteLines dict3 [] 0))
 
 test47 = TestCase (assertEqual "parseRewriteLines can parse a single line."
-                               (Right [(Rewrite primitiveRuleEqn 5 False)])
+                               (Right [(Rewrite primitiveRuleEqn 5 R2L)])
                                (parseRewriteLines dict3 ["  xyz  ←   5   -- xyz"] 0))
 
 test48 = TestCase (assertEqual "parseRewriteLines can propogate errors (single line)."
@@ -297,9 +298,9 @@ test48 = TestCase (assertEqual "parseRewriteLines can propogate errors (single l
 -- Multi-line tests.
 
 rewriteList :: [Rewrite]
-rewriteList = [(Rewrite primitiveRuleL2R 0 True),
-               (Rewrite primitiveRuleEqn 5 True),
-               (Rewrite derivedRule 10 True)]
+rewriteList = [(Rewrite primitiveRuleL2R 0 L2R),
+               (Rewrite primitiveRuleEqn 5 L2R),
+               (Rewrite derivedRule 10 L2R)]
 
 test49 = TestCase (assertEqual "parseRewriteLines can parse multiple valid lines."
                                (Right rewriteList)
