@@ -5,8 +5,8 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Maybe
 import Lafont.Graph
+import Lafont.Rewrite.Abstraction
 import Lafont.Rewrite.Common
-import Lafont.Rewrite.Derivations
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Summary
 
@@ -27,25 +27,32 @@ summary3 = DerivationSummary (RewritePreamble (Just rel3)) [] []
 summary4 = DerivationSummary (RewritePreamble (Just rel4)) [] []
 summary5 = DerivationSummary (RewritePreamble (Just rel5)) [] []
 
-rwto = Rewrite (RewriteRule [] [] True Nothing) 0 L2R
-rwtx = Rewrite (RewriteRule [] [] True (Just relx)) 0 L2R
-rwt1 = Rewrite (RewriteRule [] [] True (Just rel1)) 0 L2R
-rwt2 = Rewrite (RewriteRule [] [] True (Just rel2)) 0 L2R
-rwt3 = Rewrite (RewriteRule [] [] True (Just rel3)) 0 L2R
-rwt4 = Rewrite (RewriteRule [] [] True (Just rel4)) 0 L2R
-rwt5 = Rewrite (RewriteRule [] [] True (Just rel5)) 0 L2R
+rwto :: AbsRewrite
+rwto = Left (Rewrite (RewriteRule [] [] True Nothing) 0 L2R)
+rwtx :: AbsRewrite
+rwtx = Right (Apply relx 0 L2R)
+rwt1 :: AbsRewrite
+rwt1 = Right (Apply rel1 0 L2R)
+rwt2 :: AbsRewrite
+rwt2 = Right (Apply rel2 0 L2R)
+rwt3 :: AbsRewrite
+rwt3 = Right (Apply rel3 0 L2R)
+rwt4 :: AbsRewrite
+rwt4 = Right (Apply rel4 0 L2R)
+rwt5 :: AbsRewrite
+rwt5 = Right (Apply rel5 0 L2R)
 
-derivationo = Derivation summaryo [rwto, rwto, rwto, rwto, rwto, rwto]
-derivation1 = Derivation summaryo [rwto, rwt1, rwto, rwto, rwt3, rwto]
-derivationx = Derivation summaryo [rwto, rwto, rwto, rwtx, rwto, rwto]
+derivationo = AbsDerivation summaryo [rwto, rwto, rwto, rwto, rwto, rwto]
+derivation1 = AbsDerivation summaryo [rwto, rwt1, rwto, rwto, rwt3, rwto]
+derivationx = AbsDerivation summaryo [rwto, rwto, rwto, rwtx, rwto, rwto]
 
-namedDerivation1 = Derivation summary1 [rwto, rwto, rwto, rwto, rwto, rwto]
-namedDerivation2 = Derivation summary2 [rwto, rwt1, rwt1, rwto, rwt3, rwto]
-namedDerivation3 = Derivation summary3 [rwto, rwto, rwto, rwt1, rwto, rwto]
-namedDerivation4 = Derivation summary4 [rwto, rwto, rwto, rwto, rwto, rwt3]
-namedDerivation5 = Derivation summary5 [rwt3, rwto, rwt4, rwto, rwto, rwto]
-namedDerivationx = Derivation summary1 [rwto, rwto, rwto, rwtx, rwto, rwto]
-namedDerivationc = Derivation summary1 [rwto, rwto, rwto, rwto, rwto, rwt2]
+namedDerivation1 = AbsDerivation summary1 [rwto, rwto, rwto, rwto, rwto, rwto]
+namedDerivation2 = AbsDerivation summary2 [rwto, rwt1, rwt1, rwto, rwt3, rwto]
+namedDerivation3 = AbsDerivation summary3 [rwto, rwto, rwto, rwt1, rwto, rwto]
+namedDerivation4 = AbsDerivation summary4 [rwto, rwto, rwto, rwto, rwto, rwt3]
+namedDerivation5 = AbsDerivation summary5 [rwt3, rwto, rwt4, rwto, rwto, rwto]
+namedDerivationx = AbsDerivation summary1 [rwto, rwto, rwto, rwtx, rwto, rwto]
+namedDerivationc = AbsDerivation summary1 [rwto, rwto, rwto, rwto, rwto, rwt2]
 
 list0 = []
 list1 = namedDerivation1:list0

@@ -23,6 +23,7 @@ import           System.IO
 -- | Helper types to simplify code.
 type NamedData a = (String, Int, a)
 type NamedPreDerivation = NamedData PreDerivation
+type NamedAbsDerivation = NamedData AbsDerivation
 type NamedDerivation = NamedData Derivation
 type ListParseRV a = Either (String, Int, DFPError) [a]
 
@@ -56,6 +57,14 @@ concretizeDerivation :: RuleDict -> AbsDerivation -> Derivation
 concretizeDerivation rules (AbsDerivation summary x) = Derivation summary rewrites
     where rewrites = map (concretizeRewrite rules) x
 
+-- | Temporary function to introduce equational derived rules.
+concretizeNamedDerivation :: RuleDict -> NamedAbsDerivation -> NamedDerivation
+concretizeNamedDerivation rules (name, i, x) = (name, i, concretizeDerivation rules x)
+
+-- | Temporary function to introduce equational derived rules.
+concretizeNamedDerivations :: RuleDict -> [NamedAbsDerivation] -> [NamedDerivation]
+concretizeNamedDerivations rules = map (concretizeNamedDerivation rules)
+
 -----------------------------------------------------------------------------------------
 -- * Logic.
 
@@ -64,13 +73,14 @@ concretizeDerivation rules (AbsDerivation summary x) = Derivation summary rewrit
 -- derivations is invalid, then the error is printed. Otherwise, if a step in a
 -- derivation is invalid, then a summary of the failure is printed. Otherwise, a success
 -- message is printed.
-verifyDerivations :: [NamedDerivation] -> String
-verifyDerivations derivations =
+verifyDerivations :: RuleDict -> [NamedAbsDerivation] -> String
+verifyDerivations rules derivations =
     case detectDerivationError $ map third derivations of
         Just (Left unmet)  -> "Unmet dependency: " ++ printUnmetDep unmet ++ "\n"
         Just (Right cycle) -> "Dependency cycle detected: " ++ printCycle cycle ++ "\n"
-        Nothing            -> verifyDerivationSteps derivations
+        Nothing            -> verifyDerivationSteps tmp
     where third (_, _, a) = a
+          tmp = concretizeNamedDerivations rules derivations
 
 -- | Consumes a list of pairs, where each tuple contains the name of a derivation file
 -- and the Derivation it describes. If a derivation is invalid, then a summary of the
@@ -122,14 +132,14 @@ addDerivedRules rules ((fname, num, pre):rest) =
 -- parse correctly, then returns a list of pairs, where each pair contains the name of a
 -- pair and the Derivation it describes. Otherwise, a parsing error is returned. Requires
 -- that all derived rules have already been recorded in rules
-parseRewriteSections :: RuleDict -> [NamedPreDerivation] -> ListParseRV NamedDerivation
+parseRewriteSections :: RuleDict -> [NamedPreDerivation] -> ListParseRV NamedAbsDerivation
 parseRewriteSections _     []                  = Right []
 parseRewriteSections rules ((fname, num, pre):rest) =
     case parseDerivationFile rules pre of
         Left (errLn, err) -> Left (fname, errLn, err)
         Right deriv       -> case parseRewriteSections rules rest of
             Left err  -> Left err
-            Right res -> Right ((fname, num, concretizeDerivation rules deriv) : res)
+            Right res -> Right ((fname, num, deriv) : res)
 
 -- | Consumes a handle, a list of derivation files (DerivFnames), a dictionary of rewrite
 -- rules (rules), and a list of generators (gens). If all derivations parse correctly,
@@ -145,7 +155,7 @@ processDerivationFiles hdl fnames rules gens = do
             Left (fname, num) -> hPutStr hdl $ logFromFile fname 0 $ reportDupRule num
             Right sumRules    -> case parseRewriteSections sumRules preDerivations of
                 Left (fname, errLn, err) -> hPutStr hdl $ logEitherMsg fname errLn err
-                Right derivations        -> hPutStr hdl $ verifyDerivations derivations
+                Right derivations        -> hPutStr hdl $ verifyDerivations sumRules derivations
 
 -- | See validateDerivations. Requires that both files exist, whereas validateDerivations
 -- does not imporse this assumption

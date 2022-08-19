@@ -192,12 +192,12 @@ check8 str = (and [-- The line at which the error should occur (see summary.deri
                    -- Should be a single line.
                    ((length (lines str)) == 1)])
 
-test9 = (HandleTest "Derived_Rules_Pass"
+test9 = (HandleTest "Derived_Rules_Fail"
                     "Ensures that validateDerivations identifies derived rules (1/2)."
                     (\x -> validateDerivations x goodGens goodRels [derivedRuleProof])
                     check8)
 
-test10 = (HandleTest "Derived_Rules_Fail"
+test10 = (HandleTest "Derived_Rules_Pass"
                      "Ensures that validateDerivations identifies derived rules (2/2)."
                      (\x -> validateDerivations x goodGens goodRels derivedProofDeps)
                      (\str -> str == "Success.\n"))
