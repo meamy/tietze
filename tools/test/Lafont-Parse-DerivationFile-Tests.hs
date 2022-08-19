@@ -5,6 +5,7 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Either
 import Lafont.Common
+import Lafont.Rewrite.Abstraction
 import Lafont.Rewrite.Common
 import Lafont.Rewrite.Derivations
 import Lafont.Rewrite.Rules
@@ -115,7 +116,7 @@ primitiveRuleEqn :: RewriteRule
 primitiveRuleEqn = RewriteRule word1 word2 True Nothing
 
 derivedRule :: RewriteRule
-derivedRule = RewriteRule word1 word2 False (Just "proof")
+derivedRule = RewriteRule word1 word2 False (Just "derived")
 
 dict0 :: RuleDict
 dict0 = empty
@@ -187,11 +188,11 @@ test35 = TestCase (assertEqual ""
                                (parseRewriteLine dict3 "!apply abc 10"))
 
 test36 = TestCase (assertEqual ""
-                               (Right (Rewrite primitiveRuleEqn 0 R2L))
+                               (Right (Left (Rewrite primitiveRuleEqn 0 R2L)))
                                (parseRewriteLine dict3 "xyz  ←   0   "))
 
 test37 = TestCase (assertEqual ""
-                               (Right (Rewrite derivedRule 10 L2R))
+                               (Right (Right (Apply "derived" 10 L2R)))
                                (parseRewriteLine dict3 "!apply  derived   →    10     "))
 
 -----------------------------------------------------------------------------------------
@@ -288,7 +289,7 @@ test46 = TestCase (assertEqual "parseRewriteLines supports empty files."
                                (parseRewriteLines dict3 [] 0))
 
 test47 = TestCase (assertEqual "parseRewriteLines can parse a single line."
-                               (Right [(Rewrite primitiveRuleEqn 5 R2L)])
+                               (Right [Left (Rewrite primitiveRuleEqn 5 R2L)])
                                (parseRewriteLines dict3 ["  xyz  ←   5   -- xyz"] 0))
 
 test48 = TestCase (assertEqual "parseRewriteLines can propogate errors (single line)."
@@ -297,10 +298,10 @@ test48 = TestCase (assertEqual "parseRewriteLines can propogate errors (single l
 
 -- Multi-line tests.
 
-rewriteList :: [Rewrite]
-rewriteList = [(Rewrite primitiveRuleL2R 0 L2R),
-               (Rewrite primitiveRuleEqn 5 L2R),
-               (Rewrite derivedRule 10 L2R)]
+rewriteList :: [AbsRewrite]
+rewriteList = [Left (Rewrite primitiveRuleL2R 0 L2R),
+               Left (Rewrite primitiveRuleEqn 5 L2R),
+               Right (Apply "derived" 10 L2R)]
 
 test49 = TestCase (assertEqual "parseRewriteLines can parse multiple valid lines."
                                (Right rewriteList)
@@ -335,7 +336,7 @@ badBody = ["a.b.c",
            "",
            "a.b.c"]
 
-parseBody :: RuleDict -> [String] -> RewritePreamble -> [String] -> DParseRV Derivation
+parseBody :: RuleDict -> [String] -> RewritePreamble -> [String] -> DParseRV AbsDerivation
 parseBody rules gens meta lines =
     case preparseSectionSkeleton lines 0 of
         Left err               -> Left err
@@ -344,19 +345,19 @@ parseBody rules gens meta lines =
             Right pre -> parseDerivationFile rules pre
 
 test53 = TestCase (assertEqual "preparseBody parses a full derivation (1/3)."
-                               (Right (Derivation sum rewriteList))
+                               (Right (AbsDerivation sum rewriteList))
                                (parseBody dict3 gens defaultPreamble input))
     where input = goodBody ++ goodFinal1
           sum = DerivationSummary defaultPreamble word1 word1
 
 test54 = TestCase (assertEqual "preparseBody parses a full derivation (2/3)."
-                               (Right (Derivation sum rewriteList))
+                               (Right (AbsDerivation sum rewriteList))
                                (parseBody dict3 gens defaultPreamble input))
     where input = goodBody ++ goodFinal2
           sum = DerivationSummary defaultPreamble word1 word2
 
 test55 = TestCase (assertEqual "preparseBody parses a full derivation (3/3)."
-                               (Right (Derivation sum rewriteList))
+                               (Right (AbsDerivation sum rewriteList))
                                (parseBody dict3 gens defaultPreamble input))
     where input = goodFinal1 ++ goodRewrite ++ goodFinal1
           sum = DerivationSummary defaultPreamble word1 word1
@@ -394,7 +395,7 @@ test62 = TestCase (assertEqual "preparseBody detects rewrite issues."
                                (parseBody dict3 gens defaultPreamble badBody))
 
 test63 = TestCase (assertEqual "preparseBody supports different preambles."
-                               (Right (Derivation sum rewriteList))
+                               (Right (AbsDerivation sum rewriteList))
                                (parseBody dict3 gens expectedPreamble input))
     where input = goodBody ++ goodFinal1
           sum = DerivationSummary expectedPreamble word1 word1
@@ -402,13 +403,13 @@ test63 = TestCase (assertEqual "preparseBody supports different preambles."
 -----------------------------------------------------------------------------------------
 -- parseDerivationFile
 
-validResult1 :: Derivation
-validResult1 = Derivation (DerivationSummary expectedPreamble word1 word2) rewriteList
+validResult1 :: AbsDerivation
+validResult1 = AbsDerivation (DerivationSummary expectedPreamble word1 word2) rewriteList
 
-validResult2 :: Derivation
-validResult2 = Derivation (DerivationSummary defaultPreamble word1 word1) rewriteList
+validResult2 :: AbsDerivation
+validResult2 = AbsDerivation (DerivationSummary defaultPreamble word1 word1) rewriteList
 
-parseFile :: RuleDict -> [String] -> [String] -> Int -> DParseRV [DParseRV Derivation]
+parseFile :: RuleDict -> [String] -> [String] -> Int -> DParseRV [DParseRV AbsDerivation]
 parseFile rules gens lines num =
     case (preparseDerivationFile gens lines num) of
         Left err      -> Left err

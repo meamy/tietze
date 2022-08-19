@@ -2,8 +2,10 @@
 
 module LafontExe.ValidateDerivations where
 
+import           Data.Maybe
 import           Lafont.Graph
 import           Lafont.Parse.DerivationFile
+import           Lafont.Rewrite.Abstraction
 import           Lafont.Rewrite.Derivations
 import           Lafont.Rewrite.Lookup
 import           Lafont.Rewrite.Rules
@@ -39,6 +41,20 @@ addToNamedList :: String -> [NamedData a] -> [a] -> Int -> [NamedData a]
 addToNamedList _    named []          _   = named
 addToNamedList name named (a:unnamed) num = (name, num, a) : rest
     where rest = addToNamedList name named unnamed (num + 1)
+
+-----------------------------------------------------------------------------------------
+-- * Temporary.
+
+-- | Temporary function to introduce equational derived rules.
+concretizeRewrite :: RuleDict -> AbsRewrite -> Rewrite
+concretizeRewrite rules (Right (Apply name pos dir)) = Rewrite rule pos dir
+    where rule = fromJust $ interpretRule rules name
+concretizeRewrite _ (Left rw) = rw
+
+-- | Temporary function to introduce equational derived rules.
+concretizeDerivation :: RuleDict -> AbsDerivation -> Derivation
+concretizeDerivation rules (AbsDerivation summary x) = Derivation summary rewrites
+    where rewrites = map (concretizeRewrite rules) x
 
 -----------------------------------------------------------------------------------------
 -- * Logic.
@@ -113,7 +129,7 @@ parseRewriteSections rules ((fname, num, pre):rest) =
         Left (errLn, err) -> Left (fname, errLn, err)
         Right deriv       -> case parseRewriteSections rules rest of
             Left err  -> Left err
-            Right res -> Right ((fname, num, deriv) : res)
+            Right res -> Right ((fname, num, concretizeDerivation rules deriv) : res)
 
 -- | Consumes a handle, a list of derivation files (DerivFnames), a dictionary of rewrite
 -- rules (rules), and a list of generators (gens). If all derivations parse correctly,

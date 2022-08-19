@@ -7,8 +7,8 @@ import           Lafont.Maybe
 import           Lafont.Parse.Common
 import           Lafont.Parse.MonWords
 import           Lafont.Parse.Properties
+import           Lafont.Rewrite.Abstraction
 import           Lafont.Rewrite.Common
-import           Lafont.Rewrite.Derivations
 import           Lafont.Rewrite.Lookup
 import           Lafont.Rewrite.Rules
 import           Lafont.Rewrite.Summary
@@ -84,12 +84,11 @@ parseRewriteAtPos isLeftToRight str =
         Nothing -> Left (Right InvalidRewritePos)
     where dir = if isLeftToRight then L2R else R2L
 
--- | Consumes whether a rule is equational (applies are assumed to be equational at this
--- step), a requested derivation rule derivation direction (dir),  and the remaining
--- input to be parsed (str). If the requested dir aligns with rule, then the rewrite
--- position is parsed from str and the resulting rewrite description (or error) is
--- returned. Otherwise, the misalignment between rule and dir is described through an
--- error value.
+-- | Consumes whether a rule is equational, a requested derivation rule derivation
+-- direction (dir),  and the remaining input to be parsed (str). If the requested dir
+-- aligns with rule, then the rewrite position is parsed from str and the resulting
+-- rewrite description (or error) is returned. Otherwise, the misalignment between rule
+-- and dir is described through an error value.
 parseRewriteAtDirAndPos :: Bool -> String -> String -> Either DFPError (RulePos, RuleDir)
 parseRewriteAtDirAndPos isEqn dir str
     | dirMatchesRule = parseRewriteAtPos isL2R (snd (trimSpacing str))
@@ -110,7 +109,7 @@ splitRewrite str =
     case parseId str of
         Just (id, details) -> case parseFromSeps ["→", "←", ""] details of
             Just (dir, pos) -> Right (id, dir, pos)
-            Nothing         ->  Left (Left UnknownParseError) -- Should be unreachable. 
+            Nothing         -> Left (Left UnknownParseError) -- Should be unreachable.
         Nothing -> Left (Right InvalidRuleName)
 
 -- | Consumes a dictionary of known rules (dict) and an input string (str). Attempts to
@@ -131,14 +130,13 @@ parseRewrite dict str =
 -- (str), and the substring of str containing the modified rule line (rwStr). If parsing
 -- is successful, then the corresponding rewrite is returned. Otherwise, an error is
 -- returned.
-parseApplyLine :: RuleDict -> String -> String -> Either DFPError Rewrite
+parseApplyLine :: RuleDict -> String -> String -> Either DFPError Apply
 parseApplyLine dict str rwStr =
     case parseRewrite dict trimmed of
-        Left err -> Left (propDerErr str trimmed err)
-        Right rw -> let (Rewrite rule _ _) = rw
-                    in if isDerivedRule rule
-                       then Right rw
-                       else Left (Right ApplyOnPrimitive)
+        Left err                     -> Left (propDerErr str trimmed err)
+        Right (Rewrite rule pos dir) -> case derivedFrom rule of
+            Nothing -> Left (Right ApplyOnPrimitive)
+            Just id -> Right (Apply id pos dir)
     where (_, trimmed) = trimSpacing rwStr
 
 -- | Consumes a dictionary of known rules (dict) and a rule line of a derivation file
@@ -157,12 +155,16 @@ parseRuleLine dict str =
 -- (str). Attempts to parse str, taking into account all modifiers applied to the line.
 -- If parsing is successful, then the corresponding rewrite is returned. Otherwise, an
 -- error is returned.
-parseRewriteLine :: RuleDict -> String -> Either DFPError Rewrite
+parseRewriteLine :: RuleDict -> String -> Either DFPError AbsRewrite
 parseRewriteLine dict str =
     case parseFromSeps ["!apply", "!"] str of
-        Just ("!apply", rwStr) -> parseApplyLine dict str rwStr
-        Nothing                -> parseRuleLine dict str
-        Just ("!", _)          -> Left (Right UnknownRewriteMod)
+        Just ("!apply", rwStr) -> case parseApplyLine dict str rwStr of
+            Left err -> Left err
+            Right ap -> Right (Right ap)
+        Nothing -> case parseRuleLine dict str of
+            Left err -> Left err
+            Right rw -> Right (Left rw)
+        Just ("!", _) -> Left (Right UnknownRewriteMod)
 
 -----------------------------------------------------------------------------------------
 -- * Preamble Parsing.
@@ -217,7 +219,7 @@ parseFinalMonWord (line:lines) =
 -- | Consumes a dictionary of known rules (dict) and the rewrite lines of a derivation
 -- file. If the lines are valid with respect to dict, then returns a list of rewrites in
 -- the order they appear. Otherwise, returns a parsing exception.
-parseRewriteLines :: RuleDict -> [String] -> Int -> DParseRV [Rewrite]
+parseRewriteLines :: RuleDict -> [String] -> Int -> DParseRV [AbsRewrite]
 parseRewriteLines _     []           _   = Right []
 parseRewriteLines rules (line:lines) num
     | trimmed == "" = parseRewriteLines rules lines nextNum
@@ -292,8 +294,8 @@ preparseDerivationFile gens lines num =
 -- | Consumes a dictionary of known rules, including derived rules (dict) and the summary
 -- of a derivation file. If the body is a valid rewrite section with respect to rules,
 -- then a derivation is returned. Otherwise, returns a parsing exception.
-parseDerivationFile :: RuleDict -> PreDerivation -> DParseRV Derivation
+parseDerivationFile :: RuleDict -> PreDerivation -> DParseRV AbsDerivation
 parseDerivationFile rules pre =
     case parseRewriteLines rules (unparsed pre) (linenum pre) of
         Left  err      -> Left err
-        Right rewrites -> Right (Derivation (parsed pre) rewrites)
+        Right rewrites -> Right (AbsDerivation (parsed pre) rewrites)
