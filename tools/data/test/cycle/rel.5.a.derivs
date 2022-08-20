@@ -1,5 +1,5 @@
 @name Rel5
 
 abc1.abc1.abc1.abc1.abc1.abc1.abc1.abc1
-!apply Rel1 0
+!apply Rel1 → 0
 ε

@@ -127,19 +127,45 @@ addDerivedRules rules ((fname, num, pre):rest) =
             Just updatedRules -> Right updatedRules
     where summary = parsed pre
 
+-- Consumes a dictionary of rewrite rules (rules) and a list of named PreDerivations. If
+-- each PreDerivation summary is either unnamed or has a unqiue name (with respect to the
+-- relations and other PreDerivations), then a set of PreDerivation summary names is
+-- returned. Otherwise, the file name of the first PreDerivation with a duplicate summary
+-- name is returned.
+listDerivedRules :: RuleDict -> [NamedPreDerivation] -> Either (String, Int) DRuleSet
+listDerivedRules _     []                       = Right nullRuleSet
+listDerivedRules rules ((fname, num, pre):rest) =
+    case listDerivedRules rules rest of
+        Left  err -> Left err
+        Right set -> case addSummaryToSymbols rules set summary of
+            Nothing   -> Left (fname, num)
+            Just set' -> Right set'
+    where summary = parsed pre
+
 -- | Consumes a dictionary of rewrite rules (rules) and a list of pairs, where each pair
 -- contains the name of a file and the PreDerivation data it describes. If all files
 -- parse correctly, then returns a list of pairs, where each pair contains the name of a
 -- pair and the Derivation it describes. Otherwise, a parsing error is returned. Requires
 -- that all derived rules have already been recorded in rules
-parseRewriteSections :: RuleDict -> [NamedPreDerivation] -> ListParseRV NamedAbsDerivation
-parseRewriteSections _     []                  = Right []
-parseRewriteSections rules ((fname, num, pre):rest) =
-    case parseDerivationFile rules pre of
+parseRewriteSections :: RuleDict -> DRuleSet -> [NamedPreDerivation] -> ListParseRV NamedAbsDerivation
+parseRewriteSections _     _       []                       = Right []
+parseRewriteSections rules derived ((fname, num, pre):rest) =
+    case parseDerivationFile rules derived pre of
         Left (errLn, err) -> Left (fname, errLn, err)
-        Right deriv       -> case parseRewriteSections rules rest of
+        Right deriv       -> case parseRewriteSections rules derived rest of
             Left err  -> Left err
             Right res -> Right ((fname, num, deriv) : res)
+
+-- |
+processPreDerivations :: Handle -> [NamedPreDerivation] -> RuleDict -> [String] -> IO ()
+processPreDerivations hdl pres rules gens =
+    case listDerivedRules rules pres of
+        Left (fname, num) -> hPutStr hdl $ logFromFile fname 0 $ reportDupRule num
+        Right derived     -> case addDerivedRules rules pres of -- TODO: deprecate
+            Left (fname, num) -> hPutStr hdl $ logFromFile fname 0 $ reportDupRule num
+            Right sumRules    -> case parseRewriteSections rules derived pres of
+                Left (fname, errLn, err) -> hPutStr hdl $ logEitherMsg fname errLn err
+                Right derivations        -> hPutStr hdl $ verifyDerivations sumRules derivations
 
 -- | Consumes a handle, a list of derivation files (DerivFnames), a dictionary of rewrite
 -- rules (rules), and a list of generators (gens). If all derivations parse correctly,
@@ -151,11 +177,7 @@ processDerivationFiles hdl fnames rules gens = do
     readResult <- readDerivationFiles fnames gens
     case readResult of
         Left (fname, errLn, err) -> hPutStr hdl $ logEitherMsg fname errLn err
-        Right preDerivations     -> case addDerivedRules rules preDerivations of
-            Left (fname, num) -> hPutStr hdl $ logFromFile fname 0 $ reportDupRule num
-            Right sumRules    -> case parseRewriteSections sumRules preDerivations of
-                Left (fname, errLn, err) -> hPutStr hdl $ logEitherMsg fname errLn err
-                Right derivations        -> hPutStr hdl $ verifyDerivations sumRules derivations
+        Right pres               -> processPreDerivations hdl pres rules gens
 
 -- | See validateDerivations. Requires that both files exist, whereas validateDerivations
 -- does not imporse this assumption

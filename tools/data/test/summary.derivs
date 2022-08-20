@@ -7,6 +7,6 @@
 -- Intended derivations: example1.derivs, example2.derivs
 
 abc1.abc1.abc1.abc1.abc1.abc1.abc1.abc1.lmnop123.abc1.xyz1.abc2.xyz2.lmnop123.abc1.abc1.abc1.abc1
-!apply DerivedRel1 0
-!apply DerivedRel2 0
+!apply DerivedRel1 → 0
+!apply DerivedRel2 → 0
 ε

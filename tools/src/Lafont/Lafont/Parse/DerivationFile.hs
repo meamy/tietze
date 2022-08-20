@@ -22,26 +22,24 @@ data DerFileError = UnknownRewriteMod
                   | InvalidRewritePos
                   | InvalidRewriteDir
                   | MissingRewriteDir
-                  | ApplyOnPrimitive
-                  | RewriteOnDerived
                   | UnknownGenName String
                   | UnknownRuleName String
+                  | UnknownDerivedRule String
                   | MissingInitialWord
                   | MissingFinalWord
                   deriving (Eq,Show)
 
 instance Display DerFileError where
-    display UnknownRewriteMod      = "Unknown rewrite modifier (a symbol prefixed by !)."
-    display InvalidRuleName        = "Rewrite rule name starts with invalid symbol."
-    display InvalidRewritePos      = "Expected position at end of rewrite."
-    display InvalidRewriteDir      = "Non-equational rewrite rule applied right-to-left."
-    display MissingRewriteDir      = "Equational rewrite rule requires derivation direction."
-    display ApplyOnPrimitive       = "Applied use of a primitive rewrite rule."
-    display RewriteOnDerived       = "Primitive use of a derived rewrite rule."
-    display (UnknownGenName name)  = "Unknown generator name (" ++ name ++ ")."
-    display (UnknownRuleName name) = "Unknown rewrite rule (" ++ name ++ ")."
-    display MissingInitialWord     = "Initial word missing in derivation."
-    display MissingFinalWord       = "Final word missing in derivation."
+    display UnknownRewriteMod         = "Unknown rewrite modifier (a symbol prefixed by !)."
+    display InvalidRuleName           = "Rewrite rule name starts with invalid symbol."
+    display InvalidRewritePos         = "Expected position at end of rewrite."
+    display InvalidRewriteDir         = "Non-equational rewrite rule applied right-to-left."
+    display MissingRewriteDir         = "Equational rewrite rule requires derivation direction."
+    display (UnknownGenName name)     = "Unknown generator name (" ++ name ++ ")."
+    display (UnknownRuleName name)    = "Unknown rewrite rule (" ++ name ++ ")."
+    display (UnknownDerivedRule name) = "Unknown derived rule (" ++ name ++ ")."
+    display MissingInitialWord        = "Initial word missing in derivation."
+    display MissingFinalWord          = "Final word missing in derivation."
 
 -- | Errors returned during derivation file parsing.
 type DFPError = Either ParserError DerFileError
@@ -59,17 +57,16 @@ propDerErr :: String -> String -> DFPError -> DFPError
 propDerErr str substr (Left err)  = Left (propCommonErr str substr err)
 propDerErr str substr (Right err) =
     case err of
-        UnknownRewriteMod      -> Right UnknownRewriteMod
-        InvalidRuleName        -> Right InvalidRuleName
-        InvalidRewritePos      -> Right InvalidRewritePos
-        InvalidRewriteDir      -> Right InvalidRewriteDir
-        MissingRewriteDir      -> Right MissingRewriteDir
-        ApplyOnPrimitive       -> Right ApplyOnPrimitive
-        RewriteOnDerived       -> Right RewriteOnDerived
-        (UnknownGenName name)  -> Right (UnknownGenName name)
-        (UnknownRuleName name) -> Right (UnknownRuleName name)
-        MissingInitialWord     -> Right MissingInitialWord
-        MissingFinalWord       -> Right MissingFinalWord
+        UnknownRewriteMod         -> Right UnknownRewriteMod
+        InvalidRuleName           -> Right InvalidRuleName
+        InvalidRewritePos         -> Right InvalidRewritePos
+        InvalidRewriteDir         -> Right InvalidRewriteDir
+        MissingRewriteDir         -> Right MissingRewriteDir
+        (UnknownGenName name)     -> Right (UnknownGenName name)
+        (UnknownRuleName name)    -> Right (UnknownRuleName name)
+        (UnknownDerivedRule name) -> Right (UnknownDerivedRule name)
+        MissingInitialWord        -> Right MissingInitialWord
+        MissingFinalWord          -> Right MissingFinalWord
     where update pos = relToAbsErrPos str substr pos
 
 -- | Helper function to parse the position at the end of a rewrite. Assumes that a rule
@@ -112,56 +109,47 @@ splitRewrite str =
             Nothing         -> Left (Left UnknownParseError) -- Should be unreachable.
         Nothing -> Left (Right InvalidRuleName)
 
--- | Consumes a dictionary of known rules (dict) and an input string (str). Attempts to
+-- | Consumes a dictionary of known rules (rules) and an input string (str). Attempts to
 -- parse a primitive rewrite of either the form <ID> <DIR> <POS> or <ID> <POS>. If
 -- parsing is successful, then the corresponding rewrite is returned. Otherwise, an error
 -- is returned.
 parseRewrite :: RuleDict -> String -> Either DFPError Rewrite
-parseRewrite dict str =
+parseRewrite rules str =
     case splitRewrite str of
-        Right (id, dirStr, posStr) -> case interpretRule dict id of
+        Right (id, dirStr, posStr) -> case interpretRule rules id of
             Just rule -> case parseRewriteAtDirAndPos (equational rule) dirStr posStr of
                 Left err         -> Left (propDerErr str posStr err)
                 Right (pos, dir) -> Right (Rewrite rule pos dir)
             Nothing -> Left (Right (UnknownRuleName id))
         Left err -> Left err
 
--- | Consumes a dictionary of known rules (dict), an apply line of a derivation file
--- (str), and the substring of str containing the modified rule line (rwStr). If parsing
--- is successful, then the corresponding rewrite is returned. Otherwise, an error is
--- returned.
-parseApplyLine :: RuleDict -> String -> String -> Either DFPError Apply
-parseApplyLine dict str rwStr =
-    case parseRewrite dict trimmed of
-        Left err                     -> Left (propDerErr str trimmed err)
-        Right (Rewrite rule pos dir) -> case derivedFrom rule of
-            Nothing -> Left (Right ApplyOnPrimitive)
-            Just id -> Right (Apply id pos dir)
+-- | Consumes a set of derived relation symbols (derived), an apply line of a derivation
+-- file (str), and the substring of str containing the modified rule line (rwStr). If
+-- parsing is successful, then the corresponding rewrite is returned. Otherwise, an error
+-- is returned.
+parseApply :: DRuleSet -> String -> String -> Either DFPError Apply
+parseApply derived str rwStr =
+    case splitRewrite trimmed of
+        Right (id, dirStr, posStr) ->
+            if derived `hasDerivedRule` id
+            then case parseRewriteAtDirAndPos True dirStr posStr of
+                Left err         -> Left (propDerErr str posStr err)
+                Right (pos, dir) -> Right (Apply id pos dir)
+            else Left (Right (UnknownDerivedRule id))
+        Left err -> Left (propDerErr str trimmed err)
     where (_, trimmed) = trimSpacing rwStr
 
--- | Consumes a dictionary of known rules (dict) and a rule line of a derivation file
--- (str). Attempts to parse str. If parsing is successful, then the corresponding rewrite
--- is returned. Otherwise, an error is returned.
-parseRuleLine :: RuleDict -> String -> Either DFPError Rewrite
-parseRuleLine dict str =
-    case parseRewrite dict str of
-        Left err -> Left err
-        Right rw -> let (Rewrite rule _ _) = rw
-                    in if isDerivedRule rule
-                       then Left (Right RewriteOnDerived)
-                       else Right rw
-
--- | Consumes a dictionary of known rules (dict) and a rewrite line of a derivation file
+-- | Consumes a dictionary of known rules (rules) and a rewrite line of a derivation file
 -- (str). Attempts to parse str, taking into account all modifiers applied to the line.
 -- If parsing is successful, then the corresponding rewrite is returned. Otherwise, an
 -- error is returned.
-parseRewriteLine :: RuleDict -> String -> Either DFPError AbsRewrite
-parseRewriteLine dict str =
+parseRewriteLine :: RuleDict -> DRuleSet -> String -> Either DFPError AbsRewrite
+parseRewriteLine rules derived str =
     case parseFromSeps ["!apply", "!"] str of
-        Just ("!apply", rwStr) -> case parseApplyLine dict str rwStr of
+        Just ("!apply", rwStr) -> case parseApply derived str rwStr of
             Left err -> Left err
             Right ap -> Right (Right ap)
-        Nothing -> case parseRuleLine dict str of
+        Nothing -> case parseRewrite rules str of
             Left err -> Left err
             Right rw -> Right (Left rw)
         Just ("!", _) -> Left (Right UnknownRewriteMod)
@@ -216,21 +204,22 @@ parseFinalMonWord (line:lines) =
         Nothing   -> maybeApply f $ parseFinalMonWord lines
     where f (body, word, rest) = (line : body, word, rest)
 
--- | Consumes a dictionary of known rules (dict) and the rewrite lines of a derivation
--- file. If the lines are valid with respect to dict, then returns a list of rewrites in
--- the order they appear. Otherwise, returns a parsing exception.
-parseRewriteLines :: RuleDict -> [String] -> Int -> DParseRV [AbsRewrite]
-parseRewriteLines _     []           _   = Right []
-parseRewriteLines rules (line:lines) num
-    | trimmed == "" = parseRewriteLines rules lines nextNum
-    | otherwise     = case parseRewriteLine rules trimmed of
+-- | Consumes a dictionary of known rules (rules), a set of derived relation symbols
+-- (derived), and the rewrite lines of a derivation file. If the lines are valid with
+-- respect to rules and derived, then returns a list of rewrites in the order they
+-- appear. Otherwise, returns a parsing exception.
+parseRewriteLines :: RuleDict -> DRuleSet -> [String] -> Int -> DParseRV [AbsRewrite]
+parseRewriteLines _ derived [] _ = Right []
+parseRewriteLines rules derived (line:lines) num
+    | trimmed == "" = rest
+    | otherwise     = case parseRewriteLine rules derived trimmed of
         Left err      -> Left (num, propDerErr stripped trimmed err)
-        Right rewrite -> case parseRewriteLines rules lines nextNum of
+        Right rewrite -> case rest of
             Left (errLn, err) -> Left (errLn, propDerErr stripped trimmed err)
             Right rewrites    -> Right (rewrite : rewrites)
-    where stripped = stripComments line
+    where rest = parseRewriteLines rules derived lines (num + 1)
+          stripped = stripComments line
           (_, trimmed) = trimSpacing stripped
-          nextNum = num + 1
 
 -- | Consumes the lines of a derivation file immediately following its preamble. If the
 -- lines include an initial word subsection, a rewrite subsection, and a final word
@@ -264,7 +253,9 @@ preparseSection gens meta (init, steps, final) num =
     where stepsNum = num + 1
           finalNum = stepsNum + length steps
 
--- |
+-- | Consumes a list of generators (gens) and the lines of a derivation file (lines). If
+-- the file has a prefix corresponding to a valid PreDerivation, then the prederivation
+-- and remaining lines are returned. Otherwise, returns a parsing exception.
 preparseDerivation :: [String] -> [String] -> Int -> DParseRV (PreDerivation, [String])
 preparseDerivation gens lines num =
     case parseRewritePreamble lines num of
@@ -291,11 +282,12 @@ preparseDerivationFile gens lines num =
                                       Left err  -> Left err
                                       Right res -> Right (pre : res)
 
--- | Consumes a dictionary of known rules, including derived rules (dict) and the summary
--- of a derivation file. If the body is a valid rewrite section with respect to rules,
--- then a derivation is returned. Otherwise, returns a parsing exception.
-parseDerivationFile :: RuleDict -> PreDerivation -> DParseRV AbsDerivation
-parseDerivationFile rules pre =
-    case parseRewriteLines rules (unparsed pre) (linenum pre) of
+-- | Consumes a dictionary of known rules, including derived rules (rules), a set of
+-- derived relation symbols (derived), and the summary of a derivation file (pre). If the
+-- body is a valid rewrite section with respect to rules, then a derivation is returned.
+-- Otherwise, returns a parsing exception.
+parseDerivationFile :: RuleDict -> DRuleSet -> PreDerivation -> DParseRV AbsDerivation
+parseDerivationFile rules derived pre =
+    case parseRewriteLines rules derived (unparsed pre) (linenum pre) of
         Left  err      -> Left err
         Right rewrites -> Right (AbsDerivation (parsed pre) rewrites)
