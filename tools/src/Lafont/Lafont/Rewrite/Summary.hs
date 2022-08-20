@@ -5,6 +5,7 @@
 
 module Lafont.Rewrite.Summary where
 
+import           Data.Set              as Set
 import           Lafont.Common
 import           Lafont.Rewrite.Lookup
 import           Lafont.Rewrite.Rules
@@ -23,7 +24,7 @@ data DerivationSummary = DerivationSummary { meta    :: RewritePreamble
                                            } deriving (Eq,Show)
 
 -----------------------------------------------------------------------------------------
--- * Functions to Further Abstract Derivations as Rules.
+-- * Functions to Abstract Derivation Summaries as Rules.
 
 -- | Consumes a summary (sum). Returns a new derived rule which meets the specifications
 -- of sum. Requires that sum is named.
@@ -45,3 +46,31 @@ addSummaryToRules sum rules =
         Just name -> if rules `hasRule` name
                      then Nothing
                      else Just (rules `addRule` (name, createSummaryRule sum))
+
+-----------------------------------------------------------------------------------------
+-- * Functions to Register Derivations as Relations.
+
+-- | A collection of unique derived relation symbols.
+type DRuleSet = Set.Set String
+
+-- | An empty collection of derived relation symbols.
+nullRuleSet :: DRuleSet
+nullRuleSet = Set.empty
+
+-- | Returns true if a DRuleSet contains a relation symbol.
+hasDerivedRule :: DRuleSet -> String -> Bool
+hasDerivedRule rels rel = rel `Set.member` rels
+
+-- | Adds a relation symbol to a DRuleSet.
+addDerivedRule :: DRuleSet -> String -> DRuleSet
+addDerivedRule rels rel = rel `Set.insert` rels
+
+-- | Consumes a list of summaries (sums).  Returns a list of derived relation names.
+addSummaryToSymbols :: RuleDict -> DRuleSet -> DerivationSummary -> Maybe DRuleSet
+addSummaryToSymbols rules rels sum =
+    case propName $ meta sum of
+        Nothing   -> Just rels
+        Just name -> if isDefined name
+                     then Nothing
+                     else Just (rels `addDerivedRule` name)
+    where isDefined rel = rels `hasDerivedRule` rel || rules `hasRule` rel
