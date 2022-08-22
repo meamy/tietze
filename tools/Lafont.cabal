@@ -126,6 +126,11 @@ test-suite lafont-graph-tests
   main-is:             Lafont-Graph-Tests.hs
   type:                exitcode-stdio-1.0
 
+test-suite lafont-rewrite-abstraction-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Rewrite-Abstraction-Tests.hs
+  type:                exitcode-stdio-1.0
+
 test-suite lafont-rewrite-rules-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Rewrite-Rules-Tests.hs

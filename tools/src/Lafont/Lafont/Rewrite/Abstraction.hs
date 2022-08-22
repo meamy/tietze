@@ -3,6 +3,8 @@
 
 module Lafont.Rewrite.Abstraction where
 
+import           Data.Maybe
+import           Data.Map as Map
 import           Lafont.Graph
 import           Lafont.Rewrite.Common
 import           Lafont.Rewrite.Rules
@@ -109,3 +111,24 @@ detectDerivationError derivations =
             Just cycle -> Just (Right cycle)
             Nothing    -> Nothing
     where g = registerDerivations derivations
+
+-----------------------------------------------------------------------------------------
+-- * Utilities to Look up Derivations by Name.
+
+-- | A mapping from derivation names to their information.
+type DerivationMap = Map.Map String AbsDerivation
+
+-- | Attemtps to find a derivation of a given name.
+getDerivation :: DerivationMap -> String -> Maybe AbsDerivation
+getDerivation map name = name `Map.lookup` map
+
+-- | Consumes  list of abstract derivations. Returns a derivation map containing an entry
+-- for each named derivation in the list.
+makeDerivationMap :: [AbsDerivation] -> DerivationMap
+makeDerivationMap []                       = Map.empty
+makeDerivationMap (derivation:derivations) =
+    case propName $ meta summary of
+        Just name -> Map.insert name derivation dict
+        Nothing   -> dict
+    where (AbsDerivation summary _) = derivation
+          dict = makeDerivationMap derivations
