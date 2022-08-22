@@ -3,8 +3,8 @@
 
 module Lafont.Rewrite.Abstraction where
 
+import           Data.Map               as Map
 import           Data.Maybe
-import           Data.Map as Map
 import           Lafont.Graph
 import           Lafont.Rewrite.Common
 import           Lafont.Rewrite.Rules
@@ -132,3 +132,46 @@ makeDerivationMap (derivation:derivations) =
         Nothing   -> dict
     where (AbsDerivation summary _) = derivation
           dict = makeDerivationMap derivations
+
+-----------------------------------------------------------------------------------------
+-- * Equationality of Abstract Relations
+
+-- | A mapping from derivation names to their equatioanl flags. If the equational flag of
+-- a derived relation is true, then the derived relation may be applied in any direction.
+type EqMap = Map.Map String Bool
+
+-- | Reads an entry from an EqMap.
+isEquationalDerivation :: EqMap -> String -> Maybe Bool
+isEquationalDerivation map name = name `Map.lookup` map
+
+-- | Updates emap according to isEqn.
+ierBody :: DerivationMap -> String -> [AbsRewrite] -> EqMap -> Bool -> EqMap
+ierBody dmap name rewrites emap isEqn
+    | isEqn     = ierSplit dmap name rewrites emap
+    | otherwise = Map.insert name False emap
+
+-- | Analyzes the steps of a derivation to assert equationality.
+ierSplit :: DerivationMap -> String -> [AbsRewrite] -> EqMap -> EqMap
+ierSplit _    name []                emap = Map.insert name True emap
+ierSplit dmap name (Left r:rewrites) emap = ierBody dmap name rewrites emap isEqn
+    where (Rewrite rule _ _) = r
+          isEqn = equational rule
+ierSplit dmap name (Right r:rewrites) emap = ierBody dmap name rewrites emap' isEqn
+    where (Apply rule _ _) = r
+          Just appliedDerivtion = dmap `getDerivation` rule
+          emap' = ierFold dmap rule appliedDerivtion emap
+          -- The following line should never return maybe. The default False is safe.
+          isEqn = fromMaybe False (emap' `isEquationalDerivation` rule)
+
+-- | Fold implementation for identifyEquationalRules.
+ierFold :: DerivationMap -> String -> AbsDerivation -> EqMap -> EqMap
+ierFold dmap name (AbsDerivation _ rewrites) emap
+    | recorded  = emap
+    | otherwise = ierSplit dmap name rewrites emap
+    where recorded = name `Map.member` emap
+
+-- | Consumes a list of abstract deriviations. It is assumed that the abstract
+-- derivations have passed a detectDerivationError test (e.g., all dependencies are met
+-- and the graph is acyclic). Returns an equational map for the derivations.
+identifyEquationalRules :: DerivationMap -> EqMap
+identifyEquationalRules dmap = Map.foldrWithKey (ierFold dmap) Map.empty dmap
