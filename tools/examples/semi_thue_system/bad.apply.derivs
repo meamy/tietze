@@ -1,0 +1,15 @@
+-- To run: [lafont_path] generators.gens relations.rels bad.apply.derivs
+--
+-- Lafont will tell us if a derived relation is applied in the wrong direction.
+-- Let's run this file to see what happens!
+
+@name lemma1
+x
+rel3 → 0
+rel4 → 0
+ε
+
+z.z
+rel7 → 0
+!apply lemma1 ← 0
+x.y.y

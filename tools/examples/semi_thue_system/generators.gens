@@ -1,0 +1,10 @@
+-- In this example we look at a semi-Thue system.
+-- A semi-Thue system consists of an alphabet (generators) and rewrite rules.
+-- Unlike in the previous examples, the relations in a semi-Thue system are directed.
+
+Monoidal
+
+w
+x
+y
+z

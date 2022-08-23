@@ -1,0 +1,29 @@
+-- To run: [lafont_path] generators.gens relations.rels confluence.derivs
+--
+-- An important property of a semi-Thue system is whether it is confluence.
+-- We say that a system is confluence if for all w derives u and w derives v:
+--   there exists a string q such that u derives q and v derives q.
+-- However, checking confluence directly is a challenging problem.
+-- Often, it is sufficient to check local confluence instead.
+--
+-- We say that a system is locally confluence at w if for all w→u and w→v:
+--   there exists a string q such that u derives q and v derives q.
+-- In this example, we prove our system is locally confluent at "w".
+-- The only relations to contain w are w→x.y.y and w→z.y.z.y (see relations.rels).
+-- Then it suffices to show x.y.y derives y.y and z.y.z.y derives y.y, by definition.
+
+@name lemma1
+x
+rel3 → 0
+rel4 → 0
+ε
+
+x.y.y
+!apply lemma1 → 0
+y.y
+
+z.y.z.y
+rel5 → 2
+rel6 → 1
+rel7 → 0
+y.y
