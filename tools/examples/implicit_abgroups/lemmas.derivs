@@ -1,0 +1,16 @@
+-- Useful derivations from Tutorial 1 and Tutorial 2.
+
+-- See simple.derivs in Tutorial 1.
+@name lemma1
+y.x.x.x.y.y.y.x.x.x.x.x.y.z.z.y.y.y.z.y
+elim_y → 4
+elim_x → 1
+elim_y → 5
+y.x.y.z.z.z.y
+
+-- See simple.derivs in Tutorial 2.
+@name id_iy
+iy
+elim_y ← 0 -- We yield the string: y.y.y.iy
+rinv_y → 2 -- We yield the string: y.y
+y.y

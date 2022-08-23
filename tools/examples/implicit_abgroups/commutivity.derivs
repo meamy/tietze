@@ -1,0 +1,27 @@
+-- To run: [lafont_path] generators.gens relations.rels commutivity.derivs lemmas.derivs
+--
+-- In relations.rels, we claimed that some commutivity relations are redundant.
+-- A generator commutes with its formal inverse due to rinv and linv.
+-- The other commutivity relations follow from the id relations.
+-- Note that not all presentations permit id relations (e.g., the free group).
+-- This derivation file provides the proofs for (y, iy) and (iy, z).
+-- All other proofs are symmetric.
+
+-- A proof that y and iy commute.
+@name comm_y_iy
+y.iy
+rinv_y → 0 -- We yield the string: ε
+linv_y ← 0 -- We yield the string: iy.y
+iy.y
+
+-- A proof that iy and z commute.
+@name comm_iy_z
+iy.z
+!apply id_iy → 0 -- We yield the string: y.y.z
+comm_y_z → 1     -- We yield the string: y.z.y
+comm_y_z → 0     -- We yield the string: z.y.y
+!apply id_iy ← 1 -- We yield the string: z.iy
+                 -- Note that this is a derived rule, built from equational primitives.
+                 -- Therefore, id_iy is equational, and can be applied right-to-left.
+                 -- We will look at this in more detail in the next tutorial!
+z.iy
