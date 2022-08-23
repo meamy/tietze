@@ -4,9 +4,11 @@ import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Maybe
+import Lafont.Common
 import Lafont.Graph
 import Lafont.Rewrite.Abstraction
 import Lafont.Rewrite.Common
+import Lafont.Rewrite.Derivations
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Summary
 
@@ -215,6 +217,110 @@ test29 = TestCase (assertEqual "detectDerivationError identifies cycles."
     where cycle = listToWalk ["rel1", "rel2", "rel1"]
 
 -----------------------------------------------------------------------------------------
+-- concretizeRewrite
+
+sym1 = Symbol "a" []
+sym2 = Symbol "b" []
+sym3 = Symbol "c" []
+
+lhs1 = [sym1, sym1]
+lhs2 = [sym2, sym2]
+rhs1 = [sym1]
+rhs2 = [sym2]
+
+ruleSummary1 = DerivationSummary (RewritePreamble (Just rel1)) lhs1 rhs1
+ruleSummary2 = DerivationSummary (RewritePreamble (Just rel2)) lhs2 rhs2
+
+eqnRule = RewriteRule lhs1 lhs1 True Nothing
+neqRule = RewriteRule lhs1 lhs1 False Nothing
+
+eqnRewrite = Rewrite eqnRule 0 L2R
+neqRewrite = Rewrite neqRule 0 L2R
+
+eqnDerivation = AbsDerivation ruleSummary1 [Left eqnRewrite]
+neqDerivation = AbsDerivation ruleSummary2 [Left neqRewrite]
+
+dmap = makeDerivationMap [eqnDerivation, neqDerivation]
+emap = identifyEquationalRules dmap
+maps = (dmap, emap)
+
+eqnApply = Apply rel1 3 R2L
+neqApply = Apply rel2 3 L2R
+badApply = Apply rel2 3 R2L
+
+eqnApplyAsRule = Rewrite (RewriteRule lhs1 rhs1 True (Just rel1)) 3 R2L
+neqApplyAsRule = Rewrite (RewriteRule lhs2 rhs2 False (Just rel2)) 3 L2R
+
+test30 = TestCase (assertEqual "concretizeRewrite supports rewrites (1/2)."
+                               (Just eqnRewrite :: Maybe Rewrite)
+                               (concretizeRewrite maps (Left eqnRewrite)))
+
+test31 = TestCase (assertEqual "concretizeRewrite supports rewrites (2/2)."
+                               (Just neqRewrite :: Maybe Rewrite)
+                               (concretizeRewrite maps (Left neqRewrite)))
+
+test32 = TestCase (assertEqual "concretizeRewrite supports equational applies."
+                               (Just eqnApplyAsRule :: Maybe Rewrite)
+                               (concretizeRewrite maps (Right eqnApply)))
+
+test33 = TestCase (assertEqual "concretizeRewrite supports orientated applies."
+                               (Just neqApplyAsRule :: Maybe Rewrite)
+                               (concretizeRewrite maps (Right neqApply)))
+
+test34 = TestCase (assertEqual "concretizeRewrite rejects incorrectly directed applies."
+                               (Nothing :: Maybe Rewrite)
+                               (concretizeRewrite maps (Right badApply)))
+
+-----------------------------------------------------------------------------------------
+-- concretizeRewrites
+
+validRewrites = [Left eqnRewrite,
+                 Right eqnApply,
+                 Left eqnRewrite,
+                 Right neqApply,
+                 Left neqRewrite]
+
+errorRewrites = [Left eqnRewrite,
+                 Right eqnApply,
+                 Left eqnRewrite,
+                 Right badApply,
+                 Left neqRewrite]
+
+validRewritesResults = [eqnRewrite,
+                        eqnApplyAsRule,
+                        eqnRewrite,
+                        neqApplyAsRule,
+                        neqRewrite]
+
+test35 = TestCase (assertEqual "concretizeRewrites supports empty lists."
+                               (Right [])
+                               (concretizeRewrites 0 maps []))
+
+test36 = TestCase (assertEqual "concretizeRewrites supports valid lists of rewrites."
+                               (Right validRewritesResults)
+                               (concretizeRewrites 0 maps validRewrites))
+
+test37 = TestCase (assertEqual "concretizeRewrites rejects bad applications."
+                               (Left 3)
+                               (concretizeRewrites 0 maps errorRewrites))
+
+-----------------------------------------------------------------------------------------
+-- concretizeDerivation
+
+validDerivation = AbsDerivation ruleSummary1 validRewrites
+errorDerivation = AbsDerivation ruleSummary2 errorRewrites
+
+validDerivationResults = Derivation ruleSummary1 validRewritesResults
+
+test38 = TestCase (assertEqual "concretizeDerivation supports valid lists of rewrites."
+                               (Right validDerivationResults)
+                               (concretizeDerivation maps validDerivation))
+
+test39 = TestCase (assertEqual "concretizeDerivation rejects bad applications."
+                               (Left 3)
+                               (concretizeDerivation maps errorDerivation))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "registerDerived_Empty" test1,
@@ -245,6 +351,16 @@ tests = hUnitTestToTests $ TestList [TestLabel "registerDerived_Empty" test1,
                                      TestLabel "addDerivationsToGraph_Unnamed2" test26,
                                      TestLabel "detectDerivationError_Valid" test27,
                                      TestLabel "detectDerivationError_UnmetDep" test28,
-                                     TestLabel "detectDerivationError_Cycle" test29]
+                                     TestLabel "detectDerivationError_Cycle" test29,
+                                     TestLabel "concretizeRewrite_Rewrite_1" test30,
+                                     TestLabel "concretizeRewrite_Rewrite_2" test31,
+                                     TestLabel "concretizeRewrite_Apply_Eqn" test32,
+                                     TestLabel "concretizeRewrite_Apply_Neq" test33,
+                                     TestLabel "concretizeRewrite_Apply_Bad" test34,
+                                     TestLabel "concretizeRewrites_Empty" test35,
+                                     TestLabel "concretizeRewrites_Valid" test36,
+                                     TestLabel "concretizeRewrites_Error" test37,
+                                     TestLabel "concretizeDerivation_Valid" test38,
+                                     TestLabel "concretizeDerivation_Error" test39]
 
 main = defaultMain tests
