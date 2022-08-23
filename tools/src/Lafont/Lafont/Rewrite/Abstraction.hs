@@ -136,14 +136,6 @@ makeDerivationMap (derivation:derivations) =
 -----------------------------------------------------------------------------------------
 -- * Equationality of Abstract Relations
 
--- | A mapping from derivation names to their equatioanl flags. If the equational flag of
--- a derived relation is true, then the derived relation may be applied in any direction.
-type EqMap = Map.Map String Bool
-
--- | Reads an entry from an EqMap.
-isEquationalDerivation :: EqMap -> String -> Maybe Bool
-isEquationalDerivation map name = name `Map.lookup` map
-
 -- | Updates emap according to isEqn.
 ierBody :: DerivationMap -> String -> [AbsRewrite] -> EqMap -> Bool -> EqMap
 ierBody dmap name rewrites emap isEqn

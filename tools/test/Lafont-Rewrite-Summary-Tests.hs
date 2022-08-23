@@ -4,6 +4,8 @@ import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Lafont.Common
+import Lafont.Rewrite.Abstraction
+import Lafont.Rewrite.Common
 import Lafont.Rewrite.Lookup
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Summary
@@ -53,45 +55,62 @@ rule1b = RewriteRule word1 word2 False (Just name2)
 rule2 :: RewriteRule
 rule2 = RewriteRule word1 word3 False (Just name1)
 
+rule3 :: RewriteRule
+rule3 = RewriteRule word1 word3 True Nothing
+
 -----------------------------------------------------------------------------------------
 -- createSummaryRule
 
+summary1 = DerivationSummary meta1 word1 word2
+summary2 = DerivationSummary meta1 word3 word2 -- Inital word change.
+summary3 = DerivationSummary meta1 word1 word3 -- Final word change.
+summary4 = DerivationSummary meta2 word1 word2 -- Name change.
+summary5 = DerivationSummary meta3 word1 word2
+
+derForMeta1Neq = AbsDerivation summary1 [Left (Rewrite rule2 0 L2R)]
+derForMeta4Eqn = AbsDerivation summary4 [Left (Rewrite rule3 0 L2R)]
+
+dmap0 = makeDerivationMap []
+emap0 = identifyEquationalRules dmap0
+
+dmap1 = makeDerivationMap [derForMeta1Neq, derForMeta4Eqn]
+emap1 = identifyEquationalRules dmap1
+
 test1 = TestCase (assertEqual "createSummaryRule can convert a summary into a rule."
                               rule1a
-                              (createSummaryRule (DerivationSummary meta1 word1 word2)))
+                              (createSummaryRule emap0 summary1))
 
 test2 = TestCase (assertEqual "createSummaryRule respects the initial word."
                               (RewriteRule word3 word2 False (Just name1))
-                              (createSummaryRule (DerivationSummary meta1 word3 word2)))
+                              (createSummaryRule emap0 summary2))
 
 test3 = TestCase (assertEqual "createSummaryRule respects the final word."
                               rule2
-                              (createSummaryRule (DerivationSummary meta1 word1 word3)))
+                              (createSummaryRule emap0 summary3))
 
 test4 = TestCase (assertEqual "createSummaryRule respects name in metadata."
                               rule1b
-                              (createSummaryRule (DerivationSummary meta2 word1 word2)))
+                              (createSummaryRule emap0 summary4))
+
+test5 = TestCase (assertEqual "createSummaryRule respects emap (1/2)."
+                              (RewriteRule word1 word2 False (Just name1))
+                              (createSummaryRule emap1 summary1))
+
+test6 = TestCase (assertEqual "createSummaryRule respects emap (2/2)."
+                              (RewriteRule word1 word2 True (Just name2))
+                              (createSummaryRule emap1 summary4))
 
 -----------------------------------------------------------------------------------------
 -- addSummaryToRules
 
-dict1 = empty `addRule` (name2, rule1b)
-dict2 = dict1 `addRule` (name1, rule2)
+test7 = TestCase (assertBool "isSummaryEquational handles equational relations."
+                             (isSummaryEquational emap1 summary4))
 
-test5 = TestCase (assertEqual "addSummaryToRules is idempotent for unnamed summaries."
-                              (Just dict1 :: Maybe RuleDict)
-                              (summary `addSummaryToRules` dict1))
-    where summary = DerivationSummary meta3 word1 word2
+test8 = TestCase (assertBool "isSummaryEquational handles orientated relations."
+                             (not (isSummaryEquational emap1 summary1)))
 
-test6 = TestCase (assertEqual "addSummaryToRules adds rules with new names."
-                              (Just dict2 :: Maybe RuleDict)
-                              (summary `addSummaryToRules` dict1))
-    where summary = DerivationSummary meta1 word1 word3
-
-test7 = TestCase (assertEqual "addSummaryToRules rejects summaries with duplicate names."
-                              Nothing
-                              (summary `addSummaryToRules` dict1))
-    where summary = DerivationSummary meta2 word1 word3
+test9 = TestCase (assertBool "isSummaryEquational handles missing entries."
+                             (not (isSummaryEquational emap1 summary5)))
 
 -----------------------------------------------------------------------------------------
 -- hasDerivedRule and addDerivedRule
@@ -100,55 +119,58 @@ set0 = nullRuleSet
 set1 = set0 `addDerivedRule` name1
 set2 = set1 `addDerivedRule` name2
 
-test8 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (1/9)"
-                             (not (set0 `hasDerivedRule` name1)))
+test10 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (1/9)"
+                              (not (set0 `hasDerivedRule` name1)))
 
-test9 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (2/9)"
-                             (not (set0 `hasDerivedRule` name2)))
+test11 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (2/9)"
+                              (not (set0 `hasDerivedRule` name2)))
 
-test10 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (3/9)"
+test12 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (3/9)"
                               (not (set0 `hasDerivedRule` name3)))
 
-test11 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (4/9)"
+test13 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (4/9)"
                               (set1 `hasDerivedRule` name1))
 
-test12 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (5/9)"
+test14 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (5/9)"
                               (not (set1 `hasDerivedRule` name2)))
 
-test13 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (6/9)"
+test15 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (6/9)"
                               (not (set1 `hasDerivedRule` name3)))
 
-test14 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (7/9)"
+test16 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (7/9)"
                               (set2 `hasDerivedRule` name1))
 
-test15 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (8/9)"
+test17 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (8/9)"
                               (set2 `hasDerivedRule` name2))
 
-test16 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (9/9)"
+test18 = TestCase (assertBool "hasDerivedRule and addDerivedRule interact (9/9)"
                               (not (set0 `hasDerivedRule` name3)))
 
 -----------------------------------------------------------------------------------------
 -- addSummaryToSymbols
 
+dict1 = empty `addRule` (name2, rule1b)
+dict2 = dict1 `addRule` (name1, rule2)
+
 set1b = set0 `addDerivedRule` name3
 set2b = set1b `addDerivedRule` name1
 
-test17 = TestCase (assertEqual "addSummaryToSymbols is idempotent for unnamed summaries."
+test19 = TestCase (assertEqual "addSummaryToSymbols is idempotent for unnamed summaries."
                                (Just set2b :: Maybe DRuleSet)
                                (addSummaryToSymbols dict2 set2b summary))
     where summary = DerivationSummary meta3 word1 word2
 
-test18 = TestCase (assertEqual "addSummaryToSymbols adds rules with new names."
+test20 = TestCase (assertEqual "addSummaryToSymbols adds rules with new names."
                                (Just set2b :: Maybe DRuleSet)
                                (addSummaryToSymbols dict1 set1b summary))
     where summary = DerivationSummary meta1 word1 word3
 
-test19 = TestCase (assertEqual "addSummaryToSymbols rejects summaries with rule names."
+test21 = TestCase (assertEqual "addSummaryToSymbols rejects summaries with rule names."
                                Nothing
                                (addSummaryToSymbols dict2 set1b summary))
     where summary = DerivationSummary meta2 word1 word3
 
-test20 = TestCase (assertEqual "addSummaryToSymbols rejects summaries with existing names."
+test22 = TestCase (assertEqual "addSummaryToSymbols rejects summaries with existing names."
                                Nothing
                                (addSummaryToSymbols dict1 set2b summary))
     where summary = DerivationSummary meta2 word1 word3
@@ -160,21 +182,23 @@ tests = hUnitTestToTests $ TestList [TestLabel "createSummaryRule_Basic" test1,
                                      TestLabel "createSummaryRule_Initial" test2,
                                      TestLabel "createSummaryRule_Final" test3,
                                      TestLabel "createSummaryRule_Meta" test4,
-                                     TestLabel "addSummaryToRules_Unnamed" test5,
-                                     TestLabel "addSummaryToRules_Success" test6,
-                                     TestLabel "addSummaryToRules_Failure" test7,
-                                     TestLabel "hasDerivedRule_1" test8,
-                                     TestLabel "hasDerivedRule_2" test9,
-                                     TestLabel "hasDerivedRule_3" test10,
-                                     TestLabel "hasDerivedRule_4" test11,
-                                     TestLabel "hasDerivedRule_5" test12,
-                                     TestLabel "hasDerivedRule_6" test13,
-                                     TestLabel "hasDerivedRule_7" test14,
-                                     TestLabel "hasDerivedRule_8" test15,
-                                     TestLabel "hasDerivedRule_9" test16,
-                                     TestLabel "addSummaryToSymbols_Unnamed" test17,
-                                     TestLabel "addSummaryToSymbols_Success" test18,
-                                     TestLabel "addSummaryToSymbols_RuleName" test19,
-                                     TestLabel "addSummaryToSymbols_Duplicate" test20]
+                                     TestLabel "createSummaryRule_Emap_1" test5,
+                                     TestLabel "createSummaryRule_Emap_2" test6,
+                                     TestLabel "isSummaryEquational_True" test7,
+                                     TestLabel "isSummaryEquational_False" test8,
+                                     TestLabel "isSummaryEquational_Unnamed" test9,
+                                     TestLabel "hasDerivedRule_1" test10,
+                                     TestLabel "hasDerivedRule_2" test11,
+                                     TestLabel "hasDerivedRule_3" test12,
+                                     TestLabel "hasDerivedRule_4" test13,
+                                     TestLabel "hasDerivedRule_5" test14,
+                                     TestLabel "hasDerivedRule_6" test15,
+                                     TestLabel "hasDerivedRule_7" test16,
+                                     TestLabel "hasDerivedRule_8" test17,
+                                     TestLabel "hasDerivedRule_9" test18,
+                                     TestLabel "addSummaryToSymbols_Unnamed" test19,
+                                     TestLabel "addSummaryToSymbols_Success" test20,
+                                     TestLabel "addSummaryToSymbols_RuleName" test21,
+                                     TestLabel "addSummaryToSymbols_Duplicate" test22]
 
 main = defaultMain tests

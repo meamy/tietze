@@ -5,6 +5,7 @@
 
 module Lafont.Rewrite.Summary where
 
+import           Data.Map              as Map
 import           Data.Set              as Set
 import           Lafont.Common
 import           Lafont.Rewrite.Lookup
@@ -26,26 +27,34 @@ data DerivationSummary = DerivationSummary { meta    :: RewritePreamble
 -----------------------------------------------------------------------------------------
 -- * Functions to Abstract Derivation Summaries as Rules.
 
--- | Consumes a summary (sum). Returns a new derived rule which meets the specifications
--- of sum. Requires that sum is named.
-createSummaryRule :: DerivationSummary -> RewriteRule
-createSummaryRule sum = RewriteRule lhs rhs eqn from
+-- | A mapping from derivation names to their equatioanl flags. If the equational flag of
+-- a derived relation is true, then the derived relation may be applied in any direction.
+type EqMap = Map.Map String Bool
+
+-- | Reads an entry from an EqMap.
+isEquationalDerivation :: EqMap -> String -> Maybe Bool
+isEquationalDerivation map name = name `Map.lookup` map
+
+-- | Consumes an equationality map (emap) a summary recorded in the map (sum). Returns
+-- true if and only if emap contains a true entry for sum. Note that when sum is unnamed,
+-- it is trivially true that emap does not contain an entry for sum.
+isSummaryEquational :: EqMap -> DerivationSummary -> Bool
+isSummaryEquational emap sum =
+    case propName $ meta sum of
+        Nothing   -> False
+        Just name -> case isEquationalDerivation emap name of
+            Just True -> True
+            _         -> False
+
+-- | Consumes an equationality map (emap) a summary recorded in the map (sum). Returns a
+-- new derived rule which meets the specifications of sum. Requires that sum is named. If
+-- sum is not recorded in emap, then sum is assumed to be non-equational.
+createSummaryRule :: EqMap -> DerivationSummary -> RewriteRule
+createSummaryRule emap sum = RewriteRule lhs rhs eqn from
     where lhs  = initial sum
           rhs  = final sum
-          eqn  = False
+          eqn  = isSummaryEquational emap sum
           from = propName (meta sum)
-
--- | Consumes a summary (sum) and a dictionary of rules (rules). If sum is unnamed, then
--- the rules is unchanged. If sum is named, and the name does not appear in rules, then a
--- rule r is created from sum and a new dictionary is returned, obtained by adding r to
--- rules. If sum is named, and the name appears in rules, then nothing is returned.
-addSummaryToRules :: DerivationSummary -> RuleDict -> Maybe RuleDict
-addSummaryToRules sum rules =
-    case propName $ meta sum of
-        Nothing   -> Just rules
-        Just name -> if rules `hasRule` name
-                     then Nothing
-                     else Just (rules `addRule` (name, createSummaryRule sum))
 
 -----------------------------------------------------------------------------------------
 -- * Functions to Register Derivations as Relations.
