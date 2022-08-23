@@ -1,0 +1,27 @@
+-- Non-equational (primitive).
+@name deriv1
+abc1.xyz1.abc2.xyz2.abc1.abc1.abc1.abc1
+rel1 → 0
+rel2 → 1
+rel3 → 0
+ε
+
+-- Equational (primitive).
+@name deriv2
+abc1.xyz1.abc2.xyz2.abc1.abc1.abc1.abc1
+rel1 → 0
+rel2 → 1
+lmnop123.lmnop123
+
+-- Non-equational (inherited).
+@name deriv3
+abc1.xyz1.abc2.xyz2.abc1.xyz1.abc2.xyz2.abc1.abc1.abc1.abc1.abc1.abc1.abc1.abc1
+!apply deriv1 → 4
+!apply deriv2 → 0
+lmnop123.lmnop123
+
+-- This should fail: applies an equational rule from right-to-left.
+lmnop123.lmnop123.lmnop123.lmnop123.lmnop123
+rel3 → 0
+!apply deriv3 ← 1
+lmnop123.abc1.xyz1.abc2.xyz2.abc1.xyz1.abc2.xyz2.abc1.abc1.abc1.abc1.abc1.abc1.abc1.abc1

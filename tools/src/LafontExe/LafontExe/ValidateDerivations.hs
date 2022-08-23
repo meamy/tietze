@@ -43,44 +43,39 @@ addToNamedList _    named []          _   = named
 addToNamedList name named (a:unnamed) num = (name, num, a) : rest
     where rest = addToNamedList name named unnamed (num + 1)
 
------------------------------------------------------------------------------------------
--- * Temporary.
-
--- | Temporary function to introduce equational derived rules.
-concretizeRewrite :: RuleDict -> AbsRewrite -> Rewrite
-concretizeRewrite rules (Right (Apply name pos dir)) = Rewrite rule pos dir
-    where rule = fromJust $ interpretRule rules name
-concretizeRewrite _ (Left rw) = rw
-
--- | Temporary function to introduce equational derived rules.
-concretizeDerivation :: RuleDict -> AbsDerivation -> Derivation
-concretizeDerivation rules (AbsDerivation summary x) = Derivation summary rewrites
-    where rewrites = map (concretizeRewrite rules) x
-
--- | Temporary function to introduce equational derived rules.
-concretizeNamedDerivation :: RuleDict -> NamedAbsDerivation -> NamedDerivation
-concretizeNamedDerivation rules (name, i, x) = (name, i, concretizeDerivation rules x)
-
--- | Temporary function to introduce equational derived rules.
-concretizeNamedDerivations :: RuleDict -> [NamedAbsDerivation] -> [NamedDerivation]
-concretizeNamedDerivations rules = map (concretizeNamedDerivation rules)
+-- | Extracts the third element from a triple.
+third :: (a, b, c) -> c
+third (_, _, x) = x
 
 -----------------------------------------------------------------------------------------
 -- * Logic.
+
+-- | Folds concretization across all named derivations.
+concretize :: DerivationMetadata -> [NamedAbsDerivation] -> Either (String, Int, Int) [NamedDerivation]
+concretize _    []                            = Right []
+concretize meta ((fname, num, x):derivations) =
+    case concretizeDerivation meta x of
+        Left pos         -> Left (fname, num, pos)
+        Right derivation -> case concretize meta derivations of
+            Left err   -> Left err
+            Right rest -> Right ((fname, num, derivation) : rest)
 
 -- | Consumes a list of pairs, where each tuple contains the name of a derivation file
 -- and the Derivation it describes. If the dependency graph induced by the list of
 -- derivations is invalid, then the error is printed. Otherwise, if a step in a
 -- derivation is invalid, then a summary of the failure is printed. Otherwise, a success
 -- message is printed.
-verifyDerivations :: RuleDict -> [NamedAbsDerivation] -> String
-verifyDerivations rules derivations =
-    case detectDerivationError $ map third derivations of
+verifyDerivations :: [NamedAbsDerivation] -> String
+verifyDerivations named =
+    case detectDerivationError absDerivations of
         Just (Left unmet)  -> "Unmet dependency: " ++ printUnmetDep unmet ++ "\n"
         Just (Right cycle) -> "Dependency cycle detected: " ++ printCycle cycle ++ "\n"
-        Nothing            -> verifyDerivationSteps tmp
-    where third (_, _, a) = a
-          tmp = concretizeNamedDerivations rules derivations
+        Nothing            -> case concretize (dmap, emap) named of
+            Left (fname, num, pos) -> describeFailedApply fname num pos
+            Right derivations      -> verifyDerivationSteps derivations
+    where absDerivations = map third named
+          dmap = makeDerivationMap absDerivations
+          emap = identifyEquationalRules dmap
 
 -- | Consumes a list of pairs, where each tuple contains the name of a derivation file
 -- and the Derivation it describes. If a derivation is invalid, then a summary of the
@@ -111,21 +106,6 @@ readDerivationFiles (fname:fnames) gens = do
             case ioRes of
                 Left err  -> return (Left err)
                 Right res -> return (Right (addToNamedList fname res preList 0))
-
--- Consumes a dictionary of rewrite rules (rules) and a list of pairs, where each pair
--- contains the name of a file and the PreDerivation data it describes. If each piece of
--- PreDerivation data is either unnamed or has a unique name, then a new dictionary is
--- returned as obtained by adding each derived rule to rules. Otherwise, the file name of
--- the first derivation with a duplication rule name is returned.
-addDerivedRules :: RuleDict -> [NamedPreDerivation] -> Either (String, Int) RuleDict
-addDerivedRules rules []                       = Right rules
-addDerivedRules rules ((fname, num, pre):rest) =
-    case addDerivedRules rules rest of
-        Left err       -> Left err
-        Right recRules -> case summary `addSummaryToRules` recRules of
-            Nothing           -> Left (fname, num)
-            Just updatedRules -> Right updatedRules
-    where summary = parsed pre
 
 -- Consumes a dictionary of rewrite rules (rules) and a list of named PreDerivations. If
 -- each PreDerivation summary is either unnamed or has a unqiue name (with respect to the
@@ -161,11 +141,9 @@ processPreDerivations :: Handle -> [NamedPreDerivation] -> RuleDict -> [String] 
 processPreDerivations hdl pres rules gens =
     case listDerivedRules rules pres of
         Left (fname, num) -> hPutStr hdl $ logFromFile fname 0 $ reportDupRule num
-        Right derived     -> case addDerivedRules rules pres of -- TODO: deprecate
-            Left (fname, num) -> hPutStr hdl $ logFromFile fname 0 $ reportDupRule num
-            Right sumRules    -> case parseRewriteSections rules derived pres of
-                Left (fname, errLn, err) -> hPutStr hdl $ logEitherMsg fname errLn err
-                Right derivations        -> hPutStr hdl $ verifyDerivations sumRules derivations
+        Right derived     -> case parseRewriteSections rules derived pres of
+            Left (fname, errLn, err) -> hPutStr hdl $ logEitherMsg fname errLn err
+            Right derivations        -> hPutStr hdl $ verifyDerivations derivations
 
 -- | Consumes a handle, a list of derivation files (DerivFnames), a dictionary of rewrite
 -- rules (rules), and a list of generators (gens). If all derivations parse correctly,

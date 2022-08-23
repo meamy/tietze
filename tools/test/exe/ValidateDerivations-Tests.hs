@@ -361,6 +361,38 @@ test19 = (HandleTest "Many_Good"
                      check19)
 
 -----------------------------------------------------------------------------------------
+-- Tests equational derived rules.
+
+eqnDerivedProofs :: String
+eqnDerivedProofs = "data/test/equational.good.derivs"
+
+test20 = (HandleTest "Equational_Derived_Rules"
+                     "Ensures that derived rules can be applied equationally (if valid)."
+                     (\x -> validateDerivations x goodGens goodRels [eqnDerivedProofs])
+                     (\str -> str == "Success.\n"))
+
+-----------------------------------------------------------------------------------------
+-- Tests the detection of invalid equational derived rules.
+
+neqDerivedProofs :: String
+neqDerivedProofs = "data/test/equational.bad.derivs"
+
+check21 :: String -> Bool
+check21 str = (and [-- Correct error message was displayed.
+                    ("not equational" `isSubstrOf` str),
+                    -- Correct derivation was displayed.
+                    ("derivation(3)" `isSubstrOf` str),
+                    -- Correct step was displayed.
+                    ("step 1" `isSubstrOf` str),
+                    -- Should be a single line.
+                    ((length (lines str)) == 3)])
+
+test21 = (HandleTest "Equational_Derived_Failure"
+                     "Ensures that directed derived rules are not applied equationally."
+                     (\x -> validateDerivations x goodGens goodRels [neqDerivedProofs])
+                     check21)
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = [test1,
@@ -381,6 +413,8 @@ tests = [test1,
          test16,
          test17,
          test18,
-         test19]
+         test19,
+         test20,
+         test21]
 
 main = handleTestToMain $ runAllHandleTests tests

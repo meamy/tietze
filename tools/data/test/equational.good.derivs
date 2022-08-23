@@ -1,0 +1,32 @@
+-- Non-equational.
+@name deriv1
+abc1.xyz1.abc2.xyz2.abc1.abc1.abc1.abc1
+rel1 → 0
+rel2 → 1
+rel3 → 0
+ε
+
+-- Equational.
+@name deriv2
+abc1.xyz1.abc2.xyz2.abc1.abc1.abc1.abc1
+rel1 → 0
+rel2 → 1
+lmnop123.lmnop123
+
+-- Non-equational.
+@name deriv3
+abc1.xyz1.abc2.xyz2.abc1.xyz1.abc2.xyz2.abc1.abc1.abc1.abc1.abc1.abc1.abc1.abc1
+!apply deriv1 → 4
+!apply deriv2 → 0
+lmnop123.lmnop123
+
+-- Equational.
+@name deriv4
+lmnop123.lmnop123.lmnop123
+!apply deriv2 ← 1
+lmnop123.abc1.xyz1.abc2.xyz2.abc1.abc1.abc1.abc1
+
+-- Equational.
+lmnop123.abc1.xyz1.abc2.xyz2.abc1.abc1.abc1.abc1.lmnop123
+!apply deriv4 ← 0
+lmnop123.lmnop123.lmnop123.lmnop123

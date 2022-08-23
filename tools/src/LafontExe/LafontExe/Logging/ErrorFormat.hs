@@ -8,6 +8,13 @@ import           LafontExe.Logging.Primitive
 -----------------------------------------------------------------------------------------
 -- * Miscellaneous Error Logging.
 
+-- | Consumes the name of a derivation file (fname) and the index of a derivation (num).
+-- Returns the first line of a derivation validation error.
+prefaceDerivationError :: String -> Int -> String
+prefaceDerivationError fname num = "Failed to validate " ++ der ++ " in " ++ fname ++ "."
+    where index = show num
+          der = "derivation(" ++ index ++ ")"
+
 -- | Consumes the name of a derivation file (fname), the index of a derivation (num), the
 -- word obtained from a derivation (act), and the expected word from the end of the file
 -- (exp). Returns a string describing the error.
@@ -15,8 +22,7 @@ describeIncorrectResult :: String -> Int -> MonWord -> MonWord -> String
 describeIncorrectResult fname num exp act = fstLine ++ "\n" ++ sndLine ++ "\n"
     where expStr = logWord exp
           actStr = logWord act
-          index = show num
-          fstLine = "Failed to validate derivation(" ++ index ++ ") in " ++ fname ++ "."
+          fstLine = prefaceDerivationError fname num
           sndLine = "Expected " ++ expStr ++ " but produced " ++ actStr ++ "."
 
 -- | Consumes the name of a derivation file (fname), the index of a derivation (num), the
@@ -26,9 +32,18 @@ describeIncorrectStep :: String -> Int -> MonWord -> Int -> String
 describeIncorrectStep fname num act step = fstLine ++ "\n" ++ sndLine ++ "\n"
     where actStr = logWord act
           stepStr = show step
-          index = show num
-          fstLine = "Failed to validate derivation(" ++ index ++ ") in " ++ fname ++ "."
+          fstLine = prefaceDerivationError fname num
           sndLine = "Obtained " ++ actStr ++ " at step " ++ stepStr ++ "."
+
+-- | Consumes the name of a derivation file (fname), the index of a derivation (num), and
+-- the proof step at which an apply was not concretizable. Returns a string describing
+-- the error.
+describeFailedApply :: String -> Int -> Int -> String
+describeFailedApply fname num pos = fstLine ++ "\n" ++ sndLine ++ "\n" ++ thdLine ++ "\n"
+    where step = show pos
+          fstLine = prefaceDerivationError fname num
+          sndLine = "The derivation applied at step " ++ step ++ " is not equational."
+          thdLine = "However, the rule is applied right-to-left."
 
 -- | Consumes the index of a derivation (num). Returns a message stating that this
 -- derivation has a duplication name.
