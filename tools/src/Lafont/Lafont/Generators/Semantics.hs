@@ -2,7 +2,7 @@
 
 module Lafont.Generators.Semantics where
 
-import qualified Data.Map as Map
+import qualified Data.Map                     as Map
 import           Data.Maybe
 import           Lafont.Common
 import           Lafont.Generators.Categories
@@ -64,7 +64,7 @@ semEval _    []         = Just identity
 semEval gens (sym:word) =
     case interpretGen gens symName of
         Just lhs -> case semEval gens word of
-            Just rhs -> Just (compose lhs rhs)
+            Just rhs -> compose lhs rhs
             Nothing  -> Nothing
         Nothing -> Nothing
     where symName = name sym
@@ -77,6 +77,6 @@ semComp :: (MonoidObj a) => GenDict a -> MonWord -> MonWord -> Maybe Bool
 semComp gens lhs rhs =
     case semEval gens lhs of
         Just lhs -> case semEval gens rhs of
-            Just rhs -> Just (lhs == rhs)
+            Just rhs -> equate lhs rhs
             Nothing  -> Nothing
         Nothing -> Nothing

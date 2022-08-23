@@ -174,14 +174,16 @@ test34 = TestCase (assertEqual "Can extract alphabet from sampleDict2."
 data ZeroInt = ZeroInt Int deriving (Eq,Show)
 
 instance MonoidObj (ZeroInt) where
-    compose (ZeroInt x) (ZeroInt y) = ZeroInt (x * y)
-    identity                        = ZeroInt 0
+    equate   a           b           = Just (a == b)
+    compose  (ZeroInt x) (ZeroInt y) = Just (ZeroInt (x * y))
+    identity                         = ZeroInt 0
 
 data BadInt = BadInt Int deriving (Eq,Show)
 
 instance MonoidObj (BadInt) where
-    compose (BadInt x) (BadInt y) = BadInt (x * y)
-    identity                      = BadInt 5
+    equate   a          b          = Just (a == b)
+    compose  (BadInt x) (BadInt y) = Just (BadInt (x * y))
+    identity                       = BadInt 5
 
 -----------------------------------------------------------------------------------------
 -- Defines generators and words.
