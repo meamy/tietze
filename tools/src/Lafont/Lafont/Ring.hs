@@ -1,6 +1,6 @@
 -- | General-purpose Ring utilities not found in newsynth.
 
-module Lafont.Ring where
+module Lafont.Ring (reduceDyadic) where
 
 import qualified Quantum.Synthesis.Ring as QRing
 

@@ -1,6 +1,9 @@
 -- | General-purpose string manipulation functions not found in Prelude.
 
-module Lafont.String where
+module Lafont.String (
+    isSubstrAt,
+    isSubstrOf
+) where
 
 import           Data.List
 import           Data.Maybe

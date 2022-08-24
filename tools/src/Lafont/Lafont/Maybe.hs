@@ -1,6 +1,6 @@
 -- | General-purpose Maybe utilities not found in Prelude.
 
-module Lafont.Maybe where
+module Lafont.Maybe (maybeApply) where
 
 -----------------------------------------------------------------------------------------
 -- Maybe Value Manipulation.

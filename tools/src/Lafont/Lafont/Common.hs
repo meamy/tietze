@@ -1,6 +1,10 @@
 -- | General-purpose data types and functions.
 
-module Lafont.Common where
+module Lafont.Common (
+    Display ( .. ),
+    Symbol ( .. ),
+    MonWord
+) where
 
 -----------------------------------------------------------------------------------------
 -- * Common Classes

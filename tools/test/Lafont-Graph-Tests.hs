@@ -6,6 +6,7 @@ import Test.HUnit
 import Data.List
 import Data.Maybe
 import Lafont.Graph
+import Lafont.Internal.Graph
 
 -----------------------------------------------------------------------------------------
 -- Tests the ability to build and inspect a graph.

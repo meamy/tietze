@@ -6,6 +6,7 @@ import Test.HUnit
 import Data.Maybe
 import Lafont.Common
 import Lafont.Graph
+import Lafont.Internal.Graph
 import Lafont.Rewrite.Abstraction
 import Lafont.Rewrite.Common
 import Lafont.Rewrite.Derivations
