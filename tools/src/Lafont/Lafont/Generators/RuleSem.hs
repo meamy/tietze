@@ -1,6 +1,10 @@
 -- | Data types and functions to facilitate semantic evaluation of rules.
 
-module Lafont.Generators.RuleSem where
+module Lafont.Generators.RuleSem (
+    RuleDictStatus ( .. ),
+    isRuleDictStatusGood,
+    checkRuleSem
+) where
 
 import           Lafont.Generators.Categories
 import           Lafont.Generators.Semantics

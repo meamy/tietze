@@ -1,13 +1,13 @@
 -- | Provides the typing data required to display generators. Since most generators are
 -- built on top of existing types, the Display class data must be provided separately.
 
-module Lafont.Generators.Display where
+module Lafont.Generators.Display (display) where
 
 import           Lafont.Common
 import           Lafont.Generators.QubitGates
 import           Lafont.Ring
-import qualified Quantum.Synthesis.Matrix as QMat
-import qualified Quantum.Synthesis.Ring as QRing
+import qualified Quantum.Synthesis.Matrix     as QMat
+import qualified Quantum.Synthesis.Ring       as QRing
 
 -----------------------------------------------------------------------------------------
 -- * Monoid Semantics.

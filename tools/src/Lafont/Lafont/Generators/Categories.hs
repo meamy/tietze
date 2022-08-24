@@ -3,7 +3,11 @@
 -- | Provides data types for the semantics of categories, their generalizations (e.g.
 -- monoidal categories) and their specializations (e.g., monoids).
 
-module Lafont.Generators.Categories where
+module Lafont.Generators.Categories (
+    AddInt ( .. ),
+    MultInt ( .. ),
+    MonoidObj( .. )
+) where
 
 import qualified Quantum.Synthesis.Matrix as QMat
 import qualified Quantum.Synthesis.Ring   as QRing

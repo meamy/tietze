@@ -1,10 +1,29 @@
 -- | A collection of quantum gate primitives to describe quantum circuit semantics.
 
-module Lafont.Generators.QubitGates where
+module Lafont.Generators.QubitGates (
+    -- Exports.
+    Unitary,
+    gateId,
+    gateX,
+    gateY,
+    gateZ,
+    gateH,
+    gateSwap,
+    gateCX,
+    gateCZ,
+    gateK,
+    gateTof,
+    TwoBitPos ( .. ),
+    ThreeBitPos ( .. ),
+    TwoQubitGate ( .. ),
+    ThreeQubitGate ( .. ),
+    prepare_gate_4x4,
+    prepare_gate_8x8
+) where
 
 import qualified Quantum.Synthesis.CliffordT as QCliffT
-import qualified Quantum.Synthesis.Matrix as QMat
-import qualified Quantum.Synthesis.Ring as QRing
+import qualified Quantum.Synthesis.Matrix    as QMat
+import qualified Quantum.Synthesis.Ring      as QRing
 
 -----------------------------------------------------------------------------------------
 -- * Helper Types.

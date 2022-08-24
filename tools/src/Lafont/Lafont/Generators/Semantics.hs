@@ -1,6 +1,18 @@
 -- | Data types and functions to facilitate semantic evaluation of generator strings.
 
-module Lafont.Generators.Semantics where
+module Lafont.Generators.Semantics (
+    SemModel ( .. ),
+    GenDict,
+    display,
+    empty,
+    hasGen,
+    addGen,
+    foldGens,
+    toAlphabet,
+    interpretGen,
+    semEval,
+    semComp
+) where
 
 import qualified Data.Map                     as Map
 import           Data.Maybe
@@ -25,33 +37,33 @@ instance Display SemModel where
 -- * Generator Dictionary.
 
 -- | A mapping from generator symbols (strings) to their semantic values of type a.
-type GenDict a = Map.Map String (Maybe a)
+newtype GenDict a = GenDict (Map.Map String (Maybe a)) deriving (Eq,Show)
 
 -- | Creates an empty GenDict.
 empty :: GenDict a
-empty = Map.empty
+empty = GenDict Map.empty
 
 -- | Returns true if a generator is already recorded.
 hasGen :: GenDict a -> String -> Bool
-hasGen dict id = Map.member id dict
+hasGen (GenDict dict) id = Map.member id dict
 
 -- | Records a identifier/semv pair inside a generator dictionary.
 addGen :: GenDict a -> (String, Maybe a) -> GenDict a
-addGen dict (id, semv) = Map.insert id semv dict
+addGen (GenDict dict) (id, semv) = GenDict (Map.insert id semv dict)
 
 -- | Folds f over the (name, semv) entries of dict, and returns the accumulated value.
 foldGens :: ((String, Maybe a) -> b -> b) -> b -> GenDict a -> b
-foldGens f = Map.foldrWithKey adjust
+foldGens f init (GenDict dict) = Map.foldrWithKey adjust init dict
     where adjust key semv acc = f (key, semv) acc
 
 -- | Returns the alphabet described by the generators.
 toAlphabet :: GenDict a -> [String]
-toAlphabet = Map.keys
+toAlphabet (GenDict dict) = Map.keys dict
 
 -- | Returns the semantic value of a generator. If the generator does not exist, then
 -- nothing is returned. To check if a generator is recorded, then use (hasGen dict id).
 interpretGen :: GenDict a -> String -> Maybe a
-interpretGen dict id = Map.findWithDefault Nothing id dict
+interpretGen (GenDict dict) id = Map.findWithDefault Nothing id dict
 
 -----------------------------------------------------------------------------------------
 -- * Semantic Comparison.
