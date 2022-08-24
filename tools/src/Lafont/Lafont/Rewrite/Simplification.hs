@@ -1,7 +1,10 @@
 -- | This module provides functions to rewrite a monoidal word from a sequence of
 -- rewrites.
 
-module Lafont.Rewrite.Simplification where
+module Lafont.Rewrite.Simplification (
+     RewriteResult ( .. ),
+     simplify
+) where
 
 import           Lafont.Common
 import           Lafont.Rewrite.Rules

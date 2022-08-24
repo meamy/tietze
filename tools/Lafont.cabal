@@ -38,6 +38,10 @@ library
                        Lafont.Rewrite.Abstraction
                        Lafont.Rewrite.Common
                        Lafont.Rewrite.Derivations
+                       Lafont.Rewrite.Internal.Abstraction
+                       Lafont.Rewrite.Internal.Derivations
+                       Lafont.Rewrite.Internal.Rules
+                       Lafont.Rewrite.Internal.Summary
                        Lafont.Rewrite.Lookup
                        Lafont.Rewrite.Rules
                        Lafont.Rewrite.Simplification

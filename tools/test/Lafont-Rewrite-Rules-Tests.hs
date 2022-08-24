@@ -5,6 +5,7 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Lafont.Common
 import Lafont.Rewrite.Common
+import Lafont.Rewrite.Internal.Rules
 import Lafont.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------

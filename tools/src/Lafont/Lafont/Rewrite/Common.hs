@@ -1,6 +1,9 @@
 -- | The module provides basic types and functions for working with derivational proofs.
 
-module Lafont.Rewrite.Common where
+module Lafont.Rewrite.Common (
+    RuleDir ( .. ),
+    RulePos
+) where
 
 -----------------------------------------------------------------------------------------
 -- * Basic Types.

@@ -2,11 +2,20 @@
 -- the RewriteRule type describes a rule in a rewrite system and the Rewrite type
 -- describes the application of a rewrite rule to a specific string.
 
-module Lafont.Rewrite.Rules where
+module Lafont.Rewrite.Rules (
+    RewriteRule ( .. ),
+    Rewrite ( .. ),
+    isDerivedRule,
+    checkRewriteRule,
+    applyRewriteRule,
+    checkRewrite,
+    applyRewrite
+) where
 
 import           Data.Maybe
 import           Lafont.Common
 import           Lafont.Rewrite.Common
+import           Lafont.Rewrite.Internal.Rules
 
 -----------------------------------------------------------------------------------------
 -- * RewriteRules.
@@ -28,28 +37,12 @@ data RewriteRule = RewriteRule { lhs         :: MonWord
 isDerivedRule :: RewriteRule -> Bool
 isDerivedRule rule = isJust (derivedFrom rule)
 
--- | Consumes a monoidal word and the lhs of a production rule: lhs → rhs. True is
--- returned if the rule is applicable at index .
-doesRewriteTermMatch :: MonWord -> MonWord -> Bool
-doesRewriteTermMatch _   []  = True
-doesRewriteTermMatch []  _   = False
-doesRewriteTermMatch str lhs = head str == head lhs && match
-    where match = doesRewriteTermMatch (tail str) (tail lhs)
-
 -- | Consumes a monoidal word, a rewrite rule, and a boolean flag indicating if the rule
 -- is to be applied from left-to-right. Returns true if rule matches a prefix of the
 -- monoidal world.
 checkRewriteRule :: MonWord -> RewriteRule -> RuleDir -> Bool
 checkRewriteRule str rule L2R = doesRewriteTermMatch str (lhs rule)
 checkRewriteRule str rule R2L = doesRewriteTermMatch str (rhs rule)
-
--- | Consumes a monoidal word, together with the lhs and rhs of a production rule:
--- lhs → rhs. Returns the monoidal word obtained by applying the production rule at
--- index. Assumes that doesRewriteTermMatch is true.
-applyProductionRule :: MonWord -> MonWord -> MonWord -> MonWord
-applyProductionRule str []  []  = str
-applyProductionRule str []  rhs = head rhs : applyProductionRule str [] (tail rhs)
-applyProductionRule str lhs rhs = applyProductionRule (tail str) (tail lhs) rhs
 
 -- | Consumes a monoidal word, a rewrite rule, and a boolean flag indicating if the rule
 -- is to be applied from left-to-right. Returns the string obtained by applying the

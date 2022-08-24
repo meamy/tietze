@@ -6,6 +6,7 @@ import Test.HUnit
 import Lafont.Common
 import Lafont.Rewrite.Abstraction
 import Lafont.Rewrite.Common
+import Lafont.Rewrite.Internal.Abstraction
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Summary
 

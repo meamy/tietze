@@ -3,11 +3,30 @@
 -- | This module provides data-types to summarize derivations, and functions to convert
 -- summarizations into rules.
 
-module Lafont.Rewrite.Summary where
+module Lafont.Rewrite.Summary (
+    -- Re-exports from internal.
+    EqMap,
+    DRuleSet,
+    -- Exports.
+    RewritePreamble ( .. ),
+    DerivationSummary ( .. ),
+    defaultEqMap,
+    setAsEquational,
+    setAsOrientated,
+    containsRule,
+    isEquationalDerivation,
+    isSummaryEquational,
+    createSummaryRule,
+    nullRuleSet,
+    hasDerivedRule,
+    addDerivedRule,
+    addSummaryToSymbols,
+) where
 
-import           Data.Map              as Map
-import           Data.Set              as Set
+import           Data.Map                        as Map
+import           Data.Set                        as Set
 import           Lafont.Common
+import           Lafont.Rewrite.Internal.Summary
 import           Lafont.Rewrite.Lookup
 import           Lafont.Rewrite.Rules
 
@@ -27,13 +46,25 @@ data DerivationSummary = DerivationSummary { meta    :: RewritePreamble
 -----------------------------------------------------------------------------------------
 -- * Functions to Abstract Derivation Summaries as Rules.
 
--- | A mapping from derivation names to their equatioanl flags. If the equational flag of
--- a derived relation is true, then the derived relation may be applied in any direction.
-type EqMap = Map.Map String Bool
+-- Returns an empty EqMap.
+defaultEqMap :: EqMap
+defaultEqMap = EqMap Map.empty
+
+-- | Records that the derivation name is equational in map.
+setAsEquational :: EqMap -> String -> EqMap
+setAsEquational (EqMap map) name = EqMap (Map.insert name True map)
+
+-- | Records that the derivation name is orientated in map.
+setAsOrientated :: EqMap -> String -> EqMap
+setAsOrientated (EqMap map) name = EqMap (Map.insert name False map)
+
+-- | Records true if name is recorded in map.
+containsRule :: EqMap -> String -> Bool
+containsRule (EqMap map) name = name `Map.member` map
 
 -- | Reads an entry from an EqMap.
 isEquationalDerivation :: EqMap -> String -> Maybe Bool
-isEquationalDerivation map name = name `Map.lookup` map
+isEquationalDerivation (EqMap map) name = name `Map.lookup` map
 
 -- | Consumes an equationality map (emap) a summary recorded in the map (sum). Returns
 -- true if and only if emap contains a true entry for sum. Note that when sum is unnamed,
@@ -59,20 +90,17 @@ createSummaryRule emap sum = RewriteRule lhs rhs eqn from
 -----------------------------------------------------------------------------------------
 -- * Functions to Register Derivations as Relations.
 
--- | A collection of unique derived relation symbols.
-type DRuleSet = Set.Set String
-
 -- | An empty collection of derived relation symbols.
 nullRuleSet :: DRuleSet
-nullRuleSet = Set.empty
+nullRuleSet = DRuleSet Set.empty
 
 -- | Returns true if a DRuleSet contains a relation symbol.
 hasDerivedRule :: DRuleSet -> String -> Bool
-hasDerivedRule rels rel = rel `Set.member` rels
+hasDerivedRule (DRuleSet rels) rel = rel `Set.member` rels
 
 -- | Adds a relation symbol to a DRuleSet.
 addDerivedRule :: DRuleSet -> String -> DRuleSet
-addDerivedRule rels rel = rel `Set.insert` rels
+addDerivedRule (DRuleSet rels) rel = DRuleSet (rel `Set.insert` rels)
 
 -- | Consumes a list of summaries (sums).  Returns a list of derived relation names.
 addSummaryToSymbols :: RuleDict -> DRuleSet -> DerivationSummary -> Maybe DRuleSet

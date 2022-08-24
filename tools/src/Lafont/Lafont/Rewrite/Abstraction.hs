@@ -1,26 +1,34 @@
 -- | This module provides data types and functions to work with derivations before all
 -- derived relation applications have been resolved.
 
-module Lafont.Rewrite.Abstraction where
+module Lafont.Rewrite.Abstraction (
+    -- Re-exports from internal.
+    Apply ( .. ),
+    UnmetDep ( .. ),
+    DepGraph,
+    -- Exports.
+    AbsDerivation ( .. ),
+    DerivationMap,
+    AbsRewrite,
+    DepCycle,
+    registerDerivations,
+    addDerivationToGraph,
+    addDerivationsToGraph,
+    detectDerivationError,
+    getDerivation,
+    makeDerivationMap,
+    identifyEquationalRules
+) where
 
-import           Data.Map               as Map
+import           Data.Map                            as Map
 import           Data.Maybe
 import           Lafont.Graph
-import           Lafont.Rewrite.Common
+import           Lafont.Rewrite.Internal.Abstraction
 import           Lafont.Rewrite.Rules
 import           Lafont.Rewrite.Summary
 
 -----------------------------------------------------------------------------------------
 -- * Derivations with Apply Types.
-
--- | Represents the instruction !appply <NAME> <DIR> <POS>. An apply is considered an
--- abstract derivational proof step, as it does not specify the terms to rewrite.
-data Apply = Apply String RulePos RuleDir deriving (Eq,Show)
-
--- | Provides an abstract view of a derivational proof step. Each relation is either a
--- rewrite (i.e., a concrete step) or a derived relation application (i.e., an abstract
--- step).
-type AbsRewrite = Either Rewrite Apply
 
 -- | Provides an abstract view of a derivational proof. In an abstract proof, each step
 -- is either a rewrite or the application of a derived relation. In other words, the
@@ -30,47 +38,15 @@ data AbsDerivation = AbsDerivation DerivationSummary [AbsRewrite] deriving (Eq,S
 -----------------------------------------------------------------------------------------
 -- * Derivation to Graph Conversion
 
--- | A vertex in a dependency graph.
-type Dependency = String
-
--- | A graph to store dependencies between derivations.
-type DepGraph = Digraph Dependency
-
--- | A derivation and its unmet dependency.
-data UnmetDep = UnmetDep Dependency Dependency deriving (Eq,Show)
-
 -- | Consumes a list of derivations (list). Returns a dependency graph with a vertex for
 -- each derivation in list. A special vertex is added for unnamed derivations ("").
 registerDerivations :: [AbsDerivation] -> DepGraph
-registerDerivations []                = addVertex nullgraph ""
+registerDerivations []                               = DepGraph (addVertex nullgraph "")
 registerDerivations ((AbsDerivation summary _):list) =
     case propName $ meta summary of
-        Just name -> addVertex g name
-        Nothing   -> g
-    where g = registerDerivations list
-
--- | Consumes a dependency (dep), a rewrite, and a dependency graph (g). If the rewrite
--- applies a derivation (dep') and at least one of dep or dep' is not a vertex in g, then
--- dep' is returned as an error. If both dep and dep' are in g, then the graph obtained
--- by adding an edge from dep to dep' is returned. If rewrite does not apply a
--- derivation, then g is returned.
-addDepToGraph :: Dependency -> AbsRewrite -> DepGraph -> Either UnmetDep DepGraph
-addDepToGraph src (Left Rewrite {})        g = Right g
-addDepToGraph src (Right (Apply name _ _)) g =
-    case addEdge g src name of
-        Just g' -> Right g'
-        Nothing -> Left (UnmetDep src name)
-
--- | Consumes a dependency (dep), a list of rewrites (rewrites), and a dependency graph
--- (g). If there exists a rewrite (r) in rewrites such that (addDepToGraph dep r g)
--- returns an error, then the first such error is returned. Otherwise, is equivalent to
--- folding rewrites using (addDepToGraph dep).
-addDepsToGraph :: Dependency -> [AbsRewrite] -> DepGraph -> Either UnmetDep DepGraph
-addDepsToGraph _   []                 g = Right g
-addDepsToGraph src (rewrite:rewrites) g =
-    case addDepToGraph src rewrite g of
-        Left dep -> Left dep
-        Right g' -> addDepsToGraph src rewrites g'
+        Just name -> DepGraph (addVertex g name)
+        Nothing   -> DepGraph g
+    where (DepGraph g) = registerDerivations list
 
 -- | Consumes a derivation and a graph. If the derivation is named, then returns the
 -- result of addDepsToGraph using the name and rewrites of the derivation. Otherwise,
@@ -106,8 +82,8 @@ type DepCycle = GraphWalk Dependency
 detectDerivationError :: [AbsDerivation] -> Maybe (Either UnmetDep DepCycle)
 detectDerivationError derivations =
     case addDerivationsToGraph derivations g of
-        Left unmet -> Just (Left unmet)
-        Right g'   -> case findCycle g' of
+        Left unmet          -> Just (Left unmet)
+        Right (DepGraph g') -> case findCycle g' of
             Just cycle -> Just (Right cycle)
             Nothing    -> Nothing
     where g = registerDerivations derivations
@@ -116,22 +92,22 @@ detectDerivationError derivations =
 -- * Utilities to Look up Derivations by Name.
 
 -- | A mapping from derivation names to their information.
-type DerivationMap = Map.Map String AbsDerivation
+newtype DerivationMap = DerivationMap (Map.Map String AbsDerivation)
 
 -- | Attemtps to find a derivation of a given name.
 getDerivation :: DerivationMap -> String -> Maybe AbsDerivation
-getDerivation map name = name `Map.lookup` map
+getDerivation (DerivationMap map) name = name `Map.lookup` map
 
 -- | Consumes  list of abstract derivations. Returns a derivation map containing an entry
 -- for each named derivation in the list.
 makeDerivationMap :: [AbsDerivation] -> DerivationMap
-makeDerivationMap []                       = Map.empty
+makeDerivationMap []                       = DerivationMap Map.empty
 makeDerivationMap (derivation:derivations) =
     case propName $ meta summary of
-        Just name -> Map.insert name derivation dict
-        Nothing   -> dict
+        Just name -> DerivationMap (Map.insert name derivation dict)
+        Nothing   -> DerivationMap dict
     where (AbsDerivation summary _) = derivation
-          dict = makeDerivationMap derivations
+          (DerivationMap dict) = makeDerivationMap derivations
 
 -----------------------------------------------------------------------------------------
 -- * Equationality of Abstract Relations
@@ -140,11 +116,11 @@ makeDerivationMap (derivation:derivations) =
 ierBody :: DerivationMap -> String -> [AbsRewrite] -> EqMap -> Bool -> EqMap
 ierBody dmap name rewrites emap isEqn
     | isEqn     = ierSplit dmap name rewrites emap
-    | otherwise = Map.insert name False emap
+    | otherwise = setAsOrientated emap name
 
 -- | Analyzes the steps of a derivation to assert equationality.
 ierSplit :: DerivationMap -> String -> [AbsRewrite] -> EqMap -> EqMap
-ierSplit _    name []                emap = Map.insert name True emap
+ierSplit _    name []                emap = setAsEquational emap name
 ierSplit dmap name (Left r:rewrites) emap = ierBody dmap name rewrites emap isEqn
     where (Rewrite rule _ _) = r
           isEqn = equational rule
@@ -158,12 +134,12 @@ ierSplit dmap name (Right r:rewrites) emap = ierBody dmap name rewrites emap' is
 -- | Fold implementation for identifyEquationalRules.
 ierFold :: DerivationMap -> String -> AbsDerivation -> EqMap -> EqMap
 ierFold dmap name (AbsDerivation _ rewrites) emap
-    | recorded  = emap
-    | otherwise = ierSplit dmap name rewrites emap
-    where recorded = name `Map.member` emap
+    | emap `containsRule` name  = emap
+    | otherwise                 = ierSplit dmap name rewrites emap
 
 -- | Consumes a list of abstract deriviations. It is assumed that the abstract
 -- derivations have passed a detectDerivationError test (e.g., all dependencies are met
 -- and the graph is acyclic). Returns an equational map for the derivations.
 identifyEquationalRules :: DerivationMap -> EqMap
-identifyEquationalRules dmap = Map.foldrWithKey (ierFold dmap) Map.empty dmap
+identifyEquationalRules (DerivationMap dmap) = Map.foldrWithKey f defaultEqMap dmap
+    where f = ierFold (DerivationMap dmap)
