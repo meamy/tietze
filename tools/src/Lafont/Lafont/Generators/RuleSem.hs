@@ -26,7 +26,7 @@ isRuleDictStatusGood :: RuleDictStatus -> Bool
 isRuleDictStatusGood GoodRuleDict = True
 isRuleDictStatusGood _            = False
 
--- | Consumes a mapping of generators to monoidal semantic values and a dictionary of
+-- | Consumes a mapping of generators to monoid semantic values and a dictionary of
 -- rules (dict). If there is an invalid rule in dict, with respect to composition and
 -- identity, then InvalidRuleSem is returned with the name of the rule. If there is a
 -- missing generator for a rule in dict, then IncompleteGenSet is returned with the name

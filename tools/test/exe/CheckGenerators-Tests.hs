@@ -15,7 +15,7 @@ check1 :: String -> Bool
 check1 str =
     if ((length outputLines) == 6)
     then (and [-- Semantic model check.
-               ("Monoidal" `isSubstrOf` (outputLines !! 0)),
+               ("Monoid" `isSubstrOf` (outputLines !! 0)),
                -- Generators are printed in reverse alphabetical order.
                ("xyz2" `isSubstrOf` (outputLines !! 1)),
                ("xyz1" `isSubstrOf` (outputLines !! 2)),
@@ -26,7 +26,7 @@ check1 str =
     where outputLines = lines str
 
 test1 = (HandleTest "Good_Generators"
-                    "Ensures that checkGenerators can print all monoidal generators."
+                    "Ensures that checkGenerators can print all monoid generators."
                     (\x -> checkGenerators x good_gen_file)
                     check1)
 

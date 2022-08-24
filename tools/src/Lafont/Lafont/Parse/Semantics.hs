@@ -4,7 +4,7 @@ module Lafont.Parse.Semantics (
     SemParser,
     TwoQubitDyadic,
     ThreeQubitDyadic,
-    parseMonoidalSem,
+    parseMonoidSem,
     interpret2QubitCliffordDTofGate,
     interpret3QubitCliffordDTofGate
 ) where
@@ -26,12 +26,12 @@ import qualified Quantum.Synthesis.Ring       as QRing
 type SemParser a = (String -> Either String a)
 
 -----------------------------------------------------------------------------------------
--- * Monoidal Semantics.
+-- * Monoid Semantics.
 
 -- | Always returns an error message since free monoids do not have semantics beyond
 -- their generators and relations.
-parseMonoidalSem :: SemParser ()
-parseMonoidalSem _ = Left "Monoidal generators do not support semantics"
+parseMonoidSem :: SemParser ()
+parseMonoidSem _ = Left "Monoid generators do not support semantics"
 
 -----------------------------------------------------------------------------------------
 -- * Quantum Operator Semantics (General Interpretation Framework).

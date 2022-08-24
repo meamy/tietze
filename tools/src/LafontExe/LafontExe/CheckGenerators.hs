@@ -39,7 +39,7 @@ processGeneratorLines :: FileData -> String
 processGeneratorLines (FileData fname lines) =
     case parseGenFileAsDict lines 0 of
         Left (errLn, err)               -> logEitherMsg fname errLn err
-        Right (MonoidalGenSummary dict) -> logGenerators MonoidalSem dict
+        Right (MonoidGenSummary dict)   -> logGenerators MonoidSem dict
         Right (DyadicTwoSummary dict)   -> logGenerators DyadicTwoSem dict
         Right (DyadicThreeSummary dict) -> logGenerators DyadicThreeSem dict
         _                               -> "Semantic model not supported."

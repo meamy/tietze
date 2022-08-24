@@ -124,9 +124,9 @@ test15 = TestCase (assertEqual "Tests that updateGenerators supports no semantic
 
 -- Single line tests.
 
-test16 = TestCase (assertEqual "Tests parsing Monoidal semantics from a single line."
-                               (Right (MonoidalSem, 0, []))
-                               (parseSemanticModel ["    Monoidal    -- is valid"] 0))
+test16 = TestCase (assertEqual "Tests parsing Monoid semantics from a single line."
+                               (Right (MonoidSem, 0, []))
+                               (parseSemanticModel ["    Monoid    -- is valid"] 0))
 
 test18 = TestCase (assertEqual "Tests parsing Dyadic(1) semantics from a single line."
                                (Right (DyadicTwoSem, 0, []))
@@ -141,8 +141,8 @@ test20 = TestCase (assertEqual "Tests parsing an unknown semantic model."
                                (parseSemanticModel ["    Unknown"] 0))
 
 test21 = TestCase (assertEqual "Tests parsing a valid model followed by other sybmols."
-                               (Left (0, (Right (UnknownSemModel "Monoidal Unknown"))))
-                               (parseSemanticModel ["    Monoidal Unknown"] 0))
+                               (Left (0, (Right (UnknownSemModel "Monoid Unknown"))))
+                               (parseSemanticModel ["    Monoid Unknown"] 0))
 
 -- Multi-line tests.
 
@@ -151,15 +151,15 @@ test22 = TestCase (assertEqual "Tests parsing a semantic model from an empty lin
                                (parseSemanticModel [] 0))
 
 test23 = TestCase (assertEqual "Tests parsing a semantic model after many empty lines."
-                               (Right (MonoidalSem, 5, []))
+                               (Right (MonoidSem, 5, []))
                                (parseSemanticModel input 0))
-    where input = ["", "   -- comment", " \t \t   -- comment", "", "  ", "   Monoidal "]
+    where input = ["", "   -- comment", " \t \t   -- comment", "", "  ", "   Monoid "]
 
 test24 = TestCase (assertEqual "Tests parsing a semantic model with lines after model."
-                               (Right (MonoidalSem, 4, post))
+                               (Right (MonoidSem, 4, post))
                                (parseSemanticModel input 0))
     where post = ["a", "b", "c", "d"]
-          input = ["", "", "", "", "Monoidal"] ++ post
+          input = ["", "", "", "", "Monoid"] ++ post
 
 test25 = TestCase (assertEqual "Tests returning an error after multiple lines."
                                (Left (4, (Right (UnknownSemModel "Unknown"))))
@@ -168,10 +168,10 @@ test25 = TestCase (assertEqual "Tests returning an error after multiple lines."
 -- Adjusted starting line.
 
 test26 = TestCase (assertEqual "Tests parsing a semantic model with line offset."
-                               (Right (MonoidalSem, 9, post))
+                               (Right (MonoidSem, 9, post))
                                (parseSemanticModel input 5))
     where post = ["a", "b", "c", "d"]
-          input = ["", "", "", "", "Monoidal"] ++ post
+          input = ["", "", "", "", "Monoid"] ++ post
 
 test27 = TestCase (assertEqual "Tests parsing an error with a line offset."
                                (Left (9, (Right (UnknownSemModel "Unknown"))))
@@ -251,45 +251,45 @@ test36 = TestCase (assertEqual "Tests that parseGenDict handles offsets (2/2)."
 -----------------------------------------------------------------------------------------
 -- parseGenFileAsDict and parseGenFileAsAlphabet
 
-validMonoidalFile :: [String]
-validMonoidalFile = ["Monoidal", "abc", "cdf", "xyz_123"]
+validMonoidFile :: [String]
+validMonoidFile = ["Monoid", "abc", "cdf", "xyz_123"]
 
-invalidMonoidalFile :: [String]
-invalidMonoidalFile = ["Monoidal", "abc", "1cdf", "xyz_123"]
+invalidMonoidFile :: [String]
+invalidMonoidFile = ["Monoid", "abc", "1cdf", "xyz_123"]
 
-test37 = TestCase (assertBool "Tests parsing of valid monoidal generator file (1/3)."
+test37 = TestCase (assertBool "Tests parsing of valid monoid generator file (1/3)."
                                check)
-         where check = case (parseGenFileAsDict validMonoidalFile 0) of
-                           Right (MonoidalGenSummary dict) -> hasGen dict "abc"
+         where check = case (parseGenFileAsDict validMonoidFile 0) of
+                           Right (MonoidGenSummary dict) -> hasGen dict "abc"
                            otherwise                       -> False
 
-test38 = TestCase (assertBool "Tests parsing of valid monoidal generator file (2/3)."
+test38 = TestCase (assertBool "Tests parsing of valid monoid generator file (2/3)."
                                check)
-         where check = case (parseGenFileAsDict validMonoidalFile 0) of
-                           Right (MonoidalGenSummary dict) -> hasGen dict "cdf"
+         where check = case (parseGenFileAsDict validMonoidFile 0) of
+                           Right (MonoidGenSummary dict) -> hasGen dict "cdf"
                            otherwise                       -> False
 
-test39 = TestCase (assertBool "Tests parsing of valid monoidal generator file (3/3)."
+test39 = TestCase (assertBool "Tests parsing of valid monoid generator file (3/3)."
                                check)
-         where check = case (parseGenFileAsDict validMonoidalFile 0) of
-                           Right (MonoidalGenSummary dict) -> hasGen dict "xyz_123"
+         where check = case (parseGenFileAsDict validMonoidFile 0) of
+                           Right (MonoidGenSummary dict) -> hasGen dict "xyz_123"
                            otherwise                       -> False
 
-test40 = TestCase (assertEqual "Tests parsing of invalid monoidal generator file."
+test40 = TestCase (assertEqual "Tests parsing of invalid monoid generator file."
                                (Just (2, Right InvalidGenName) :: Maybe (Int, GFPError))
                                maybeErr)
-         where maybeErr = case (parseGenFileAsDict invalidMonoidalFile 0) of
+         where maybeErr = case (parseGenFileAsDict invalidMonoidFile 0) of
                               Left err  -> (Just err :: Maybe (Int, GFPError))
                               otherwise -> Nothing
 
-test41 = TestCase (assertEqual "Tests parsing of valid monoidal generators (alpha)."
+test41 = TestCase (assertEqual "Tests parsing of valid monoid generators (alpha)."
                                (Right ["abc", "cdf", "xyz_123"])
-                               (parseGenFileAsAlphabet validMonoidalFile 0))
+                               (parseGenFileAsAlphabet validMonoidFile 0))
 
-test42 = TestCase (assertEqual "Tests parsing of invalid monoidal generators (alpha)."
+test42 = TestCase (assertEqual "Tests parsing of invalid monoid generators (alpha)."
                                (Just (2, Right InvalidGenName) :: Maybe (Int, GFPError))
                                maybeErr)
-         where maybeErr = case (parseGenFileAsAlphabet invalidMonoidalFile 0) of
+         where maybeErr = case (parseGenFileAsAlphabet invalidMonoidFile 0) of
                               Left err  -> (Just err :: Maybe (Int, GFPError))
                               otherwise -> Nothing
 
@@ -363,7 +363,7 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseGenerator_EmptyString" test
                                      TestLabel "updateGenerators_UpdateGens_1" test13,
                                      TestLabel "updateGenerators_UpdateGens_2" test14,
                                      TestLabel "updateGenerators_NoSemantics" test15,
-                                     TestLabel "parseSemanticModel_Monoidal" test16,
+                                     TestLabel "parseSemanticModel_Monoid" test16,
                                      TestLabel "parseSemanticModel_Dyadic(2)" test18,
                                      TestLabel "parseSemanticModel_Dyadic(3)" test19,
                                      TestLabel "parseSemanticModel_UnknownModel" test20,

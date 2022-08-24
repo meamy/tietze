@@ -3,7 +3,7 @@
 -- Each generator in the monoid must have a unique formal inverse.
 -- For now, the formal inverse is just a special symbol.
 
-Monoidal
+Monoid
 
 x
 y

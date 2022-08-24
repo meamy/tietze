@@ -1,6 +1,6 @@
 -- A sample generator file for a free monoid with 5 symbols.
 
-Monoidal
+Monoid
 
 abc1
 abc2

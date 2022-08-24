@@ -92,7 +92,7 @@ updateGenerators parseSem dict str =
 
 -- | List of all semantic models as text.
 _semModelStrings :: [String]
-_semModelStrings = [display MonoidalSem, display DyadicTwoSem, display DyadicThreeSem]
+_semModelStrings = [display MonoidSem, display DyadicTwoSem, display DyadicThreeSem]
 
 -- | Consumes all lines of a generator file (lines) and the current line number (num).
 -- Attempts to parse the semantic model declaration. If successful, then the semantic
@@ -103,7 +103,7 @@ parseSemanticModel []           num = Left (num, Right MissingSemModel)
 parseSemanticModel (line:lines) num
     | cleaned == "" = parseSemanticModel lines (num + 1)
     | otherwise     = case parseFromSeps _semModelStrings cleaned of
-        Just ("Monoidal",  post) -> check MonoidalSem post cleaned
+        Just ("Monoid",  post)   -> check MonoidSem post cleaned
         Just ("Dyadic(2)", post) -> check DyadicTwoSem post cleaned
         Just ("Dyadic(3)", post) -> check DyadicThreeSem post cleaned
         Nothing                  -> Left (num, Right (UnknownSemModel cleaned))

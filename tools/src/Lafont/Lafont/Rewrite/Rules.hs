@@ -39,7 +39,7 @@ isDerivedRule rule = isJust (derivedFrom rule)
 
 -- | Consumes a monoidal word, a rewrite rule, and a boolean flag indicating if the rule
 -- is to be applied from left-to-right. Returns true if rule matches a prefix of the
--- monoidal world.
+-- monoidal word.
 checkRewriteRule :: MonWord -> RewriteRule -> RuleDir -> Bool
 checkRewriteRule str rule L2R = doesRewriteTermMatch str (lhs rule)
 checkRewriteRule str rule R2L = doesRewriteTermMatch str (rhs rule)

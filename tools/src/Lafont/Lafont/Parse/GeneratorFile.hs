@@ -33,7 +33,7 @@ instance Display GenFileError where
 -- type: Either (GenDict SemV1) (Either (GenDict SemV2), (Either SemV3 (Either ...)))).
 --
 -- In the future, this might also carry on parameters that describe the generator file.
-data GenFileSummary = MonoidalGenSummary (GenDict ())
+data GenFileSummary = MonoidGenSummary (GenDict ())
                     | DyadicTwoSummary (GenDict TwoQubitDyadic)
                     | DyadicThreeSummary (GenDict ThreeQubitDyadic)
                     deriving (Eq,Show)
@@ -46,9 +46,9 @@ parseGenFileAsDict lines num =
     case parseSemanticModel lines 0 of
         Left err                 -> Left err
         Right (sem, semLn, gens) -> let nextLn = semLn + 1 in case sem of
-            MonoidalSem -> case parseGenDict parseMonoidalSem gens nextLn of
+            MonoidSem -> case parseGenDict parseMonoidSem gens nextLn of
                 Left err   -> Left err
-                Right dict -> Right (MonoidalGenSummary dict)
+                Right dict -> Right (MonoidGenSummary dict)
             DyadicTwoSem -> case parseGenDict interpret2QubitCliffordDTofGate gens nextLn of
                 Left err   -> Left err
                 Right dict -> Right (DyadicTwoSummary dict)
@@ -64,5 +64,5 @@ parseGenFileAsDict lines num =
 -- exception.
 parseGenFileAsAlphabet :: [String] -> Int -> Either (Int, GFPError) [String]
 parseGenFileAsAlphabet lines num = case parseGenFileAsDict lines num of
-    Left err                        -> Left err
-    Right (MonoidalGenSummary dict) -> Right (toAlphabet dict)
+    Left err                      -> Left err
+    Right (MonoidGenSummary dict) -> Right (toAlphabet dict)

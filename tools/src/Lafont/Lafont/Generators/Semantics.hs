@@ -23,13 +23,13 @@ import           Lafont.Generators.Categories
 -- * Semantic Model Descriptions.
 
 -- | All semantic model currently supported.
-data SemModel = MonoidalSem
+data SemModel = MonoidSem
               | DyadicTwoSem
               | DyadicThreeSem
               deriving (Eq,Show)
 
 instance Display SemModel where
-    display MonoidalSem    = "Monoidal"
+    display MonoidSem      = "Monoid"
     display DyadicTwoSem   = "Dyadic(2)"
     display DyadicThreeSem = "Dyadic(3)"
 
@@ -68,7 +68,7 @@ interpretGen (GenDict dict) id = Map.findWithDefault Nothing id dict
 -----------------------------------------------------------------------------------------
 -- * Semantic Comparison.
 
--- | Consumes a mapping of generators to monoidal semantic values and a word. If the word
+-- | Consumes a mapping of generators to monoid semantic values and a word. If the word
 -- can be evaluated, then its semantic value is returned. Otherwise (e.g., if a generator
 -- is missing a semantic value) then nothing is returned.
 semEval :: (MonoidObj a) => GenDict a -> MonWord -> Maybe a

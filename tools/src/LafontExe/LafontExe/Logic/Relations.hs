@@ -60,7 +60,7 @@ readGeneratorsAndRules :: FileData -> FileData -> GenRuleReadResult
 readGeneratorsAndRules (FileData genFname genLines) relFile =
     case parseGenFileAsDict genLines 0 of
         Left (errLn, err)               -> BadGenFile genFname errLn err
-        Right (MonoidalGenSummary dict) -> readRulesUnchecked relFile dict
+        Right (MonoidGenSummary dict)   -> readRulesUnchecked relFile dict
         Right (DyadicTwoSummary dict)   -> readAndCheckRules relFile dict
         Right (DyadicThreeSummary dict) -> readAndCheckRules relFile dict
         _                               -> UnknownSem
