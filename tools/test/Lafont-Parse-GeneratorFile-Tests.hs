@@ -8,6 +8,7 @@ import Data.Either
 import Lafont.Generators.Semantics
 import Lafont.Generators.QubitGates
 import Lafont.Parse.Common
+import Lafont.Parse.Internal.GeneratorFile
 import Lafont.Parse.Semantics
 import Lafont.Parse.GeneratorFile
 

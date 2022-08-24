@@ -17,27 +17,31 @@ library
   exposed-modules:     Lafont.Common
                        Lafont.Graph
                        Lafont.Maybe
-                       Lafont.String
                        Lafont.Ring
+                       Lafont.String
+                       Lafont.Generators.Categories
+                       Lafont.Generators.Display
+                       Lafont.Generators.QubitGates
+                       Lafont.Generators.RuleSem
+                       Lafont.Generators.Semantics
+                       Lafont.Parse.Common
+                       Lafont.Parse.DerivationFile
+                       Lafont.Parse.GeneratorFile
+                       Lafont.Parse.Internal.DerivationFile
+                       Lafont.Parse.Internal.GeneratorFile
+                       Lafont.Parse.Internal.Properties
+                       Lafont.Parse.Internal.RelationFile
+                       Lafont.Parse.MonWords
+                       Lafont.Parse.Properties
+                       Lafont.Parse.RelationFile
+                       Lafont.Parse.Semantics
                        Lafont.Rewrite.Abstraction
                        Lafont.Rewrite.Common
                        Lafont.Rewrite.Derivations
+                       Lafont.Rewrite.Lookup
                        Lafont.Rewrite.Rules
                        Lafont.Rewrite.Simplification
                        Lafont.Rewrite.Summary
-                       Lafont.Rewrite.Lookup
-                       Lafont.Generators.Categories
-                       Lafont.Generators.RuleSem
-                       Lafont.Generators.Semantics
-                       Lafont.Generators.QubitGates
-                       Lafont.Generators.Display
-                       Lafont.Parse.Common
-                       Lafont.Parse.MonWords
-                       Lafont.Parse.Properties
-                       Lafont.Parse.GeneratorFile
-                       Lafont.Parse.Semantics
-                       Lafont.Parse.RelationFile
-                       Lafont.Parse.DerivationFile
   build-depends:       base >=4.12 && <4.13,
                        containers,
                        directory,

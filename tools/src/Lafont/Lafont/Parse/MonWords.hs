@@ -1,6 +1,14 @@
 -- | Parsing functions for monoidal words.
 
-module Lafont.Parse.MonWords where
+module Lafont.Parse.MonWords (
+    parseParam,
+    parseParams,
+    parseSymbol,
+    findUnknownGenInMonWord,
+    parseNonEmptyMonWord,
+    parseMonWord,
+    parseLineAsMonWord
+) where
 
 import           Data.Bifunctor
 import           Lafont.Common

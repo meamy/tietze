@@ -1,6 +1,13 @@
 -- | Realizations of SemParser.
 
-module Lafont.Parse.Semantics where
+module Lafont.Parse.Semantics (
+    SemParser,
+    TwoQubitDyadic,
+    ThreeQubitDyadic,
+    parseMonoidalSem,
+    interpret2QubitCliffordDTofGate,
+    interpret3QubitCliffordDTofGate
+) where
 
 import           Data.Maybe
 import           Lafont.Common

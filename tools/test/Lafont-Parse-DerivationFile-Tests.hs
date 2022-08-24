@@ -13,6 +13,7 @@ import Lafont.Rewrite.Lookup
 import Lafont.Rewrite.Summary
 import Lafont.Parse.Common
 import Lafont.Parse.DerivationFile
+import Lafont.Parse.Internal.DerivationFile
 
 -----------------------------------------------------------------------------------------
 -- parseRewriteAtPos

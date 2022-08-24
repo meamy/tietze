@@ -9,6 +9,7 @@ import Lafont.Common
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Lookup
 import Lafont.Parse.Common
+import Lafont.Parse.Internal.RelationFile
 import Lafont.Parse.MonWords
 import Lafont.Parse.RelationFile
 

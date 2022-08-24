@@ -1,6 +1,29 @@
 -- | General-purpoes parsing functions that are used to build specialized parsers.
 
-module Lafont.Parse.Common where
+module Lafont.Parse.Common (
+    ParserError ( .. ),
+    display,
+    getErrPos,
+    relToAbsErrPos,
+    propCommonErr,
+    isSpacing,
+    isIdChar,
+    isBlankLine,
+    splitAtFirst,
+    parseNonEmpty,
+    parseNat,
+    parseInt,
+    parseId,
+    parseSep,
+    parseFromSeps,
+    trimSpacing,
+    stripComments,
+    cleanLine,
+    branchOnSpacing,
+    iteOnSpacing,
+    isEOFSpacing,
+    parseEOFSpacing
+) where
 
 import           Data.Bifunctor
 import           Data.Char
