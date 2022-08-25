@@ -30,6 +30,7 @@ library
                        Lafont.Generators.RuleSem
                        Lafont.Generators.Semantics
                        Lafont.Parse.Common
+                       Lafont.Parse.DelimLists
                        Lafont.Parse.DerivationFile
                        Lafont.Parse.GeneratorFile
                        Lafont.Parse.Internal.DerivationFile
@@ -210,6 +211,11 @@ test-suite lafont-generators-qubitgates-tests
 test-suite lafont-parse-common-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Parse-Common-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-parse-delimlists-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Parse-DelimLists-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite lafont-parse-monwords-tests
