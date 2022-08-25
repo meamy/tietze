@@ -20,8 +20,10 @@ library
                        Lafont.Maybe
                        Lafont.Ring
                        Lafont.String
-                       Lafont.Generators.Algebraic.ModP
                        Lafont.Generators.Algebraic.Internal.ModP
+                       Lafont.Generators.Algebraic.Internal.Product
+                       Lafont.Generators.Algebraic.ModP
+                       Lafont.Generators.Algebraic.Product
                        Lafont.Generators.Categories
                        Lafont.Generators.Display
                        Lafont.Generators.QubitGates
@@ -171,7 +173,11 @@ test-suite lafont-generators-algebraic-modp-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Generators-Algebraic-ModP-Tests.hs
   type:                exitcode-stdio-1.0
-  build-depends:       newsynth
+
+test-suite lafont-generators-algebraic-product-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Generators-Algebraic-Product-Tests.hs
+  type:                exitcode-stdio-1.0
 
 test-suite lafont-generators-categories-tests
   import:              basic-unit-test-props
