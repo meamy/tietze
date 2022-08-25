@@ -7,7 +7,7 @@ import Lafont.Maybe
 import Lafont.Parse.DelimLists
 
 -----------------------------------------------------------------------------------------
--- 
+-- parseList
 
 parseUnary :: Char -> String -> Maybe (Int, String)
 parseUnary tok (c:line)
@@ -18,11 +18,11 @@ parseUnary tok (c:line)
 parseUnaryA = parseUnary 'a'
 parseUnaryB = parseUnary 'b'
 
-test1 = TestCase (assertEqual "parseList can parse the empty list."
+test1 = TestCase (assertEqual "parseList can parse the empty string."
                               (Nothing :: Maybe ([Int], String))
                               (parseList parseUnaryA ',' ""))
 
-test2 = TestCase (assertEqual "parseList can reject invalid list."
+test2 = TestCase (assertEqual "parseList can reject invalid string."
                               (Nothing :: Maybe ([Int], String))
                               (parseList parseUnaryA ',' "bsda , sdgs, dsadads , asd"))
 
@@ -51,6 +51,32 @@ test8 = TestCase (assertEqual "parseList can parse using a different deliminator
                               (parseList parseUnaryA ':' "a|:|:aaa| fdwea"))
 
 -----------------------------------------------------------------------------------------
+-- parseBracedList
+
+bracedParser1 = parseBracedList parseUnaryA ',' '[' ']'
+bracedParser2 = parseBracedList parseUnaryB ':' '{' '}'
+
+test9 = TestCase (assertEqual "parseBracedList can parse the empty list (1/2)."
+                              (Just ([], "  qasfss") :: Maybe ([Int], String))
+                              (bracedParser1 "[]  qasfss"))
+
+test10 = TestCase (assertEqual "parseBracedList can parse the empty list (2/2)."
+                               (Just ([], "  qasfss") :: Maybe ([Int], String))
+                               (bracedParser1 "       [  \t   ]  qasfss"))
+
+test11 = TestCase (assertEqual "parseBracedList can parse triple list (1/2)."
+                               (Just ([1, 0, 3], "  qasfss") :: Maybe ([Int], String))
+                               (bracedParser1 "[a|,|,aaa|]  qasfss"))
+
+test12 = TestCase (assertEqual "parseBracedList can parse triple list (2/2)."
+                               (Just ([1, 0, 3], "  qasfss") :: Maybe ([Int], String))
+                               (bracedParser1 "   [  a| \t ,  | ,  \t aaa|]  qasfss"))
+
+test13 = TestCase (assertEqual "parseBracedList can parse alternative delimeters/toekns."
+                               (Just ([1, 0, 3], "  qasfss") :: Maybe ([Int], String))
+                               (bracedParser2 "{b|:|:bbb|}  qasfss"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseList_EmptyString" test1,
@@ -60,6 +86,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseList_EmptyString" test1,
                                      TestLabel "parseList_Spacing" test5,
                                      TestLabel "parseList_MissingDelim" test6,
                                      TestLabel "parseList_DifferentTokenizer" test7,
-                                     TestLabel "parseList_DifferentDelimater" test2]
+                                     TestLabel "parseList_DifferentDelimater" test8,
+                                     TestLabel "parseBracedList_Empty_1" test9,
+                                     TestLabel "parseBracedList_Empty_2" test10,
+                                     TestLabel "parseBracedList_Triple" test11,
+                                     TestLabel "parseBracedList_Spacing" test12,
+                                     TestLabel "parseBracedList_AltSymbols" test13]
 
 main = defaultMain tests

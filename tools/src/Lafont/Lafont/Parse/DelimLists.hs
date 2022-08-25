@@ -1,15 +1,21 @@
+{-# LANGUAGE TupleSections #-}
+
 -- | This module provides functions to parse deliminated lists.
 
 module Lafont.Parse.DelimLists (
-    parseList
+    parseList,
+    parseBracedList
 ) where
 
-import Lafont.Parse.Common
+import           Lafont.Maybe
+import           Lafont.Parse.Common
 
 -----------------------------------------------------------------------------------------
 -- * Utility Types.
 
--- |
+-- | Function to parse the tokens in a list. Each token is of type a. If just (tok, rest)
+-- is returned, then tok is the token parsed and rest is the remaining string. If nothing
+-- is returned, then parsing fails.
 type Tokenizer a = String -> Maybe (a, String)
 
 -----------------------------------------------------------------------------------------
@@ -28,7 +34,8 @@ parseListDelim getToken delim line =
 
 -- | Consumes a token parsing function (getToken), a list deliminating character (delim),
 -- and a string (line). Attempts to parse line as a sequence of tokens, separated by the
--- delim symbol (optionally with spacing). The string must be of at least length 1.
+-- delim symbol (optionally with spacing). The string must be of at least length 1. If
+-- parsing a list of positive length fails, then nothing is returned.
 --
 -- Note: Mutually depends on parseListDelim.
 parseList :: Tokenizer a -> Char -> String -> Maybe ([a], String)
@@ -40,3 +47,26 @@ parseList getToken delim line =
             Nothing           -> Nothing
             Just (res, after) -> Just (tok : res, after)
     where (_, trimmed) = trimSpacing line
+
+-----------------------------------------------------------------------------------------
+-- * Functions to Parse Deliminated Lists in Braces.
+
+-- | Consumes a right bracing character (rbrace), a list of tokens (list), and the end of
+-- a string (line). If line is prefixed by rbrace (optionally with spacing), then list
+-- together with the rest of line are returned. Otherwise, nothing is returned.
+parseRBrace :: Char -> [a] -> String -> Maybe ([a], String)
+parseRBrace rbrace list line = maybeApply (list,) (parseSep [rbrace] line)
+
+-- | Consumes a token parsing function (getToken), a list deliminating character (delim),
+-- a pair of bracing characters (lbrace and rbrace for [l]eft and [r]ight), and a string
+-- (line). attempts to parse line as a sequence of tokens, separated by the delim symbol
+-- (optionally with spacing) enclosed by lbrace and rbrace. If the body of the list
+-- consists of whitespace, then the empty string is returned. If parsing a list fails,
+-- then nothing is returned.
+parseBracedList :: Tokenizer a -> Char -> Char -> Char -> String -> Maybe ([a], String)
+parseBracedList getToken delim lbrace rbrace line =
+    case parseSep [lbrace] line of
+        Nothing   -> Nothing
+        Just body -> case parseList getToken delim body of
+            Nothing          -> parseRBrace rbrace [] body
+            Just (list, end) -> parseRBrace rbrace list end
