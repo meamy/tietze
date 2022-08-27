@@ -4,6 +4,7 @@ module Lafont.Generators.Semantics (
     SemModel ( .. ),
     GenDict,
     display,
+    semToTok,
     empty,
     hasGen,
     addGen,
@@ -28,10 +29,23 @@ data SemModel = MonoidSem
               | DyadicThreeSem
               deriving (Eq,Show)
 
+-- | Returns the token used to indicate a semantic model. For example, if the semantic
+-- model is taken to be MonoidSem, then both the semantic token and the semantic line are
+-- Monoid. On the other hand, if the semantic model is taken to be AddModP, then the
+-- semantic token is AddModP, whereas the semantic line might be AddModP(0, 0, 5, 7, 3).
+semToTok :: SemModel -> String
+semToTok MonoidSem      = "Monoid"
+semToTok DyadicTwoSem   = "Dyadic(2)"
+semToTok DyadicThreeSem = "Dyadic(3)"
+
+-- | Returns the arguments passed to a semantic model. For example, Monoid requires no
+-- parameters. On the other hand, the additive group of integers moudlo p would be
+-- parameterized by the value p.
+semToArgs :: SemModel -> String
+semToArgs _ = ""
+
 instance Display SemModel where
-    display MonoidSem      = "Monoid"
-    display DyadicTwoSem   = "Dyadic(2)"
-    display DyadicThreeSem = "Dyadic(3)"
+    display sem = semToTok sem ++ semToArgs sem
 
 -----------------------------------------------------------------------------------------
 -- * Generator Dictionary.

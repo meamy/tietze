@@ -92,7 +92,7 @@ updateGenerators parseSem dict str =
 
 -- | List of all semantic models as text.
 _semModelStrings :: [String]
-_semModelStrings = [display MonoidSem, display DyadicTwoSem, display DyadicThreeSem]
+_semModelStrings = [semToTok MonoidSem, semToTok DyadicTwoSem, semToTok DyadicThreeSem]
 
 -- | Consumes all lines of a generator file (lines) and the current line number (num).
 -- Attempts to parse the semantic model declaration. If successful, then the semantic
