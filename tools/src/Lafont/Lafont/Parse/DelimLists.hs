@@ -3,6 +3,7 @@
 -- | This module provides functions to parse deliminated lists.
 
 module Lafont.Parse.DelimLists (
+    Tokenizer,
     parseList,
     parseBracedList
 ) where

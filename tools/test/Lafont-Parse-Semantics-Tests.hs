@@ -3,8 +3,13 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
+import Data.Maybe
+import Lafont.Generators.Categories
 import Quantum.Synthesis.Matrix
+import Lafont.Generators.Algebraic.ModP
+import Lafont.Generators.Algebraic.Product
 import Lafont.Generators.QubitGates
+import Lafont.Parse.Internal.Semantics
 import Lafont.Parse.Semantics
 
 -----------------------------------------------------------------------------------------
@@ -320,6 +325,82 @@ test61 = TestCase (assertEqual "OOB arguments rejected for 2 qubit circuits (2/2
     where word = "X[0].X[1].Z[0].Z[1].CCCX[0][1][1].Z[0].Z[1].X[0].X[1]"
 
 -----------------------------------------------------------------------------------------
+-- Products Mod P Semantics Parsing.
+
+test62 = TestCase (assertEqual "tokenizeByIntIncl works on valid inputs (1/2)."
+                               (Just ("10", "abc sdsad  ") :: Maybe (String, String))
+                               (tokenizeByIntIncl show "10abc sdsad  "))
+
+test63 = TestCase (assertEqual "tokenizeByIntIncl works on valid inputs (2/2)."
+                               (Just ("-72", " a45c ad  ") :: Maybe (String, String))
+                               (tokenizeByIntIncl show "-72 a45c ad  "))
+
+test64 = TestCase (assertEqual "tokenizeByIntIncl detects invalid inputs."
+                               (Nothing :: Maybe (String, String))
+                               (tokenizeByIntIncl show "abc sdsad  "))
+
+test65 = TestCase (assertEqual "Rejects an empty line as MultProductModP."
+                               (Left "Unable to parse product components")
+                               (interpretMultProductModP [] ""))
+
+test66 = TestCase (assertEqual "Can parse an empty MultProductModP."
+                               (Right (promoteToProduct list))
+                               (interpretMultProductModP [] "()"))
+    where list = [] :: [ArithModP MultInt]
+
+test67 = TestCase (assertEqual "Can parse a 1-component MultProductModP (1/2)."
+                               (Right (promoteToProduct [x1]))
+                               (interpretMultProductModP [5] "(9)"))
+    where x1 = fromJust $ inclusionModP (MultInt 9) 5
+
+test68 = TestCase (assertEqual "Can parse a 1-component MultProductModP (2/2)."
+                               (Right (promoteToProduct [x1]))
+                               (interpretMultProductModP [0] "(-5)"))
+    where x1 = fromJust $ inclusionModP (MultInt (-5)) 0
+
+test69 = TestCase (assertEqual "Can parse a 2-component MultProductModP (1/2)."
+                               (Right (promoteToProduct [x1, x2]))
+                               (interpretMultProductModP [5, 0] "(9, 72)"))
+    where x1 = fromJust $ inclusionModP (MultInt 9) 5
+          x2 = fromJust $ inclusionModP (MultInt 72) 0
+
+test70 = TestCase (assertEqual "Can parse a 2-component MultProductModP (2/2)."
+                               (Right (promoteToProduct [x1, x2]))
+                               (interpretMultProductModP [2, 99] "(-56,0)"))
+    where x1 = fromJust $ inclusionModP (MultInt (-56)) 2
+          x2 = fromJust $ inclusionModP (MultInt 0) 99
+
+test71 = TestCase (assertEqual "Can parse a 3-component MultProductModP."
+                               (Right (promoteToProduct [x1, x2, x3]))
+                               (interpretMultProductModP [5, 0, 42] "(9, 72, 4)"))
+    where x1 = fromJust $ inclusionModP (MultInt 9) 5
+          x2 = fromJust $ inclusionModP (MultInt 72) 0
+          x3 = fromJust $ inclusionModP (MultInt 4) 42
+
+test72 = TestCase (assertEqual "Can parse a 3-component AddProductModP."
+                               (Right (promoteToProduct [x1, x2, x3]))
+                               (interpretAddProductModP [5, 0, 42] "(9, 72, 4)"))
+    where x1 = fromJust $ inclusionModP (AddInt 9) 5
+          x2 = fromJust $ inclusionModP (AddInt 72) 0
+          x3 = fromJust $ inclusionModP (AddInt 4) 42
+
+test73 = TestCase (assertEqual "Can detect a bad tuple for MultProductModP."
+                               (Left "Unable to parse product components")
+                               (interpretMultProductModP [] "sadsadsa"))
+
+test74 = TestCase (assertEqual "Can detect a bad EOL for MultProductModP."
+                               (Left "Unexpected characters after product")
+                               (interpretAddProductModP [0, 0, 0] "(9, 72, 4) xyz"))
+
+test75 = TestCase (assertEqual "Can localize bad element in MultProductModP (1/2)."
+                               (Left "Could not interpret 1-th component")
+                               (interpretAddProductModP [(-1), 0, 0] "(9, 72, 4)"))
+
+test76 = TestCase (assertEqual "Can localize bad element in MultProductModP (2/2)."
+                               (Left "Could not interpret 2-th component")
+                               (interpretAddProductModP [0, (-1), 0] "(9, 72, 4)"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "ParseSem_2Qubit_ID" test1,
@@ -382,6 +463,21 @@ tests = hUnitTestToTests $ TestList [TestLabel "ParseSem_2Qubit_ID" test1,
                                      TestLabel "ParseSem_3Qubit_UknOp1" test58,
                                      TestLabel "ParseSem_3Qubit_UknOp2" test59,
                                      TestLabel "ParseSem_3Qubit_OOBArg1" test60,
-                                     TestLabel "ParseSem_3Qubit_OOBArg2" test61]
+                                     TestLabel "ParseSem_3Qubit_OOBArg2" test61,
+                                     TestLabel "tokenizeByIntIncl_Valid_1" test62,
+                                     TestLabel "tokenizeByIntIncl_Valid_2" test63,
+                                     TestLabel "tokenizeByIntIncl_Invalid" test64,
+                                     TestLabel "interpretMultProductModP_Empty" test65,
+                                     TestLabel "interpretMultProductModP_OProd" test66,
+                                     TestLabel "interpretMultProductModP_1Prod_1" test67,
+                                     TestLabel "interpretMultProductModP_1Prod_2" test68,
+                                     TestLabel "interpretMultProductModP_2Prod_1" test69,
+                                     TestLabel "interpretMultProductModP_2Prod_2" test70,
+                                     TestLabel "interpretMultProductModP_3Prod" test71,
+                                     TestLabel "interpretAddProductModP_3Prod" test72,
+                                     TestLabel "interpretMultProductModP_BadProd" test73,
+                                     TestLabel "interpretMultProductModP_BadEOL" test74,
+                                     TestLabel "interpretMultProductModP_BadComp_1" test75,
+                                     TestLabel "interpretMultProductModP_BadComp_2" test76]
 
 main = defaultMain tests

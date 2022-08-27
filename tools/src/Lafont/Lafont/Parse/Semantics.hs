@@ -4,18 +4,27 @@ module Lafont.Parse.Semantics (
     SemParser,
     TwoQubitDyadic,
     ThreeQubitDyadic,
+    MultProductModP,
+    AddProductModP,
     parseMonoidSem,
     interpret2QubitCliffordDTofGate,
-    interpret3QubitCliffordDTofGate
+    interpret3QubitCliffordDTofGate,
+    interpretMultProductModP,
+    interpretAddProductModP
 ) where
 
 import           Data.Maybe
 import           Lafont.Common
+import           Lafont.Generators.Algebraic.ModP
+import           Lafont.Generators.Algebraic.Product
+import           Lafont.Generators.Categories
 import           Lafont.Generators.QubitGates
 import           Lafont.Parse.Common
+import           Lafont.Parse.DelimLists
+import           Lafont.Parse.Internal.Semantics
 import           Lafont.Parse.MonWords
-import qualified Quantum.Synthesis.Matrix     as QMat
-import qualified Quantum.Synthesis.Ring       as QRing
+import qualified Quantum.Synthesis.Matrix            as QMat
+import qualified Quantum.Synthesis.Ring              as QRing
 
 -----------------------------------------------------------------------------------------
 -- * General Semantic Parsing.
@@ -34,7 +43,7 @@ parseMonoidSem :: SemParser ()
 parseMonoidSem _ = Left "Monoid generators do not support semantics"
 
 -----------------------------------------------------------------------------------------
--- * Quantum Operator Semantics (General Interpretation Framework).
+-- * Quantum Operator Semantics: General Interpretation Framework.
 
 -- | Either contains an error as to why a user-provided gate is invalid, or contains the
 -- gate described by the user.
@@ -85,7 +94,7 @@ interpretNQubitGate sem str =
                             then interpretNQubitWord sem word
                             else Left "Expected a single word"
         Nothing -> Left "Expected a word"
-    where (_, trimmed) = trimSpacing $ stripComments str
+    where trimmed = cleanLine str
 
 -----------------------------------------------------------------------------------------
 -- * Quantum Operator Semantics: Clifford(D) on Two Qubits.
@@ -186,3 +195,71 @@ sem3QubitDOp = QGateSem (gateId `QMat.tensor` gateId `QMat.tensor` gateId)
 
 interpret3QubitCliffordDTofGate :: SemParser ThreeQubitDyadic
 interpret3QubitCliffordDTofGate = interpretNQubitGate sem3QubitDOp
+
+-----------------------------------------------------------------------------------------
+-- * Products Mod P Semantics: General Interpretation Framework
+
+type ProductModP a = ProductType (ArithModP a)
+
+-- | Consumes a list index (num), a list of a-values (xs), and a list of integers for
+-- ArithModP inclusion (ps). If each value (nums !! i) has an inclusion mod (pvals !! i),
+-- then the resulting list of (ArithModP a) values is returned. Otherwise, and error
+-- message is returned.
+interpretCompsModP :: (ModP a) => Int -> [a] -> [Int] -> Either String [ArithModP a]
+interpretCompsModP _   []     []     = Right []
+interpretCompsModP _   _      []     = Left ""
+interpretCompsModP _   []     _      = Left ""
+interpretCompsModP num (x:xs) (p:ps) =
+    case inclusionModP x p of
+        Nothing   -> Left ("Could not interpret " ++ show num ++ "-th component")
+        Just xbar -> case interpretCompsModP (num + 1) xs ps of
+            Left err    -> Left err
+            Right xbars -> Right (xbar : xbars)
+
+-- | Consumes a list of a-values (nums), a list of integers for ArithModP inclusion
+-- (pvals), and a string. The string is assumed to be the suffix of a semantic value line
+-- obtained after parsing nums. If the suffix consists of whitespace and each value
+-- (nums !! i) has an inclusion mod (pvals !! i), then an n-product of the resulting
+-- (ArithModP a) values is returned. Otherwise, an error message is returned.
+interpretCompsAsProduct :: (ModP a) => [a] -> [Int] -> SemParser (ProductModP a)
+interpretCompsAsProduct nums pvals rest
+    | trimmed /= "" = Left "Unexpected characters after product"
+    | otherwise     = case interpretCompsModP 1 nums pvals of
+        Left err    -> Left err
+        Right comps -> Right (promoteToProduct comps)
+    where trimmed = cleanLine rest
+
+-- | Consumes a tokenizer for product components (toks), a list of integers for ArithModP
+-- inclusion (pvals), and a string. If the string is a tuple of the form (x1,x2,...,xn)
+-- where each xi has an inclusion mod (pvals !! i), then an n-product of the resulting
+-- (ArithModP a) values is returned. Otherwise, an error message is returned.
+interpretModPSemantics :: (ModP a) => Tokenizer a -> [Int] -> SemParser (ProductModP a)
+interpretModPSemantics tokenizer pvals str =
+    case parseBracedList tokenizer delim lbrace rbrace str of
+        Nothing           -> Left "Unable to parse product components"
+        Just (nums, rest) -> interpretCompsAsProduct nums pvals rest
+    where delim = ','
+          lbrace = '('
+          rbrace = ')'
+
+-----------------------------------------------------------------------------------------
+-- * Products Mod P Semantics: MultModP
+
+type MultProductModP = ProductModP MultInt
+
+-- | Consumes a list of n natural numbers (pvals). Returns a parser for n-tuples such
+-- that the ith component of the tuple is an equivalence class of multiplicative integers
+-- mod (pvals !! i).
+interpretMultProductModP :: [Int] -> SemParser MultProductModP
+interpretMultProductModP = interpretModPSemantics (tokenizeByIntIncl MultInt)
+
+-----------------------------------------------------------------------------------------
+-- * Products Mod P Semantics: MultModP
+
+type AddProductModP = ProductModP AddInt
+
+-- | Consumes a list of n natural numbers (pvals). Returns a parser for n-tuples such
+-- that the ith component of the tuple is an equivalence class of multiplicative integers
+-- mod (pvals !! i).
+interpretAddProductModP :: [Int] -> SemParser AddProductModP
+interpretAddProductModP = interpretModPSemantics (tokenizeByIntIncl AddInt)

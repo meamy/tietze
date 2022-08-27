@@ -37,6 +37,7 @@ library
                        Lafont.Parse.Internal.GeneratorFile
                        Lafont.Parse.Internal.Properties
                        Lafont.Parse.Internal.RelationFile
+                       Lafont.Parse.Internal.Semantics
                        Lafont.Parse.MonWords
                        Lafont.Parse.Properties
                        Lafont.Parse.RelationFile
