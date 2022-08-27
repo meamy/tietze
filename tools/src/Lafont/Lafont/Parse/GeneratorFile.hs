@@ -36,6 +36,8 @@ instance Display GenFileError where
 data GenFileSummary = MonoidGenSummary (GenDict ())
                     | DyadicTwoSummary (GenDict TwoQubitDyadic)
                     | DyadicThreeSummary (GenDict ThreeQubitDyadic)
+                    | ModMultProductSummary (GenDict MultProductModP)
+                    | ModAddProductSummary (GenDict AddProductModP)
                     deriving (Eq,Show)
 
 -- | Consumes all lines of a generator file (lines). If the lines are valid, then returns
@@ -64,5 +66,10 @@ parseGenFileAsDict lines num =
 -- exception.
 parseGenFileAsAlphabet :: [String] -> Int -> Either (Int, GFPError) [String]
 parseGenFileAsAlphabet lines num = case parseGenFileAsDict lines num of
-    Left err                      -> Left err
-    Right (MonoidGenSummary dict) -> Right (toAlphabet dict)
+    Left err                           -> Left err
+    Right (MonoidGenSummary dict)      -> impl dict
+    Right (DyadicTwoSummary dict)      -> impl dict
+    Right (DyadicThreeSummary dict)    -> impl dict
+    Right (ModMultProductSummary dict) -> impl dict
+    Right (ModAddProductSummary dict)  -> impl dict
+    where impl dict = Right (toAlphabet dict)
