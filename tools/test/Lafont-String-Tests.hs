@@ -92,6 +92,16 @@ test21 = TestCase (assertEqual "displayList uses the show method."
                                (displayList [[1, 2, 3], [4, 5, 6], [7, 8, 9]]))
 
 -----------------------------------------------------------------------------------------
+-- formatList
+
+formatter :: Int -> String
+formatter n = show (n * 10 + 1)
+
+test22 = TestCase (assertEqual "formatList respects formatter."
+                               "421,521,901"
+                               (formatList formatter [42, 52, 90]))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "isSubstrAt_BothEmpty" test1,
@@ -114,6 +124,7 @@ tests = hUnitTestToTests $ TestList [TestLabel "isSubstrAt_BothEmpty" test1,
                                      TestLabel "displayList_Singleton" test18,
                                      TestLabel "displayList_Pair" test19,
                                      TestLabel "displayList_Triple" test20,
-                                     TestLabel "displayList_AltShow" test21]
+                                     TestLabel "displayList_AltShow" test21,
+                                     TestLabel "formatList" test22]
 
 main = defaultMain tests

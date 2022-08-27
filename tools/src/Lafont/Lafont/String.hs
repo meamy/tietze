@@ -3,6 +3,7 @@
 module Lafont.String (
     isSubstrAt,
     isSubstrOf,
+    formatList,
     displayList
 ) where
 
@@ -32,8 +33,12 @@ isSubstrOf sub str = isJust (sub `isSubstrAt` str)
 -----------------------------------------------------------------------------------------
 -- Formatting Functions.
 
--- | Consumes a list [x1,x2,...,xn]. Returns a string of the form
---     (show x1) ++ "," + (show x2) ++ "," ... + "," (show xn)
+-- | Consumes a formatting function f list [x1,x2,...,xn]. Returns a string of the form
+--     (f x1) ++ "," + (f x2) ++ "," ... + "," (f xn)
 -- where each xi is showable.
+formatList :: (a -> String) -> [a] -> String
+formatList f list = intercalate "," $ map f list
+
+-- | Specializes formatList to use the default show.
 displayList :: (Show a) => [a] -> String
-displayList list = intercalate "," $ map show list
+displayList = formatList show
