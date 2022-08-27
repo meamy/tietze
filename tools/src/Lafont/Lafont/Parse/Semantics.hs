@@ -235,12 +235,9 @@ interpretCompsAsProduct nums pvals rest
 -- (ArithModP a) values is returned. Otherwise, an error message is returned.
 interpretModPSemantics :: (ModP a) => Tokenizer a -> [Int] -> SemParser (ProductModP a)
 interpretModPSemantics tokenizer pvals str =
-    case parseBracedList tokenizer delim lbrace rbrace str of
+    case parseTuple tokenizer str of
         Nothing           -> Left "Unable to parse product components"
         Just (nums, rest) -> interpretCompsAsProduct nums pvals rest
-    where delim = ','
-          lbrace = '('
-          rbrace = ')'
 
 -----------------------------------------------------------------------------------------
 -- * Products Mod P Semantics: MultModP

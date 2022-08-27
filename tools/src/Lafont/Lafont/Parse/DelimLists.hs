@@ -5,7 +5,8 @@
 module Lafont.Parse.DelimLists (
     Tokenizer,
     parseList,
-    parseBracedList
+    parseBracedList,
+    parseTuple
 ) where
 
 import           Lafont.Maybe
@@ -71,3 +72,10 @@ parseBracedList getToken delim lbrace rbrace line =
         Just body -> case parseList getToken delim body of
             Nothing          -> parseRBrace rbrace [] body
             Just (list, end) -> parseRBrace rbrace list end
+
+-- | Specializes parseBracedList to tuples.
+parseTuple :: Tokenizer a -> String -> Maybe ([a], String)
+parseTuple getToken = parseBracedList getToken delim lbrace rbrace
+    where delim = ','
+          lbrace = '('
+          rbrace = ')'

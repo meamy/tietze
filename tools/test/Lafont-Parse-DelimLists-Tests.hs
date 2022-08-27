@@ -77,6 +77,13 @@ test13 = TestCase (assertEqual "parseBracedList can parse alternative delimeters
                                (bracedParser2 "{b|:|:bbb|}  qasfss"))
 
 -----------------------------------------------------------------------------------------
+-- parseTuple
+
+test14 = TestCase (assertEqual "parseTuple is the expected specialization."
+                               (Just ([1, 0, 3], "  qasfss") :: Maybe ([Int], String))
+                               (parseTuple parseUnaryA "(a|,|,aaa|)  qasfss"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseList_EmptyString" test1,
@@ -91,6 +98,7 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseList_EmptyString" test1,
                                      TestLabel "parseBracedList_Empty_2" test10,
                                      TestLabel "parseBracedList_Triple" test11,
                                      TestLabel "parseBracedList_Spacing" test12,
-                                     TestLabel "parseBracedList_AltSymbols" test13]
+                                     TestLabel "parseBracedList_AltSymbols" test13,
+                                     TestLabel "parseTuple" test14]
 
 main = defaultMain tests
