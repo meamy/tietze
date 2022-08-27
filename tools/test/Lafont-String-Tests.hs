@@ -68,6 +68,30 @@ test16 = TestCase (assertBool "isSubstrOf rejects subs which are partial substri
                               (not ("8901" `isSubstrOf` "abcdefghijklmnop1234567890")))
 
 -----------------------------------------------------------------------------------------
+-- displayList
+
+test17 = TestCase (assertEqual "displayList supports empty lists."
+                               ""
+                               (displayList list))
+    where list = [] :: [Int]
+
+test18 = TestCase (assertEqual "displayList supports singleton lists."
+                               "42"
+                               (displayList [42]))
+
+test19 = TestCase (assertEqual "displayList supports pairs."
+                               "42,52"
+                               (displayList [42, 52]))
+
+test20 = TestCase (assertEqual "displayList supports triples."
+                               "42,52,90"
+                               (displayList [42, 52, 90]))
+
+test21 = TestCase (assertEqual "displayList uses the show method."
+                               "[1,2,3],[4,5,6],[7,8,9]"
+                               (displayList [[1, 2, 3], [4, 5, 6], [7, 8, 9]]))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "isSubstrAt_BothEmpty" test1,
@@ -85,6 +109,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "isSubstrAt_BothEmpty" test1,
                                      TestLabel "isSubstrOf_SubIsPrefix" test13,
                                      TestLabel "isSubstrOf_SubAt3" test14,
                                      TestLabel "isSubstrOf_SubAt9" test16,
-                                     TestLabel "isSubstrOf_PartialMatch" test16]
+                                     TestLabel "isSubstrOf_PartialMatch" test16,
+                                     TestLabel "displayList_Empty" test17,
+                                     TestLabel "displayList_Singleton" test18,
+                                     TestLabel "displayList_Pair" test19,
+                                     TestLabel "displayList_Triple" test20,
+                                     TestLabel "displayList_AltShow" test21]
 
 main = defaultMain tests
