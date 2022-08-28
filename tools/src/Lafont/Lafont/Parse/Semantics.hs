@@ -207,8 +207,8 @@ type ProductModP a = ProductType (ArithModP a)
 -- message is returned.
 interpretCompsModP :: (ModP a) => Int -> [a] -> [Int] -> Either String [ArithModP a]
 interpretCompsModP _   []     []     = Right []
-interpretCompsModP _   _      []     = Left ""
-interpretCompsModP _   []     _      = Left ""
+interpretCompsModP _   _      []     = Left "Tuple size larger than semantic model"
+interpretCompsModP _   []     _      = Left "Tuple size smaller than semantic model"
 interpretCompsModP num (x:xs) (p:ps) =
     case inclusionModP x p of
         Nothing   -> Left ("Could not interpret " ++ show num ++ "-th component")
