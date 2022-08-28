@@ -12,7 +12,7 @@ import Lafont.Parse.DelimLists
 parseUnary :: Char -> String -> Maybe (Int, String)
 parseUnary tok (c:line)
     | c == '|'  = Just (0, line)
-    | c == tok  = maybeApply (\(n, str) -> (n + 1, str)) (parseUnary tok line)
+    | c == tok  = maybeApply (parseUnary tok line) (\(n, str) -> (n + 1, str))
     | otherwise = Nothing
 
 parseUnaryA = parseUnary 'a'

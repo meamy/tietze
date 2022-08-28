@@ -13,4 +13,4 @@ import           Lafont.Parse.DelimLists
 -- | Consumes an inclusion from integers to type a (incl). Returns a tokenizer to parse
 -- integers under the image of incl.
 tokenizeByIntIncl :: (Int -> a) -> Tokenizer a
-tokenizeByIntIncl incl str = maybeApply (Data.Bifunctor.first incl) (parseInt str)
+tokenizeByIntIncl incl str = maybeApply (parseInt str) (Data.Bifunctor.first incl)

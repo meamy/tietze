@@ -46,8 +46,8 @@ parseList _        _     []   = Nothing
 parseList getToken delim line =
     case getToken trimmed of
         Nothing          -> Nothing
-        Just (tok, rest) -> maybeApply (Data.Bifunctor.first (tok :))
-                                       (parseListDelim getToken delim rest)
+        Just (tok, rest) -> maybeApply (parseListDelim getToken delim rest)
+                                       (Data.Bifunctor.first (tok :))
     where (_, trimmed) = trimSpacing line
 
 -----------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ parseList getToken delim line =
 -- a string (line). If line is prefixed by rbrace (optionally with spacing), then list
 -- together with the rest of line are returned. Otherwise, nothing is returned.
 parseRBrace :: Char -> [a] -> String -> Maybe ([a], String)
-parseRBrace rbrace list line = maybeApply (list,) (parseSep [rbrace] line)
+parseRBrace rbrace list line = maybeApply (parseSep [rbrace] line) (list,)
 
 -- | Consumes a token parsing function (getToken), a list deliminating character (delim),
 -- a pair of bracing characters (lbrace and rbrace for [l]eft and [r]ight), and a string

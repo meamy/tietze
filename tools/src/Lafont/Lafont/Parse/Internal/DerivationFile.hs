@@ -206,7 +206,7 @@ parseFinalMonWord []           = Nothing
 parseFinalMonWord (line:lines) =
     case parseLineAsMonWord line of
         Just word -> Just ([], word, lines)
-        Nothing   -> maybeApply f $ parseFinalMonWord lines
+        Nothing   -> maybeApply (parseFinalMonWord lines) f
     where f (body, word, rest) = (line : body, word, rest)
 
 -- | Consumes a dictionary of known rules (rules), a set of derived relation symbols

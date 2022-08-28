@@ -70,7 +70,7 @@ composeImpl ArithID y
     where (ArithModP _ p) = y
 composeImpl (ArithModP v1 p1) (ArithModP v2 p2)
     | incomposablePair p1 p2 = Nothing
-    | otherwise              = maybeApply (\v -> reduce (ArithModP v p1)) (compose v1 v2)
+    | otherwise              = maybeApply (compose v1 v2) (\v -> reduce (ArithModP v p1))
 
 -----------------------------------------------------------------------------------------
 -- * ArithModP Defines a Monoid

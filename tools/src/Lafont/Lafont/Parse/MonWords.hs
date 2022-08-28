@@ -23,7 +23,7 @@ parseParam :: String -> Maybe (Int, String)
 parseParam []        = Nothing
 parseParam ('[':str) =
     case parseNat str of
-        Just (n, post) -> maybeApply (\(_, post) -> (n, post)) (parseFromSeps ["]"] post)
+        Just (n, post) -> maybeApply (parseFromSeps ["]"] post) (\(_, post) -> (n, post))
         Nothing        -> Nothing
 parseParam _ = Nothing
 
@@ -45,7 +45,7 @@ parseParams str =
 -- str = pre + post, then returns (Symbol <ID> <PARAM>, post) where pre is the maximal
 -- such prefix. Otherwise, nothing is returned.
 parseSymbol :: String -> Maybe (Symbol, String)
-parseSymbol str = maybeApply parseImpl (parseId str)
+parseSymbol str = maybeApply (parseId str) parseImpl
     where parseImpl (id, post) = let (params, post') = parseParams post
                                  in (Symbol id params, post')
 
@@ -79,7 +79,7 @@ parseMonWordSep _          = Nothing
 --
 -- Mutually Depends On: parseNonEmptyMonWord
 joinAndParseMonWord :: Symbol -> String -> Maybe (MonWord, String)
-joinAndParseMonWord symb str = maybeApply (Data.Bifunctor.first (symb :)) maybeWord
+joinAndParseMonWord symb str = maybeApply maybeWord (Data.Bifunctor.first (symb :))
     where maybeWord = parseNonEmptyMonWord str
 
 -- | Consumes a string (str). If there exists a monoidal word pre = G1.G2.G3...Gn such

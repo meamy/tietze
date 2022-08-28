@@ -88,7 +88,7 @@ findCycleFromVertex g v seen
     | otherwise           = let frontier = adjacencyList g v
                                 seenHere = Set.insert v seen
                                 res = findCycleFromVertices g frontier seenHere
-                            in maybeApply (`extendToCycle` v) res
+                            in maybeApply res (`extendToCycle` v)
 
 -- | Consumes a graph (g), a frontier of vertices in the graph (list), and a set of
 -- previously visited vertices (seen). That is, there exists a walk w to each v in list

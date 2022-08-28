@@ -132,7 +132,7 @@ parseNat str
 -- | Consumes an input string (str). Returns the largest integral prefix of str coverted
 -- to an integer, if one exists. Otherwise, returns nothing.
 parseInt :: String -> Maybe (Int, String)
-parseInt ('-':str) = maybeApply (Data.Bifunctor.first ((-1) *)) (parseNat str)
+parseInt ('-':str) = maybeApply (parseNat str) (Data.Bifunctor.first ((-1) *))
 parseInt str       = parseNat str
 
 -- | Consumes an input string (str). Returns (trimmed, post) where (pre, post) =

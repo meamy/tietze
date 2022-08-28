@@ -28,7 +28,7 @@ equateLImpl []     ys     = Nothing
 equateLImpl (x:xs) (y:ys) =
     case equateLImpl xs ys of
         Nothing  -> Nothing
-        Just res -> maybeApply (res &&) (equate x y)
+        Just res -> maybeApply (equate x y) (res &&)
 
 -- | Implements compose on the underlying lists.
 composeLImpl :: (MonoidObj a) => [a] -> [a] -> Maybe [a]
@@ -38,7 +38,7 @@ composeLImpl []     ys     = Nothing
 composeLImpl (x:xs) (y:ys) =
     case composeLImpl xs ys of
         Nothing -> Nothing
-        Just zs -> maybeApply (: zs) (compose x y)
+        Just zs -> maybeApply (compose x y) (: zs)
 
 -- | Implements equate in MonoidObj.
 equateImpl :: (MonoidObj a) => ProductType a -> ProductType a -> Maybe Bool
@@ -52,7 +52,7 @@ composeImpl :: (MonoidObj a) => ProductType a -> ProductType a -> Maybe (Product
 composeImpl ProductID       ProductID       = Just ProductID
 composeImpl x               ProductID       = Just x
 composeImpl ProductID       y               = Just y
-composeImpl (ProductVal xs) (ProductVal ys) = maybeApply ProductVal (composeLImpl xs ys)
+composeImpl (ProductVal xs) (ProductVal ys) = maybeApply (composeLImpl xs ys) ProductVal
 
 -----------------------------------------------------------------------------------------
 -- * ProductType Defines a Monoid

@@ -23,7 +23,7 @@ isSubstrAt sub str
     | null sub             = Just 0
     | null str             = Nothing
     | sub `isPrefixOf` str = Just 0
-    | otherwise            = maybeApply (+ 1) (sub `isSubstrAt` tail str)
+    | otherwise            = maybeApply (sub `isSubstrAt` tail str) (+ 1)
 
 -- | Consumes two strings (sub and str). Returns true if and only if sub is a substring
 -- of str.
