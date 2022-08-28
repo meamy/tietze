@@ -1,0 +1,5 @@
+-- To run: [lafont_path] generators.gens relations.rels
+--
+-- Let's try a non-relation.
+
+rel3 CX10.CZ01 = CX20

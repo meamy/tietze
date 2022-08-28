@@ -1,0 +1,23 @@
+-- Lafont also has native support for 4x4 and 8x8 dyadic matrices.
+-- In the 4x4 case, such matrices correspond to the Dyadic Clifford Circuits.
+-- In the 8x8 case, such matrices correspond to the Dyadic Clifford + Tof Circuits.
+--
+-- For these reason, we specify dyadic semantics using strings of quantum operators.
+-- Operators include:
+-- 1. Single Qubit: X[i], Z[i]
+-- 2. Two Qubit:    CX[i][j], CZ[i][j], K[i][j], SWAP[i][j]
+-- 3. Three Qubit:  CCX[i][j][k], CCZ[i][j][k]
+-- In the 4x4 case, the arguments for CZ, K, and SWAP are unncessary, and omitted.
+-- In the 8x8 case, the arguments for CCZ are unncessary, and omitted.
+
+-- Let's write some 3 Qubit Clifford  + Tof Circuits!
+Dyadic(3)
+
+-- We will use some basic generators.
+CX10 := CX[1][0]
+CX20 := CX[2][0]
+CZ01 := CZ[0][1]
+CZ02 := CZ[0][2]
+Z1   := Z[1]
+X0   := X[0]
+-- Note that we can view the matrix semantics by running check_generators.

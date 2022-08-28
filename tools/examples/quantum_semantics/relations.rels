@@ -1,0 +1,22 @@
+-- To run: [lafont_path] generators.gens relations.rels
+--
+-- This file contains some basic Clifford relations.
+-- Lafont will verify all relations using the provided semantics.
+
+-- Some self-inverse gates. These gates are reflections.
+refl1 CX10.CX10 = ε
+refl2 CX20.CX20 = ε
+refl3 CZ01.CZ01 = ε
+refl4 CZ02.CZ02 = ε
+
+-- Some gates that commute.
+comm1 CX10.CX20 = CX20.CX10
+comm2 CZ01.CZ02 = CZ02.CZ01
+
+-- A less obvious relation.
+-- Note that strings are converted to matrices.
+-- Then the equation states CZ[0][1](CX[1][0](v)) = Z[1](CX[1][0](XZ[0][1](v))) forall v.
+rel1 CZ01.CX10 = Z1.CX10.CZ01
+
+-- A second relation.
+rel2 CZ01.X0 = X0.Z1.CZ01
