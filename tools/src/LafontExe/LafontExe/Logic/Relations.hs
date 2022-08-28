@@ -59,10 +59,10 @@ readAndCheckRules relFile gens =
 readGeneratorsAndRules :: FileData -> FileData -> GenRuleReadResult
 readGeneratorsAndRules (FileData genFname genLines) relFile =
     case parseGenFileAsDict genLines 0 of
-        Left (errLn, err)                  -> BadGenFile genFname errLn err
-        Right (MonoidGenSummary dict)      -> readRulesUnchecked relFile dict
-        Right (DyadicTwoSummary dict)      -> readAndCheckRules relFile dict
-        Right (DyadicThreeSummary dict)    -> readAndCheckRules relFile dict
-        Right (ModMultProductSummary dict) -> readAndCheckRules relFile dict
-        Right (ModAddProductSummary dict)  -> readAndCheckRules relFile dict
-        _                                  -> UnknownSem
+        Left (errLn, err)                    -> BadGenFile genFname errLn err
+        Right (MonoidGenSummary dict)        -> readRulesUnchecked relFile dict
+        Right (DyadicTwoSummary dict)        -> readAndCheckRules relFile dict
+        Right (DyadicThreeSummary dict)      -> readAndCheckRules relFile dict
+        Right (ModMultProductSummary dict _) -> readAndCheckRules relFile dict
+        Right (ModAddProductSummary dict _)  -> readAndCheckRules relFile dict
+        _                                    -> UnknownSem

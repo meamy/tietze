@@ -1,0 +1,6 @@
+-- Relations to show generators have finite order.
+-- Intended generators: add.good.gens
+
+r1 x.x.x.x.x = ε
+r2 y.y.y = ε
+r3 z.z = ε

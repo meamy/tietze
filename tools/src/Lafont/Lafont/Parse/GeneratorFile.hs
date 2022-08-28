@@ -21,6 +21,7 @@ import           Lafont.Parse.Semantics
 instance Display GenFileError where
     display MissingSemModel         = "Semantics model not provided."
     display (UnknownSemModel model) = "Unknown semantic model (" ++ model ++ ")."
+    display (InvalidSemArgs args)   = "Unknown semantic arguments (" ++ args ++ ")."
     display (SemModelWOImpl model)  = display model ++ " not implemented."
     display InvalidGenName          = "Generator name started with invalid symbol."
     display (InvalidGenSem pos msg) = "Invalid semv at " ++ show pos ++ " (" ++ msg ++ ")."
@@ -36,8 +37,8 @@ instance Display GenFileError where
 data GenFileSummary = MonoidGenSummary (GenDict ())
                     | DyadicTwoSummary (GenDict TwoQubitDyadic)
                     | DyadicThreeSummary (GenDict ThreeQubitDyadic)
-                    | ModMultProductSummary (GenDict MultProductModP)
-                    | ModAddProductSummary (GenDict AddProductModP)
+                    | ModMultProductSummary (GenDict MultProductModP) [Int]
+                    | ModAddProductSummary (GenDict AddProductModP) [Int]
                     deriving (Eq,Show)
 
 -- | Consumes all lines of a generator file (lines). If the lines are valid, then returns
@@ -57,6 +58,12 @@ parseGenFileAsDict lines num =
             DyadicThreeSem -> case parseGenDict interpret3QubitCliffordDTofGate gens nextLn of
                 Left err   -> Left err
                 Right dict -> Right (DyadicThreeSummary dict)
+            (MultModPSem pvals) -> case parseGenDict (interpretMultProductModP pvals) gens nextLn of
+                Left err   -> Left err
+                Right dict -> Right (ModMultProductSummary dict pvals)
+            (AddModPSem pvals) -> case parseGenDict (interpretAddProductModP pvals) gens nextLn of
+                Left err   -> Left err
+                Right dict -> Right (ModAddProductSummary dict pvals)
             _ -> Left (semLn, Right (SemModelWOImpl sem))
 
 -- | A GenFileSummary carries the type data of the underlying semantic model. This
@@ -66,10 +73,10 @@ parseGenFileAsDict lines num =
 -- exception.
 parseGenFileAsAlphabet :: [String] -> Int -> Either (Int, GFPError) [String]
 parseGenFileAsAlphabet lines num = case parseGenFileAsDict lines num of
-    Left err                           -> Left err
-    Right (MonoidGenSummary dict)      -> impl dict
-    Right (DyadicTwoSummary dict)      -> impl dict
-    Right (DyadicThreeSummary dict)    -> impl dict
-    Right (ModMultProductSummary dict) -> impl dict
-    Right (ModAddProductSummary dict)  -> impl dict
+    Left err                             -> Left err
+    Right (MonoidGenSummary dict)        -> impl dict
+    Right (DyadicTwoSummary dict)        -> impl dict
+    Right (DyadicThreeSummary dict)      -> impl dict
+    Right (ModMultProductSummary dict _) -> impl dict
+    Right (ModAddProductSummary dict _)  -> impl dict
     where impl dict = Right (toAlphabet dict)

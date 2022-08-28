@@ -1,0 +1,6 @@
+-- Tests involving reachability and annihilators.
+-- Intended generators: mult.good.gens
+
+r1 y.y.x.x.y.y.y = element
+r2 ax.y.ay = zero
+r3 ax.x.ay = zero

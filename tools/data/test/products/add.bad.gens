@@ -1,0 +1,7 @@
+-- A generator file with generators from the additive group (Z/5Z)X(Z/3Z)X(Z/2Z).
+
+AddModP(5,3,2)
+
+x := (1,0,0)
+y := (0,1)
+z := (0,0,1)

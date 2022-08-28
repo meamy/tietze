@@ -38,11 +38,13 @@ logGenerators sem = foldGens logGenerator semstr
 processGeneratorLines :: FileData -> String
 processGeneratorLines (FileData fname lines) =
     case parseGenFileAsDict lines 0 of
-        Left (errLn, err)               -> logEitherMsg fname errLn err
-        Right (MonoidGenSummary dict)   -> logGenerators MonoidSem dict
-        Right (DyadicTwoSummary dict)   -> logGenerators DyadicTwoSem dict
-        Right (DyadicThreeSummary dict) -> logGenerators DyadicThreeSem dict
-        _                               -> "Semantic model not supported."
+        Left (errLn, err)                     -> logEitherMsg fname errLn err
+        Right (MonoidGenSummary dict)         -> logGenerators MonoidSem dict
+        Right (DyadicTwoSummary dict)         -> logGenerators DyadicTwoSem dict
+        Right (DyadicThreeSummary dict)       -> logGenerators DyadicThreeSem dict
+        Right (ModMultProductSummary dict ps) -> logGenerators (MultModPSem ps) dict
+        Right (ModAddProductSummary dict ps)  -> logGenerators (AddModPSem ps) dict
+        _                                     -> "Semantic model not supported.\n"
 
 -- | Consumes a handle, the name of a generator file (fname). If the generator file
 -- parses correctly, then an internal representation of the generators is printed to the

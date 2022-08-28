@@ -19,6 +19,7 @@ import qualified Data.Map                     as Map
 import           Data.Maybe
 import           Lafont.Common
 import           Lafont.Generators.Categories
+import           Lafont.String
 
 -----------------------------------------------------------------------------------------
 -- * Semantic Model Descriptions.
@@ -27,6 +28,8 @@ import           Lafont.Generators.Categories
 data SemModel = MonoidSem
               | DyadicTwoSem
               | DyadicThreeSem
+              | MultModPSem [Int]
+              | AddModPSem [Int]
               deriving (Eq,Show)
 
 -- | Returns the token used to indicate a semantic model. For example, if the semantic
@@ -34,15 +37,19 @@ data SemModel = MonoidSem
 -- Monoid. On the other hand, if the semantic model is taken to be AddModP, then the
 -- semantic token is AddModP, whereas the semantic line might be AddModP(0, 0, 5, 7, 3).
 semToTok :: SemModel -> String
-semToTok MonoidSem      = "Monoid"
-semToTok DyadicTwoSem   = "Dyadic(2)"
-semToTok DyadicThreeSem = "Dyadic(3)"
+semToTok MonoidSem       = "Monoid"
+semToTok DyadicTwoSem    = "Dyadic(2)"
+semToTok DyadicThreeSem  = "Dyadic(3)"
+semToTok (MultModPSem _) = "MultModP"
+semToTok (AddModPSem _)  = "AddModP"
 
 -- | Returns the arguments passed to a semantic model. For example, Monoid requires no
 -- parameters. On the other hand, the additive group of integers moudlo p would be
 -- parameterized by the value p.
 semToArgs :: SemModel -> String
-semToArgs _ = ""
+semToArgs (MultModPSem pvals) = "(" ++ displayList pvals ++ ")"
+semToArgs (AddModPSem pvals)  = "(" ++ displayList pvals ++ ")"
+semToArgs _                   = ""
 
 instance Display SemModel where
     display sem = semToTok sem ++ semToArgs sem

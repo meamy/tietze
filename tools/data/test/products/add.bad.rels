@@ -1,0 +1,4 @@
+-- A relation with the incorrect order.
+-- Intended generators: add.good.gens
+
+r1 x.x.x.x = ε

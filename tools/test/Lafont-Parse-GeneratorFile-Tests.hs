@@ -5,6 +5,9 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Maybe
 import Data.Either
+import Lafont.Generators.Algebraic.ModP
+import Lafont.Generators.Algebraic.Product
+import Lafont.Generators.Categories
 import Lafont.Generators.Semantics
 import Lafont.Generators.QubitGates
 import Lafont.Parse.Common
@@ -314,7 +317,7 @@ test43 = TestCase (assertEqual "Tests parsing of valid Dyadic(2) file."
                                (Right (DyadicTwoSummary twoQubitDict))
                                (parseGenFileAsDict validTwoDyadicFile 0))
 
-test44 = TestCase (assertEqual "Tests parsing of valid Dyadic(2) file."
+test44 = TestCase (assertEqual "Tests parsing of invalid Dyadic(2) file."
                                (Left (2, Right err))
                                (parseGenFileAsDict invalidTwoDyadicFile 0))
       where err = InvalidGenSem 6 "Unknown two qubit operator: CCX"
@@ -339,10 +342,70 @@ test45 = TestCase (assertEqual "Tests parsing of valid Dyadic(3) file."
                                (Right (DyadicThreeSummary threeQubitDict))
                                (parseGenFileAsDict validThreeDyadicFile 0))
 
-test46 = TestCase (assertEqual "Tests parsing of valid Dyadic(3) file."
+test46 = TestCase (assertEqual "Tests parsing of invalid Dyadic(3) file."
                                (Left (2, Right err))
                                (parseGenFileAsDict invalidThreeDyadicFile 0))
       where err = InvalidGenSem 6 "Unknown two qubit operator: CCX"
+
+-----------------------------------------------------------------------------------------
+-- Parsing MultModPSem.
+
+validMultModPFile :: [String]
+validMultModPFile = ["MultModP(0,5,9)", "abc := (1,2,3)", "cdf := (4,0,6)", "xyz_123"]
+
+invalidMultModPFile :: [String]
+invalidMultModPFile = ["MultModP (0, 5, 9)", "abc := (1,2,3)", "cdf := (4)", "xyz_123"]
+
+multModPTuple1 = promoteToProduct [fromJust $ inclusionModP (MultInt 1) 0,
+                                   fromJust $ inclusionModP (MultInt 2) 5,
+                                   fromJust $ inclusionModP (MultInt 3) 9]
+
+multModPTuple2 = promoteToProduct [fromJust $ inclusionModP (MultInt 4) 0,
+                                   fromJust $ inclusionModP (MultInt 0) 5,
+                                   fromJust $ inclusionModP (MultInt 6) 9]
+
+multModPDict :: GenDict MultProductModP
+multModPDict = empty `addGen` ("abc", Just multModPTuple1)
+                     `addGen` ("cdf", Just multModPTuple2)
+                     `addGen` ("xyz_123", Nothing)
+
+test47 = TestCase (assertEqual "Tests parsing of valid MultModP(0,5,9) file."
+                               (Right (ModMultProductSummary multModPDict [0, 5, 9]))
+                               (parseGenFileAsDict validMultModPFile 0))
+
+test48 = TestCase (assertEqual "Tests parsing of invalid MultModP(0,5,9) file."
+                               (Left (2, Right err))
+                               (parseGenFileAsDict invalidMultModPFile 0))
+      where err = InvalidGenSem 6 "Tuple size smaller than semantic model"
+
+-----------------------------------------------------------------------------------------
+-- Parsing AddModPSem.
+
+validAddModPFile :: [String]
+validAddModPFile = ["AddModP(0,5)", "abc := (1,3)", "cdf := (0,6)", "xyz_123"]
+
+invalidAddModPFile :: [String]
+invalidAddModPFile = ["AddModP (0, 5)", "abc := (1,3)", "cdf := (4,4,4)", "xyz_123"]
+
+addModPTuple1 = promoteToProduct [fromJust $ inclusionModP (AddInt 1) 0,
+                                  fromJust $ inclusionModP (AddInt 3) 5]
+
+addModPTuple2 = promoteToProduct [fromJust $ inclusionModP (AddInt 0) 0,
+                                  fromJust $ inclusionModP (AddInt 6) 5]
+
+addModPDict :: GenDict AddProductModP
+addModPDict = empty `addGen` ("abc", Just addModPTuple1)
+                     `addGen` ("cdf", Just addModPTuple2)
+                     `addGen` ("xyz_123", Nothing)
+
+test49 = TestCase (assertEqual "Tests parsing of valid AddModP(0,5) file."
+                               (Right (ModAddProductSummary addModPDict [0, 5]))
+                               (parseGenFileAsDict validAddModPFile 0))
+
+test50 = TestCase (assertEqual "Tests parsing of invalid AddModP(0,5) file."
+                               (Left (2, Right err))
+                               (parseGenFileAsDict invalidAddModPFile 0))
+      where err = InvalidGenSem 6 "Tuple size larger than semantic model"
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -393,6 +456,10 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseGenerator_EmptyString" test
                                      TestLabel "parsingValidTwoDyadic" test43,
                                      TestLabel "parsingInvalidTwoDyadic" test44,
                                      TestLabel "parsingValidThreeDyadic" test45,
-                                     TestLabel "parsingInvalidThreeDyadic" test46]
+                                     TestLabel "parsingInvalidThreeDyadic" test46,
+                                     TestLabel "parsingValidMultModP" test47,
+                                     TestLabel "parsingInvalidMultModP" test48,
+                                     TestLabel "parsingValidAddModP" test49,
+                                     TestLabel "parsingInvalidAddModP" test50]
 
 main = defaultMain tests

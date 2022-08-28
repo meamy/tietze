@@ -11,6 +11,7 @@ module Lafont.Parse.Internal.GeneratorFile (
 
 import           Lafont.Generators.Semantics
 import           Lafont.Parse.Common
+import           Lafont.Parse.DelimLists
 import           Lafont.Parse.Semantics
 
 -----------------------------------------------------------------------------------------
@@ -19,6 +20,7 @@ import           Lafont.Parse.Semantics
 -- | Errors unique to generator file parsing.
 data GenFileError = MissingSemModel
                   | UnknownSemModel String
+                  | InvalidSemArgs String
                   | SemModelWOImpl SemModel
                   | InvalidGenName
                   | InvalidGenSem Int String
@@ -43,6 +45,7 @@ propGenErr str substr (Right err) =
     case err of
         MissingSemModel         -> Right MissingSemModel
         (UnknownSemModel model) -> Right (UnknownSemModel model)
+        (InvalidSemArgs args)   -> Right (InvalidSemArgs args)
         InvalidGenName          -> Right InvalidGenName
         (InvalidGenSem pos msg) -> Right (InvalidGenSem (update pos) msg)
         DuplicateGenName name   -> Right (DuplicateGenName name)
@@ -92,7 +95,20 @@ updateGenerators parseSem dict str =
 
 -- | List of all semantic models as text.
 _semModelStrings :: [String]
-_semModelStrings = [semToTok MonoidSem, semToTok DyadicTwoSem, semToTok DyadicThreeSem]
+_semModelStrings = [semToTok MonoidSem,
+                    semToTok DyadicTwoSem,
+                    semToTok DyadicThreeSem,
+                    semToTok (MultModPSem []),
+                    semToTok (AddModPSem [])]
+
+-- | Consumes an argument string and the current line number. If the arguments can be
+-- parsed as a tuple of integers, then the tuple, along with the remaining substring, are
+-- returned. Otherwise, an appropriate error message is returned.
+parseIntTupleArgs :: String -> Int -> Either (Int, GFPError) ([Int], String)
+parseIntTupleArgs args num =
+    case parseTuple parseInt $ snd $ trimSpacing args of
+        Nothing  -> Left (num, Right (InvalidSemArgs args))
+        Just res -> Right res
 
 -- | Consumes all lines of a generator file (lines) and the current line number (num).
 -- Attempts to parse the semantic model declaration. If successful, then the semantic
@@ -103,14 +119,20 @@ parseSemanticModel []           num = Left (num, Right MissingSemModel)
 parseSemanticModel (line:lines) num
     | cleaned == "" = parseSemanticModel lines (num + 1)
     | otherwise     = case parseFromSeps _semModelStrings cleaned of
-        Just ("Monoid",  post)   -> check MonoidSem post cleaned
-        Just ("Dyadic(2)", post) -> check DyadicTwoSem post cleaned
-        Just ("Dyadic(3)", post) -> check DyadicThreeSem post cleaned
-        Nothing                  -> Left (num, Right (UnknownSemModel cleaned))
+        Just ("Monoid",  post)   -> check MonoidSem post
+        Just ("Dyadic(2)", post) -> check DyadicTwoSem post
+        Just ("Dyadic(3)", post) -> check DyadicThreeSem post
+        Just ("MultModP", post)  -> case parseIntTupleArgs post num of
+            Left err           -> Left err
+            Right (pvals, eol) -> check (MultModPSem pvals) eol
+        Just ("AddModP", post) -> case parseIntTupleArgs post num of
+            Left err           -> Left err
+            Right (pvals, eol) -> check (AddModPSem pvals) eol
+        Nothing -> Left (num, Right (UnknownSemModel cleaned))
     where cleaned = cleanLine line
-          check sem post text = let lval = (num, Right (UnknownSemModel text))
-                                    rval = (sem, num, lines)
-                                in branchOnSpacing post lval rval
+          check sem post = let lval = (num, Right (UnknownSemModel cleaned))
+                               rval = (sem, num, lines)
+                           in branchOnSpacing post lval rval
 
 -- | Consumes a semantic model parser (parseSem) and all lines of a generator file
 -- (lines), excluding the semantic model declaration. If the lines are valid, then
