@@ -3,9 +3,13 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
+import Data.Maybe
 import Quantum.Synthesis.Ring
 import Quantum.Synthesis.Matrix
 import Lafont.Common
+import Lafont.Generators.Categories
+import Lafont.Generators.Algebraic.ModP
+import Lafont.Generators.Algebraic.Product
 import Lafont.Generators.Display
 
 -----------------------------------------------------------------------------------------
@@ -73,6 +77,55 @@ test12 = TestCase (assertEqual "Can display 3x3 matrices."
                                (display mat2))
 
 -----------------------------------------------------------------------------------------
+-- Display MultModP and AddModP.
+
+test13 = TestCase (assertEqual "Can display AddInt (1/2)."
+                               "5"
+                               (display (AddInt 5)))
+
+test14 = TestCase (assertEqual "Can display AddInt (2/2)."
+                               "-30"
+                               (display (AddInt (-30))))
+
+test15 = TestCase (assertEqual "Can display AddInt (1/2)."
+                               "5"
+                               (display (MultInt 5)))
+
+test16 = TestCase (assertEqual "Can display AddInt (2/2)."
+                               "-30"
+                               (display (MultInt (-30))))
+
+test17 = TestCase (assertEqual "Can display ArithModP for p > 0 (1/2)."
+                               "2 mod 3"
+                               (display val))
+    where val =  fromJust $ inclusionModP (MultInt 5) 3
+
+test18 = TestCase (assertEqual "Can display ArithModP for p > 0 (2/2)."
+                               "1 mod 3"
+                               (display val))
+    where val =  fromJust $ inclusionModP (AddInt (-5)) 3
+
+test19 = TestCase (assertEqual "Can display ArithModP for p = 0 (1/2)."
+                               "20"
+                               (display val))
+    where val =  fromJust $ inclusionModP (MultInt 20) 0
+
+test20 = TestCase (assertEqual "Can display ProductType (1/3)."
+                               "()"
+                               (display (promoteToProduct list)))
+    where list = [] :: [MultInt]
+
+test21 = TestCase (assertEqual "Can display ProductType (2/3)."
+                               "(1)"
+                               (display (promoteToProduct list)))
+    where list = [MultInt 1]
+
+test22 = TestCase (assertEqual "Can display ProductType (2/3)."
+                               "(1,2,3)"
+                               (display (promoteToProduct list)))
+    where list = [AddInt 1, AddInt 2, AddInt 3]
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "Display_Dyadic_1" test1,
@@ -86,6 +139,16 @@ tests = hUnitTestToTests $ TestList [TestLabel "Display_Dyadic_1" test1,
                                      TestLabel "Display_Dyadic_9" test9,
                                      TestLabel "Display_Dyadic_10" test10,
                                      TestLabel "Display_Matrix_1" test11,
-                                     TestLabel "Display_Matrix_2" test12]
+                                     TestLabel "Display_Matrix_2" test12,
+                                     TestLabel "Display_AddInt_1" test13,
+                                     TestLabel "Display_AddInt_2" test14,
+                                     TestLabel "Display_MultInt_1" test15,
+                                     TestLabel "Display_MultInt_2" test16,
+                                     TestLabel "Display_ArithModP_0" test17,
+                                     TestLabel "Display_ArithModP_1" test18,
+                                     TestLabel "Display_ArithMod0" test19,
+                                     TestLabel "Display_ProductType_1" test20,
+                                     TestLabel "Display_ProductType_2" test21,
+                                     TestLabel "Display_ProductType_3" test22]
 
 main = defaultMain tests
