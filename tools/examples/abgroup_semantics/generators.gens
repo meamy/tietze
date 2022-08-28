@@ -1,0 +1,26 @@
+-- Lafont also offers support for semantic models.
+-- Semantic models are best understood in terms of categories and functors.
+-- However, in this example, it suffices to think of monoids and their homomorphisms.
+--
+-- Let S be a generator set, S* be the free monoids on S with inclusion i: S → S*.
+-- Then a semantic model is a monoid M and a function f: S → M.
+-- By the universal property of freeness, f extends to a monoid homomorphism f*: S* → M.
+-- Furthermore, f(s) = f*(i(s)) for all s in S.
+--
+-- In a generator file, we can first select a monoid M, and then define f inline.
+
+-- In the previous examples we have selected the Monoid semantics.
+-- Monoid indicates that we are working in a free monoid, and that f is implicit.
+-- In this example, we have selected the AddModP(7, 3, 5) semantics.
+-- This states that M is the additive group (Z/Z7)X(Z/Z3)X(Z/Z5).
+AddModP(7, 3, 5)
+
+-- We specify elements of (Z/Z7)X(Z/Z3)X(Z/Z5) using 3-tuples.
+-- By writing `gen := val`, we tell Lafont that f(gen) = val.
+-- We claim that x, y, and z are satisfied by the basis vectors for (Z/Z7)X(Z/Z3)X(Z/Z5).
+x  := (1, 0, 0)
+y  := (0, 1, 0)
+z  := (0, 0, 1)
+ix := (6, 0, 0)
+iy := (0, 2, 0)
+iz := (0, 0, 4)

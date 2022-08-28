@@ -1,0 +1,18 @@
+-- To run: [lafont_path] generators.gens relations.rels
+--
+-- Let's see what happens if we inject a faulty relation.
+
+comm_x_y x.y = y.x
+comm_x_z x.z = z.x
+comm_y_z y.z = z.y
+
+elim_x x.x.x.x.x.x = ε -- This says x^6 = e rather than x^7 = e.
+elim_y y.y.y       = ε
+elim_z z.z.z.z.z   = ε
+
+rinv_x x.ix = ε
+linv_x ix.x = ε
+rinv_y y.iy = ε
+linv_y iy.y = ε
+rinv_z z.iz = ε
+linv_z iz.z = ε

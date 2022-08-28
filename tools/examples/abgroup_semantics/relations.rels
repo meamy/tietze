@@ -1,0 +1,20 @@
+-- To run: [lafont_path] generators.gens relations.rels
+--
+-- The relations from Tutorial 3.
+-- We want to check if these relations are satisfied by (Z/Z7)X(Z/Z3)X(Z/Z5).
+-- We do this by validating the relation file with respect to the given semantics.
+
+comm_x_y x.y = y.x
+comm_x_z x.z = z.x
+comm_y_z y.z = z.y
+
+elim_x x.x.x.x.x.x.x = ε
+elim_y y.y.y         = ε
+elim_z z.z.z.z.z     = ε
+
+rinv_x x.ix = ε
+linv_x ix.x = ε
+rinv_y y.iy = ε
+linv_y iy.y = ε
+rinv_z z.iz = ε
+linv_z iz.z = ε
