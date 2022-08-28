@@ -22,6 +22,7 @@ module Lafont.Rewrite.Abstraction (
 
 import           Data.Map                            as Map
 import           Data.Maybe
+import           Lafont.Either
 import           Lafont.Graph
 import           Lafont.Rewrite.Internal.Abstraction
 import           Lafont.Rewrite.Rules
@@ -65,9 +66,7 @@ addDerivationToGraph (AbsDerivation summary rewrites) g =
 addDerivationsToGraph :: [AbsDerivation] -> DepGraph -> Either UnmetDep DepGraph
 addDerivationsToGraph []                       g = Right g
 addDerivationsToGraph (derivation:derivations) g =
-    case addDerivationToGraph derivation g of
-        Left dep -> Left dep
-        Right g' -> addDerivationsToGraph derivations g'
+    branchRight (addDerivationToGraph derivation g) (addDerivationsToGraph derivations)
 
 -----------------------------------------------------------------------------------------
 -- * Cycle Detection

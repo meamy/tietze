@@ -1,3 +1,5 @@
+{-# LANGUAGE TupleSections #-}
+
 -- | Internals for DerivationFile. Enables unit testing.
 
 module Lafont.Parse.Internal.DerivationFile (
@@ -22,6 +24,7 @@ module Lafont.Parse.Internal.DerivationFile (
 ) where
 
 import           Lafont.Common
+import           Lafont.Either
 import           Lafont.Maybe
 import           Lafont.Parse.Common
 import           Lafont.Parse.MonWords
@@ -122,13 +125,12 @@ splitRewrite str =
 -- is returned.
 parseRewrite :: RuleDict -> String -> Either DFPError Rewrite
 parseRewrite rules str =
-    case splitRewrite str of
-        Right (id, dirStr, posStr) -> case interpretRule rules id of
+    branchRight (splitRewrite str)
+        (\(id, dirStr, posStr) -> case interpretRule rules id of
             Just rule -> case parseRewriteAtDirAndPos (equational rule) dirStr posStr of
                 Left err         -> Left (propDerErr str posStr err)
                 Right (pos, dir) -> Right (Rewrite rule pos dir)
-            Nothing -> Left (Right (UnknownRuleName id))
-        Left err -> Left err
+            Nothing -> Left (Right (UnknownRuleName id)))
 
 -- | Consumes a set of derived relation symbols (derived), an apply line of a derivation
 -- file (str), and the substring of str containing the modified rule line (rwStr). If
@@ -153,13 +155,9 @@ parseApply derived str rwStr =
 parseRewriteLine :: RuleDict -> DRuleSet -> String -> Either DFPError AbsRewrite
 parseRewriteLine rules derived str =
     case parseFromSeps ["!apply", "!"] str of
-        Just ("!apply", rwStr) -> case parseApply derived str rwStr of
-            Left err -> Left err
-            Right ap -> Right (Right ap)
-        Nothing -> case parseRewrite rules str of
-            Left err -> Left err
-            Right rw -> Right (Left rw)
-        Just ("!", _) -> Left (Right UnknownRewriteMod)
+        Just ("!apply", rwStr) -> updateRight (parseApply derived str rwStr) Right
+        Nothing                -> updateRight (parseRewrite rules str) Left
+        Just ("!", _)          -> Left (Right UnknownRewriteMod)
 
 -----------------------------------------------------------------------------------------
 -- * Preamble Parsing.
@@ -267,8 +265,5 @@ preparseDerivation :: [String] -> [String] -> Int -> DParseRV (PreDerivation, [S
 preparseDerivation gens lines num =
     case parseRewritePreamble lines num of
         Left (errLn, err)          -> Left (errLn, Left err)
-        Right (body, bodyLn, meta) -> case preparseSectionSkeleton body bodyLn of
-            Left err           -> Left err
-            Right (skel, rest) -> case preparseSection gens meta skel bodyLn of
-                Left err  -> Left err
-                Right pre -> Right (pre, rest)
+        Right (body, ln, meta) -> branchRight (preparseSectionSkeleton body ln)
+            (\(skel, rest) -> updateRight (preparseSection gens meta skel ln) (, rest))

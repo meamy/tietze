@@ -3,6 +3,7 @@
 module LafontExe.ValidateDerivations where
 
 import           Data.Maybe
+import           Lafont.Either
 import           Lafont.Graph
 import           Lafont.Parse.DerivationFile
 import           Lafont.Rewrite.Abstraction
@@ -56,9 +57,8 @@ concretize _    []                            = Right []
 concretize meta ((fname, num, x):derivations) =
     case concretizeDerivation meta x of
         Left pos         -> Left (fname, num, pos)
-        Right derivation -> case concretize meta derivations of
-            Left err   -> Left err
-            Right rest -> Right ((fname, num, derivation) : rest)
+        Right derivation -> updateRight (concretize meta derivations)
+                                        (\rest -> (fname, num, derivation) : rest)
 
 -- | Consumes a list of pairs, where each tuple contains the name of a derivation file
 -- and the Derivation it describes. If the dependency graph induced by the list of
@@ -103,9 +103,7 @@ readDerivationFiles (fname:fnames) gens = do
         Left (errLn, err) -> return (Left (fname, errLn, err))
         Right preList     -> do
             ioRes <- readDerivationFiles fnames gens
-            case ioRes of
-                Left err  -> return (Left err)
-                Right res -> return (Right (addToNamedList fname res preList 0))
+            return (updateRight ioRes (\res -> addToNamedList fname res preList 0))
 
 -- Consumes a dictionary of rewrite rules (rules) and a list of named PreDerivations. If
 -- each PreDerivation summary is either unnamed or has a unqiue name (with respect to the
@@ -132,9 +130,8 @@ parseRewriteSections _     _       []                       = Right []
 parseRewriteSections rules derived ((fname, num, pre):rest) =
     case parseDerivationFile rules derived pre of
         Left (errLn, err) -> Left (fname, errLn, err)
-        Right deriv       -> case parseRewriteSections rules derived rest of
-            Left err  -> Left err
-            Right res -> Right ((fname, num, deriv) : res)
+        Right derivation  -> updateRight (parseRewriteSections rules derived rest)
+                                         (\res -> (fname, num, derivation) : res)
 
 -- |
 processPreDerivations :: Handle -> [NamedPreDerivation] -> RuleDict -> [String] -> IO ()

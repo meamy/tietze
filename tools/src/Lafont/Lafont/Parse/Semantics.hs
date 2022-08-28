@@ -15,6 +15,7 @@ module Lafont.Parse.Semantics (
 
 import           Data.Maybe
 import           Lafont.Common
+import           Lafont.Either
 import           Lafont.Generators.Algebraic.ModP
 import           Lafont.Generators.Algebraic.Product
 import           Lafont.Generators.Categories
@@ -78,11 +79,8 @@ interpretNQubitSymbol (QGateSem _ sem0 sem1 sem2 sem3) sym =
 interpretNQubitWord :: (QMat.Nat n, Num a) => QGateSem n a -> MonWord -> QGateSemRes n a
 interpretNQubitWord (QGateSem id _ _ _ _ ) [] = Right id
 interpretNQubitWord sem (sym:word)            =
-    case interpretNQubitWord sem word of
-        Left  msg  -> Left msg
-        Right rhs -> case interpretNQubitSymbol sem sym of
-            Left err  -> Left err
-            Right lhs -> Right (lhs * rhs)
+    branchRight (interpretNQubitWord sem word)
+                (\rhs -> updateRight (interpretNQubitSymbol sem sym) (* rhs))
 
 -- | Consumes interpretation semantics (for up to 3 arguments) and a string. If the
 -- string can be interpreted as a word that is a valid gate with respect to the
@@ -216,9 +214,7 @@ interpretCompsModP _   []     _      = Left "Tuple size smaller than semantic mo
 interpretCompsModP num (x:xs) (p:ps) =
     case inclusionModP x p of
         Nothing   -> Left ("Could not interpret " ++ show num ++ "-th component")
-        Just xbar -> case interpretCompsModP (num + 1) xs ps of
-            Left err    -> Left err
-            Right xbars -> Right (xbar : xbars)
+        Just xbar -> updateRight (interpretCompsModP (num + 1) xs ps) (xbar :)
 
 -- | Consumes a list of a-values (nums), a list of integers for ArithModP inclusion
 -- (pvals), and a string. The string is assumed to be the suffix of a semantic value line
@@ -228,9 +224,7 @@ interpretCompsModP num (x:xs) (p:ps) =
 interpretCompsAsProduct :: (ModP a) => [a] -> [Int] -> SemParser (ProductModP a)
 interpretCompsAsProduct nums pvals rest
     | trimmed /= "" = Left "Unexpected characters after product"
-    | otherwise     = case interpretCompsModP 1 nums pvals of
-        Left err    -> Left err
-        Right comps -> Right (promoteToProduct comps)
+    | otherwise     = updateRight (interpretCompsModP 1 nums pvals) promoteToProduct
     where trimmed = cleanLine rest
 
 -- | Consumes a tokenizer for product components (toks), a list of integers for ArithModP

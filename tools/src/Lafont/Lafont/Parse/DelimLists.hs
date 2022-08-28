@@ -9,6 +9,7 @@ module Lafont.Parse.DelimLists (
     parseTuple
 ) where
 
+import           Data.Bifunctor
 import           Lafont.Maybe
 import           Lafont.Parse.Common
 
@@ -45,9 +46,8 @@ parseList _        _     []   = Nothing
 parseList getToken delim line =
     case getToken trimmed of
         Nothing          -> Nothing
-        Just (tok, rest) -> case parseListDelim getToken delim rest of
-            Nothing           -> Nothing
-            Just (res, after) -> Just (tok : res, after)
+        Just (tok, rest) -> maybeApply (Data.Bifunctor.first (tok :))
+                                       (parseListDelim getToken delim rest)
     where (_, trimmed) = trimSpacing line
 
 -----------------------------------------------------------------------------------------

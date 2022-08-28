@@ -9,6 +9,7 @@ module Lafont.Rewrite.Derivations (
     concretizeDerivation
 ) where
 
+import           Lafont.Either
 import           Lafont.Rewrite.Abstraction
 import           Lafont.Rewrite.Internal.Derivations
 
@@ -21,6 +22,4 @@ import           Lafont.Rewrite.Internal.Derivations
 -- number of first failing concretization is returned.
 concretizeDerivation :: DerivationMetadata -> AbsDerivation -> Either Int Derivation
 concretizeDerivation meta (AbsDerivation summary absRewrites) =
-    case concretizeRewrites 0 meta absRewrites of
-        Left err       -> Left err
-        Right rewrites -> Right (Derivation summary rewrites)
+    updateRight (concretizeRewrites 0 meta absRewrites) (Derivation summary)

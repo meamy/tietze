@@ -28,9 +28,7 @@ equateLImpl []     ys     = Nothing
 equateLImpl (x:xs) (y:ys) =
     case equateLImpl xs ys of
         Nothing  -> Nothing
-        Just res -> case equate x y of
-            Nothing   -> Nothing
-            Just isEq -> Just (res && isEq)
+        Just res -> maybeApply (res &&) (equate x y)
 
 -- | Implements compose on the underlying lists.
 composeLImpl :: (MonoidObj a) => [a] -> [a] -> Maybe [a]
@@ -40,9 +38,7 @@ composeLImpl []     ys     = Nothing
 composeLImpl (x:xs) (y:ys) =
     case composeLImpl xs ys of
         Nothing -> Nothing
-        Just zs -> case compose x y of
-            Nothing -> Nothing
-            Just z  -> Just (z : zs)
+        Just zs -> maybeApply (: zs) (compose x y)
 
 -- | Implements equate in MonoidObj.
 equateImpl :: (MonoidObj a) => ProductType a -> ProductType a -> Maybe Bool

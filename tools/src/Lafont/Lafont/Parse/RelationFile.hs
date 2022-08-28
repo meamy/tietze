@@ -11,6 +11,7 @@ module Lafont.Parse.RelationFile (
 ) where
 
 import           Lafont.Common
+import           Lafont.Either
 import           Lafont.Parse.Internal.RelationFile
 import           Lafont.Rewrite.Lookup
 
@@ -34,6 +35,5 @@ instance Display RelFileError where
 parseRelFile :: [String] -> [String] -> Int -> Either (Int, RFPError) RuleDict
 parseRelFile _    []           _   = Right empty
 parseRelFile gens (line:lines) num =
-    case parseRelFile gens lines (num + 1) of
-        Left  err  -> Left err
-        Right dict -> parseRelLine gens dict line num
+    branchRight (parseRelFile gens lines (num + 1))
+                (\dict -> parseRelLine gens dict line num)

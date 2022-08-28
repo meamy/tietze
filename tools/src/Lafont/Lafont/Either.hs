@@ -8,7 +8,7 @@ module Lafont.Either (
 ) where
 
 -----------------------------------------------------------------------------------------
--- Using Either for value propogation.
+-- Either for Value Propogation.
 
 -- | Consumes a function f from type b to type (Either a c) and a value of type
 -- (Either a b). If the value is of type a, then it is unchanged and returned on the

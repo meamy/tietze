@@ -11,6 +11,7 @@ module Lafont.Parse.Internal.RelationFile (
 ) where
 
 import           Lafont.Common
+import           Lafont.Either
 import           Lafont.Parse.Common
 import           Lafont.Parse.MonWords
 import           Lafont.Rewrite.Lookup
@@ -107,13 +108,12 @@ parseRuleDefn str =
 -- are added to dict. The resulting dict is returned.
 updateRules :: RuleDict -> [String] -> String -> Either RFPError RuleDict
 updateRules dict gens str =
-    case parseRuleDefn str of
-        Left err        -> Left err
-        Right (id, rule) -> case findUnknownGenInRule gens rule of
+    branchRight (parseRuleDefn str)
+        (\(id, rule) -> case findUnknownGenInRule gens rule of
             Just gen -> Left (Right (UnknownGenName (display gen)))
             Nothing  -> if dict `hasRule` id
                         then Left (Right (DuplicateRuleName id))
-                        else Right (dict `addRule` (id, rule))
+                        else Right (dict `addRule` (id, rule)))
 
 -----------------------------------------------------------------------------------------
 -- * File Parsing Methods.
@@ -125,8 +125,7 @@ updateRules dict gens str =
 parseRelLine :: [String] -> RuleDict -> String -> Int -> Either (Int, RFPError) RuleDict
 parseRelLine gens dict line num
     | trimmed == "" = Right dict
-    | otherwise = case updateRules dict gens trimmed of
-        Left err   -> Left (num, propRelErr stripped trimmed err)
-        Right dict -> Right dict
+    | otherwise     = updateLeft (updateRules dict gens trimmed)
+                                 (\err -> (num, propRelErr stripped trimmed err))
     where stripped = stripComments line
           (_, trimmed) = trimSpacing stripped

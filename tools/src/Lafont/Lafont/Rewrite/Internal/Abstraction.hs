@@ -10,6 +10,7 @@ module Lafont.Rewrite.Internal.Abstraction (
     addDepsToGraph
 ) where
 
+import           Lafont.Either
 import           Lafont.Graph
 import           Lafont.Rewrite.Common
 import           Lafont.Rewrite.Rules
@@ -57,6 +58,4 @@ addDepToGraph src (Right (Apply name _ _)) (DepGraph g) =
 addDepsToGraph :: Dependency -> [AbsRewrite] -> DepGraph -> Either UnmetDep DepGraph
 addDepsToGraph _   []                 g = Right g
 addDepsToGraph src (rewrite:rewrites) g =
-    case addDepToGraph src rewrite g of
-        Left dep -> Left dep
-        Right g' -> addDepsToGraph src rewrites g'
+    branchRight (addDepToGraph src rewrite g) (addDepsToGraph src rewrites)

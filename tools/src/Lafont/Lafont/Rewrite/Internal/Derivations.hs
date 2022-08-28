@@ -8,6 +8,7 @@ module Lafont.Rewrite.Internal.Derivations (
     concretizeRewrites
 ) where
 
+import           Lafont.Either
 import           Lafont.Maybe
 import           Lafont.Rewrite.Abstraction
 import           Lafont.Rewrite.Common
@@ -57,7 +58,5 @@ concretizeRewrites :: Int -> DerivationMetadata -> [AbsRewrite] -> Either Int [R
 concretizeRewrites num _    []                       = Right []
 concretizeRewrites num meta (absRewrite:absRewrites) =
     case concretizeRewrite meta absRewrite of
-        Nothing      -> Left num
-        Just rewrite -> case concretizeRewrites (num + 1) meta absRewrites of
-            Left err       -> Left err
-            Right rewrites -> Right (rewrite : rewrites)
+        Nothing  -> Left num
+        Just crw -> updateRight (concretizeRewrites (num + 1) meta absRewrites) (crw :)

@@ -11,6 +11,7 @@ module Lafont.Parse.DerivationFile (
 ) where
 
 import           Lafont.Common
+import           Lafont.Either
 import           Lafont.Parse.Common
 import           Lafont.Parse.Internal.DerivationFile
 import           Lafont.Rewrite.Abstraction
@@ -42,14 +43,12 @@ instance Display DerFileError where
 -- file are returned. Otherwise, returns a parsing exception.
 preparseDerivationFile :: [String] -> [String] -> Int -> DParseRV [PreDerivation]
 preparseDerivationFile gens lines num =
-    case preparseDerivation gens lines num of
-        Left err          -> Left err
-        Right (pre, rest) -> if isEOFSpacing rest
-                             then Right [pre]
-                             else let nextNum = num + length lines - length rest
-                                  in case preparseDerivationFile gens rest nextNum of
-                                      Left err  -> Left err
-                                      Right res -> Right (pre : res)
+    branchRight (preparseDerivation gens lines num)
+        (\(pre, rest) -> if isEOFSpacing rest
+                         then Right [pre]
+                         else let nextNum = num + length lines - length rest
+                              in updateRight (preparseDerivationFile gens rest nextNum)
+                                             (pre :))
 
 -- | Consumes a dictionary of known rules, including derived rules (rules), a set of
 -- derived relation symbols (derived), and the summary of a derivation file (pre). If the
@@ -57,6 +56,5 @@ preparseDerivationFile gens lines num =
 -- Otherwise, returns a parsing exception.
 parseDerivationFile :: RuleDict -> DRuleSet -> PreDerivation -> DParseRV AbsDerivation
 parseDerivationFile rules derived pre =
-    case parseRewriteLines rules derived (unparsed pre) (linenum pre) of
-        Left  err      -> Left err
-        Right rewrites -> Right (AbsDerivation (parsed pre) rewrites)
+    updateRight (parseRewriteLines rules derived (unparsed pre) (linenum pre))
+                (AbsDerivation (parsed pre))

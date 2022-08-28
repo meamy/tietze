@@ -11,6 +11,7 @@ module Lafont.Parse.GeneratorFile (
 ) where
 
 import           Lafont.Common
+import           Lafont.Either
 import           Lafont.Generators.Semantics
 import           Lafont.Parse.Internal.GeneratorFile
 import           Lafont.Parse.Semantics
@@ -46,25 +47,24 @@ data GenFileSummary = MonoidGenSummary (GenDict ())
 -- Otherwise, returns a parsing exception.
 parseGenFileAsDict :: [String] -> Int -> Either (Int, GFPError) GenFileSummary
 parseGenFileAsDict lines num =
-    case parseSemanticModel lines 0 of
-        Left err                 -> Left err
-        Right (sem, semLn, gens) -> let nextLn = semLn + 1 in case sem of
-            MonoidSem -> case parseGenDict parseMonoidSem gens nextLn of
-                Left err   -> Left err
-                Right dict -> Right (MonoidGenSummary dict)
-            DyadicTwoSem -> case parseGenDict interpret2QubitCliffordDTofGate gens nextLn of
-                Left err   -> Left err
-                Right dict -> Right (DyadicTwoSummary dict)
-            DyadicThreeSem -> case parseGenDict interpret3QubitCliffordDTofGate gens nextLn of
-                Left err   -> Left err
-                Right dict -> Right (DyadicThreeSummary dict)
-            (MultModPSem pvals) -> case parseGenDict (interpretMultProductModP pvals) gens nextLn of
-                Left err   -> Left err
-                Right dict -> Right (ModMultProductSummary dict pvals)
-            (AddModPSem pvals) -> case parseGenDict (interpretAddProductModP pvals) gens nextLn of
-                Left err   -> Left err
-                Right dict -> Right (ModAddProductSummary dict pvals)
-            _ -> Left (semLn, Right (SemModelWOImpl sem))
+    branchRight (parseSemanticModel lines 0)
+        (\(sem, semLn, gens) -> let nextLn = semLn + 1 in case sem of
+            MonoidSem ->
+                updateRight (parseGenDict parseMonoidSem gens nextLn)
+                            MonoidGenSummary
+            DyadicTwoSem ->
+                updateRight (parseGenDict interpret2QubitCliffordDTofGate gens nextLn)
+                            DyadicTwoSummary
+            DyadicThreeSem ->
+                updateRight (parseGenDict interpret3QubitCliffordDTofGate gens nextLn)
+                            DyadicThreeSummary
+            (MultModPSem pvals) ->
+                updateRight (parseGenDict (interpretMultProductModP pvals) gens nextLn)
+                            (`ModMultProductSummary` pvals)
+            (AddModPSem pvals) ->
+                updateRight (parseGenDict (interpretAddProductModP pvals) gens nextLn)
+                            (`ModAddProductSummary` pvals)
+            _ -> Left (semLn, Right (SemModelWOImpl sem)))
 
 -- | A GenFileSummary carries the type data of the underlying semantic model. This
 -- function allows all semantic data to be stripped away, returning instead a list of
@@ -72,11 +72,12 @@ parseGenFileAsDict lines num =
 -- valid, then returns a list of all generator symbols. Otherwise, returns a parsing
 -- exception.
 parseGenFileAsAlphabet :: [String] -> Int -> Either (Int, GFPError) [String]
-parseGenFileAsAlphabet lines num = case parseGenFileAsDict lines num of
-    Left err                             -> Left err
-    Right (MonoidGenSummary dict)        -> impl dict
-    Right (DyadicTwoSummary dict)        -> impl dict
-    Right (DyadicThreeSummary dict)      -> impl dict
-    Right (ModMultProductSummary dict _) -> impl dict
-    Right (ModAddProductSummary dict _)  -> impl dict
+parseGenFileAsAlphabet lines num =
+    case parseGenFileAsDict lines num of
+        Left err                             -> Left err
+        Right (MonoidGenSummary dict)        -> impl dict
+        Right (DyadicTwoSummary dict)        -> impl dict
+        Right (DyadicThreeSummary dict)      -> impl dict
+        Right (ModMultProductSummary dict _) -> impl dict
+        Right (ModAddProductSummary dict _)  -> impl dict
     where impl dict = Right (toAlphabet dict)

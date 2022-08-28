@@ -9,6 +9,7 @@ module Lafont.Parse.Internal.GeneratorFile (
     parseGenDict
 ) where
 
+import           Lafont.Either
 import           Lafont.Generators.Semantics
 import           Lafont.Parse.Common
 import           Lafont.Parse.DelimLists
@@ -122,12 +123,10 @@ parseSemanticModel (line:lines) num
         Just ("Monoid",  post)   -> check MonoidSem post
         Just ("Dyadic(2)", post) -> check DyadicTwoSem post
         Just ("Dyadic(3)", post) -> check DyadicThreeSem post
-        Just ("MultModP", post)  -> case parseIntTupleArgs post num of
-            Left err           -> Left err
-            Right (pvals, eol) -> check (MultModPSem pvals) eol
-        Just ("AddModP", post) -> case parseIntTupleArgs post num of
-            Left err           -> Left err
-            Right (pvals, eol) -> check (AddModPSem pvals) eol
+        Just ("MultModP", post)  -> branchRight (parseIntTupleArgs post num)
+                                                (\(ps, eol) -> check (MultModPSem ps) eol)
+        Just ("AddModP", post) -> branchRight (parseIntTupleArgs post num)
+                                              (\(ps, eol) -> check (AddModPSem ps) eol)
         Nothing -> Left (num, Right (UnknownSemModel cleaned))
     where cleaned = cleanLine line
           check sem post = let lval = (num, Right (UnknownSemModel cleaned))
@@ -144,12 +143,10 @@ parseSemanticModel (line:lines) num
 parseGenDict :: SemParser a -> [String] -> Int -> Either (Int, GFPError) (GenDict a)
 parseGenDict _        []           _   = Right empty
 parseGenDict parseSem (line:lines) num =
-    case parseGenDict parseSem lines (num + 1) of
-        Left  err  -> Left err
-        Right dict -> if trimmed == ""
-                      then Right dict
-                      else case updateGenerators parseSem dict trimmed of
-                                Left err   -> Left (num, propGenErr stripped trimmed err)
-                                Right dict -> Right dict
+    branchRight (parseGenDict parseSem lines (num + 1))
+                (\dict -> if trimmed == ""
+                          then Right dict
+                          else updateLeft (updateGenerators parseSem dict trimmed)
+                                          (\err -> (num, propGenErr stripped trimmed err)))
     where stripped = stripComments line
           (_, trimmed) = trimSpacing stripped
