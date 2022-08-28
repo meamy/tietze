@@ -37,7 +37,7 @@ logGenerators sem = foldGens logGenerator semstr
 -- error is returned.
 processGeneratorLines :: FileData -> String
 processGeneratorLines (FileData fname lines) =
-    case parseGenFileAsDict lines 0 of
+    case parseGenFileAsDict lines 1 of
         Left (errLn, err)                     -> logEitherMsg fname errLn err
         Right (MonoidGenSummary dict)         -> logGenerators MonoidSem dict
         Right (DyadicTwoSummary dict)         -> logGenerators DyadicTwoSem dict

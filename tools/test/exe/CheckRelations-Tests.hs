@@ -45,13 +45,13 @@ badGens = "data/test/bad.gens"
 
 check2 :: String -> Bool
 check2 str = (and [-- The line at which the error should occur (see bad.gens).
-                   ("data/test/bad.gens:5" `isSubstrOf` str),
+                   ("data/test/bad.gens:6" `isSubstrOf` str),
                    -- The expected error.
                    ("invalid symbol" `isSubstrOf` str),
                    -- Should be a single line.
                    ((length (lines str)) == 1)])
 
-test2 = (HandleTest "Bad_generators"
+test2 = (HandleTest "Bad_Generators"
                     "Tests that a generator file with invalid symbol is rejected."
                     (\x -> checkRelations x badGens goodRels)
                     check2)
@@ -64,7 +64,7 @@ badRels = "data/test/bad.rels"
 
 check3 :: String -> Bool
 check3 str = (and [-- The line at which the error should occur (see bad.rels).
-                   ("data/test/bad.rels:4" `isSubstrOf` str),
+                   ("data/test/bad.rels:5" `isSubstrOf` str),
                    -- The unexpected generator.
                    ("xyz3" `isSubstrOf` str),
                    -- Should be a single line.

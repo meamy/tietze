@@ -279,7 +279,7 @@ test39 = TestCase (assertBool "Tests parsing of valid monoid generator file (3/3
                            otherwise                       -> False
 
 test40 = TestCase (assertEqual "Tests parsing of invalid monoid generator file."
-                               (Just (2, Right InvalidGenName) :: Maybe (Int, GFPError))
+                               (Just (3, Right InvalidGenName) :: Maybe (Int, GFPError))
                                maybeErr)
          where maybeErr = case (parseGenFileAsDict invalidMonoidFile 0) of
                               Left err  -> (Just err :: Maybe (Int, GFPError))
@@ -290,7 +290,7 @@ test41 = TestCase (assertEqual "Tests parsing of valid monoid generators (alpha)
                                (parseGenFileAsAlphabet validMonoidFile 0))
 
 test42 = TestCase (assertEqual "Tests parsing of invalid monoid generators (alpha)."
-                               (Just (2, Right InvalidGenName) :: Maybe (Int, GFPError))
+                               (Just (3, Right InvalidGenName) :: Maybe (Int, GFPError))
                                maybeErr)
          where maybeErr = case (parseGenFileAsAlphabet invalidMonoidFile 0) of
                               Left err  -> (Just err :: Maybe (Int, GFPError))
@@ -318,7 +318,7 @@ test43 = TestCase (assertEqual "Tests parsing of valid Dyadic(2) file."
                                (parseGenFileAsDict validTwoDyadicFile 0))
 
 test44 = TestCase (assertEqual "Tests parsing of invalid Dyadic(2) file."
-                               (Left (2, Right err))
+                               (Left (3, Right err))
                                (parseGenFileAsDict invalidTwoDyadicFile 0))
       where err = InvalidGenSem 6 "Unknown two qubit operator: CCX"
 
@@ -343,7 +343,7 @@ test45 = TestCase (assertEqual "Tests parsing of valid Dyadic(3) file."
                                (parseGenFileAsDict validThreeDyadicFile 0))
 
 test46 = TestCase (assertEqual "Tests parsing of invalid Dyadic(3) file."
-                               (Left (2, Right err))
+                               (Left (3, Right err))
                                (parseGenFileAsDict invalidThreeDyadicFile 0))
       where err = InvalidGenSem 6 "Unknown two qubit operator: CCX"
 
@@ -374,7 +374,7 @@ test47 = TestCase (assertEqual "Tests parsing of valid MultModP(0,5,9) file."
                                (parseGenFileAsDict validMultModPFile 0))
 
 test48 = TestCase (assertEqual "Tests parsing of invalid MultModP(0,5,9) file."
-                               (Left (2, Right err))
+                               (Left (3, Right err))
                                (parseGenFileAsDict invalidMultModPFile 0))
       where err = InvalidGenSem 6 "Tuple size smaller than semantic model"
 
@@ -403,7 +403,7 @@ test49 = TestCase (assertEqual "Tests parsing of valid AddModP(0,5) file."
                                (parseGenFileAsDict validAddModPFile 0))
 
 test50 = TestCase (assertEqual "Tests parsing of invalid AddModP(0,5) file."
-                               (Left (2, Right err))
+                               (Left (3, Right err))
                                (parseGenFileAsDict invalidAddModPFile 0))
       where err = InvalidGenSem 6 "Tuple size larger than semantic model"
 

@@ -38,7 +38,7 @@ bad_gen_file = "data/test/bad.gens"
 
 check2 :: String -> Bool
 check2 str = (and [-- The line at which the error should occur (see bad.gens).
-                   ("data/test/bad.gens:5" `isSubstrOf` str),
+                   ("data/test/bad.gens:6" `isSubstrOf` str),
                    -- The expected error.
                    ("invalid symbol" `isSubstrOf` str),
                    -- Should be a single line.
@@ -84,7 +84,7 @@ bad_dyadic2_gen_file = "data/test/dyadics/dyadic2.bad.gens"
 
 check4 :: String -> Bool
 check4 str = (and [-- The line at which the error should occur (see bad.gens).
-                   ("data/test/dyadics/dyadic2.bad.gens:5" `isSubstrOf` str),
+                   ("data/test/dyadics/dyadic2.bad.gens:6" `isSubstrOf` str),
                    -- The expected error.
                    ("semv at 8" `isSubstrOf` str),
                    -- Error details.
@@ -132,7 +132,7 @@ bad_dyadic3_gen_file = "data/test/dyadics/dyadic3.bad.gens"
 
 check6 :: String -> Bool
 check6 str = (and [-- The line at which the error should occur (see bad.gens).
-                   ("data/test/dyadics/dyadic3.bad.gens:5" `isSubstrOf` str),
+                   ("data/test/dyadics/dyadic3.bad.gens:6" `isSubstrOf` str),
                    -- The expected error.
                    ("semv at 8" `isSubstrOf` str),
                    -- Error details.
@@ -176,7 +176,7 @@ bad_addmodp_gen_file = "data/test/products/add.bad.gens"
 
 check8 :: String -> Bool
 check8 str = (and [-- The line at which the error should occur (see add.bad.gens).
-                   ("data/test/products/add.bad.gens:5" `isSubstrOf` str),
+                   ("data/test/products/add.bad.gens:6" `isSubstrOf` str),
                    -- The expected error.
                    ("semv at 4" `isSubstrOf` str),
                    -- Error details.
@@ -226,7 +226,7 @@ bad_multmodp_gen_file = "data/test/products/mult.bad.gens"
 
 check10 :: String -> Bool
 check10 str = (and [-- The line at which the error should occur (see add.bad.gens).
-                    ("data/test/products/mult.bad.gens:10" `isSubstrOf` str),
+                    ("data/test/products/mult.bad.gens:11" `isSubstrOf` str),
                     -- The expected error.
                     ("semv at 5" `isSubstrOf` str),
                     -- Error details.

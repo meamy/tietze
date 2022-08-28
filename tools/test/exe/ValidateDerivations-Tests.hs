@@ -73,7 +73,7 @@ badGens = "data/test/bad.gens"
 
 check3 :: String -> Bool
 check3 str = (and [-- The line at which the error should occur (see bad.gens).
-                   ("data/test/bad.gens:5" `isSubstrOf` str),
+                   ("data/test/bad.gens:6" `isSubstrOf` str),
                    -- The expected error.
                    ("invalid symbol" `isSubstrOf` str),
                    -- Should be a single line.
@@ -92,7 +92,7 @@ badRels = "data/test/bad.rels"
 
 check4 :: String -> Bool
 check4 str = (and [-- The line at which the error should occur (see bad.rels).
-                   ("data/test/bad.rels:4" `isSubstrOf` str),
+                   ("data/test/bad.rels:5" `isSubstrOf` str),
                    -- The unexpected generator.
                    ("xyz3" `isSubstrOf` str),
                    -- Should be a single line.
@@ -154,7 +154,7 @@ badProofThree = "data/test/bad.3.derivs"
 
 check7 :: String -> Bool
 check7 str = (and [-- The line at which the error should occur (see bad.rels).
-                   ("data/test/bad.3.derivs:6" `isSubstrOf` str),
+                   ("data/test/bad.3.derivs:7" `isSubstrOf` str),
                    -- The unexpected generator.
                    ("abc5" `isSubstrOf` str),
                    -- Should be a single line.
@@ -186,7 +186,7 @@ derivedProofDeps = [goodProofOne, derivedRuleProof, goodProofTwo]
 
 check8 :: String -> Bool
 check8 str = (and [-- The line at which the error should occur (see summary.derivs).
-                   ("data/test/summary.derivs:9" `isSubstrOf` str),
+                   ("data/test/summary.derivs:10" `isSubstrOf` str),
                    -- The missing relation name.
                    ("DerivedRel1" `isSubstrOf` str),
                    -- Should be a single line.
@@ -215,7 +215,7 @@ check11 str = (and [-- Defaults to the first line
                     ("data/test/example.3.derivs:0" `isSubstrOf` str),
                     -- Keyword in error.
                     (isDuplicated str),
-                    ("index 0" `isSubstrOf` str),
+                    ("index 1" `isSubstrOf` str),
                     -- Should be a single line.
                     ((length (lines str)) == 1)])
 
@@ -351,11 +351,11 @@ check19 str =
     then (and [-- The error and its location.
                (isFailure (outputLines !! 0)),
                -- The error details.
-               ("derivation(2)" `isSubstrOf` (outputLines !! 0))])
+               ("derivation(3)" `isSubstrOf` (outputLines !! 0))])
     else False
     where outputLines = lines str
 
-test19 = (HandleTest "Many_Good"
+test19 = (HandleTest "Many_Bad"
                      "Ensures that errors are located properly within multiple proofs."
                      (\x -> validateDerivations x goodGens goodRels [manyInFileBad])
                      check19)
@@ -381,7 +381,7 @@ check21 :: String -> Bool
 check21 str = (and [-- Correct error message was displayed.
                     ("not equational" `isSubstrOf` str),
                     -- Correct derivation was displayed.
-                    ("derivation(3)" `isSubstrOf` str),
+                    ("derivation(4)" `isSubstrOf` str),
                     -- Correct step was displayed.
                     ("step 1" `isSubstrOf` str),
                     -- Should be a single line.

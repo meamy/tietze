@@ -47,7 +47,7 @@ data GenFileSummary = MonoidGenSummary (GenDict ())
 -- Otherwise, returns a parsing exception.
 parseGenFileAsDict :: [String] -> Int -> Either (Int, GFPError) GenFileSummary
 parseGenFileAsDict lines num =
-    branchRight (parseSemanticModel lines 0)
+    branchRight (parseSemanticModel lines 1)
         (\(sem, semLn, gens) -> let nextLn = semLn + 1 in case sem of
             MonoidSem ->
                 updateRight (parseGenDict parseMonoidSem gens nextLn)

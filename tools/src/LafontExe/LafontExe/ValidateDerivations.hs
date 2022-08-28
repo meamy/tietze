@@ -99,11 +99,11 @@ readDerivationFiles :: [String] -> [String] -> IO (ListParseRV NamedPreDerivatio
 readDerivationFiles []             _    = return (Right [])
 readDerivationFiles (fname:fnames) gens = do
     content <- readFile fname
-    case preparseDerivationFile gens (lines content) 0 of
+    case preparseDerivationFile gens (lines content) 1 of
         Left (errLn, err) -> return (Left (fname, errLn, err))
         Right preList     -> do
             ioRes <- readDerivationFiles fnames gens
-            return (updateRight ioRes (\res -> addToNamedList fname res preList 0))
+            return (updateRight ioRes (\res -> addToNamedList fname res preList 1))
 
 -- Consumes a dictionary of rewrite rules (rules) and a list of named PreDerivations. If
 -- each PreDerivation summary is either unnamed or has a unqiue name (with respect to the

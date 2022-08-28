@@ -33,7 +33,7 @@ data GenRuleReadResult = UnknownSem
 -- Note: This method is said to be unchecked, as semantic validity is ignored.
 readRulesUnchecked :: FileData -> GenDict a -> GenRuleReadResult
 readRulesUnchecked (FileData relFname relLines) gens =
-    case parseRelFile language relLines 0 of
+    case parseRelFile language relLines 1 of
         Left (errLn, err) -> BadRelFile relFname errLn err
         Right rules       -> GenRulePair language rules
     where language = toAlphabet gens
@@ -58,7 +58,7 @@ readAndCheckRules relFile gens =
 -- the generators, in adherence to readAndCheckRules.
 readGeneratorsAndRules :: FileData -> FileData -> GenRuleReadResult
 readGeneratorsAndRules (FileData genFname genLines) relFile =
-    case parseGenFileAsDict genLines 0 of
+    case parseGenFileAsDict genLines 1 of
         Left (errLn, err)                    -> BadGenFile genFname errLn err
         Right (MonoidGenSummary dict)        -> readRulesUnchecked relFile dict
         Right (DyadicTwoSummary dict)        -> readAndCheckRules relFile dict
