@@ -13,6 +13,7 @@ module Lafont.Generators.QubitGates (
     gateCZ,
     gateK,
     gateTof,
+    gateCCZ,
     TwoBitPos ( .. ),
     ThreeBitPos ( .. ),
     TwoQubitGate ( .. ),
@@ -116,6 +117,17 @@ gateTof = QMat.matrix_of_rows [[1,0,0,0,0,0,0,0],
                                [0,0,0,0,0,1,0,0],
                                [0,0,0,0,0,0,0,1],
                                [0,0,0,0,0,0,1,0]]
+
+-- |
+gateCCZ :: (Num a) => Unitary QMat.Eight a
+gateCCZ = QMat.matrix_of_rows [[1,0,0,0,0,0,0, 0],
+                               [0,1,0,0,0,0,0, 0],
+                               [0,0,1,0,0,0,0, 0],
+                               [0,0,0,1,0,0,0, 0],
+                               [0,0,0,0,1,0,0, 0],
+                               [0,0,0,0,0,1,0, 0],
+                               [0,0,0,0,0,0,1, 0],
+                               [0,0,0,0,0,0,0,-1]]
 
 -- | A template for three qubit gates that implement given operators. For a one qubit
 -- operation, the position specifies which qubit the gate is applied to. For two and

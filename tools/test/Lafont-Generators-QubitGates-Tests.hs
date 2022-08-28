@@ -304,6 +304,30 @@ test56 = TestCase (assertEqual "Checks GATE[2][1][0] with SWP[1][2].SWP[0][1].SW
                gate_rhs = gateSwap12 * gateSwap01 * gateSwap12
                expected_gate = gate_lhs * asym_gate * gate_rhs
 
+test57 = TestCase (assertEqual "Checks that CCZ sends |000> to |000>."
+                               state_000 (gateCCZ .*. state_000))
+
+test58 = TestCase (assertEqual "Checks that CCZ sends |001> to |001>."
+                               state_001 (gateCCZ .*. state_001))
+
+test59 = TestCase (assertEqual "Checks that CCZ sends |010> to |010>."
+                               state_010 (gateCCZ .*. state_010))
+
+test60 = TestCase (assertEqual "Checks that CCZ sends |011> to |011>."
+                               state_011 (gateCCZ .*. state_011))
+
+test61 = TestCase (assertEqual "Checks that CCZ sends |100> to |100>."
+                               state_100 (gateCCZ .*. state_100))
+
+test62 = TestCase (assertEqual "Checks that CCZ sends |101> to |101>."
+                               state_101 (gateCCZ .*. state_101))
+
+test63 = TestCase (assertEqual "Checks that CCZ sends |110> to |110>."
+                               state_110 (gateCCZ .*. state_110))
+
+test64 = TestCase (assertEqual "Checks that CCZ sends |111> to -|111>."
+                               ((-1) `scalarmult` state_111) (gateCCZ .*. state_111))
+
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
@@ -362,6 +386,14 @@ tests = hUnitTestToTests $ TestList [TestLabel "2x2_ID_Test1" test1,
                                      TestLabel "8x8_GATE[1][0][2]_Matrix_Check" test53,
                                      TestLabel "8x8_GATE[1][2][0]_Matrix_Check" test54,
                                      TestLabel "8x8_GATE[2][0][1]_Matrix_Check" test55,
-                                     TestLabel "8x8_GATE[2][1][0]_Matrix_Check" test56]
+                                     TestLabel "8x8_GATE[2][1][0]_Matrix_Check" test56,
+                                     TestLabel "8x8_CCZ_Test1" test57,
+                                     TestLabel "8x8_CCZ_Test2" test58,
+                                     TestLabel "8x8_CCZ_Test3" test59,
+                                     TestLabel "8x8_CCZ_Test4" test60,
+                                     TestLabel "8x8_CCZ_Test5" test61,
+                                     TestLabel "8x8_CCZ_Test6" test62,
+                                     TestLabel "8x8_CCZ_Test7" test63,
+                                     TestLabel "8x8_CCZ_Test8" test64]
 
 main = defaultMain tests

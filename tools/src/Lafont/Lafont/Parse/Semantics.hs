@@ -143,6 +143,10 @@ interpret2QubitCliffordDTofGate = interpretNQubitGate sem2QubitDOp
 
 type ThreeQubitDyadic = Unitary QMat.Eight QRing.Dyadic
 
+interpretUnique2QubitDOp8x8 :: String -> QGateSemRes QMat.Eight QRing.Dyadic
+interpretUnique2QubitDOp8x8 "CCZ" = Right gateCCZ
+interpretUnique2QubitDOp8x8 op    = Left ("Unknown three qubit operator: " ++ op)
+
 make1QubitDOp8x8 :: String -> ThreeBitPos -> QGateSemRes QMat.Eight QRing.Dyadic
 make1QubitDOp8x8 "X" a = Right (prepare_gate_8x8 (OneQubitOp8x8 gateX a))
 make1QubitDOp8x8 "Z" a = Right (prepare_gate_8x8 (OneQubitOp8x8 gateZ a))
@@ -188,7 +192,7 @@ interpret3QubitDOp8x8 op a b c = Left ("Invalid gate position: " ++ op ++ posStr
 
 sem3QubitDOp :: QGateSem QMat.Eight QRing.Dyadic
 sem3QubitDOp = QGateSem (gateId `QMat.tensor` gateId `QMat.tensor` gateId)
-                        Nothing
+                        (Just interpretUnique2QubitDOp8x8)
                         (Just interpret1QubitDOp8x8)
                         (Just interpret2QubitDOp8x8)
                         (Just interpret3QubitDOp8x8)
