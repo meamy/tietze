@@ -24,6 +24,7 @@ import           Data.Map                            as Map
 import           Data.Maybe
 import           Lafont.Either
 import           Lafont.Graph
+import           Lafont.Maybe
 import           Lafont.Rewrite.Internal.Abstraction
 import           Lafont.Rewrite.Rules
 import           Lafont.Rewrite.Summary
@@ -82,9 +83,7 @@ detectDerivationError :: [AbsDerivation] -> Maybe (Either UnmetDep DepCycle)
 detectDerivationError derivations =
     case addDerivationsToGraph derivations g of
         Left unmet          -> Just (Left unmet)
-        Right (DepGraph g') -> case findCycle g' of
-            Just cycle -> Just (Right cycle)
-            Nothing    -> Nothing
+        Right (DepGraph g') -> maybeApply (findCycle g') Right
     where g = registerDerivations derivations
 
 -----------------------------------------------------------------------------------------

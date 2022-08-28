@@ -44,10 +44,9 @@ parseListDelim getToken delim line =
 parseList :: Tokenizer a -> Char -> String -> Maybe ([a], String)
 parseList _        _     []   = Nothing
 parseList getToken delim line =
-    case getToken trimmed of
-        Nothing          -> Nothing
-        Just (tok, rest) -> maybeApply (parseListDelim getToken delim rest)
-                                       (Data.Bifunctor.first (tok :))
+    branchJust (getToken trimmed)
+        (\(tok, rest) -> maybeApply (parseListDelim getToken delim rest)
+                         (Data.Bifunctor.first (tok :)))
     where (_, trimmed) = trimSpacing line
 
 -----------------------------------------------------------------------------------------
@@ -67,11 +66,10 @@ parseRBrace rbrace list line = maybeApply (parseSep [rbrace] line) (list,)
 -- then nothing is returned.
 parseBracedList :: Tokenizer a -> Char -> Char -> Char -> String -> Maybe ([a], String)
 parseBracedList getToken delim lbrace rbrace line =
-    case parseSep [lbrace] line of
-        Nothing   -> Nothing
-        Just body -> case parseList getToken delim body of
+    branchJust (parseSep [lbrace] line)
+        (\body -> case parseList getToken delim body of
             Nothing          -> parseRBrace rbrace [] body
-            Just (list, end) -> parseRBrace rbrace list end
+            Just (list, end) -> parseRBrace rbrace list end)
 
 -- | Specializes parseBracedList to tuples.
 parseTuple :: Tokenizer a -> String -> Maybe ([a], String)

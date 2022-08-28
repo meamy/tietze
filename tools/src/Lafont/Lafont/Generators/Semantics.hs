@@ -19,6 +19,7 @@ import qualified Data.Map                     as Map
 import           Data.Maybe
 import           Lafont.Common
 import           Lafont.Generators.Categories
+import           Lafont.Maybe
 import           Lafont.String
 
 -----------------------------------------------------------------------------------------
@@ -93,23 +94,14 @@ interpretGen (GenDict dict) id = Map.findWithDefault Nothing id dict
 -- can be evaluated, then its semantic value is returned. Otherwise (e.g., if a generator
 -- is missing a semantic value) then nothing is returned.
 semEval :: (MonoidObj a) => GenDict a -> MonWord -> Maybe a
-semEval _    []         = Just identity
-semEval gens (sym:word) =
-    case interpretGen gens symName of
-        Just lhs -> case semEval gens word of
-            Just rhs -> compose lhs rhs
-            Nothing  -> Nothing
-        Nothing -> Nothing
-    where symName = name sym
+semEval _    []      = Just identity
+semEval gens (sym:w) = branchJust (interpretGen gens $ name sym)
+                                  (branchJust (semEval gens w) . compose)
 
 -- | Consumes a mapping of generators to monoidal semantic values and two words. If both
 -- words can be evaluated, and their semantic values are equal, then true is returned. If
 -- both words can be evaluated, and their semenatic values are not equal, then false is
 -- returned. Otherwise, nothing is returned.
 semComp :: (MonoidObj a) => GenDict a -> MonWord -> MonWord -> Maybe Bool
-semComp gens lhs rhs =
-    case semEval gens lhs of
-        Just lhs -> case semEval gens rhs of
-            Just rhs -> equate lhs rhs
-            Nothing  -> Nothing
-        Nothing -> Nothing
+semComp gens lhs rhs = branchJust (semEval gens lhs)
+                                  (branchJust (semEval gens rhs) . equate)

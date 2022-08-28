@@ -79,8 +79,15 @@ parseMonWordSep _          = Nothing
 --
 -- Mutually Depends On: parseNonEmptyMonWord
 joinAndParseMonWord :: Symbol -> String -> Maybe (MonWord, String)
-joinAndParseMonWord symb str = maybeApply maybeWord (Data.Bifunctor.first (symb :))
-    where maybeWord = parseNonEmptyMonWord str
+joinAndParseMonWord symb str = maybeApply (parseNonEmptyMonWord str)
+                                          (Data.Bifunctor.first (symb :))
+
+-- | Helper method to split parseNonEmptyMonWord between MonWordEnd and MonWordDot. If
+-- the separator is MonWordEnd, the a return list is started. Otherwise, the parser
+-- recurses by calling joinAndParseMonWord.
+splitOnSep :: Symbol -> (MonWordSep, String) -> Maybe (MonWord, String)
+splitOnSep symb (MonWordEnd, post) = Just ([symb], post)
+splitOnSep symb (MonWordDot, post) = joinAndParseMonWord symb post
 
 -- | Consumes a string (str). If there exists a monoidal word pre = G1.G2.G3...Gn such
 -- that G1, G2, G3, ..., Gn are generator symbols, str = pre + post, and pre is the
@@ -90,12 +97,8 @@ joinAndParseMonWord symb str = maybeApply maybeWord (Data.Bifunctor.first (symb 
 -- Mutually Depends On: joinAndParseMonWord
 parseNonEmptyMonWord :: String -> Maybe (MonWord, String)
 parseNonEmptyMonWord str =
-    case parseSymbol str of
-        Just (symb, post) -> case parseMonWordSep post of
-            Just (MonWordEnd, post') -> Just ([symb], post')
-            Just (MonWordDot, post') -> joinAndParseMonWord symb post'
-            Nothing                  -> Nothing
-        Nothing -> Nothing
+    branchJust (parseSymbol str)
+               (\(symb, post) -> branchJust (parseMonWordSep post) (splitOnSep symb))
 
 -- | Consumes a string (str). If str is epsilon, then an empty string is returned.
 -- Otherwise, the string is parsed according to parseNonEmptyMonWord.
@@ -109,8 +112,6 @@ parseMonWord str        = parseNonEmptyMonWord str
 -- | Consumes a string (str). If str contains a monoidal word (with optional whitespace
 -- and comments), then the monoidal word is returned. Otherwise, nothing is returned.
 parseLineAsMonWord :: String -> Maybe MonWord
-parseLineAsMonWord line =
-    case parseMonWord cleaned of
-        Just (word, post) -> iteOnSpacing post Nothing (Just word)
-        Nothing           -> Nothing
+parseLineAsMonWord line = branchJust (parseMonWord cleaned)
+                                     (\(w, post) -> iteOnSpacing post Nothing (Just w))
     where cleaned = cleanLine line

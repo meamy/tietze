@@ -12,6 +12,7 @@ module Lafont.Parse.Internal.RelationFile (
 
 import           Lafont.Common
 import           Lafont.Either
+import           Lafont.Maybe
 import           Lafont.Parse.Common
 import           Lafont.Parse.MonWords
 import           Lafont.Rewrite.Lookup
@@ -61,10 +62,8 @@ propRelErr str substr (Right err) =
 -- either the lhs, or rhs, with priority for the lhs) which violates the checks of
 -- findUnknownGenInMonWord. If no such symbol exists, then nothing is returned.
 findUnknownGenInRule :: [String] -> RewriteRule -> Maybe Symbol
-findUnknownGenInRule gens rule =
-    case findUnknownGenInMonWord gens (lhs rule) of
-        Just gen -> Just gen
-        Nothing  -> findUnknownGenInMonWord gens (rhs rule)
+findUnknownGenInRule gens rule = branchNothing (findUnknownGenInMonWord gens (lhs rule))
+                                               (findUnknownGenInMonWord gens (rhs rule))
 
 -----------------------------------------------------------------------------------------
 -- * Line Parsing Methods.

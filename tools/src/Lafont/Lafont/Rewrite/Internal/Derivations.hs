@@ -45,9 +45,8 @@ concretizeApply emap sum (Apply name pos dir) = if dir == L2R || equational rule
 concretizeRewrite :: DerivationMetadata -> AbsRewrite -> Maybe Rewrite
 concretizeRewrite _            (Left  rw) = Just rw
 concretizeRewrite (dmap, emap) (Right ap) =
-    case dmap `getDerivation` name of
-        Just (AbsDerivation sum _) -> concretizeApply emap sum ap
-        Nothing                    -> Nothing
+    branchJust (dmap `getDerivation` name)
+        (\(AbsDerivation sum _) -> concretizeApply emap sum ap)
     where (Apply name _ _) = ap
 
 -- | Consumes a line number (num), a derivation map (dmap), an equational map (emap), and

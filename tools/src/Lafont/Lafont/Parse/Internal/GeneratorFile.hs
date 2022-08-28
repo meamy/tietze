@@ -85,11 +85,10 @@ parseGenerator parseSem str =
 -- dict. The resulting dict is returned.
 updateGenerators :: SemParser a -> GenDict a -> String -> Either GFPError (GenDict a)
 updateGenerators parseSem dict str =
-    case parseGenerator parseSem str of
-        Left err         -> Left err
-        Right (id, semv) -> if dict `hasGen` id
-                            then Left (Right (DuplicateGenName id))
-                            else Right (dict `addGen` (id, semv))
+    branchRight (parseGenerator parseSem str)
+        (\(id, semv) -> if dict `hasGen` id
+                        then Left (Right (DuplicateGenName id))
+                        else Right (dict `addGen` (id, semv)))
 
 -----------------------------------------------------------------------------------------
 -- * File Parsing Methods.

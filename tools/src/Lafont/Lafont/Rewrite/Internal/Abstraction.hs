@@ -57,5 +57,5 @@ addDepToGraph src (Right (Apply name _ _)) (DepGraph g) =
 -- folding rewrites using (addDepToGraph dep).
 addDepsToGraph :: Dependency -> [AbsRewrite] -> DepGraph -> Either UnmetDep DepGraph
 addDepsToGraph _   []                 g = Right g
-addDepsToGraph src (rewrite:rewrites) g =
-    branchRight (addDepToGraph src rewrite g) (addDepsToGraph src rewrites)
+addDepsToGraph src (rewrite:rewrites) g = branchRight (addDepToGraph src rewrite g)
+                                                      (addDepsToGraph src rewrites)
