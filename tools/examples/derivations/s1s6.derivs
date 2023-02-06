@@ -1,0 +1,116 @@
+-- *******************************************************************
+-- (s1s6)^2 = ε
+-- *******************************************************************
+
+-- Recall that:
+--
+-- s1 = X0.X1.CCX2.X1.X0
+-- s6 = CX21.CCX2.CX21
+
+
+-- *******************************************************************
+-- The derivation
+-- *******************************************************************
+
+X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21
+r9 → 13
+r9 → 5
+
+-- X0.X1.CCX2.X1.X0.CX12.CCX1.CX12.X0.X1.CCX2.X1.X0.CX12.CCX1.CX12
+bifunct_X_a ← 3
+bifunct_X_a → 8
+bifunct_X_a ← 11
+
+-- X0.X1.CCX2.X0.X1.CX12.CCX1.CX12.X1.X0.CCX2.X0.X1.CX12.CCX1.CX12
+r12_c → 4
+
+-- X0.X1.CCX2.X0.CX12.X1.X2.CCX1.CX12.X1.X0.CCX2.X0.X1.CX12.CCX1.CX12
+r12_c_dag → 8
+
+--X0.X1.CCX2.X0.CX12.X1.X2.CCX1.X2.X1.CX12.X0.CCX2.X0.X1.CX12.CCX1.CX12
+bifunct_X_CX_a → 10
+
+--X0.X1.CCX2.X0.CX12.X1.X2.CCX1.X2.X1.X0.CX12.CCX2.X0.X1.CX12.CCX1.CX12
+r12_c → 14
+
+-- X0.X1.CCX2. X0.CX12.X1.X2.CCX1.X2.X1.X0.CX12.CCX2. X0.CX12.X1.X2.CCX1.CX12
+bifunct_X_CX_a ← 3
+bifunct_X_CX_a ← 13
+r4 → 2
+r4 ← 11
+
+-- X0.X1.CX12.CCX2.X0.X1.X2.CCX1.X2.X1.X0.CCX2.CX12.CX12.X0.X1.X2.CCX1.CX12
+elim_CX12 → 12
+
+-- X0.X1.CX12.CCX2.X0.X1.X2.CCX1.X2.X1.X0.CCX2.X0.X1.X2.CCX1.CX12
+r12_c → 1
+
+-- X0.CX12.X1.X2.CCX2.X0.X1.X2.CCX1.X2.X1.X0.CCX2.X0.X1.X2.CCX1.CX12
+bifunct_X_c → 6
+
+-- X0.CX12.X1.X2.CCX2.X0.X2.X1.CCX1.X2.X1.X0.CCX2.X0.X1.X2.CCX1.CX12
+bifunct_X_b → 5
+
+-- X0.CX12.X1.X2.CCX2.X2.X0.X1.CCX1.X2.X1.X0.CCX2.X0.X1.X2.CCX1.CX12
+r13_a → 3
+elim_X2 → 4
+
+-- X0.CX12.X1.CCX2.X0.X1.CCX1.X2.X1.X0.CCX2.X0.X1.X2.CCX1.CX12
+bifunct_X_c ← 7
+r13_b → 5
+elim_X1 → 6
+bifunct_X_b ← 6
+bifunct_X_c → 10
+bifunct_X_b → 9
+
+-- X0.CX12.X1.CCX2.X0.CCX1.X0.X2.CCX2.X2.X0.X1.CCX1.CX12
+r13_a → 7
+elim_X2 → 8
+
+-- X0.CX12.X1.CCX2.X0.CCX1.X0.CCX2.X0.X1.CCX1.CX12
+r13_b → 9
+
+-- X0.CX12.X1.CCX2.X0.CCX1.X0.CCX2.X0.CCX1.X1.CX12
+r5_a → 3
+
+-- X0.CX12.X1.X0.CX12.CCX2.CCX1.X0.CCX2.X0.CCX1.X1.CX12
+r5_b → 9
+
+-- X0.CX12.X1.X0.CX12.CCX2.CCX1.X0.CCX2.CCX1.CX21.X0.X1.CX12
+bifunct_X_a ← 2
+bifunct_X_CX_a → 1
+elim_X0 → 0
+
+-- CX12.X1.CX12.CCX2.CCX1.X0.CCX2.CCX1.CX21.X0.X1.CX12
+r5_a_dag →  5
+
+-- CX12.X1.CX12.CCX2.CCX1.CCX2.CX12.X0.CCX1.CX21.X0.X1.CX12
+r5_b →  7
+
+-- CX12.X1.CX12.CCX2.CCX1.CCX2.CX12.CCX1.CX21.X0.CX21.X0.X1.CX12
+bifunct_X_CX_b →  8
+
+-- CX12.X1.CX12.CCX2.CCX1.CCX2.CX12.CCX1.X0.CX21.CX21.X0.X1.CX12
+elim_CX21 →  9
+elim_X0 →  8
+
+-- CX12.X1.CX12.CCX2.CCX1.CCX2.CX12.CCX1.X1.CX12
+r12_c →  8
+
+-- CX12.X1.CX12.CCX2.CCX1.CCX2.CX12.CCX1.CX12.X1.X2
+r8 →  6
+
+-- CX12.X1.CX12.CCX2.CCX1.CCX2.CCX2.CCX1.CCX2.X1.X2
+elim_CCX2 →  5
+elim_CCX1 →  4
+elim_CCX2 →  3
+
+-- CX12.X1.CX12.X1.X2
+r12_c →  1
+bifunct_X_c →  4
+
+-- CX12.CX12.X1.X2.X2.X1
+elim_CX12 →  0
+elim_X2 →  1
+elim_X1 →  0
+ε

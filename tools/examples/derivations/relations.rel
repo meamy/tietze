@@ -1,0 +1,118 @@
+-- *******************************************************************
+-- Order rules
+-- *******************************************************************
+
+elim_M M.M = ε
+
+elim_X0 X0.X0 = ε
+elim_X1 X1.X1 = ε
+elim_X2 X2.X2 = ε
+
+elim_Z0 Z0.Z0 = ε
+elim_Z1 Z1.Z1 = ε
+elim_Z2 Z2.Z2 = ε
+
+elim_CX01 CX01.CX01 = ε
+elim_CX02 CX02.CX02 = ε
+elim_CX12 CX12.CX12 = ε
+elim_CX10 CX10.CX10 = ε
+elim_CX20 CX20.CX20 = ε
+elim_CX21 CX21.CX21 = ε
+
+elim_CZ01 CZ01.CZ01 = ε
+elim_CZ02 CZ02.CZ02 = ε
+elim_CZ12 CZ12.CZ12 = ε
+
+elim_K01 K01.K01 = ε
+elim_K02 K02.K02 = ε
+elim_K12 K12.K12 = ε
+
+elim_CCX0 CCX0.CCX0 = ε
+elim_CCX1 CCX1.CCX1 = ε
+elim_CCX2 CCX2.CCX2 = ε
+
+
+-- *******************************************************************
+-- Spatiality rules
+-- *******************************************************************
+
+spatial_MX_a M.X0 = X0.M
+spatial_MX_b M.X1 = X1.M
+spatial_MX_c M.X2 = X2.M
+
+spatial_MZ_a M.Z0 = Z0.M
+spatial_MZ_b M.Z1 = Z1.M
+spatial_MZ_c M.Z2 = Z2.M
+
+spatial_MCX_a M.CX01 = CX01.M
+spatial_MCX_b M.CX02 = CX02.M
+spatial_MCX_c M.CX12 = CX12.M
+
+spatial_MCZ_a M.CZ01 = CZ01.M
+spatial_MCZ_b M.CZ02 = CZ02.M
+spatial_MCZ_c M.CZ12 = CZ12.M
+
+spatial_MK01 M.K01 = K01.M
+spatial_MK02 M.K02 = K02.M
+spatial_MK12 M.K12 = K12.M
+
+spatial_MCCX0 M.CCX0 = CCX0.M
+spatial_MCCX1 M.CCX1 = CCX1.M
+spatial_MCCX2 M.CCX2 = CCX2.M
+
+
+-- *******************************************************************
+-- Bifunctoriality rules
+-- *******************************************************************
+
+bifunct_X_a X0.X1 = X1.X0
+bifunct_X_b X0.X2 = X2.X0
+bifunct_X_c X1.X2 = X2.X1
+
+bifunct_Z_a Z0.Z1 = Z1.Z0
+bifunct_Z_b Z0.Z2 = Z2.Z0
+bifunct_Z_c Z1.Z2 = Z2.Z1
+
+bifunct_X_Z_a X0.Z1 = Z1.X0
+bifunct_X_Z_b X1.Z0 = Z0.X1
+
+bifunct_X_CX_a CX12.X0 = X0.CX12
+bifunct_X_CX_b CX21.X0 = X0.CX21
+
+
+-- *******************************************************************
+-- Some other rules
+-- *******************************************************************
+
+r4 CCX2.CX12 = CX12.CCX2
+
+r5_a CCX2.X0 = X0.CX12.CCX2
+r5_a_dag X0.CCX2 = CCX2.CX12.X0
+r5_b X0.CCX1 = CCX1.CX21.X0
+r5_b_dag CCX1.X0 = X0.CX21.CCX1
+
+r8 CX12.CCX1.CX12 = CCX2.CCX1.CCX2
+r9 CX21.CCX2.CX21 = CX12.CCX1.CX12
+
+r12_a X0.CX01 = CX01.X0.X1
+r12_b X1.CX10 = CX10.X1.X0
+r12_c X1.CX12 = CX12.X1.X2
+r12_c_dag CX12.X1 = X2.X1.CX12
+
+r13_a X2.CCX2 = CCX2.X2
+r13_b X1.CCX1 = CCX1.X1
+r13_c X0.CCX0 = CCX0.X0
+
+r18_a X0.CZ01 = CZ01.Z1.X0
+r18_b X1.CZ01 = CZ01.Z0.X1
+r18_a_dag CZ01.X0 = X0.Z1.CZ01
+r18_b_dag CZ01.X1 = X1.Z0.CZ01
+
+r19_a X1.Z1 = M.Z1.X1
+r19_a_dag Z1.X1 = X1.Z1.M
+r19_b X0.Z0 = M.Z0.X0
+
+r23_a CZ01.CCX2.CZ01 = CCX2
+
+r24_a Z0.CCX2.Z0 = CCX2
+r24_b Z1.CCX2.Z1 = CCX2
