@@ -54,7 +54,8 @@ library
                        Lafont.Rewrite.Rules
                        Lafont.Rewrite.Simplification
                        Lafont.Rewrite.Summary
-  build-depends:       base >=4.12 && <4.13,
+--  build-depends:       base >=4.12 && <4.13,
+  build-depends:       base,    
                        containers,
                        directory,
                        split,
@@ -74,7 +75,8 @@ library LafontExe
                        LafontExe.Logging.ErrorFormat
                        LafontExe.Logging.LineBased
                        LafontExe.Logging.Primitive
-  build-depends:       base >=4.12 && <4.13,
+--  build-depends:       base >=4.12 && <4.13,
+  build-depends:       base,
                        directory,
                        Lafont
   hs-source-dirs:      src/LafontExe
@@ -83,7 +85,8 @@ library LafontExe
 common exe-with-file-io-props
   hs-source-dirs:      exe
   default-language:    Haskell2010
-  build-depends:       base >=4.12 && <4.13,
+--  build-depends:       base >=4.12 && <4.13,
+  build-depends:       base, 
                        directory,
                        Lafont,
                        LafontExe
@@ -271,7 +274,7 @@ test-suite lafontexe-logging-primitivelogging-tests
 
 library LafontExeTest
   exposed-modules:     LafontExeTest.HandleTest
-  build-depends:       base >=4.12 && <4.13,
+  build-depends:       base,
                        directory
   hs-source-dirs:      src/LafontExeTest
   default-language:    Haskell2010
