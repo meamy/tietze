@@ -85,6 +85,7 @@ bifunct_X_CX_b CX21.X0 = X0.CX21
 -- *******************************************************************
 
 r4 CCX2.CX12 = CX12.CCX2
+r4_a CX02.CCX2 = CCX2.CX02
 
 r5_a CCX2.X0 = X0.CX12.CCX2
 r5_a_dag X0.CCX2 = CCX2.CX12.X0
@@ -92,7 +93,11 @@ r5_b X0.CCX1 = CCX1.CX21.X0
 r5_b_dag CCX1.X0 = X0.CX21.CCX1
 
 r8 CX12.CCX1.CX12 = CCX2.CCX1.CCX2
+r8_a CX02.CCX0.CX02 = CCX2.CCX0.CCX2
+
 r9 CX21.CCX2.CX21 = CX12.CCX1.CX12
+
+r10 CX01.CCX2.CX01 = CX02.CCX2
 
 r12_a X0.CX01 = CX01.X0.X1
 r12_b X1.CX10 = CX10.X1.X0
