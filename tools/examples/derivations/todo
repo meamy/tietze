@@ -1,0 +1,43 @@
+[d] = done
+[di] = done but needs to be imported from the e8 branch
+
+s1s1 [di]
+s1s2 [d]
+s1s3
+s1s4
+s1s5
+s1s6 [d]
+s1s7 [d]
+s1s8
+s2s2 [di]
+s2s3
+s2s4 [di]
+s2s5
+s2s6
+s2s7
+s2s8
+s3s3 [di]
+s3s4 [d]
+s3s5
+s3s6
+s3s7
+s3s8
+s4s4 [di]
+s4s5
+s4s6
+s4s7
+s4s8
+s5s5 [di]
+s5s6
+s5s7
+s5s8
+s6s6
+s6s7
+s6s8
+s7s7 [di]
+s7s8
+s8s8 [di]
+
+
+
+
