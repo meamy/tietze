@@ -1,5 +1,6 @@
 [d] = done
 [di] = done but needs to be imported from the e8 branch
+[ip] = in progress
 
 s1s1 [di]
 s1s2 [d]
@@ -35,7 +36,7 @@ s6s6
 s6s7
 s6s8
 s7s7 [di]
-s7s8
+s7s8 [ip]
 s8s8 [di]
 
 
