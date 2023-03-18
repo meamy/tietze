@@ -1,0 +1,21 @@
+X1.CCX2.X1.X0.X1.CCX2.X1.X0.X1.CCX2.X1.X0.X1.CCX2.X1.X0
+bifunct_X_a → 3
+bifunct_X_a → 7
+bifunct_X_a → 11
+bifunct_X_a ← 14
+-- X1.CCX2.X1.X1.X0.CCX2.X1.X1.X0.CCX2.X1.X1.X0.CCX2.X0.X1
+elim_X1 → 10
+elim_X1 → 6
+elim_X1 → 2
+-- X1.CCX2.X0.CCX2.X0.CCX2.X0.CCX2.X0.X1
+r5_a_dag → 6
+r5_a_dag → 2
+-- X1.CCX2.CCX2.CX12.X0.X0.CCX2.CCX2.CX12.X0.X0.X1
+elim_X0 → 9
+elim_CCX2 → 6
+elim_X0 → 4
+elim_CCX2 → 1
+-- X1.CX12.CX12.X1
+elim_CX12 → 1
+elim_X1 → 0
+ε
