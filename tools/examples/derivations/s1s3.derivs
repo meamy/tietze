@@ -1,0 +1,16 @@
+X0.CCX2.X0.X0.X1.CCX2.X1.X0.X0.CCX2.X0.X0.X1.CCX2.X1.X0
+elim_X0 → 10
+elim_X0 → 7
+elim_X0 → 2
+-- X0.CCX2.X1.CCX2.X1.CCX2.X1.CCX2.X1.X0
+e5_d → 6
+e5_d → 2
+-- X0.CCX2.CCX2.CX02.X1.X1.CCX2.CCX2.CX02.X1.X1.X0
+elim_X1 → 9
+elim_CCX2 → 6
+elim_X1 → 4
+elim_CCX2 → 1
+-- X0.CX02.CX02.X0
+elim_CX02 → 1
+elim_X0 → 0
+ε
