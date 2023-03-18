@@ -1,0 +1,5 @@
+X1.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.X0
+elim_X0 ← 0
+!apply s1s6s1s6 → 1
+elim_X0 → 0
+ε
