@@ -18,7 +18,7 @@ elim_CX02 → 8
 bifunct_X_b → 8
 elim_X0 → 9
 -- X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.X2.CX12.CCX0.CCX2.CX01
-e5_d → 1
+r5_d → 1
 elim_X1 → 3
 -- X0.CCX2.CX02.X0.CX01.CX02.CCX0.X2.CX12.CCX0.CCX2.CX01
 r15_a → 4
