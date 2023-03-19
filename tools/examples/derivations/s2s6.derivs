@@ -1,0 +1,26 @@
+CX21.CCX2.CX21.X0.CX21.CCX2.CX21.X0.CX21.CCX2.CX21.X0.CX21.CCX2.CX21.X0
+bifunct_X_CX_b → 2
+bifunct_X_CX_b → 6
+bifunct_X_CX_b → 10
+bifunct_X_CX_b → 14
+-- CX21.CCX2.X0.CX21.CX21.CCX2.X0.CX21.CX21.CCX2.X0.CX21.CX21.CCX2.X0.CX21
+elim_CX21 → 11
+elim_CX21 → 7
+elim_CX21 → 3
+-- CX21.CCX2.X0.CCX2.X0.CCX2.X0.CCX2.X0.CX21
+elim_X1 ← 8
+elim_X1 ← 6
+elim_X1 ← 4
+elim_X1 ← 2
+elim_X1 ← 1
+-- CX21.X1.X1.CCX2.X1.X1.X0.CCX2.X1.X1.X0.CCX2.X1.X1.X0.CCX2.X1.X1.X0.CX21
+bifunct_X_a ← 5
+bifunct_X_a ← 9
+bifunct_X_a ← 13
+bifunct_X_a ← 17
+-- CX21.X1.X1.CCX2.X1.X0.X1.CCX2.X1.X0.X1.CCX2.X1.X0.X1.CCX2.X1.X0.X1.CX21
+!apply s5s1s5s1 → 2
+-- CX21.X1.X1.CX21
+elim_X1 → 1
+elim_CX21 → 0
+ε
