@@ -31,7 +31,6 @@ elim_CCX0 CCX0.CCX0 = ε
 elim_CCX1 CCX1.CCX1 = ε
 elim_CCX2 CCX2.CCX2 = ε
 
-
 -- *******************************************************************
 -- Spatiality rules
 -- *******************************************************************
@@ -47,6 +46,8 @@ spatial_MZ_c M.Z2 = Z2.M
 spatial_MCX_a M.CX01 = CX01.M
 spatial_MCX_b M.CX02 = CX02.M
 spatial_MCX_c M.CX12 = CX12.M
+spatial_MCX_d M.CX10 = CX10.M
+spatial_MCX_e M.CX20 = CX20.M
 
 spatial_MCZ_a M.CZ01 = CZ01.M
 spatial_MCZ_b M.CZ02 = CZ02.M
@@ -73,10 +74,14 @@ bifunct_Z_a Z0.Z1 = Z1.Z0
 bifunct_Z_b Z0.Z2 = Z2.Z0
 bifunct_Z_c Z1.Z2 = Z2.Z1
 
+bifunct_Z_K_a Z0.K12 = K12.Z0
+
 bifunct_X_Z_a X0.Z1 = Z1.X0
 bifunct_X_Z_b X1.Z0 = Z0.X1
 bifunct_X_Z_c X2.Z1 = Z1.X2
 bifunct_X_Z_d X1.Z2 = Z2.X1
+bifunct_X_Z_e X0.Z2 = Z2.X0
+bifunct_X_Z_f X2.Z0 = Z0.X2
 
 bifunct_X_CX_a CX12.X0 = X0.CX12
 bifunct_X_CX_b CX21.X0 = X0.CX21
@@ -87,6 +92,11 @@ bifunct_X_CX_e CX02.X1 = X1.CX02
 bifunct_X_K_a X0.K12 = K12.X0
 
 bifunct_Z_CZ_a CZ02.Z1 = Z1.CZ02
+
+bifunct_X_CZ_a X1.CZ02 = CZ02.X1
+bifunct_X_CZ_b X0.CZ12 = CZ12.X0
+
+bifunct_Z_CX_a Z1.CX20 = CX20.Z1
 
 -- *******************************************************************
 -- Some other rules
@@ -166,6 +176,7 @@ r18_b X1.CZ01 = CZ01.Z0.X1
 r18_c X2.CZ02 = CZ02.Z0.X2
 r18_d X1.CZ12 = CZ12.Z2.X1
 r18_e X2.CZ12 = CZ12.Z1.X2
+r18_f X0.CZ02 = CZ02.Z2.X0
 r18_a_dag CZ01.X0 = X0.Z1.CZ01
 r18_b_dag CZ01.X1 = X1.Z0.CZ01
 r18_c_dag CZ02.X2 = X2.Z0.CZ02
@@ -173,6 +184,8 @@ r18_c_dag CZ02.X2 = X2.Z0.CZ02
 r19_a X1.Z1 = M.Z1.X1
 r19_a_dag Z1.X1 = X1.Z1.M
 r19_b X0.Z0 = M.Z0.X0
+r19_c X2.Z2 = Z2.X2.M
+r19_c_dag Z2.X2 = M.X2.Z2
 
 r23_a CZ01.CCX2.CZ01 = CCX2
 r23_b CZ02.CCX1.CZ02 = CCX1
@@ -182,6 +195,7 @@ r24_b Z1.CCX2.Z1 = CCX2
 r24_c Z0.CCX1.Z0 = CCX1
 r24_d Z1.CCX0.Z1 = CCX0
 r24_e Z2.CCX1.Z2 = CCX1
+r24_f Z2.CCX0.Z2 = CCX0
 
 r25 X1.K12 = K12.Z1
 r25_dag K12.X1 = Z1.K12
@@ -190,6 +204,7 @@ r26 CZ01.CCX1 =  CCX1.CZ01.CZ02
 r26_a CZ02.CCX2 = CCX2.CZ02.CZ01
 r26_b CZ02.CCX0 = CCX0.CZ02.CZ12
 r26_b_dag CCX0.CZ02 = CZ12.CZ02.CCX0
+r26_c CZ01.CCX0 = CCX0.CZ01.CZ12
 
 r27 CX10.Z1 = Z1.CX10
 r27_b CX12.Z1 = Z1.CX12
@@ -198,9 +213,13 @@ r28 CX02.CZ01 = CZ01.CX02
 r28_a CX01.CZ02 = CZ02.CX01
 
 r29 Z2.CX21 = CZ12.CX21.CZ12
+r29_a Z1.CX10 = CZ01.CX10.CZ01
+
+r30 CZ01.Z0 = Z0.CZ01
 
 r31 CZ01.CZ02 = CZ02.CZ01
 r31_b CZ02.CZ12 = CZ12.CZ02
+r31_c CZ01.CZ12 = CZ12.CZ01
 
 r32 K12.CCX2 = CCX1.K12
 r32_dag CCX2.K12 = K12.CCX1
@@ -209,9 +228,15 @@ r34 K12.CX21 = CX12.K12
 r34_dag CX21.K12 = K12.CX12
 
 r35 K12.CZ01 = CX01.K12
+r35_dag CZ01.K12 = K12.CX01
+r35_a K12.CZ02 = CX02.K12
+r35_a_dag CZ02.K12 = K12.CX02
 
 r36 X1.CX01.X1 = CX01
 r36_a X0.CX10.X0 = CX10
+r36_b X0.CX20.X0 = CX20
+
+r39 Z0.CCX0 = CCX0.CZ12.Z0
 
 r38 CCX0.CCX1.CCX2.CCX1.CCX0 = CCX1.CCX2.CCX1
 r38_a CCX0.CCX2.CCX1.CCX2.CCX0 = CCX2.CCX1.CCX2
@@ -227,3 +252,8 @@ r42 CZ01.CX21.CX12.CX21 = CX21.CX12.CX21.CZ02
 r42_b CZ02.CX21.CX12.CX21 = CX21.CX12.CX21.CZ01
 
 r43 Z2.CX12 = CX12.Z1.Z2
+r43_a Z0.CX20 = CX20.Z2.Z0
+r43_a_dag CX20.Z0 = Z0.Z2.CX20
+r43_b Z0.CX10 = CX10.Z1.Z0
+
+r44 CZ12.CZ01.CX20 = CX20.CZ01
