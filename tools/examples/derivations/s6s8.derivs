@@ -1,0 +1,129 @@
+@name lemmak12cx21ccx2cx21k12
+K12.CX21.CCX2.CX21.K12
+r34 → 0
+r32 → 1
+r34 → 2
+elim_K12 → 3
+CX12.CCX1.CX12
+
+@name lemmax0x1x2ccx0x2x1x0
+X0.X1.X2.CCX0.X2.X1.X0
+bifunct_X_a → 0
+bifunct_X_a ← 5
+bifunct_X_b → 1
+bifunct_X_b ← 4
+r13_c → 2
+elim_X0 → 3
+-- X1.X2.CCX0.X2.X1
+r5_c_dag → 2
+elim_X2 → 1
+r6_f_dag → 2
+r12_b_dag → 1
+bifunct_X_a → 1
+elim_X1 → 0
+X0.CX10.CX20.CCX0
+
+CX21.CCX2.CX21.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.CX21.CCX2.CX21.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
+!apply lemmak12cx21ccx2cx21k12 → 13
+elim_K12 ← 0
+!apply lemmak12cx21ccx2cx21k12 → 1
+-- K12.CX12.CCX1.CX12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX12.CCX1.CX12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
+r26_b_dag → 20
+r26_b → 7
+r31_b → 8
+r31_b → 20
+elim_CZ02 → 21
+elim_CZ02 → 9
+-- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.CZ12.X2.X1.X0.CX12.CCX1.CX12.X0.X1.X2.CZ12.CCX0.X2.X1.X0.K12
+r18_e_dag → 8
+r18_d_dag → 10
+bifunct_X_CZ_b ← 12
+elim_CZ12 ← 15
+r29_c ← 13
+-- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.Z1.X1.Z2.X0.Z1.CX12.CZ12.CCX1.CX12.X0.X1.X2.CZ12.CCX0.X2.X1.X0.K12
+r19_a_dag → 9
+spatial_MZ_b ← 10
+bifunct_Z_c → 11
+bifunct_X_Z_a ← 12
+elim_Z1 → 13
+-- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.M.Z2.X0.CX12.CZ12.CCX1.CX12.X0.X1.X2.CZ12.CCX0.X2.X1.X0.K12
+r26_d → 14
+r31_b ← 15
+elim_CZ12 ← 18
+r29_c ← 16
+bifunct_X_CZ_b ← 18
+r18_d_dag → 19
+r18_e_dag → 21
+elim_CZ12 → 23
+-- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.M.Z2.X0.CX12.CCX1.CZ02.Z1.CX12.X0.X1.Z2.X2.Z1.CCX0.X2.X1.X0.K12
+bifunct_X_Z_c → 21
+bifunct_Z_c ← 20
+r19_a → 19
+-- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.M.Z2.X0.CX12.CCX1.CZ02.Z1.CX12.X0.M.Z1.X1.Z2.X2.CCX0.X2.X1.X0.K12
+spatial_MZ_b → 19
+bifunct_X_Z_a → 18
+r27_b → 17
+elim_Z1 → 16
+-- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.M.Z2.X0.CX12.CCX1.CZ02.CX12.X0.M.X1.Z2.X2.CCX0.X2.X1.X0.K12
+bifunct_X_Z_e ← 11
+r43 → 12
+bifunct_Z_c → 13
+r39_a → 14
+bifunct_Z_CZ_a → 15
+elim_CZ02 → 16
+-- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.M.X0.CX12.Z2.CCX1.Z1.CX12.X0.M.X1.Z2.X2.CCX0.X2.X1.X0.K12
+bifunct_X_Z_d → 19
+spatial_MZ_c → 18
+bifunct_X_Z_e → 17
+r43_dag → 16
+bifunct_Z_c → 15
+elim_Z1 → 16
+r24_e → 13
+-- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.M.X0.CX12.CCX1.CX12.X0.M.X1.X2.CCX0.X2.X1.X0.K12
+spatial_MX_a → 10
+spatial_MCX_c → 11
+spatial_MCCX1 → 12
+spatial_MCX_c → 13
+spatial_MX_a → 14
+elim_M → 15
+-- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.X0.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.X0.K12
+!apply lemmax0x1x2ccx0x2x1x0 → 14
+!apply lemmax0x1x2ccx0x2x1x0 → 4
+-- K12.CX12.CCX1.CX12.X0.CX10.CX20.CCX0.CX12.CCX1.CX12.X0.CX10.CX20.CCX0.K12
+bifunct_X_CX_a → 3
+r5_b_dag → 2
+bifunct_X_CX_a → 1
+-- K12.X0.CX12.CX21.CCX1.CX12.CX10.CX20.CCX0.CX12.CCX1.CX12.X0.CX10.CX20.CCX0.K12
+elim_X0 ← 14
+r36_a → 12
+elim_X0 ← 15
+r36_b → 13
+r13_c → 14
+-- K12.X0.CX12.CX21.CCX1.CX12.CX10.CX20.CCX0.CX12.CCX1.CX12.CX10.CX20.CCX0.X0.K12
+r4_e ← 13 
+r4_b ← 12
+-- K12.X0.CX12.CX21.CCX1.CX12.CX10.CX20.CCX0.CX12.CCX1.CX12.CCX0.CX10.CX20.X0.K12
+r8 → 9
+r38_a → 8
+r8 ← 8
+-- K12.X0.CX12.CX21.CCX1.CX12.CX10.CX20.CX12.CCX1.CX12.CX10.CX20.X0.K12
+r15 ← 5
+r17_b_dag → 5
+elim_CX12 → 8
+elim_CX20 → 7
+elim_CX12 → 6
+-- K12.X0.CX12.CX21.CCX1.CX20.CCX1.CX12.CX10.CX20.X0.K12
+elim_CX20 ← 4
+r10_c → 5
+elim_CCX1 → 6
+-- K12.X0.CX12.CX21.CX20.CX21.CX12.CX10.CX20.X0.K12
+r15_c → 4
+elim_CX21 → 3
+r16 → 5
+-- K12.X0.CX12.CX20.CX12.CX20.CX10.X0.K12
+r17_b ← 2
+elim_CX10 → 2
+elim_X0 → 1
+elim_K12 → 0
+K12.X0.CX10.CX10.X0.K12
+ε
