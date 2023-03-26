@@ -1,4 +1,19 @@
+-- ****************************************************************************
+-- (s4s8)^2 = ε
+-- ****************************************************************************
+
+-- Recall that:
+--
+-- s4 = CX01.CX02.CCX0.CX02.CX01
+-- s8 = K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
+
+
+-- ****************************************************************************
+-- The lemma CX02.CX01.K12.X0.X1.X2.CZ02 = CX01.K12.Z2.X0.X1.Z0.X2
+-- ****************************************************************************
+
 @name lemmacx02cx01k12x0x1x2cz02
+
 CX02.CX01.K12.X0.X1.X2.CZ02
 r18_c → 5
 bifunct_X_CZ_a → 4
@@ -8,7 +23,13 @@ r15_a → 1
 elim_CX02 → 0
 CX01.K12.Z2.X0.X1.Z0.X2
 
+
+-- ****************************************************************************
+-- The lemma CZ02.X2.X1.X0.K12.CX01.CX02 = Z0.X2.X1.Z2.X0.K12.CX01
+-- ****************************************************************************
+
 @name lemmacz02x2x1x0k12cx01cx02
+
 CZ02.X2.X1.X0.K12.CX01.CX02
 r15_a → 5
 r35_a_dag ← 4
@@ -18,32 +39,43 @@ r18_c → 1
 elim_CZ02 → 0
 Z0.X2.X1.Z2.X0.K12.CX01
 
+
+-- ****************************************************************************
+-- The lemma Z2.X0.X1.Z0.X2.CCX0.Z0.X2.X1.Z2 = M.Z0.CX10.CCX0.CX20.Z0
+-- ****************************************************************************
+
 @name lemmaz0x0x1z0x2ccx0z0x2x1z2
+
 Z2.X0.X1.Z0.X2.CCX0.Z0.X2.X1.Z2
 bifunct_X_Z_e ← 0
 bifunct_X_Z_d ← 1
 bifunct_Z_b ← 2
+
 -- X0.X1.Z0.Z2.X2.CCX0.Z0.X2.X1.Z2
 r19_c_dag → 3
 bifunct_X_Z_d → 9
 r19_c → 8
 bifunct_Z_b → 7
 r24_f → 5
+
 -- X0.X1.Z0.M.X2.CCX0.Z0.X2.M.X1
 spatial_MX_c → 3
 spatial_MCCX0 → 4
 spatial_MZ_a → 5
 spatial_MX_c → 6
 elim_M → 7
+
 -- X0.X1.Z0.X2.CCX0.Z0.X2.X1
 r5_c → 3
 bifunct_X_Z_f → 5
 elim_X2 → 6
+
 -- X0.X1.Z0.CCX0.CX10.Z0.X1
 r4_b → 3
 bifunct_X_Z_b → 1
 r19_b → 0
 r12_b → 3
+
 -- M.Z0.X0.CX10.X1.X0.CCX0.Z0.X1
 bifunct_X_a ← 4
 r36_a → 2
@@ -52,20 +84,29 @@ bifunct_X_Z_b → 5
 elim_X1 → 6
 M.Z0.CX10.CCX0.CX20.Z0
 
+
+-- ****************************************************************************
+-- The lemma CX01.K12.M.Z0.CX10.CCX0.CX20.Z0.X0.K12.CX01 = K12.Z0.CX10.CCX0.CX20.X0.Z0.K12
+-- ****************************************************************************
+
 @name lemmacx01k12mz0cx10ccx0cx20z0x0k1cx01
+
 CX01.K12.M.Z0.CX10.CCX0.CX20.Z0.X0.K12.CX01
 r35 ← 0
 r35_dag ← 9
+
 -- K12.CZ01.M.Z0.CX10.CCX0.CX20.Z0.X0.CZ01.K12
 spatial_MCZ_a ← 1
 r30 → 2
 elim_CZ01 ← 5
 r29_a ← 3
+
 -- K12.M.Z0.Z1.CX10.CZ01.CCX0.CX20.Z0.X0.CZ01.K12
 r26_c → 5
 r31_c → 6
 r18_a → 10
 r30 ← 9
+
 -- K12.M.Z0.Z1.CX10.CCX0.CZ12.CZ01.CX20.CZ01.Z0.Z1.X0.K12
 r44 → 6
 elim_CZ01 → 7
@@ -73,6 +114,7 @@ r27 ← 3
 bifunct_Z_a → 7
 bifunct_Z_CX_a ← 6
 r24_d → 4
+
 -- K12.M.Z0.CX10.CCX0.CX20.Z0.X0.K12
 spatial_MZ_a → 1
 spatial_MCX_d → 2
@@ -81,9 +123,10 @@ spatial_MCX_e → 4
 r19_b ← 5
 K12.Z0.CX10.CCX0.CX20.X0.Z0.K12
 
-@name lemmaccx0cz12k12cx10ccx0cx20k12
-CCX0.CZ12.K12.CX10.CCX0.CX20.K12
-CCX0.CZ12.K12.CX10.CCX0.CX20.K12
+
+-- ****************************************************************************
+-- The derivation
+-- ****************************************************************************
 
 CX01.CX02.CCX0.CX02.CX01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.CX01.CX02.CCX0.CX02.CX01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 elim_CX01 ← 32
@@ -92,40 +135,49 @@ elim_CX02 ← 33
 !apply lemmacx02cx01k12x0x1x2cz02 → 19
 !apply lemmacz02x2x1x0k12cx01cx02 → 11
 !apply lemmacx02cx01k12x0x1x2cz02 → 3
+
 -- CX01.CX02.CCX0.CX01.K12.Z2.X0.X1.Z0.X2.CCX0.Z0.X2.X1.Z2.X0.K12.CX01.CCX0.CX01.K12.Z2.X0.X1.Z0.X2.CCX0.Z0.X2.X1.Z2.X0.K12.CX01.CX02.CX01
 !apply lemmaz0x0x1z0x2ccx0z0x2x1z2 → 21
 !apply lemmaz0x0x1z0x2ccx0z0x2x1z2 → 5
+
 -- CX01.CX02.CCX0.CX01.K12.M.Z0.CX10.CCX0.CX20.Z0.X0.K12.CX01.CCX0.CX01.K12.M.Z0.CX10.CCX0.CX20.Z0.X0.K12.CX01.CX02.CX01
 !apply lemmacx01k12mz0cx10ccx0cx20z0x0k1cx01 → 15
 !apply lemmacx01k12mz0cx10ccx0cx20z0x0k1cx01 → 3
+
 -- CX01.CX02.CCX0.K12.Z0.CX10.CCX0.CX20.X0.Z0.K12.CCX0.K12.Z0.CX10.CCX0.CX20.X0.Z0.K12.CX02.CX01
 bifunct_Z_K_a → 9
 r39 → 10
 bifunct_Z_K_a → 12
 elim_Z0 → 13
+
 -- CX01.CX02.CCX0.K12.Z0.CX10.CCX0.CX20.X0.K12.CCX0.CZ12.K12.CX10.CCX0.CX20.X0.Z0.K12.CX02.CX01
 bifunct_X_K_a → 8
 r13_c → 9
 bifunct_X_CZ_b → 10
 bifunct_X_K_a → 11
+
 -- CX01.CX02.CCX0.K12.Z0.CX10.CCX0.CX20.K12.CCX0.CZ12.K12.X0.CX10.CCX0.CX20.X0.Z0.K12.CX02.CX01
 elim_X0 ← 14
 r36_a → 12
 r13_c → 13
 r36_b → 14
+
 -- CX01.CX02.CCX0.K12.Z0.CX10.CCX0.CX20.K12.CCX0.CZ12.K12.CX10.CCX0.CX20.Z0.K12.CX02.CX01
 bifunct_Z_K_a → 15
 bifunct_Z_K_a ← 3
 r39_dag → 2
+
 -- CX01.CX02.Z0.CZ12.CCX0.K12.CX10.CCX0.CX20.K12.CCX0.CZ12.K12.CX10.CCX0.CX20.K12.Z0.CX02.CX01
 r46 → 3
 elim_CCX0 → 9
 elim_CZ12 → 8
 elim_K12 → 7
+
 -- CX01.CX02.Z0.K12.CX10.CCX0.CX20.CX10.CCX0.CX20.K12.Z0.CX02.CX01
 r16 ← 6
 r4_b → 5
 r4_e → 8
+
 -- CX01.CX02.Z0.K12.CX10.CX10.CCX0.CX20.CX20.CCX0.K12.Z0.CX02.CX01
 elim_CX20 → 7
 elim_CX10 → 4
