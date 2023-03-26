@@ -1,6 +1,6 @@
--- *******************************************************************
+-- ****************************************************************************
 -- (s7s8)^3 = ε
--- *******************************************************************
+-- ****************************************************************************
 
 -- Recall that:
 --
@@ -8,9 +8,9 @@
 -- s8 = K12.X0.X1.X2.CZ02.CCX0.CZ02.X0.X1.X2.K12
 
 
--- *******************************************************************
+-- ****************************************************************************
 -- The lemma K12.CZ01.CX21.CCX2 = CX01.CX12.CCX1.K12
--- *******************************************************************
+-- ****************************************************************************
 
 @name lemmak12cz01cx21ccx2
 K12.CZ01.CX21.CCX2
@@ -20,9 +20,9 @@ r32 → 2
 CX01.CX12.CCX1.K12
 
 
--- *******************************************************************
+-- ****************************************************************************
 -- The lemma K12.CX21.CZ01.K12 = CX12.CX01
--- *******************************************************************
+-- ****************************************************************************
 
 @name lemmak12cx21cz01k12
 K12.CX21.CZ01.K12
@@ -32,18 +32,268 @@ elim_K12 → 2
 CX12.CX01
 
 
--- *******************************************************************
--- The derivation
--- *******************************************************************
+-- ****************************************************************************
+-- The lemma X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0 = X1.X2.CZ02.CCX0.CZ02.X2.X1
+-- ****************************************************************************
 
-K12.X0.X1.X2.CZ02.CCX0.CZ02.X0.X1.X2.K12.CZ01.CX21.CCX2.CX21.CZ01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X0.X1.X2.K12.CZ01.CX21.CCX2.CX21.CZ01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X0.X1.X2.K12.CZ01.CX21.CCX2.CX21.CZ01
+@name lemmax0x1x2cz02ccx0cz02x2x1x0
+X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0
+bifunct_X_a → 0
+bifunct_X_a ← 7
+bifunct_X_b → 1
+bifunct_X_b ← 6
+
+-- X1.X2.X0.CZ02.CCX0.CZ02.X0.X2.X1
+r18_f_dag → 5
+r18_f → 2
+
+-- X1.X2.CZ02.Z2.X0.CCX0.X0.Z2.CZ02.X2.X1
+r13_c → 4
+elim_X0 → 5
+
+-- X1.X2.CZ02.Z2.CCX0.Z2.CZ02.X2.X1
+r24_f → 3
+X1.X2.CZ02.CCX0.CZ02.X2.X1
+
+
+-- ****************************************************************************
+-- The lemma X2.X1.CX01.CX12.CCX1 = CX01.CX12.CCX1.X1
+-- ****************************************************************************
+
+@name lemmax2x1cx01cx12ccx1
+X2.X1.CX01.CX12.CCX1
+elim_X1 ← 3
+r36 → 1
+
+-- X2.CX01.X1.CX12.CCX1
+bifunct_X_CX_d ← 0
+r12_c_dag ← 1
+
+-- CX01.CX12.X1.CCX1
+r13_b → 2
+CX01.CX12.CCX1.X1
+
+
+-- ****************************************************************************
+-- The lemma X1.CX12.CX01.X1.X2 = CX12.CX01
+-- ****************************************************************************
+
+@name lemmax1cx12cx01x1x2
+X1.CX12.CX01.X1.X2
+r12_c → 0
+
+-- CX12.X1.X2.CX01.X1.X2
+bifunct_X_CX_d ← 2
+bifunct_X_c → 4
+elim_X2 → 3
+
+-- CX12.X1.CX01.X1
+r36 → 1
+CX12.CX01
+
+
+-- ****************************************************************************
+-- The derivation
+-- ****************************************************************************
+
+K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.CZ01.CX21.CCX2.CX21.CZ01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.CZ01.CX21.CCX2.CX21.CZ01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.CZ01.CX21.CCX2.CX21.CZ01
 !apply lemmak12cz01cx21ccx2 → 10
 !apply lemmak12cz01cx21ccx2 → 26
 !apply lemmak12cz01cx21ccx2 → 42
 
---K12.X0.X1.X2.CZ02.CCX0.CZ02.X0.X1.X2.CX01.CX12.CCX1.K12.CX21.CZ01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X0.X1.X2.CX01.CX12.CCX1.K12.CX21.CZ01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X0.X1.X2.CX01.CX12.CCX1.K12.CX21.CZ01
+--K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX01.CX12.CCX1.K12.CX21.CZ01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX01.CX12.CCX1.K12.CX21.CZ01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX01.CX12.CCX1.K12.CX21.CZ01
 !apply lemmak12cx21cz01k12 → 13
 !apply lemmak12cx21cz01k12 → 27
 
--- now at the third line
-K12.X0.X1.X2.CZ02.CCX0.CZ02.X0.X1.X2.CX01.CX12.CCX1.CX12.CX01.X0.X1.X2.CZ02.CCX0.CZ02.X0.X1.X2.CX01.CX12.CCX1.CX12.CX01.X0.X1.X2.CZ02.CCX0.CZ02.X0.X1.X2.CX01.CX12.CCX1.K12.CX21.CZ01
+-- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX01.CX12.CCX1.CX12.CX01.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX01.CX12.CCX1.CX12.CX01.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX01.CX12.CCX1.K12.CX21.CZ01
+!apply lemmax0x1x2cz02ccx0cz02x2x1x0 → 29
+!apply lemmax0x1x2cz02ccx0cz02x2x1x0 → 15
+!apply lemmax0x1x2cz02ccx0cz02x2x1x0 → 1
+
+-- K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.CX01.CX12.CCX1.CX12.CX01.X1.X2.CZ02.CCX0.CZ02.X2.X1.CX01.CX12.CCX1.CX12.CX01.X1.X2.CZ02.CCX0.CZ02.X2.X1.CX01.CX12.CCX1.K12.CX21.CZ01
+!apply lemmax2x1cx01cx12ccx1 → 30
+!apply lemmax2x1cx01cx12ccx1 → 18
+!apply lemmax2x1cx01cx12ccx1 → 6
+
+-- K12.X1.X2.CZ02.CCX0.CZ02.CX01.CX12.CCX1.X1.CX12.CX01.X1.X2.CZ02.CCX0.CZ02.CX01.CX12.CCX1.X1.CX12.CX01.X1.X2.CZ02.CCX0.CZ02.CX01.CX12.CCX1.X1.K12.CX21.CZ01
+!apply lemmax1cx12cx01x1x2 → 20
+!apply lemmax1cx12cx01x1x2 → 9
+
+-- K12.X1.X2.CZ02.CCX0.CZ02.CX01.CX12.CCX1.CX12.CX01.CZ02.CCX0.CZ02.CX01.CX12.CCX1.CX12.CX01.CZ02.CCX0.CZ02.CX01.CX12.CCX1.X1.K12.CX21.CZ01
+r26_b → 3
+r31_b → 4
+elim_CZ12 ← 3
+r23_c → 4
+
+-- K12.X1.X2.CZ12.CCX0.CZ02.CZ02.CX01.CX12.CCX1.CX12.CX01.CZ02.CCX0.CZ02.CX01.CX12.CCX1.CX12.CX01.CZ02.CCX0.CZ02.CX01.CX12.CCX1.X1.K12.CX21.CZ01
+r26_b_dag → 21
+r31_b ← 21
+elim_CZ12 ← 24
+r23_c → 22
+
+-- K12.X1.X2.CZ12.CCX0.CZ02.CZ02.CX01.CX12.CCX1.CX12.CX01.CZ02.CCX0.CZ02.CX01.CX12.CCX1.CX12.CX01.CZ02.CZ02.CCX0.CZ12.CX01.CX12.CCX1.X1.K12.CX21.CZ01
+elim_CZ02 → 20
+elim_CZ02 → 5
+
+-- K12.X1.X2.CZ12.CCX0.CX01.CX12.CCX1.CX12.CX01.CZ02.CCX0.CZ02.CX01.CX12.CCX1.CX12.CX01.CCX0.CZ12.CX01.CX12.CCX1.X1.K12.CX21.CZ01
+r28_a → 9
+r44_a ← 8
+r26 ← 7
+
+-- K12.X1.X2.CZ12.CCX0.CX01.CX12.CZ01.CCX1.CX12.CX01.CCX0.CZ02.CX01.CX12.CCX1.CX12.CX01.CCX0.CZ12.CX01.CX12.CCX1.X1.K12.CX21.CZ01
+r28_a ← 12
+r44_a_dag ← 13
+r26_dag ← 14
+
+-- K12.X1.X2.CZ12.CCX0.CX01.CX12.CZ01.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CZ01.CX12.CX01.CCX0.CZ12.CX01.CX12.CCX1.X1.K12.CX21.CZ01
+r28_c → 6
+elim_CZ01 ← 5
+r29_d ← 6
+r30 → 5
+
+-- K12.X1.X2.CZ12.CCX0.Z0.CZ01.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CZ01.CX12.CX01.CCX0.CZ12.CX01.CX12.CCX1.X1.K12.CX21.CZ01
+r28_c ← 16
+elim_CZ01 ← 19
+r29_d_dag ← 17
+r30 ← 18
+
+-- K12.X1.X2.CZ12.CCX0.Z0.CZ01.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CZ01.Z0.CCX0.CZ12.CX01.CX12.CCX1.X1.K12.CX21.CZ01
+r39_dag → 4
+bifunct_Z_CZ_b → 3
+elim_CZ12 → 4
+
+-- K12.X1.X2.CZ12.CCX0.Z0.CZ01.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CZ01.Z0.CCX0.CZ12.CX01.CX12.CCX1.X1.K12.CX21.CZ01
+r39 → 18
+bifunct_Z_CZ_b → 19
+elim_CZ12 → 20
+
+-- K12.X1.X2.Z0.CCX0.CZ01.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CZ01.CCX0.Z0.CX01.CX12.CCX1.X1.K12.CX21.CZ01
+r26_c_dag → 4
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CZ01.CCX0.Z0.CX01.CX12.CCX1.X1.K12.CX21.CZ01
+r27_c ← 20
+bifunct_Z_CX_b → 21
+elim_Z0 ← 24
+r24_c → 22
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CZ01.CCX0.CX01.CX12.CCX1.Z0.X1.K12.CX21.CZ01
+r26_c → 18
+r44_b_dag ← 20
+r44_a_dag ← 22
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CZ01.CX01.CZ12.CX12.CZ02.CZ01.CCX1.Z0.X1.K12.CX21.CZ01
+elim_CZ01 ← 21
+r29_d_dag ← 19
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.Z0.CZ01.CZ12.CX12.CZ02.CZ01.CCX1.Z0.X1.K12.CX21.CZ01
+r31_c → 21
+r28_c ← 22
+r31 → 23
+elim_CZ01 → 24
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.Z0.CZ12.CX12.CZ02.CCX1.Z0.X1.K12.CX21.CZ01
+elim_CZ02 ← 25
+r23_b → 23
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.Z0.CZ12.CX12.CCX1.CZ02.Z0.X1.K12.CX21.CZ01
+bifunct_Z_CZ_b ← 20
+bifunct_Z_CX_b → 21
+r30_c → 24
+r24_c → 22
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CZ12.CX12.CCX1.CZ02.X1.K12.CX21.CZ01
+elim_CZ12 ← 22
+r29_c ← 20
+r27_b ← 20
+r26_d → 22
+r39_a → 21
+
+--K12.X1.X2.Z0.CZ12.CZ01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CZ02.Z1.CZ12.CZ02.CZ02.X1.K12.CX21.CZ01
+elim_CZ02 → 25
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CZ02.Z1.CZ12.X1.K12.CX21.CZ01
+elim_CX01 ← 6
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CX01.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CZ02.Z1.CZ12.X1.K12.CX21.CZ01
+r8_c → 7
+r8_c → 13
+r8_c → 19
+r8 → 10
+r8 → 16
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CX01.CCX1.CCX0.CCX1.CCX2.CCX1.CCX2.CCX1.CCX0.CCX1.CCX2.CCX1.CCX2.CCX1.CCX0.CCX1.CX12.CCX1.CZ02.Z1.CZ12.X1.K12.CX21.CZ01
+r40_a ← 10
+r40_a ← 16
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CX01.CCX1.CCX0.CCX1.CCX2.CCX1.CCX2.CCX1.CCX0.CCX1.CCX2.CCX1.CCX2.CCX1.CCX0.CCX1.CX12.CCX1.CZ02.Z1.CZ12.X1.K12.CX21.CZ01
+elim_CCX1 → 18
+elim_CCX1 → 15
+elim_CCX1 → 12
+elim_CCX1 → 9
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CX01.CCX1.CCX0.CCX2.CCX0.CCX2.CCX0.CCX1.CX12.CCX1.CZ02.Z1.CZ12.X1.K12.CX21.CZ01
+r40 → 9
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CX01.CCX1.CCX0.CCX0.CCX2.CCX0.CCX0.CCX1.CX12.CCX1.CZ02.Z1.CZ12.X1.K12.CX21.CZ01
+elim_CCX0 → 8
+elim_CCX0 → 9
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CX01.CCX1.CCX2.CCX1.CX12.CCX1.CZ02.Z1.CZ12.X1.K12.CX21.CZ01
+elim_CX12 ← 12
+r8 → 10
+r40_a → 7
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CX01.CCX2.CCX1.CCX2.CCX2.CCX1.CCX2.CX12.CZ02.Z1.CZ12.X1.K12.CX21.CZ01
+elim_CCX2 → 9
+elim_CCX1 → 8
+elim_CCX2 → 7
+
+-- K12.X1.X2.Z0.CZ12.CZ01.CX01.CX12.CZ02.Z1.CZ12.X1.K12.CX21.CZ01
+r31_c ← 4
+r44_b_dag ← 5
+
+-- K12.X1.X2.Z0.CZ01.CX01.CZ12.CZ02.CX12.CZ02.Z1.CZ12.X1.K12.CX21.CZ01
+r44_a_dag ← 7
+r31 → 9
+elim_CZ02 → 8
+
+-- K12.X1.X2.Z0.CZ01.CX01.CZ12.CX12.CZ01.Z1.CZ12.X1.K12.CX21.CZ01
+r30_d → 8
+r27_b → 7
+r29_c → 7
+elim_CZ12 → 6
+
+-- K12.X1.X2.Z0.CZ01.CX01.CX12.CZ12.CZ01.CZ12.X1.K12.CX21.CZ01
+r31_c → 8
+elim_CZ12 → 7
+
+-- K12.X1.X2.Z0.CZ01.CX01.CX12.CZ01.X1.K12.CX21.CZ01
+r30 ← 3
+r29_d → 4
+elim_CZ01 → 3
+
+-- K12.X1.X2.CX01.CZ01.CX12.CZ01.X1.K12.CX21.CZ01
+r28_c → 5
+elim_CZ01 → 4
+
+-- K12.X1.X2.CX01.CX12.X1.K12.CX21.CZ01
+r25 → 5
+r34 ← 4
+r35 ← 3
+r25_a → 2
+r25 → 1
+elim_K12 → 0
+
+-- Z1.Z2.CZ01.CX21.Z1.CX21.CZ01
+r34_c → 4
+elim_CX21 → 3
+
+-- Z1.Z2.CZ01.Z2.Z1.CZ01
+bifunct_Z_CZ_c → 2
+elim_Z2 → 1
+
+-- Z1.CZ01.Z1.CZ01
+r30_d → 1
+elim_Z1 → 0
+elim_CZ01 → 0
+ε
