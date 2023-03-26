@@ -1,40 +1,65 @@
+-- ****************************************************************************
+-- (s1s2)^3 = ε
+-- ****************************************************************************
+
+-- Recall that:
+--
+-- s1 = X0.X1.CCX2.X1.X0
+-- s2 = X0.CX21.CCX2.CX21.X0
+
+
+-- ****************************************************************************
+-- The derivation
+-- ****************************************************************************
+
 @name s1s2s1s2s1s2
+
 X0.X1.CCX2.X1.X0.X0.CX21.CCX2.CX21.X0.X0.X1.CCX2.X1.X0.X0.CX21.CCX2.CX21.X0.X0.X1.CCX2.X1.X0.X0.CX21.CCX2.CX21.X0
 elim_X0 → 4
 elim_X0 → 7
 elim_X0 → 10
 elim_X0 → 13
 elim_X0 → 16
+
 -- X0.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X0
 r5_d → 1
 r5_d → 8
 r5_d → 15
+
 -- X0.CCX2.CX02.X1.X1.CX21.CCX2.CX21.CCX2.CX02.X1.X1.CX21.CCX2.CX21.CCX2.CX02.X1.X1.CX21.CCX2.CX21.X0
 elim_X1 → 3
 elim_X1 → 8
 elim_X1 → 13
+
 -- X0.CCX2.CX02.CX21.CCX2.CX21.CCX2.CX02.CX21.CCX2.CX21.CCX2.CX02.CX21.CCX2.CX21.X0
 r8_b → 3
 r8_b → 8
+
 -- X0.CCX2.CX02.CCX1.CCX2.CCX1.CCX2.CX02.CCX1.CCX2.CCX1.CCX2.CX02.CX21.CCX2.CX21.X0
 r4_a ← 1
 r4_a ← 6
+
 -- X0.CX02.CCX2.CCX1.CCX2.CCX1.CX02.CCX2.CCX1.CCX2.CCX1.CCX2.CX02.CX21.CCX2.CX21.X0
 r40_a → 3
 r40_a → 8
+
 -- X0.CX02.CCX2.CCX2.CCX1.CCX2.CX02.CCX2.CCX2.CCX1.CCX2.CCX2.CX02.CX21.CCX2.CX21.X0
 elim_CCX2 → 2
 elim_CCX2 → 5
 elim_CCX2 → 6
+
 -- X0.CX02.CCX1.CCX2.CX02.CCX1.CX02.CX21.CCX2.CX21.X0
 r4_a ← 3
+
 -- X0.CX02.CCX1.CX02.CCX2.CCX1.CX02.CX21.CCX2.CX21.X0
 r10_a → 1
 r4_c → 1
 r11_a → 2
+
 -- X0.CX01.CX01.CCX1.CCX2.CCX1.CX21.CCX2.CX21.X0
 elim_CX01 → 1
 r8_b → 4
+
 -- X0.CCX1.CCX2.CCX1.CCX1.CCX2.CCX1.X0
 elim_CCX1 → 3
 elim_CCX2 → 2

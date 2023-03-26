@@ -1,4 +1,19 @@
+-- ****************************************************************************
+-- (s1s7)^2 = ε
+-- ****************************************************************************
+
+-- Recall that:
+--
+-- s1 = X0.X1.CCX2.X1.X0
+-- s8 = K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
+
+
+-- ****************************************************************************
+-- The lemma X0.K12.X0.X1.CCX2 = Z1.CCX1.K12
+-- ****************************************************************************
+
 @name lemmax0k23x0x1ccx2
+
 X0.K12.X0.X1.CCX2
 bifunct_X_K_a → 0
 elim_X0 → 1
@@ -6,41 +21,55 @@ r25_dag → 0
 r32 → 1
 Z1.CCX1.K12
 
+
+-- ****************************************************************************
+-- The derivation
+-- ****************************************************************************
+
 K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.X0.X1.CCX2.X1.X0.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.X0.X1.CCX2.X1.X0
 !apply lemmax0k23x0x1ccx2 → 25
 !apply lemmax0k23x0x1ccx2 → 9
+
 -- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.Z1.CCX1.K12.X1.X0.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
 bifunct_X_K_a → 13
 elim_X0 → 14
 r25 → 12
 elim_K12 → 11
+
 -- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.Z1.CCX1.Z1.X1.X2.CZ02.CCX0.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
 elim_M ← 10
 spatial_MCCX1 → 11
+
 -- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.Z1.M.CCX1.M.Z1.X1.X2.CZ02.CCX0.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
 r19_a ← 12
 r19_a_dag ← 8
 r13_b → 9
 elim_X1 → 10
+
 -- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.Z1.CCX1.Z1.X2.CZ02.CCX0.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
 r18_c → 11
 r18_c_dag → 6
 bifunct_Z_CZ_a → 8
 bifunct_Z_CZ_a ← 11
+
 -- K12.X0.X1.X2.CZ02.CCX0.X2.Z0.Z1.CZ02.CCX1.CZ02.Z1.Z0.X2.CCX0.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
 r23_b → 9
+
 -- K12.X0.X1.X2.CZ02.CCX0.X2.Z0.Z1.CCX1.Z1.Z0.X2.CCX0.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
 bifunct_Z_a → 7
 bifunct_Z_a ← 10
 r24_c → 8
+
 -- K12.X0.X1.X2.CZ02.CCX0.X2.Z1.CCX1.Z1.X2.CCX0.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
 r5_c_dag → 5
 r5_c → 11
+
 -- K12.X0.X1.X2.CZ02.X2.CX10.CCX0.Z1.CCX1.Z1.CCX0.CX10.X2.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
 elim_Z1 ← 12
 elim_Z1 ← 7
 r24_d → 12
 r24_d → 8
+
 -- K12.X0.X1.X2.CZ02.X2.CX10.Z1.CCX0.CCX1.CCX0.Z1.CX10.X2.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
 r19_a → 16
 r13_b → 18
@@ -48,47 +77,59 @@ spatial_MZ_b → 16
 spatial_MCCX1 → 17
 bifunct_X_Z_c → 15
 r5_e → 16
+
 -- K12.X0.X1.X2.CZ02.X2.CX10.Z1.CCX0.CCX1.CCX0.Z1.CX10.X2.CZ02.Z1.CCX1.CX01.X2.M.X1.K12.X1.X0
 bifunct_Z_CZ_a → 14
 bifunct_X_Z_c → 13
 r27 → 12
 elim_Z1 → 11
+
 -- K12.X0.X1.X2.CZ02.X2.CX10.Z1.CCX0.CCX1.CCX0.CX10.X2.CZ02.CCX1.CX01.X2.M.X1.K12.X1.X0
 elim_CZ02 ← 15
 r23_b → 13
 r5_e → 12
+
 -- K12.X0.X1.X2.CZ02.X2.CX10.Z1.CCX0.CCX1.CCX0.CX10.CCX1.CX01.X2.CZ02.CX01.X2.M.X1.K12.X1.X0
 elim_CX10 ← 13
 r8_d → 11
+
 -- K12.X0.X1.X2.CZ02.X2.CX10.Z1.CCX0.CCX1.CCX0.CCX0.CCX1.CCX0.CX10.CX01.X2.CZ02.CX01.X2.M.X1.K12.X1.X0
 elim_CCX0 → 10
 elim_CCX1 → 9
 elim_CCX0 → 8
+
 -- K12.X0.X1.X2.CZ02.X2.CX10.Z1.CX10.CX01.X2.CZ02.CX01.X2.M.X1.K12.X1.X0
 r27 → 6
 elim_CX10 → 7
+
 -- K12.X0.X1.X2.CZ02.X2.Z1.CX01.X2.CZ02.CX01.X2.M.X1.K12.X1.X0
 bifunct_X_Z_c → 5
 bifunct_X_CX_d → 7
 elim_X2 → 6
+
 -- K12.X0.X1.X2.CZ02.Z1.CX01.CZ02.CX01.X2.M.X1.K12.X1.X0
 r28_a → 6
 elim_CX01 → 7
 bifunct_Z_CZ_a → 4
 elim_CZ02 → 5
+
 -- K12.X0.X1.X2.Z1.X2.M.X1.K12.X1.X0
 bifunct_X_Z_c → 3
 elim_X2 → 4
+
 -- K12.X0.X1.Z1.M.X1.K12.X1.X0
 r19_a → 2
 spatial_MX_b → 5
 elim_X1 → 4
+
 -- K12.X0.M.Z1.M.K12.X1.X0
 spatial_MZ_b → 2
 elim_M → 3
+
 -- K12.X0.Z1.K12.X1.X0
 r25_dag → 3
 elim_Z1 → 2
+
 -- K12.X0.K12.X0
 bifunct_X_K_a → 1
 elim_K12 → 0
