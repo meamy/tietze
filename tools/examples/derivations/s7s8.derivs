@@ -285,23 +285,24 @@ r28_c → 5
 elim_CZ01 → 4
 
 -- K12.X1.X2.CX01.CX12.X1.K12.CX21.CZ01
-r25 → 5
-r34 ← 4
-r35 ← 3
-r25_a → 2
-r25 → 1
-elim_K12 → 0
+bifunct_X_c → 1
+elim_X1 ← 4
+r36 → 2
+r12_c → 3
 
--- Z1.Z2.CZ01.CX21.Z1.CX21.CZ01
-r43_a → 4
-elim_CX21 → 3
+-- K12.X2.CX01.CX12.X1.X2.X1.K12.CX21.CZ01
+bifunct_X_c → 4
+elim_X1 → 5
+bifunct_X_CX_d ← 1
+r36_c → 2
 
--- Z1.Z2.CZ01.Z2.Z1.CZ01
-bifunct_Z_CZ_c → 2
-elim_Z2 → 1
 
--- Z1.CZ01.Z1.CZ01
-r30_d → 1
-elim_Z1 → 0
+-- K12.CX01.CX12.K12.CX21.CZ01
+r35_dag ← 0
+r34_dag ← 1
+
+-- CZ01.CX21.K12.K12.CX21.CZ01
+elim_K12 → 2
+elim_CX21 → 1
 elim_CZ01 → 0
 ε
