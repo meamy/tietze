@@ -39,7 +39,7 @@ elim_X0 → 3
 -- X1.X2.CCX0.X2.X1
 r5_c_dag → 2
 elim_X2 → 1
-r6_f_dag → 2
+r5_f_dag → 2
 r12_b_dag → 1
 bifunct_X_a → 1
 elim_X1 → 0
@@ -146,8 +146,8 @@ r36_b → 13
 r13_c → 14
 
 -- K12.X0.CX12.CX21.CCX1.CX12.CX10.CX20.CCX0.CX12.CCX1.CX12.CX10.CX20.CCX0.X0.K12
-r4_e ← 13 
-r4_b ← 12
+r1_e ← 13 
+r1_b ← 12
 
 -- K12.X0.CX12.CX21.CCX1.CX12.CX10.CX20.CCX0.CX12.CCX1.CX12.CCX0.CX10.CX20.X0.K12
 r8 → 9

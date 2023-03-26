@@ -26,7 +26,7 @@ elim_CX01 ← 5
 r10 → 0
 r8_c → 2
 r10 → 5
-r4_a → 5
+r1_a → 5
 
 -- CX02.CCX2.CCX1.CCX0.CCX1.CCX2.CX02.CZ01.CCX1.CCX2.CCX1
 r28 → 6
@@ -120,7 +120,7 @@ r8_a ← 6
 
 -- CZ01.CX01.CX02.CCX0.CX02.CCX1.CX02.CCX0.CX02.CCX1.CX01.CZ01
 r10_a → 4
-r4_c → 4
+r1_c → 4
 elim_CX02 ← 9
 r10_a → 7
 r15_a → 8

@@ -71,7 +71,7 @@ bifunct_X_Z_f → 5
 elim_X2 → 6
 
 -- X0.X1.Z0.CCX0.CX10.Z0.X1
-r4_b → 3
+r1_b → 3
 bifunct_X_Z_b → 1
 r19_b → 0
 r12_b → 3
@@ -79,7 +79,7 @@ r12_b → 3
 -- M.Z0.X0.CX10.X1.X0.CCX0.Z0.X1
 bifunct_X_a ← 4
 r36_a → 2
-r6_f → 3
+r5_f → 3
 bifunct_X_Z_b → 5
 elim_X1 → 6
 M.Z0.CX10.CCX0.CX20.Z0
@@ -181,8 +181,8 @@ elim_K12 → 7
 
 -- CX01.CX02.Z0.K12.CX10.CCX0.CX20.CX10.CCX0.CX20.K12.Z0.CX02.CX01
 r16 ← 6
-r4_b → 5
-r4_e → 8
+r1_b → 5
+r1_e → 8
 
 -- CX01.CX02.Z0.K12.CX10.CX10.CCX0.CX20.CX20.CCX0.K12.Z0.CX02.CX01
 elim_CX20 → 7

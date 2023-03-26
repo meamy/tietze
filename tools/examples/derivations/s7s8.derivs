@@ -293,7 +293,7 @@ r25 → 1
 elim_K12 → 0
 
 -- Z1.Z2.CZ01.CX21.Z1.CX21.CZ01
-r34_c → 4
+r43_a → 4
 elim_CX21 → 3
 
 -- Z1.Z2.CZ01.Z2.Z1.CZ01

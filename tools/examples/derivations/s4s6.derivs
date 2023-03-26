@@ -20,10 +20,10 @@ expand_S4 → 0
 
 -- CX01.CX02.CCX0.CX02.CX01.CX21.CCX2.CX21.CX01.CX02.CCX0.CX02.CX01.CX21.CCX2.CX21
 r8_b → 5
-r4_c ← 4
-r4_c → 7
+r1_c ← 4
+r1_c → 7
 r10 → 5
-r4_a → 5
+r1_a → 5
 
 -- CX01.CX02.CCX0.CX02.CCX1.CCX2.CX02.CCX1.CX02.CCX0.CX02.CX01.CX21.CCX2.CX21
 r10_a → 6
@@ -50,7 +50,7 @@ r8_a ← 5
 r10_a → 3
 
 -- CX01.CX02.CCX0.CCX1.CX01.CCX0.CX02.CCX1.CX01
-r4_c → 3
+r1_c → 3
 r15_a → 0
 
 -- CX02.CX01.CCX0.CX01.CCX1.CCX0.CX02.CCX1.CX01
@@ -64,7 +64,7 @@ elim_CCX0 → 2
 r10_a → 0
 
 -- CCX1.CX01.CCX1.CX01
-r4_c → 2
+r1_c → 2
 elim_CX01 → 1
 elim_CCX1 → 0
 ε
