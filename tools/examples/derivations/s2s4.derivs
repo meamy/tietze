@@ -1,4 +1,19 @@
+-- ****************************************************************************
+-- (s2s4)^2 = ε
+-- ****************************************************************************
+
+-- Recall that:
+--
+-- s2 = X0.CX21.CCX2.CX21.X0
+-- s4 = CX01.CX02.CCX0.CX02.CX01
+
+
+-- ****************************************************************************
+-- The lemma X0.CX01.CX02 = CX01.CX02.X2.X1.X0
+-- ****************************************************************************
+
 @name lemmax0cx01cx02
+
 X0.CX01.CX02
 r12_a → 0
 bifunct_X_CX_e ← 2
@@ -7,7 +22,13 @@ bifunct_X_b → 2
 bifunct_X_a → 3
 CX01.CX02.X2.X1.X0
 
+
+-- ****************************************************************************
+-- The lemma CX02.CX01.X0 = X0.X1.X2.CX02.CX01
+-- ****************************************************************************
+
 @name lemmacx02cx01x0
+
 CX02.CX01.X0
 r12_a_dag → 1
 bifunct_X_CX_e → 0
@@ -16,65 +37,95 @@ bifunct_X_b ← 1
 bifunct_X_a ← 0
 X0.X1.X2.CX02.CX01
 
+
+-- ****************************************************************************
+-- The lemma CX02.CX01.CX21 = CX21.CX02
+-- ****************************************************************************
+
 @name lemmacx02cx01cx21
+
 CX02.CX01.CX21
 r17_a → 1
 elim_CX02 → 0
 elim_CX21 → 2
 CX21.CX02
 
+
+-- ****************************************************************************
+-- The lemma CX21.CX01.CX02 = CX02.CX21
+-- ****************************************************************************
+
 @name lemmacx21cx01cx02
+
 CX21.CX01.CX02
 r17_a_dag → 1
 elim_CX21 → 0
 elim_CX02 → 2
 CX02.CX21
 
+
+-- ****************************************************************************
+-- The derivation
+-- ****************************************************************************
+
 CX01.CX02.CCX0.CX02.CX01.X0.CX21.CCX2.CX21.X0.CX01.CX02.CCX0.CX02.CX01.X0.CX21.CCX2.CX21.X0
 elim_X0 ← 0
+
 -- X0.X0.CX01.CX02.CCX0.CX02.CX01.X0.CX21.CCX2.CX21.X0.CX01.CX02.CCX0.CX02.CX01.X0.CX21.CCX2.CX21.X0
 !apply lemmacx02cx01x0 → 15
 !apply lemmax0cx01cx02 → 11
 !apply lemmacx02cx01x0 → 5
 !apply lemmax0cx01cx02 → 1
+
 -- X0.CX01.CX02.X2.X1.X0.CCX0.X0.X1.X2.CX02.CX01.CX21.CCX2.CX21.CX01.CX02.X2.X1.X0.CCX0.X0.X1.X2.CX02.CX01.CX21.CCX2.CX21.X0
 r13_c → 19
 elim_X0 → 20
 r13_c → 5
 elim_X0 → 6
+
 -- X0.CX01.CX02.X2.X1.CCX0.X1.X2.CX02.CX01.CX21.CCX2.CX21.CX01.CX02.X2.X1.CCX0.X1.X2.CX02.CX01.CX21.CCX2.CX21.X0
 !apply lemmacx02cx01cx21 → 20
 !apply lemmacx21cx01cx02 → 12
 !apply lemmacx02cx01cx21 → 8
+
 -- X0.CX01.CX02.X2.X1.CCX0.X1.X2.CX21.CX02.CCX2.CX02.CX21.X2.X1.CCX0.X1.X2.CX21.CX02.CCX2.CX21.X0
 r4_a → 19
 r4_a → 9
 elim_CX02 → 10
+
 -- X0.CX01.CX02.X2.X1.CCX0.X1.X2.CX21.CCX2.CX21.X2.X1.CCX0.X1.X2.CX21.CCX2.CX02.CX21.X0
 r12_e_dag ← 14
 r12_e ← 10
 r12_e_dag ← 6
+
 -- X0.CX01.CX02.X2.X1.CCX0.CX21.X2.CCX2.X2.CX21.CCX0.CX21.X2.CCX2.CX02.CX21.X0
 r13_a → 13
 r13_a → 7
 elim_X2 → 8
+
 -- X0.CX01.CX02.X2.X1.CCX0.CX21.CCX2.CX21.CCX0.CX21.CCX2.X2.CX02.CX21.X0
 r8_b → 6
 r38 → 5
+
 -- X0.CX01.CX02.X2.X1.CCX1.CCX2.CCX1.CX21.CCX2.X2.CX02.CX21.X0
 elim_CX21 ← 10
 r8_b → 8
+
 -- X0.CX01.CX02.X2.X1.CCX1.CCX2.CCX1.CCX1.CCX2.CCX1.CX21.X2.CX02.CX21.X0
 elim_CCX1 → 7
 elim_CCX2 → 6
 elim_CCX1 → 5
+
 -- X0.CX01.CX02.X2.X1.CX21.X2.CX02.CX21.X0
 r12_e_dag → 5
+
 -- X0.CX01.CX02.X2.X1.X1.X2.CX21.CX02.CX21.X0
 elim_X1 → 4
 elim_X2 → 3
+
 -- X0.CX01.CX02.CX21.CX02.CX21.X0
 r17_a ← 2
+
 -- X0.CX01.CX01.X0
 elim_CX01 → 1
 elim_X0 → 0
