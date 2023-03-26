@@ -11,7 +11,11 @@
 -- The derivation
 -- ****************************************************************************
 
-CX21.CCX2.CX21.CX21.CCX2.CX21
+S6.S6
+expand_S6 → 1
+expand_S6 → 0
+
+-- CX21.CCX2.CX21.CX21.CCX2.CX21
 elim_CX21 → 2
 elim_CCX2 → 1
 elim_CX21 → 0

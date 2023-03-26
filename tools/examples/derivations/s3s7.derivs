@@ -1,21 +1,50 @@
-CZ01.CX21.CCX2.CX21.CZ01.X0.CCX2.X0.CZ01.CX21.CCX2.CX21.CZ01.X0.CCX2.X0
+-- ****************************************************************************
+-- (s3s7)^2 = ε
+-- ****************************************************************************
+
+-- Recall that:
+--
+-- s3 = X0.CCX2.X0
+-- s7 = CZ01.CX21.CCX2.CX21.CZ01
+
+
+-- ****************************************************************************
+-- The derivation
+-- ****************************************************************************
+
+S7.S3.S7.S3
+expand_S3 → 3
+expand_S7 → 2
+expand_S3 → 1
+expand_S7 → 0
+
+-- CZ01.CX21.CCX2.CX21.CZ01.X0.CCX2.X0.CZ01.CX21.CCX2.CX21.CZ01.X0.CCX2.X0
 r18_a → 7
 r18_a_dag → 4
+
 -- CZ01.CX21.CCX2.CX21.X0.Z1.CZ01.CCX2.CZ01.Z1.X0.CX21.CCX2.CX21.CZ01.X0.CCX2.X0
 r23_a → 6
 r24_b → 5
+
 -- CZ01.CX21.CCX2.CX21.X0.CCX2.X0.CX21.CCX2.CX21.CZ01.X0.CCX2.X0
 r18_a_dag → 10
 elim_CZ01 ← 14
 r23_a → 12
 elim_Z1 ← 13
 r24_b → 11
+
 -- CZ01.CX21.CCX2.CX21.X0.CCX2.X0.CX21.CCX2.CX21.X0.CCX2.Z1.CZ01.X0
 r18_a_dag → 13
 bifunct_X_Z_a → 13
 elim_Z1 → 12
+
 -- CZ01.CX21.CCX2.CX21.X0.CCX2.X0.CX21.CCX2.CX21.X0.CCX2.X0.CZ01
+expand_S6 ← 1
+expand_S3 ← 2
+expand_S6 ← 3
+expand_S3 ← 4
 !apply s6s3s6s3 → 1
+
 -- CZ01.CZ01
 elim_CZ01 → 0
 ε

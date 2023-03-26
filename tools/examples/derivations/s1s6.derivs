@@ -14,7 +14,13 @@
 
 @name s1s6s1s6
 
-X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21
+S1.S6.S1.S6
+expand_S6 → 3
+expand_S1 → 2
+expand_S6 → 1
+expand_S1 → 0
+
+-- X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21
 r9 → 13
 r9 → 5
 

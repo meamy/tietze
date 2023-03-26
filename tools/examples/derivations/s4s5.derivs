@@ -26,7 +26,15 @@ CX01.CCX0.CCX2
 -- The derivation
 -- ****************************************************************************
 
-X1.CCX2.X1.CX01.CX02.CCX0.CX02.CX01.X1.CCX2.X1.CX01.CX02.CCX0.CX02.CX01.X1.CCX2.X1.CX01.CX02.CCX0.CX02.CX01
+S5.S4.S5.S4.S5.S4
+expand_S4 → 5
+expand_S5 → 4
+expand_S4 → 3
+expand_S5 → 2
+expand_S4 → 1
+expand_S5 → 0
+
+-- X1.CCX2.X1.CX01.CX02.CCX0.CX02.CX01.X1.CCX2.X1.CX01.CX02.CCX0.CX02.CX01.X1.CCX2.X1.CX01.CX02.CCX0.CX02.CX01
 !apply lemmax1ccx2x1cx01cx02ccx0cx02 → 16
 !apply lemmax1ccx2x1cx01cx02ccx0cx02 → 8
 !apply lemmax1ccx2x1cx01cx02ccx0cx02 → 0

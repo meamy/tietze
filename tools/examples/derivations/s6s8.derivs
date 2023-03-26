@@ -50,7 +50,13 @@ X0.CX10.CX20.CCX0
 -- The derivation
 -- ****************************************************************************
 
-CX21.CCX2.CX21.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.CX21.CCX2.CX21.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
+S6.S8.S6.S8
+expand_S8 → 3
+expand_S6 → 2
+expand_S8 → 1
+expand_S6 → 0
+
+-- CX21.CCX2.CX21.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.CX21.CCX2.CX21.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 !apply lemmak12cx21ccx2cx21k12 → 13
 elim_K12 ← 0
 !apply lemmak12cx21ccx2cx21k12 → 1

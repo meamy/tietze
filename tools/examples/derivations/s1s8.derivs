@@ -26,7 +26,13 @@ Z1.CCX1.K12
 -- The derivation
 -- ****************************************************************************
 
-K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.X0.X1.CCX2.X1.X0.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.X0.X1.CCX2.X1.X0
+S8.S1.S8.S1
+expand_S1 → 3
+expand_S8 → 2
+expand_S1 → 1
+expand_S8 → 0
+
+-- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.X0.X1.CCX2.X1.X0.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.X0.X1.CCX2.X1.X0
 !apply lemmax0k23x0x1ccx2 → 25
 !apply lemmax0k23x0x1ccx2 → 9
 

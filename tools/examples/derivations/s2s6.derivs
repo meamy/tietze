@@ -12,7 +12,13 @@
 -- The derivation
 -- ****************************************************************************
 
-CX21.CCX2.CX21.X0.CX21.CCX2.CX21.X0.CX21.CCX2.CX21.X0.CX21.CCX2.CX21.X0
+S6.S2.S6.S2
+expand_S2 → 3
+expand_S6 → 2
+expand_S2 → 1
+expand_S6 → 0
+
+-- CX21.CCX2.CX21.X0.CX21.CCX2.CX21.X0.CX21.CCX2.CX21.X0.CX21.CCX2.CX21.X0
 bifunct_X_CX_b → 2
 bifunct_X_CX_b → 6
 bifunct_X_CX_b → 10
@@ -37,6 +43,10 @@ bifunct_X_a ← 13
 bifunct_X_a ← 17
 
 -- CX21.X1.X1.CCX2.X1.X0.X1.CCX2.X1.X0.X1.CCX2.X1.X0.X1.CCX2.X1.X0.X1.CX21
+expand_S5 ← 2
+expand_S1 ← 3
+expand_S5 ← 4
+expand_S1 ← 5
 !apply s5s1s5s1 → 2
 
 -- CX21.X1.X1.CX21

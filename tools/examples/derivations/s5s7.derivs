@@ -34,7 +34,15 @@ X1.CCX2.X1
 -- The derivation
 -- ****************************************************************************
 
-X1.CCX2.X1.CZ01.CX21.CCX2.CX21.CZ01.X1.CCX2.X1.CZ01.CX21.CCX2.CX21.CZ01.X1.CCX2.X1.CZ01.CX21.CCX2.CX21.CZ01
+S5.S7.S5.S7.S5.S7
+expand_S7 → 5
+expand_S5 → 4
+expand_S7 → 3
+expand_S5 → 2
+expand_S7 → 1
+expand_S5 → 0
+
+-- X1.CCX2.X1.CZ01.CX21.CCX2.CX21.CZ01.X1.CCX2.X1.CZ01.CX21.CCX2.CX21.CZ01.X1.CCX2.X1.CZ01.CX21.CCX2.CX21.CZ01
 !apply lemmacz01x1ccx2x1cz01 → 15
 !apply lemmacz01x1ccx2x1cz01 → 7
 
@@ -59,6 +67,14 @@ bifunct_X_Z_b ← 1
 r24_a → 2
 
 -- CZ01.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
+expand_S5 ← 1
+expand_S6 ← 2
+expand_S5 ← 3
+expand_S6 ← 4
+expand_S5 ← 5
+expand_S6 ← 6
 !apply s5s6s5s6s5s6 → 1
+
+-- CZ01.CZ01
 elim_CZ01 → 0
 ε

@@ -12,7 +12,13 @@
 -- The derivation
 -- ****************************************************************************
 
-X1.CCX2.X1.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.X1.CCX2.X1.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
+S5.S8.S5.S8
+expand_S8 → 3
+expand_S5 → 2
+expand_S8 → 1
+expand_S5 → 0
+
+-- X1.CCX2.X1.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.X1.CCX2.X1.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 r25_dag → 13
 r25 → 16
 r32 → 14

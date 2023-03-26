@@ -11,7 +11,11 @@
 -- The derivation
 -- ****************************************************************************
 
-K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
+S8.S8
+expand_S8 → 1
+expand_S8 → 0
+
+-- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 elim_K12 → 10
 elim_X0 → 9
 elim_X1 → 8

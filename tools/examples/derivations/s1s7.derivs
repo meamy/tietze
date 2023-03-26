@@ -44,7 +44,13 @@ M.CZ01.Z1.Z0.X1.X0
 -- The derivation
 -- ****************************************************************************
 
-X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.CZ01.X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.CZ01
+S1.S7.S1.S7
+expand_S7 → 3
+expand_S1 → 2
+expand_S7 → 1
+expand_S1 → 0
+
+-- X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.CZ01.X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.CZ01
 r18_a_dag → 9
 r18_b_dag → 11
 
@@ -101,6 +107,12 @@ elim_Z0 → 1
 
 -- CZ01.X1.X0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
 bifunct_X_a ← 1
+expand_S1 ← 1
+expand_S6 ← 2
+expand_S1 ← 3
+expand_S6 ← 4
 !apply s1s6s1s6 → 1
+
+-- CZ01.CZ01
 elim_CZ01 → 0
 ε

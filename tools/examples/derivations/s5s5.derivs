@@ -11,7 +11,11 @@
 -- The derivation
 -- ****************************************************************************
 
-X1.CCX2.X1.X1.CCX2.X1
+S5.S5
+expand_S5 → 1
+expand_S5 → 0
+
+-- X1.CCX2.X1.X1.CCX2.X1
 elim_X1 → 2
 elim_CCX2 → 1
 elim_X1 → 0

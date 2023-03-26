@@ -12,8 +12,20 @@
 -- The derivation
 -- ****************************************************************************
 
-X1.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.X0
+S5.S2.S5.S2
+expand_S2 → 3
+expand_S5 → 2
+expand_S2 → 1
+expand_S5 → 0
+
+-- X1.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.X0
 elim_X0 ← 0
+expand_S1 ← 1
+expand_S6 ← 2
+expand_S1 ← 3
+expand_S6 ← 4
 !apply s1s6s1s6 → 1
+
+-- X0.X0
 elim_X0 → 0
 ε

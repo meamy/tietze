@@ -12,7 +12,15 @@
 -- The derivation
 -- *******************************************************************
 
-X0.CCX2.X0.CX01.CX02.CCX0.CX02.CX01.X0.CCX2.X0.CX01.CX02.CCX0.CX02.CX01.X0.CCX2.X0.CX01.CX02.CCX0.CX02.CX01
+S3.S4.S3.S4.S3.S4
+expand_S4 → 5
+expand_S3 → 4
+expand_S4 → 3
+expand_S3 → 2
+expand_S4 → 1
+expand_S3 → 0
+
+-- X0.CCX2.X0.CX01.CX02.CCX0.CX02.CX01.X0.CCX2.X0.CX01.CX02.CCX0.CX02.CX01.X0.CCX2.X0.CX01.CX02.CCX0.CX02.CX01
 r5_a_dag → 0
 elim_X0 → 2
 

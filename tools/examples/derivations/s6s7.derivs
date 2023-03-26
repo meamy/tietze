@@ -12,7 +12,13 @@
 -- The derivation
 -- ****************************************************************************
 
-CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01
+S6.S7.S6.S7
+expand_S7 → 3
+expand_S6 → 2
+expand_S7 → 1
+expand_S6 → 0
+
+-- CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01
 r8_b → 0
 r8_b → 4
 r8_b → 8

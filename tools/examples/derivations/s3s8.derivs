@@ -1,42 +1,72 @@
-X0.CCX2.X0.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.X0.CCX2.X0.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
+-- ****************************************************************************
+-- (s3s8)^2 = ε
+-- ****************************************************************************
+
+-- Recall that:
+--
+-- s3 = X0.CCX2.X0
+-- s8 = K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
+
+
+-- ****************************************************************************
+-- The derivation
+-- ****************************************************************************
+
+S3.S8.S3.S8
+expand_S8 → 3
+expand_S3 → 2
+expand_S8 → 1
+expand_S3 → 0
+
+-- X0.CCX2.X0.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.X0.CCX2.X0.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 bifunct_X_K_a → 2
 bifunct_X_K_a → 12
 bifunct_X_K_a → 16
+
 -- X0.CCX2.K12.X0.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12.X0.X0.CCX2.K12.X0.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 elim_X0 → 17
 elim_X0 → 13
 elim_X0 → 3
+
 -- X0.CCX2.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12.CCX2.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 r32 → 10
 elim_K12 → 11
+
 -- X0.CCX2.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.CCX1.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 r13_b → 9
 elim_X1 → 10
+
 -- X0.CCX2.K12.X1.X2.CZ02.CCX0.CZ02.X2.CCX1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 r5_e → 8
 elim_X2 → 10
+
 -- X0.CCX2.K12.X1.X2.CZ02.CCX0.CZ02.CCX1.CX01.CZ02.CCX0.CZ02.X2.X1.X0.K12
 r28_a → 9
 r23_b → 7
+
 -- X0.CCX2.K12.X1.X2.CZ02.CCX0.CCX1.CX01.CCX0.CZ02.X2.X1.X0.K12
 r32_dag → 1
 r13_b ← 2
 r5_e_dag → 3
+
 -- X0.K12.X1.X2.CX01.CCX1.CZ02.CCX0.CCX1.CX01.CCX0.CZ02.X2.X1.X0.K12
 elim_CZ02 ← 5
 r23_b → 6
+
 -- X0.K12.X1.X2.CX01.CZ02.CCX1.CCX0.CCX1.CX01.CCX0.CZ02.X2.X1.X0.K12
 elim_CX01 ← 11
 r8_c → 9
 elim_CCX1 → 8
 elim_CCX0 → 7
 elim_CCX1 → 6
+
 -- X0.K12.X1.X2.CX01.CZ02.CX01.CZ02.X2.X1.X0.K12
 r28_a → 6
 elim_CZ02 → 5
 elim_CX01 → 4
 elim_X2 → 3
 elim_X1 → 2
+
 -- X0.K12.X0.K12
 bifunct_X_K_a → 0
 elim_X0 → 1

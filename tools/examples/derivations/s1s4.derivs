@@ -12,7 +12,13 @@
 -- The derivation
 -- ****************************************************************************
 
-X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.CX02.CX01.X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.CX02.CX01
+S1.S4.S1.S4
+expand_S4 → 3
+expand_S1 → 2
+expand_S4 → 1
+expand_S1 → 0
+
+-- X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.CX02.CX01.X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.CX02.CX01
 r12_a → 14
 r12_a ← 9
 bifunct_X_a → 14

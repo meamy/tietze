@@ -12,7 +12,15 @@
 -- The derivation
 -- ****************************************************************************
 
-X0.CX21.CCX2.CX21.X0.X0.CCX2.X0.X0.CX21.CCX2.CX21.X0.X0.CCX2.X0.X0.CX21.CCX2.CX21.X0.X0.CCX2.X0
+S2.S3.S2.S3.S2.S3
+expand_S3 → 5
+expand_S2 → 4
+expand_S3 → 3
+expand_S2 → 2
+expand_S3 → 1
+expand_S2 → 0
+
+-- X0.CX21.CCX2.CX21.X0.X0.CCX2.X0.X0.CX21.CCX2.CX21.X0.X0.CCX2.X0.X0.CX21.CCX2.CX21.X0.X0.CCX2.X0
 elim_X0 → 20
 elim_X0 → 15
 elim_X0 → 12
