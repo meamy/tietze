@@ -109,9 +109,9 @@ r12_c → 8
 r8_f → 6
 
 -- CX12.X1.CX12.CCX2.CCX1.CCX2.CCX2.CCX1.CCX2.X1.X2
-elim_CCX2 → 5
-elim_CCX1 → 4
-elim_CCX2 → 3
+!apply elim_CCX2 → 5
+!apply elim_CCX1 → 4
+!apply elim_CCX2 → 3
 
 -- CX12.X1.CX12.X1.X2
 r12_c → 1

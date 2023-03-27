@@ -50,19 +50,19 @@ r13_b ← 2
 r5_e_dag → 3
 
 -- X0.K12.X1.X2.CX01.CCX1.CZ02.CCX0.CCX1.CX01.CCX0.CZ02.X2.X1.X0.K12
-elim_CZ02 ← 5
+!apply elim_CZ02 ← 5
 r23_b → 6
 
 -- X0.K12.X1.X2.CX01.CZ02.CCX1.CCX0.CCX1.CX01.CCX0.CZ02.X2.X1.X0.K12
 elim_CX01 ← 11
 r8_c → 9
-elim_CCX1 → 8
+!apply elim_CCX1 → 8
 elim_CCX0 → 7
-elim_CCX1 → 6
+!apply elim_CCX1 → 6
 
 -- X0.K12.X1.X2.CX01.CZ02.CX01.CZ02.X2.X1.X0.K12
 r28_a → 6
-elim_CZ02 → 5
+!apply elim_CZ02 → 5
 elim_CX01 → 4
 !apply elim_X2 → 3
 !apply elim_X1 → 2

@@ -40,8 +40,8 @@ r40_a → 11
 !apply drel3 ← 10
 r40_a ← 10
 -- CX01.CCX2.CCX0.CCX2.CCX1.CCX2.CCX1.CCX1.CCX0.CCX1.CCX1.CCX2.CCX1.CX01
-elim_CCX1 → 6
-elim_CCX1 → 7
+!apply elim_CCX1 → 6
+!apply elim_CCX1 → 7
 
 -- CX01.CCX2.CCX0.CCX2.CCX1.CCX2.CCX0.CCX2.CCX1.CX01
 r8_a ← 1
@@ -58,7 +58,7 @@ r1_c → 3
 r8_c → 1
 
 -- CX02.CCX1.CCX0.CCX1.CCX1.CCX0.CX02.CCX1.CX01
-elim_CCX1 → 3
+!apply elim_CCX1 → 3
 elim_CCX0 → 2
 
 -- CX02.CCX1.CX02.CCX1.CX01
@@ -67,5 +67,5 @@ r10_a → 0
 -- CCX1.CX01.CCX1.CX01
 r1_c → 2
 elim_CX01 → 1
-elim_CCX1 → 0
+!apply elim_CCX1 → 0
 ε

@@ -37,9 +37,9 @@ r5_a → 2
 
 -- X1.CCX2.CCX2.CX12.X0.X0.CCX2.CCX2.CX12.X0.X0.X1
 elim_X0 → 9
-elim_CCX2 → 6
+!apply elim_CCX2 → 6
 elim_X0 → 4
-elim_CCX2 → 1
+!apply elim_CCX2 → 1
 
 -- X1.CX12.CX12.X1
 elim_CX12 → 1

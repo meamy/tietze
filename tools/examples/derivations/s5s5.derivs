@@ -17,6 +17,6 @@ expand_S5 → 0
 
 -- X1.CCX2.X1.X1.CCX2.X1
 !apply elim_X1 → 2
-elim_CCX2 → 1
+!apply elim_CCX2 → 1
 !apply elim_X1 → 0
 ε

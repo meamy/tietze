@@ -241,8 +241,8 @@ r26_e → 2
 r31_b → 4
 
 -- CCX1.CCX0.CCX1.CZ01.CZ12.CZ02.CZ02.CZ12
-elim_CZ02 → 5
-elim_CZ12 → 4
+!apply elim_CZ02 → 5
+!apply elim_CZ12 → 4
 CCX1.CCX0.CCX1.CZ01
 
 
@@ -254,7 +254,7 @@ CCX1.CCX0.CCX1.CZ01
 
 CZ12.CCX2.CCX1.CCX2
 r8_f ← 1
-elim_CZ12 ← 2
+!apply elim_CZ12 ← 2
 r29_c ← 0
 
 -- Z1.CX12.CZ12.CCX1.CX12
@@ -265,10 +265,10 @@ r39_a → 1
 -- CX12.CCX1.CZ02.Z1.CZ12.CZ02.CX12
 bifunct_Z_CZ_a → 2
 r31_b → 3
-elim_CZ02 → 4
+!apply elim_CZ02 → 4
 
 -- CX12.CCX1.Z1.CZ12.CX12
-elim_CZ12 ← 5
+!apply elim_CZ12 ← 5
 r29_c ← 3
 !apply elim_Z1 → 2
 r8_f → 0
@@ -330,7 +330,7 @@ r10_c → 1
 
 -- CX20.CCX1.CX21.CCX2.CX21.CCX1.CX20
 r8_b → 2
-elim_CCX1 → 4
-elim_CCX1 → 1
+!apply elim_CCX1 → 4
+!apply elim_CCX1 → 1
 r8_e → 0
 CCX0.CCX2.CCX0

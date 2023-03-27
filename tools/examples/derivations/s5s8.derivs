@@ -39,7 +39,7 @@ r39_a → 1
 r18_c → 5
 bifunct_X_CZ_a → 4
 r18_f → 3
-elim_CZ02 → 2
+!apply elim_CZ02 → 2
 
 -- K12.CCX1.Z2.X0.X1.Z0.X2.CCX0.CZ02.X2.X1.X0.CCX1.CZ02.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 r18_c_dag → 8
@@ -84,7 +84,7 @@ spatial_MCZ_c → 5
 -- K12.CCX1.X1.X2.CCX0.CZ12.X2.X1.CCX1.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 r26_b_dag → 13
 r31_b → 12
-elim_CZ02 → 13
+!apply elim_CZ02 → 13
 
 -- K12.CCX1.X1.X2.CCX0.CZ12.X2.X1.CCX1.X0.X1.X2.CZ12.CCX0.X2.X1.X0.K12
 bifunct_X_a → 9
@@ -102,7 +102,7 @@ r26_d_dag → 8
 r31_b → 8
 r18_d → 7
 r18_e → 6
-elim_CZ12 → 5
+!apply elim_CZ12 → 5
 
 -- K12.CCX1.X1.X2.CCX0.Z1.X2.Z2.X1.CZ02.CCX1.Z2.X1.Z1.X2.CCX0.X2.X1.K12
 bifunct_X_Z_d ← 7
@@ -121,7 +121,7 @@ r19_a → 11
 r39_a_dag → 9
 bifunct_Z_CZ_a → 8
 !apply elim_Z1 → 7
-elim_CZ02 → 7
+!apply elim_CZ02 → 7
 
 -- K12.CCX1.X1.X2.CCX0.X2.X1.CCX1.X1.X2.CCX0.X2.X1.K12
 r13_b → 6
@@ -141,7 +141,7 @@ r8_d → 4
 -- K12.X1.CCX1.CCX0.CCX0.CCX1.CCX0.CCX0.X1.K12
 elim_CCX0 → 6
 elim_CCX0 → 3
-elim_CCX1 → 2
+!apply elim_CCX1 → 2
 !apply elim_X1 → 1
 elim_K12 → 0
 ε

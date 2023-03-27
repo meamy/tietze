@@ -24,7 +24,7 @@ r5_d → 9
 
 -- X0.CCX2.X0.X1.CCX2.X1.X0.CCX2.X0.CCX2.CX02
 r5_a → 8
-elim_CCX2 → 7
+!apply elim_CCX2 → 7
 
 -- X0.CCX2.X0.X1.CCX2.X1.X0.CX12.X0.CX02
 bifunct_X_CX_a → 7
@@ -44,6 +44,6 @@ bifunct_X_CX_a → 3
 elim_CX12 → 4
 
 -- X0.CCX2.CCX2.X0
-elim_CCX2 → 1
+!apply elim_CCX2 → 1
 elim_X0 → 0
 ε

@@ -18,7 +18,7 @@ expand_S7 → 0
 -- CZ01.CX21.CCX2.CX21.CZ01.CZ01.CX21.CCX2.CX21.CZ01
 elim_CZ01 → 4
 elim_CX21 → 3
-elim_CCX2 → 2
+!apply elim_CCX2 → 2
 elim_CX21 → 1
 elim_CZ01 → 0
 ε

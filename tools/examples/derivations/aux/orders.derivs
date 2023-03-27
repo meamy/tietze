@@ -91,6 +91,29 @@ symmetry_CX_b → 0
 
 
 -- *******************************************************************
+-- CCX Orders
+-- *******************************************************************
+
+@name elim_CCX1
+CCX1.CCX1
+symmetry_CCX_a → 1
+symmetry_CCX_a → 0
+!apply elim_SWAP01 → 2
+elim_CCX0 → 1
+!apply elim_SWAP01 → 0
+ε
+
+@name elim_CCX2
+CCX2.CCX2
+symmetry_CCX_b → 1
+symmetry_CCX_b → 0
+!apply elim_SWAP02 → 2
+elim_CCX0 → 1
+!apply elim_SWAP02 → 0
+ε
+
+
+-- *******************************************************************
 -- Pauli-Z Orders
 -- *******************************************************************
 
@@ -100,5 +123,28 @@ symmetry_Z_a → 1
 symmetry_Z_a → 0
 !apply elim_SWAP01 → 2
 elim_Z0 → 1
+!apply elim_SWAP01 → 0
+ε
+
+
+-- *******************************************************************
+-- CZ Orders
+-- *******************************************************************
+
+@name elim_CZ02
+CZ02.CZ02
+symmetry_CZ_a → 1
+symmetry_CZ_a → 0
+!apply elim_SWAP12 → 2
+elim_CZ01 → 1
+!apply elim_SWAP12 → 0
+ε
+
+@name elim_CZ12
+CZ12.CZ12
+symmetry_CZ_b → 1
+symmetry_CZ_b → 0
+!apply elim_SWAP01 → 2
+!apply elim_CZ02 → 1
 !apply elim_SWAP01 → 0
 ε

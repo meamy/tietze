@@ -52,9 +52,9 @@ r40_a → 3
 r40_a → 8
 
 -- X0.CX02.CCX2.CCX2.CCX1.CCX2.CX02.CCX2.CCX2.CCX1.CCX2.CCX2.CX02.CX21.CCX2.CX21.X0
-elim_CCX2 → 2
-elim_CCX2 → 5
-elim_CCX2 → 6
+!apply elim_CCX2 → 2
+!apply elim_CCX2 → 5
+!apply elim_CCX2 → 6
 
 -- X0.CX02.CCX1.CCX2.CX02.CCX1.CX02.CX21.CCX2.CX21.X0
 r1_a → 3
@@ -69,8 +69,8 @@ elim_CX01 → 1
 r8_b → 4
 
 -- X0.CCX1.CCX2.CCX1.CCX1.CCX2.CCX1.X0
-elim_CCX1 → 3
-elim_CCX2 → 2
-elim_CCX1 → 1
+!apply elim_CCX1 → 3
+!apply elim_CCX2 → 2
+!apply elim_CCX1 → 1
 elim_X0 → 0
 ε

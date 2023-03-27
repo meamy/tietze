@@ -45,9 +45,9 @@ elim_CX12 → 4
 r40_a → 2
 
 -- X0.CX12.CCX2.CCX1.CCX2.CCX2.CCX1.CCX2.CX12.X0
-elim_CCX2 → 4
-elim_CCX1 → 3
-elim_CCX2 → 2
+!apply elim_CCX2 → 4
+!apply elim_CCX1 → 3
+!apply elim_CCX2 → 2
 elim_CX12 → 1
 elim_X0 → 0
 ε

@@ -36,7 +36,7 @@ r35_a_dag ← 4
 r18_f → 3
 bifunct_X_CZ_a → 2
 r18_c → 1
-elim_CZ02 → 0
+!apply elim_CZ02 → 0
 Z0.X2.X1.Z2.X0.K12.CX01
 
 
@@ -180,7 +180,7 @@ r39_b_dag → 2
 -- CX01.CX02.Z0.CZ12.CCX0.K12.CX10.CCX0.CX20.K12.CCX0.CZ12.K12.CX10.CCX0.CX20.K12.Z0.CX02.CX01
 r46 → 3
 elim_CCX0 → 9
-elim_CZ12 → 8
+!apply elim_CZ12 → 8
 elim_K12 → 7
 
 -- CX01.CX02.Z0.K12.CX10.CCX0.CX20.CX10.CCX0.CX20.K12.Z0.CX02.CX01
