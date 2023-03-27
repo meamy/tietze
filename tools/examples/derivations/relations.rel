@@ -195,9 +195,9 @@ r18_f_dag CZ02.X0 = X0.Z2.CZ02
 
 r19_a X1.Z1 = M.Z1.X1
 r19_b X0.Z0 = M.Z0.X0
-r19_c X2.Z2 = Z2.X2.M
+r19_c X2.Z2 = M.Z2.X2
 r19_a_dag Z1.X1 = X1.Z1.M
-r19_c_dag Z2.X2 = M.X2.Z2
+r19_c_dag Z2.X2 = X2.Z2.M
 
 r23_a CZ01.CCX2.CZ01 = CCX2
 r23_b CZ02.CCX1.CZ02 = CCX1

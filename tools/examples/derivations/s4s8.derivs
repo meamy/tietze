@@ -53,8 +53,12 @@ bifunct_Z_b ← 2
 
 -- X0.X1.Z0.Z2.X2.CCX0.Z0.X2.X1.Z2
 r19_c_dag → 3
+spatial_MZ_c ← 4
+spatial_MX_c ← 3
 bifunct_X_Z_d → 9
 r19_c → 8
+spatial_MZ_c → 8
+spatial_MX_c → 9
 bifunct_Z_b → 7
 r24_f → 5
 

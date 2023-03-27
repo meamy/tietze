@@ -66,7 +66,11 @@ elim_X0 → 6
 bifunct_X_Z_d → 8
 bifunct_X_Z_d ← 2
 r19_c_dag → 3
+spatial_MZ_c ← 4
+spatial_MX_c ← 3
 r19_c → 8
+spatial_MZ_c → 8
+spatial_MX_c → 9
 r30_a → 7
 r24_f → 5
 
