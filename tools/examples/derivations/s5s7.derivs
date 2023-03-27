@@ -19,7 +19,7 @@ r5_d → 1
 elim_X1 → 3
 
 -- CZ01.CCX2.CX02.CZ01
-r28 → 2
+r28_b → 2
 r23_a → 0
 
 -- CCX2.CX02
@@ -52,7 +52,7 @@ r18_b_dag → 3
 elim_X1 → 2
 
 -- X1.CCX2.Z0.CZ01.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
-r30 ← 2
+r30_e ← 2
 elim_CZ01 ← 1
 r23_a → 2
 
@@ -62,7 +62,7 @@ r18_b_dag → 1
 elim_X1 → 0
 
 -- Z0.CZ01.X1.CCX2.Z0.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
-r30 ← 0
+r30_e ← 0
 bifunct_X_Z_b ← 1
 r24_a → 2
 

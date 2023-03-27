@@ -92,12 +92,12 @@ M.Z0.CX10.CCX0.CX20.Z0
 @name lemmacx01k12mz0cx10ccx0cx20z0x0k1cx01
 
 CX01.K12.M.Z0.CX10.CCX0.CX20.Z0.X0.K12.CX01
-r35 ← 0
-r35_dag ← 9
+r35_b ← 0
+r35_b_dag ← 9
 
 -- K12.CZ01.M.Z0.CX10.CCX0.CX20.Z0.X0.CZ01.K12
 spatial_MCZ_a ← 1
-r30 → 2
+r30_e → 2
 elim_CZ01 ← 5
 r29_a ← 3
 
@@ -105,12 +105,12 @@ r29_a ← 3
 r26_c → 5
 r31_c → 6
 r18_a → 10
-r30 ← 9
+r30_e ← 9
 
 -- K12.M.Z0.Z1.CX10.CCX0.CZ12.CZ01.CX20.CZ01.Z0.Z1.X0.K12
-r44 → 6
+r44_c → 6
 elim_CZ01 → 7
-r27 ← 3
+r27_a ← 3
 bifunct_Z_a → 7
 bifunct_Z_CX_a ← 6
 r24_d → 4
@@ -152,7 +152,7 @@ elim_CX02 ← 33
 
 -- CX01.CX02.CCX0.K12.Z0.CX10.CCX0.CX20.X0.Z0.K12.CCX0.K12.Z0.CX10.CCX0.CX20.X0.Z0.K12.CX02.CX01
 bifunct_Z_K_a → 9
-r39 → 10
+r39_b → 10
 bifunct_Z_K_a → 12
 elim_Z0 → 13
 
@@ -171,7 +171,7 @@ r36_b → 14
 -- CX01.CX02.CCX0.K12.Z0.CX10.CCX0.CX20.K12.CCX0.CZ12.K12.CX10.CCX0.CX20.Z0.K12.CX02.CX01
 bifunct_Z_K_a → 15
 bifunct_Z_K_a ← 3
-r39_dag → 2
+r39_b_dag → 2
 
 -- CX01.CX02.Z0.CZ12.CCX0.K12.CX10.CCX0.CX20.K12.CCX0.CZ12.K12.CX10.CCX0.CX20.K12.Z0.CX02.CX01
 r46 → 3

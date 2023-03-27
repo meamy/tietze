@@ -23,7 +23,7 @@ r5_d → 9
 elim_X1 → 11
 
 -- X0.CCX2.X0.X1.CCX2.X1.X0.CCX2.X0.CCX2.CX02
-r5_a_dag → 8
+r5_a → 8
 elim_CCX2 → 7
 
 -- X0.CCX2.X0.X1.CCX2.X1.X0.CX12.X0.CX02
@@ -39,7 +39,7 @@ r15_b → 5
 elim_CX02 → 4
 
 -- X0.CCX2.X0.CCX2.CX12
-r5_a_dag → 2
+r5_a → 2
 bifunct_X_CX_a → 3
 elim_CX12 → 4
 

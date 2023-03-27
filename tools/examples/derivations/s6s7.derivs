@@ -37,7 +37,7 @@ elim_CCX2 → 1
 elim_CCX1 → 0
 
 -- CZ02.CZ01.CZ02.CZ01
-r31 → 1
+r31_a → 1
 elim_CZ02 → 0
 elim_CZ01 → 0
 ε

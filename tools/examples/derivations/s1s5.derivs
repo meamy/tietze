@@ -32,8 +32,8 @@ elim_X1 → 6
 elim_X1 → 2
 
 -- X1.CCX2.X0.CCX2.X0.CCX2.X0.CCX2.X0.X1
-r5_a_dag → 6
-r5_a_dag → 2
+r5_a → 6
+r5_a → 2
 
 -- X1.CCX2.CCX2.CX12.X0.X0.CCX2.CCX2.CX12.X0.X0.X1
 elim_X0 → 9
