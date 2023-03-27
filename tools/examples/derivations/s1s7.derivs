@@ -20,7 +20,7 @@ r18_b_dag → 2
 r19_a_dag → 1
 spatial_MZ_a → 3
 spatial_MCZ_a → 4
-bifunct_Z_a ←  2
+bifunct_Z_a ← 2
 X0.X1.Z0.Z1.CZ01.M
 
 

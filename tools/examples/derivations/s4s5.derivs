@@ -15,7 +15,7 @@
 @name lemmax1ccx2x1cx01cx02ccx0cx02
 
 X1.CCX2.X1.CX01.CX02.CCX0.CX02
-r14_b ← 0
+!apply drel7 ← 0
 elim_CX01 → 2
 r8_a → 2
 elim_CCX2 → 1
