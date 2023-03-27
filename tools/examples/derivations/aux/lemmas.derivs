@@ -93,7 +93,7 @@ CX01.CCX1.CCX2.CCX1
 
 CX12.CCX0.CX12
 r10_b → 0
-elim_X2 ← 0
+!apply elim_X2 ← 0
 r5_c → 1
 
 -- X2.CCX0.CX10.X2.CX10
@@ -127,7 +127,7 @@ X0.CCX2.X0
 
 CX01.CCX2.CX01
 r10_e → 0
-elim_X1 ← 0
+!apply elim_X1 ← 0
 r5_d → 1
 
 -- X1.CCX2.CX02.X1.CX02
@@ -270,7 +270,7 @@ elim_CZ02 → 4
 -- CX12.CCX1.Z1.CZ12.CX12
 elim_CZ12 ← 5
 r29_c ← 3
-elim_Z1 → 2
+!apply elim_Z1 → 2
 r8_f → 0
 CCX2.CCX1.CCX2.CZ12
 

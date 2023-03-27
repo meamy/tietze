@@ -1,0 +1,81 @@
+-- *******************************************************************
+-- The Order of M
+-- *******************************************************************
+
+@name elim_M
+M.M
+expand_M_0 → 1
+spatial_MX_a → 0
+r19_b ← 1
+elim_X0 → 0
+elim_Z0 → 0
+ε
+
+
+-- *******************************************************************
+-- Swap Orders
+-- *******************************************************************
+
+@name elim_SWAP01
+SWAP01.SWAP01
+expand_SWAP01 → 1
+expand_SWAP01 → 0
+elim_CX01 → 2
+elim_CX10 → 1
+elim_CX01 → 0
+ε
+
+@name elim_SWAP12
+SWAP12.SWAP12
+expand_SWAP12 → 1
+expand_SWAP12 → 0
+elim_CX12 → 2
+elim_CX21 → 1
+elim_CX12 → 0
+ε
+
+@name elim_SWAP02
+SWAP02.SWAP02
+expand_SWAP02 → 1
+expand_SWAP02 → 0
+!apply elim_SWAP12 → 2
+!apply elim_SWAP01 → 1
+!apply elim_SWAP12 → 0
+ε
+
+
+-- *******************************************************************
+-- Pauli-X Orders
+-- *******************************************************************
+
+@name elim_X1
+X1.X1
+symmetry_X_a → 1
+symmetry_X_a → 0
+!apply elim_SWAP01 → 2
+elim_X0 → 1
+!apply elim_SWAP01 → 0
+ε
+
+@name elim_X2
+X2.X2
+symmetry_X_b → 1
+symmetry_X_b → 0
+!apply elim_SWAP02 → 2
+elim_X0 → 1
+!apply elim_SWAP02 → 0
+ε
+
+
+-- *******************************************************************
+-- Pauli-Z Orders
+-- *******************************************************************
+
+@name elim_Z1
+Z1.Z1
+symmetry_Z_a → 1
+symmetry_Z_a → 0
+!apply elim_SWAP01 → 2
+elim_Z0 → 1
+!apply elim_SWAP01 → 0
+ε

@@ -107,7 +107,7 @@ r12_e_dag ← 6
 -- X0.CX01.CX02.X2.X1.CCX0.CX21.X2.CCX2.X2.CX21.CCX0.CX21.X2.CCX2.CX02.CX21.X0
 r13_a → 13
 r13_a → 7
-elim_X2 → 8
+!apply elim_X2 → 8
 
 -- X0.CX01.CX02.X2.X1.CCX0.CX21.CCX2.CX21.CCX0.CX21.CCX2.X2.CX02.CX21.X0
 r8_b → 6
@@ -126,8 +126,8 @@ elim_CCX1 → 5
 r12_e_dag → 5
 
 -- X0.CX01.CX02.X2.X1.X1.X2.CX21.CX02.CX21.X0
-elim_X1 → 4
-elim_X2 → 3
+!apply elim_X1 → 4
+!apply elim_X2 → 3
 
 -- X0.CX01.CX02.CX21.CX02.CX21.X0
 r17_a ← 2

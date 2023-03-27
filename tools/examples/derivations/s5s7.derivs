@@ -16,14 +16,14 @@
 
 CZ01.X1.CCX2.X1.CZ01
 r5_d → 1
-elim_X1 → 3
+!apply elim_X1 → 3
 
 -- CZ01.CCX2.CX02.CZ01
 r28_b → 2
 r23_a → 0
 
 -- CCX2.CX02
-elim_X1 ← 0
+!apply elim_X1 ← 0
 r5_d → 1
 bifunct_X_CX_e ← 3
 elim_CX02 → 2
@@ -47,9 +47,9 @@ expand_S5 → 0
 !apply lemmacz01x1ccx2x1cz01 → 7
 
 -- X1.CCX2.X1.CZ01.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
-elim_X1 ← 4
+!apply elim_X1 ← 4
 r18_b_dag → 3
-elim_X1 → 2
+!apply elim_X1 → 2
 
 -- X1.CCX2.Z0.CZ01.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
 r30_e ← 2
@@ -57,9 +57,9 @@ elim_CZ01 ← 1
 r23_a → 2
 
 -- X1.CZ01.CCX2.Z0.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
-elim_X1 ← 2
+!apply elim_X1 ← 2
 r18_b_dag → 1
-elim_X1 → 0
+!apply elim_X1 → 0
 
 -- Z0.CZ01.X1.CCX2.Z0.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
 r30_e ← 0

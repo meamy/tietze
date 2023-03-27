@@ -69,19 +69,9 @@ symmetry_CCX_b CCX2 = SWAP02.CCX0.SWAP02
 -- Order rules
 -- *******************************************************************
 
-elim_M M.M = ε
-
-elim_SWAP01 SWAP01.SWAP01 = ε
-elim_SWAP02 SWAP02.SWAP02 = ε
-elim_SWAP12 SWAP12.SWAP12 = ε
-
 elim_X0 X0.X0 = ε
-elim_X1 X1.X1 = ε
-elim_X2 X2.X2 = ε
 
 elim_Z0 Z0.Z0 = ε
-elim_Z1 Z1.Z1 = ε
-elim_Z2 Z2.Z2 = ε
 
 elim_CX01 CX01.CX01 = ε
 elim_CX02 CX02.CX02 = ε

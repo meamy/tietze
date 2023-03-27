@@ -34,11 +34,11 @@ elim_K12 → 11
 
 -- X0.CCX2.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.CCX1.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 r13_b → 9
-elim_X1 → 10
+!apply elim_X1 → 10
 
 -- X0.CCX2.K12.X1.X2.CZ02.CCX0.CZ02.X2.CCX1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 r5_e → 8
-elim_X2 → 10
+!apply elim_X2 → 10
 
 -- X0.CCX2.K12.X1.X2.CZ02.CCX0.CZ02.CCX1.CX01.CZ02.CCX0.CZ02.X2.X1.X0.K12
 r28_a → 9
@@ -64,8 +64,8 @@ elim_CCX1 → 6
 r28_a → 6
 elim_CZ02 → 5
 elim_CX01 → 4
-elim_X2 → 3
-elim_X1 → 2
+!apply elim_X2 → 3
+!apply elim_X1 → 2
 
 -- X0.K12.X0.K12
 bifunct_X_K_a → 0

@@ -20,7 +20,7 @@ expand_S3 → 0
 
 -- X0.CCX2.X0.X1.CCX2.X1.X0.CCX2.X0.X1.CCX2.X1
 r5_d → 9
-elim_X1 → 11
+!apply elim_X1 → 11
 
 -- X0.CCX2.X0.X1.CCX2.X1.X0.CCX2.X0.CCX2.CX02
 r5_a → 8
@@ -32,7 +32,7 @@ elim_X0 → 6
 
 -- X0.CCX2.X0.X1.CCX2.X1.CX12.CX02
 r5_d → 3
-elim_X1 → 5
+!apply elim_X1 → 5
 
 -- X0.CCX2.X0.CCX2.CX02.CX12.CX02
 !apply drel11 → 5

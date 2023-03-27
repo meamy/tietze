@@ -66,7 +66,7 @@ r19_a → 18
 r23_a → 14
 r24_a → 13
 spatial_MCCX2 → 12
-elim_M → 13
+!apply elim_M → 13
 r24_b → 11
 
 -- X0.X1.CCX2. X1.X0.CZ01.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
@@ -80,7 +80,7 @@ elim_CZ01 ← 3
 r23_a → 4
 
 -- M.X0.X1.CZ01.CCX2.Z1.Z0.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
-elim_Z1 ← 4
+!apply elim_Z1 ← 4
 r24_b → 5
 elim_Z0 ← 5
 r24_a → 6
@@ -88,18 +88,18 @@ r24_a → 6
 -- M.X0.X1.CZ01.Z1.Z0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
 bifunct_X_a → 1
 !apply lemmax1x0cz01 → 1
-elim_M → 0
+!apply elim_M → 0
 
 -- CZ01.Z1.Z0.X1.X0.Z1.Z0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
 bifunct_Z_a ← 1
 r19_a_dag → 2
 bifunct_X_Z_a → 5
 spatial_MZ_b → 4
-elim_Z1 → 3
+!apply elim_Z1 → 3
 
 -- CZ01.Z0.X1.M.X0.Z0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
 r19_b → 4
-elim_M → 3
+!apply elim_M → 3
 
 -- CZ01.Z0.X1.Z0.X0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
 bifunct_X_Z_b → 2

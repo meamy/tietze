@@ -61,19 +61,19 @@ bifunct_X_b → 5
 
 -- X0.CX12.X1.X2.CCX2.X2.X0.X1.CCX1.X2.X1.X0.CCX2.X0.X1.X2.CCX1.CX12
 r13_a → 3
-elim_X2 → 4
+!apply elim_X2 → 4
 
 -- X0.CX12.X1.CCX2.X0.X1.CCX1.X2.X1.X0.CCX2.X0.X1.X2.CCX1.CX12
 bifunct_X_c ← 7
 r13_b → 5
-elim_X1 → 6
+!apply elim_X1 → 6
 bifunct_X_b ← 6
 bifunct_X_c → 10
 bifunct_X_b → 9
 
 -- X0.CX12.X1.CCX2.X0.CCX1.X0.X2.CCX2.X2.X0.X1.CCX1.CX12
 r13_a → 7
-elim_X2 → 8
+!apply elim_X2 → 8
 
 -- X0.CX12.X1.CCX2.X0.CCX1.X0.CCX2.X0.X1.CCX1.CX12
 r13_b → 9
@@ -119,6 +119,6 @@ bifunct_X_c → 4
 
 -- CX12.CX12.X1.X2.X2.X1
 elim_CX12 → 0
-elim_X2 → 1
-elim_X1 → 0
+!apply elim_X2 → 1
+!apply elim_X1 → 0
 ε
