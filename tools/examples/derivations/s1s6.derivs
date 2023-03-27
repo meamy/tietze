@@ -21,8 +21,8 @@ expand_S6 → 1
 expand_S1 → 0
 
 -- X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21
-r9 → 13
-r9 → 5
+!apply drel13 → 13
+!apply drel13 → 5
 
 -- X0.X1.CCX2.X1.X0.CX12.CCX1.CX12.X0.X1.CCX2.X1.X0.CX12.CCX1.CX12
 bifunct_X_a ← 3
