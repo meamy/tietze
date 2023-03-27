@@ -19,7 +19,7 @@ r18_c → 5
 bifunct_X_CZ_a → 4
 r18_f → 3
 r35_a → 2
-r15_a → 1
+!apply drel9 → 1
 elim_CX02 → 0
 CX01.K12.Z2.X0.X1.Z0.X2
 
@@ -31,7 +31,7 @@ CX01.K12.Z2.X0.X1.Z0.X2
 @name lemmacz02x2x1x0k12cx01cx02
 
 CZ02.X2.X1.X0.K12.CX01.CX02
-r15_a → 5
+!apply drel9 → 5
 r35_a_dag ← 4
 r18_f → 3
 bifunct_X_CZ_a → 2
