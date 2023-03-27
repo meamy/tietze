@@ -13,10 +13,67 @@ expand_S8 S8 = K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 
 
 -- *******************************************************************
+-- Spatiality Relations
+-- *******************************************************************
+
+expand_M_0 M = X0.Z0.X0.Z0
+expand_M_1 M = X1.Z1.X1.Z1
+expand_M_2 M = X2.Z2.X2.Z2
+
+spatial_MX_a M.X0 = X0.M
+spatial_MX_b M.X1 = X1.M
+spatial_MX_c M.X2 = X2.M
+
+spatial_MZ_a M.Z0 = Z0.M
+spatial_MZ_b M.Z1 = Z1.M
+spatial_MZ_c M.Z2 = Z2.M
+
+spatial_MCX_c M.CX12 = CX12.M
+spatial_MCX_d M.CX10 = CX10.M
+spatial_MCX_e M.CX20 = CX20.M
+
+spatial_MCZ_a M.CZ01 = CZ01.M
+spatial_MCZ_b M.CZ02 = CZ02.M
+spatial_MCZ_c M.CZ12 = CZ12.M
+
+spatial_MCCX0 M.CCX0 = CCX0.M
+spatial_MCCX1 M.CCX1 = CCX1.M
+spatial_MCCX2 M.CCX2 = CCX2.M
+
+
+-- *******************************************************************
+-- Symmetry Relations
+-- *******************************************************************
+
+expand_SWAP01 SWAP01 = CX01.CX10.CX01
+expand_SWAP12 SWAP12 = CX12.CX21.CX12
+expand_SWAP02 SWAP02 = SWAP12.SWAP01.SWAP12
+
+symmetry_X_a X1 = SWAP01.X0.SWAP01
+symmetry_X_b X2 = SWAP02.X0.SWAP02
+
+symmetry_CX_a CX02 = SWAP12.CX01.SWAP12
+symmetry_CX_b CX20 = SWAP02.CX02.SWAP02
+
+symmetry_Z_a Z1 = SWAP01.Z0.SWAP01
+symmetry_Z_b Z2 = SWAP02.Z0.SWAP02
+
+symmetry_CZ_a CZ02 = SWAP12.CZ01.SWAP12
+symmetry_CZ_b CZ12 = SWAP01.CZ02.SWAP01
+
+symmetry_CCX_a CCX1 = SWAP01.CCX0.SWAP01
+symmetry_CCX_b CCX2 = SWAP02.CCX0.SWAP02
+
+
+-- *******************************************************************
 -- Order rules
 -- *******************************************************************
 
 elim_M M.M = ε
+
+elim_SWAP01 SWAP01.SWAP01 = ε
+elim_SWAP02 SWAP02.SWAP02 = ε
+elim_SWAP12 SWAP12.SWAP12 = ε
 
 elim_X0 X0.X0 = ε
 elim_X1 X1.X1 = ε
@@ -42,31 +99,6 @@ elim_K12 K12.K12 = ε
 elim_CCX0 CCX0.CCX0 = ε
 elim_CCX1 CCX1.CCX1 = ε
 elim_CCX2 CCX2.CCX2 = ε
-
-
--- *******************************************************************
--- Spatiality rules
--- *******************************************************************
-
-spatial_MX_a M.X0 = X0.M
-spatial_MX_b M.X1 = X1.M
-spatial_MX_c M.X2 = X2.M
-
-spatial_MZ_a M.Z0 = Z0.M
-spatial_MZ_b M.Z1 = Z1.M
-spatial_MZ_c M.Z2 = Z2.M
-
-spatial_MCX_c M.CX12 = CX12.M
-spatial_MCX_d M.CX10 = CX10.M
-spatial_MCX_e M.CX20 = CX20.M
-
-spatial_MCZ_a M.CZ01 = CZ01.M
-spatial_MCZ_b M.CZ02 = CZ02.M
-spatial_MCZ_c M.CZ12 = CZ12.M
-
-spatial_MCCX0 M.CCX0 = CCX0.M
-spatial_MCCX1 M.CCX1 = CCX1.M
-spatial_MCCX2 M.CCX2 = CCX2.M
 
 
 -- *******************************************************************
