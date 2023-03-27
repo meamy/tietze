@@ -283,6 +283,54 @@ CCX2.CCX1.CCX2.CZ12
 
 CCX0.CCX1.CCX2.CCX1.CCX0
 r40_a → 1
-r38_a → 0
+!apply drel17 → 0
 r40_a ← 0
 CCX1.CCX2.CCX1
+
+
+-- ****************************************************************************
+-- The relation CCX0.CCX2.CCX1.CCX2.CCX0 = CCX2.CCX1.CCX2
+-- ****************************************************************************
+
+@name drel17
+
+CCX0.CCX2.CCX1.CCX2.CCX0
+r8_f ← 1
+elim_CX12 ← 5
+elim_CX12 ← 0
+
+-- CX12.CX12.CCX0.CX12.CCX1.CX12.CCX0.CX12.CX12
+r10_b → 5
+r1_b → 5
+r10_b → 1
+
+-- CX12.CCX0.CX10.CCX1.CX10.CCX0.CX12
+r8_d → 2
+elim_CCX0 → 4
+elim_CCX0 → 1
+r8_f → 0
+CCX2.CCX1.CCX2
+
+
+-- ****************************************************************************
+-- The relation CCX1.CCX0.CCX2.CCX0.CCX1 = CCX0.CCX2.CCX0
+-- ****************************************************************************
+
+@name drel18
+
+CCX1.CCX0.CCX2.CCX0.CCX1
+r8_e ← 1
+elim_CX20 ← 5
+elim_CX20 ← 0
+
+-- CX20.CX20.CCX1.CX20.CCX2.CX20.CCX1.CX20.CX20
+r10_c → 5
+r1_d → 5
+r10_c → 1
+
+-- CX20.CCX1.CX21.CCX2.CX21.CCX1.CX20
+r8_b → 2
+elim_CCX1 → 4
+elim_CCX1 → 1
+r8_e → 0
+CCX0.CCX2.CCX0
