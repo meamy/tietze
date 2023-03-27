@@ -62,7 +62,7 @@ r1_a ← 3
 -- X0.CX02.CCX1.CX02.CCX2.CCX1.CX02.CX21.CCX2.CX21.X0
 r10_a → 1
 r1_c → 1
-r11_a → 2
+!apply drel4 → 2
 
 -- X0.CX01.CX01.CCX1.CCX2.CCX1.CX21.CCX2.CX21.X0
 elim_CX01 → 1
