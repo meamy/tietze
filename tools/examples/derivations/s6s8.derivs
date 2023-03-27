@@ -170,7 +170,7 @@ elim_CCX1 → 6
 -- K12.X0.CX12.CX21.CX20.CX21.CX12.CX10.CX20.X0.K12
 r15_c → 4
 elim_CX21 → 3
-r16 → 5
+!apply drel8 → 5
 
 -- K12.X0.CX12.CX20.CX12.CX20.CX10.X0.K12
 r17_b ← 2
