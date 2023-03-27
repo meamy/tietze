@@ -142,6 +142,7 @@ r5_b_dag → 3
 r16 → 6
 elim_CX20 ← 5
 r10_c → 6
+r1_d → 6
 r15_c → 5
 elim_CX21 → 4
 
