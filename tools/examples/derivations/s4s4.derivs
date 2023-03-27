@@ -17,8 +17,8 @@ expand_S4 → 0
 
 -- CX01.CX02.CCX0.CX02.CX01.CX01.CX02.CCX0.CX02.CX01
 elim_CX01 → 4
-elim_CX02 → 3
+!apply elim_CX02 → 3
 elim_CCX0 → 2
-elim_CX02 → 1
+!apply elim_CX02 → 1
 elim_CX01 → 0
 ε

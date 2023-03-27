@@ -26,7 +26,7 @@ r23_a → 0
 !apply elim_X1 ← 0
 r5_d → 1
 bifunct_X_CX_e ← 3
-elim_CX02 → 2
+!apply elim_CX02 → 2
 X1.CCX2.X1
 
 

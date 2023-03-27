@@ -36,7 +36,7 @@ r5_d → 3
 
 -- X0.CCX2.X0.CCX2.CX02.CX12.CX02
 !apply drel11 → 5
-elim_CX02 → 4
+!apply elim_CX02 → 4
 
 -- X0.CCX2.X0.CCX2.CX12
 r5_a → 2

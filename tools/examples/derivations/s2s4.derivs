@@ -46,7 +46,7 @@ X0.X1.X2.CX02.CX01
 
 CX02.CX01.CX21
 r17_a → 1
-elim_CX02 → 0
+!apply elim_CX02 → 0
 elim_CX21 → 2
 CX21.CX02
 
@@ -60,7 +60,7 @@ CX21.CX02
 CX21.CX01.CX02
 r17_a_dag → 1
 elim_CX21 → 0
-elim_CX02 → 2
+!apply elim_CX02 → 2
 CX02.CX21
 
 
@@ -97,7 +97,7 @@ elim_X0 → 6
 -- X0.CX01.CX02.X2.X1.CCX0.X1.X2.CX21.CX02.CCX2.CX02.CX21.X2.X1.CCX0.X1.X2.CX21.CX02.CCX2.CX21.X0
 r1_a ← 19
 r1_a ← 9
-elim_CX02 → 10
+!apply elim_CX02 → 10
 
 -- X0.CX01.CX02.X2.X1.CCX0.X1.X2.CX21.CCX2.CX21.X2.X1.CCX0.X1.X2.CX21.CCX2.CX02.CX21.X0
 r12_e_dag ← 14

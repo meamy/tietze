@@ -74,10 +74,8 @@ elim_X0 X0.X0 = ε
 elim_Z0 Z0.Z0 = ε
 
 elim_CX01 CX01.CX01 = ε
-elim_CX02 CX02.CX02 = ε
-elim_CX12 CX12.CX12 = ε
 elim_CX10 CX10.CX10 = ε
-elim_CX20 CX20.CX20 = ε
+elim_CX12 CX12.CX12 = ε
 elim_CX21 CX21.CX21 = ε
 
 elim_CZ01 CZ01.CZ01 = ε

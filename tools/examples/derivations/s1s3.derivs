@@ -34,6 +34,6 @@ elim_CCX2 → 6
 elim_CCX2 → 1
 
 -- X0.CX02.CX02.X0
-elim_CX02 → 1
+!apply elim_CX02 → 1
 elim_X0 → 0
 ε

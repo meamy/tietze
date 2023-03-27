@@ -140,5 +140,5 @@ r17_c ← 0
 r17_c ← 1
 
 -- CX02.CX02
-elim_CX02 → 0
+!apply elim_CX02 → 0
 ε

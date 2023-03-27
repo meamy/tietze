@@ -104,7 +104,7 @@ r8_a ← 10
 !apply drel9 ← 12
 
 -- CZ01.CX01.CCX2.CCX0.CCX2.CCX1.CCX2.CCX1.CX02.CX02.CX01.CCX0.CX01.CX02.CCX1.CCX2.CCX1.CZ01
-elim_CX02 → 8
+!apply elim_CX02 → 8
 
 -- CZ01.CX01.CCX2.CCX0.CCX2.CCX1.CCX2.CCX1.CX01.CCX0.CX01.CX02.CCX1.CCX2.CCX1.CZ01
 r8_c → 8
@@ -123,7 +123,7 @@ r8_a ← 6
 -- CZ01.CX01.CX02.CCX0.CX02.CCX1.CX02.CCX0.CX02.CCX1.CX01.CZ01
 r10_a → 4
 r1_c → 4
-elim_CX02 ← 9
+!apply elim_CX02 ← 9
 r10_a → 7
 !apply drel9 → 8
 elim_CX01 → 9
@@ -140,6 +140,6 @@ elim_CCX0 → 3
 
 -- CZ01.CX02.CX01.CX01.CX02.CZ01
 elim_CX01 → 2
-elim_CX02 → 1
+!apply elim_CX02 → 1
 elim_CZ01 → 0
 ε
