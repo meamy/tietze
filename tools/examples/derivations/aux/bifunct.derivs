@@ -1,0 +1,44 @@
+-- *******************************************************************
+-- Bifunctoriality With Swap Gates
+-- *******************************************************************
+
+@name bifunct_X_SWAP_a
+X0.SWAP12
+expand_SWAP12 → 1
+bifunct_X_CX_a ← 0
+bifunct_X_CX_b ← 1
+bifunct_X_CX_a ← 2
+expand_SWAP12 ← 0
+SWAP12.X0
+
+@name bifunct_X_SWAP_b
+X2.SWAP01
+expand_SWAP01 → 1
+bifunct_X_CX_d ← 0
+bifunct_X_CX_c ← 1
+bifunct_X_CX_d ← 2
+expand_SWAP01 ← 0
+SWAP01.X2
+
+
+-- *******************************************************************
+-- Bifunctoriality Between Pauli-X Gates
+-- *******************************************************************
+
+@name bifunct_X_b
+X0.X2
+!apply symmetry_X_c → 1
+!apply bifunct_X_SWAP_a → 0
+bifunct_X_a → 1
+!apply bifunct_X_SWAP_a → 2
+!apply symmetry_X_c ← 0
+X2.X0
+
+@name bifunct_X_c
+X1.X2
+symmetry_X_a → 0
+!apply bifunct_X_SWAP_b ← 2
+!apply bifunct_X_b → 1
+!apply bifunct_X_SWAP_b ← 0
+symmetry_X_a ← 1
+X2.X1

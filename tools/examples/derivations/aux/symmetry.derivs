@@ -1,0 +1,14 @@
+-- *******************************************************************
+-- Alternative Symmetries for Paul-X Gates
+-- *******************************************************************
+
+@name symmetry_X_c
+X2
+!apply elim_SWAP12 ← 1
+expand_SWAP12 → 1
+!apply elim_X2 ← 2
+r36_c → 0
+r12_e → 1
+r12_c_dag ← 2
+expand_SWAP12 ← 0
+SWAP12.X1.SWAP12

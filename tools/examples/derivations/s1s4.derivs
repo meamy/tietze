@@ -39,7 +39,7 @@ r8_a → 14
 -- X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.CX02.X0.CX02.X0.CX12.CCX0.CCX2.CX01
 r12_d → 9
 !apply elim_CX02 → 8
-bifunct_X_b → 8
+!apply bifunct_X_b → 8
 elim_X0 → 9
 
 -- X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.X2.CX12.CCX0.CCX2.CX01

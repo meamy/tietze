@@ -31,8 +31,8 @@ CX12.CCX1.CX12
 X0.X1.X2.CCX0.X2.X1.X0
 bifunct_X_a → 0
 bifunct_X_a ← 5
-bifunct_X_b → 1
-bifunct_X_b ← 4
+!apply bifunct_X_b → 1
+!apply bifunct_X_b ← 4
 r13_c → 2
 elim_X0 → 3
 

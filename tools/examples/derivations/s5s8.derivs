@@ -56,8 +56,8 @@ r23_b → 12
 -- K12.CCX1.Z2.X0.X1.X2.CCX0.CZ12.X2.X1.X0.Z2.CCX1.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 bifunct_X_a → 3
 bifunct_X_a ← 9
-bifunct_X_b → 4
-bifunct_X_b ← 8
+!apply bifunct_X_b → 4
+!apply bifunct_X_b ← 8
 bifunct_X_CZ_b ← 7
 r13_c → 5
 elim_X0 → 6
@@ -89,8 +89,8 @@ r31_b → 12
 -- K12.CCX1.X1.X2.CCX0.CZ12.X2.X1.CCX1.X0.X1.X2.CZ12.CCX0.X2.X1.X0.K12
 bifunct_X_a → 9
 bifunct_X_a ← 15
-bifunct_X_b → 10
-bifunct_X_b ← 14
+!apply bifunct_X_b → 10
+!apply bifunct_X_b ← 14
 bifunct_X_CZ_b → 11
 r13_c → 12
 elim_X0 → 13
