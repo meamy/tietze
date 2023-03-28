@@ -299,7 +299,7 @@ r36_c → 2
 
 -- K12.CX01.CX12.K12.CX21.CZ01
 r35_b_dag ← 0
-r34_dag ← 1
+!apply drel30 ← 1
 
 -- CZ01.CX21.K12.K12.CX21.CZ01
 elim_K12 → 2
