@@ -510,3 +510,50 @@ r13 → 1
 symmetry_CCX_b ← 0
 symmetry_X_b ← 1
 CCX2.X2
+
+
+-- ****************************************************************************
+-- The relation CZ01.CX21.CX12.CX21 = CX21.CX12.CX21.CZ02
+-- ****************************************************************************
+
+@name drel27
+
+CZ01.CX21.CX12.CX21
+r7 ← 1
+expand_SWAP12 ← 1
+
+-- CZ01.SWAP12
+!apply elim_SWAP12 ← 0
+symmetry_CZ_a ← 1
+
+-- SWAP12.CZ02
+expand_SWAP12 → 0
+r7 → 0
+CX21.CX12.CX21.CZ02
+
+
+-- ****************************************************************************
+-- The relation CX21.CX12.CX21.CZ01 = CZ02.CX21.CX12.CX21
+-- ****************************************************************************
+
+@name drel28
+
+CX21.CX12.CX21.CZ01
+!apply elim_SWAP12 ← 4
+!apply elim_CZ02 ← 5
+
+-- CX21.CX12.CX21.CZ01.SWAP12.CZ02.CZ02.SWAP12
+expand_SWAP12 → 4
+r7 → 4
+!apply drel27 ← 4
+
+-- CX21.CX12.CX21.CZ01.CZ01.CX21.CX12.CX21.CZ02.SWAP12
+elim_CZ01 → 3
+elim_CX21 → 2
+elim_CX12 → 1
+elim_CX21 → 0
+
+-- CZ02.SWAP12
+expand_SWAP12 → 1
+r7 → 1
+CZ02.CX21.CX12.CX21
