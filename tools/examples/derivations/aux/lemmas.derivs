@@ -260,7 +260,7 @@ r29_c ← 0
 -- Z1.CX12.CZ12.CCX1.CX12
 r26_d → 2
 r27_b ← 0
-r39_a → 1
+!apply drel21 → 1
 
 -- CX12.CCX1.CZ02.Z1.CZ12.CZ02.CX12
 bifunct_Z_CZ_a → 2
@@ -375,3 +375,96 @@ elim_CX12 ← 2
 !apply elim_Z2 → 1
 elim_CX12 → 0
 Z2.Z1.CX12
+
+
+-- ****************************************************************************
+-- The relation Z1.CCX1 = CCX1.CZ02.Z1
+-- ****************************************************************************
+
+@name drel21
+
+Z1.CCX1
+elim_K12 ← 0
+r25_a ← 1
+r32_dag ← 2
+
+-- K12.X1.CCX2.K12
+r5_d → 1
+
+-- K12.CCX2.CX02.X1.K12
+r25_a → 3
+r35_a ← 2
+r32_dag → 1
+elim_K12 → 0
+CCX1.CZ02.Z1
+
+
+-- ****************************************************************************
+-- The relation CCX1.Z1 = Z1.CZ02.CCX1
+-- ****************************************************************************
+
+@name drel22
+
+CCX1.Z1
+!apply elim_CCX1 ← 2
+!apply elim_CZ02 ← 3
+!apply elim_Z1 ← 4
+
+-- CCX1.Z1.CCX1.CZ02.Z1.Z1.CZ02.CCX01
+!apply drel21 ← 2
+
+-- CCX1.Z1.Z1.CCX1.Z1.CZ02.CCX1
+!apply elim_Z1 → 1
+!apply elim_CCX1 → 0
+Z1.CZ02.CCX1
+
+
+-- ****************************************************************************
+-- The relation Z0.CCX0 = CCX0.CZ12.Z0
+-- ****************************************************************************
+
+@name drel23
+
+Z0.CCX0
+!apply elim_SWAP01 ← 2
+!apply elim_SWAP01 ← 1
+!apply elim_SWAP01 ← 0
+
+-- SWAP01.SWAP01.Z0.SWAP01.SWAP01.CCX0.SWAP01.SWAP01
+symmetry_Z_a ← 1
+symmetry_CCX_a ← 2
+
+-- SWAP01.Z1.CCX1.SWAP01
+!apply drel21 → 1
+
+-- SWAP01.CCX1.CZ02.Z1.SWAP01
+symmetry_CCX_a → 1
+!apply elim_SWAP01 → 0
+
+-- CCX0.SWAP01.CZ02.Z1.SWAP01
+symmetry_Z_a → 3
+!apply elim_SWAP01 → 5
+
+-- CCX0.SWAP01.CZ02.SWAP01.Z0
+symmetry_CZ_b ← 1
+CCX0.CZ12.Z0
+
+
+-- ****************************************************************************
+-- The relation CCX0.Z0 = Z0.CZ12.CCX0
+-- ****************************************************************************
+
+@name drel24
+
+CCX0.Z0
+elim_CCX0 ← 2
+!apply elim_CZ12 ← 3
+elim_Z0 ← 4
+
+-- CCX0.Z0.CCX0.CZ12.Z0.Z0.CZ12.CCX0
+!apply drel23 ← 2
+
+-- CCX0.Z0.Z0.CCX0.Z0.CZ12.CCX0
+elim_Z0 → 1
+elim_CCX0 → 0
+Z0.CZ12.CCX0

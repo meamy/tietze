@@ -108,7 +108,7 @@ r27_b → 17
 bifunct_X_Z_e ← 11
 !apply drel19 → 12
 bifunct_Z_c → 13
-r39_a → 14
+!apply drel21 → 14
 bifunct_Z_CZ_a → 15
 !apply elim_CZ02 → 16
 
