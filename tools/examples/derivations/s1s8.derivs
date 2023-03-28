@@ -49,7 +49,7 @@ spatial_MCCX1 → 11
 -- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.Z1.M.CCX1.M.Z1.X1.X2.CZ02.CCX0.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
 r19_a ← 12
 r19_a_dag ← 8
-r13_b → 9
+!apply drel25 → 9
 !apply elim_X1 → 10
 
 -- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.Z1.CCX1.Z1.X2.CZ02.CCX0.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
@@ -78,7 +78,7 @@ r24_d → 8
 
 -- K12.X0.X1.X2.CZ02.X2.CX10.Z1.CCX0.CCX1.CCX0.Z1.CX10.X2.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
 r19_a → 16
-r13_b → 18
+!apply drel25 → 18
 spatial_MZ_b → 16
 spatial_MCCX1 → 17
 bifunct_X_Z_c → 15

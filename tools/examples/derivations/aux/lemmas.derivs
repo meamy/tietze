@@ -468,3 +468,45 @@ elim_Z0 ← 4
 elim_Z0 → 1
 elim_CCX0 → 0
 Z0.CZ12.CCX0
+
+
+-- ****************************************************************************
+-- The relation X1.CCX1 = CCX1.X1
+-- ****************************************************************************
+
+@name drel25
+
+X1.CCX1
+symmetry_CCX_a → 1
+symmetry_X_a → 0
+
+-- SWAP01.X0.SWAP01.SWAP01.CCX0.SWAP01
+!apply elim_SWAP01 → 2
+r13 → 1
+!apply elim_SWAP01 ← 2
+
+-- SWAP01.CCX0.SWAP01.SWAP01.X0.SWAP01
+symmetry_CCX_a ← 0
+symmetry_X_a ← 1
+CCX1.X1
+
+
+-- ****************************************************************************
+-- The relation X2.CCX2 = CCX1.X2
+-- ****************************************************************************
+
+@name drel26
+
+X2.CCX2
+symmetry_CCX_b → 1
+symmetry_X_b → 0
+
+-- SWAP02.X0.SWAP02.SWAP02.CCX0.SWAP02
+!apply elim_SWAP02 → 2
+r13 → 1
+!apply elim_SWAP02 ← 2
+
+-- SWAP02.CCX0.SWAP02.SWAP02.X0.SWAP02
+symmetry_CCX_b ← 0
+symmetry_X_b ← 1
+CCX2.X2

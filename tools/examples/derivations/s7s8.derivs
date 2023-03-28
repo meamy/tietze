@@ -48,7 +48,7 @@ r18_f_dag → 5
 r18_f → 2
 
 -- X1.X2.CZ02.Z2.X0.CCX0.X0.Z2.CZ02.X2.X1
-r13_c → 4
+r13 → 4
 elim_X0 → 5
 
 -- X1.X2.CZ02.Z2.CCX0.Z2.CZ02.X2.X1
@@ -70,7 +70,7 @@ bifunct_X_CX_d ← 0
 r12_c_dag ← 1
 
 -- CX01.CX12.X1.CCX1
-r13_b → 2
+!apply drel25 → 2
 CX01.CX12.CCX1.X1
 
 

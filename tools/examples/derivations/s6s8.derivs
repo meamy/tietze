@@ -33,7 +33,7 @@ bifunct_X_a → 0
 bifunct_X_a ← 5
 !apply bifunct_X_b → 1
 !apply bifunct_X_b ← 4
-r13_c → 2
+r13 → 2
 elim_X0 → 3
 
 -- X1.X2.CCX0.X2.X1
@@ -143,7 +143,7 @@ elim_X0 ← 14
 r36_a → 12
 elim_X0 ← 15
 r36_b → 13
-r13_c → 14
+r13 → 14
 
 -- K12.X0.CX12.CX21.CCX1.CX12.CX10.CX20.CCX0.CX12.CCX1.CX12.CX10.CX20.CCX0.X0.K12
 r1_e ← 13 
