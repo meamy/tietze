@@ -77,7 +77,7 @@ bifunct_X_CZ_b ← 12
 r29_c ← 13
 
 -- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.Z1.X1.Z2.X0.Z1.CX12.CZ12.CCX1.CX12.X0.X1.X2.CZ12.CCX0.X2.X1.X0.K12
-r19_a_dag → 9
+!apply drel34 → 9
 spatial_MZ_b ← 10
 bifunct_Z_c → 11
 bifunct_X_Z_a ← 12
@@ -96,7 +96,7 @@ r18_e_dag → 21
 -- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.M.Z2.X0.CX12.CCX1.CZ02.Z1.CX12.X0.X1.Z2.X2.Z1.CCX0.X2.X1.X0.K12
 bifunct_X_Z_c → 21
 bifunct_Z_c ← 20
-r19_a → 19
+!apply drel31 → 19
 
 -- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.M.Z2.X0.CX12.CCX1.CZ02.Z1.CX12.X0.M.Z1.X1.Z2.X2.CCX0.X2.X1.X0.K12
 spatial_MZ_b → 19

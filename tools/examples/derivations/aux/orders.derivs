@@ -6,7 +6,7 @@
 M.M
 expand_M_0 → 1
 spatial_MX_a → 0
-r19_b ← 1
+!apply drel32 ← 1
 elim_X0 → 0
 elim_Z0 → 0
 ε
