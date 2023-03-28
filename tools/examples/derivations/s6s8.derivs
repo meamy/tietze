@@ -106,7 +106,7 @@ r27_b → 17
 
 -- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.M.Z2.X0.CX12.CCX1.CZ02.CX12.X0.M.X1.Z2.X2.CCX0.X2.X1.X0.K12
 bifunct_X_Z_e ← 11
-r43 → 12
+!apply drel19 → 12
 bifunct_Z_c → 13
 r39_a → 14
 bifunct_Z_CZ_a → 15
@@ -116,7 +116,7 @@ bifunct_Z_CZ_a → 15
 bifunct_X_Z_d → 19
 spatial_MZ_c → 18
 bifunct_X_Z_e → 17
-r43_dag → 16
+!apply drel20 → 16
 bifunct_Z_c → 15
 !apply elim_Z1 → 16
 r24_e → 13

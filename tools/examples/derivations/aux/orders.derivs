@@ -126,6 +126,15 @@ elim_Z0 → 1
 !apply elim_SWAP01 → 0
 ε
 
+@name elim_Z2
+Z2.Z2
+symmetry_Z_b → 1
+symmetry_Z_b → 0
+!apply elim_SWAP02 → 2
+elim_Z0 → 1
+!apply elim_SWAP02 → 0
+ε
+
 
 -- *******************************************************************
 -- CZ Orders
