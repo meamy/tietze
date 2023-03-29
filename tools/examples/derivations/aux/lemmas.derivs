@@ -739,3 +739,31 @@ symmetry_CCX_a → 1
 !apply elim_SWAP01 → 3
 !apply elim_SWAP01 → 0
 CCX0
+
+
+-- ****************************************************************************
+-- The relation Z2.CCX1.Z2 = CCX1
+-- ****************************************************************************
+
+@name drel39
+
+Z2.CCX1.Z2
+elim_K12 ← 0
+r25_b ← 1
+
+-- K12.X2.K12.CCX1.Z2
+elim_K12 ← 4
+r32 ← 3
+elim_K12 → 2
+
+-- K12.X2.CCX2.K12.Z2
+r25_b ← 3
+
+-- K12.X2.CCX2.X2.K12
+!apply drel26 → 1
+!apply elim_X2 → 2
+
+-- K12.CCX2.K12
+r32 → 0
+elim_K12 → 1
+CCX1

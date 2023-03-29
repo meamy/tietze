@@ -107,7 +107,7 @@ r18_e → 6
 -- K12.CCX1.X1.X2.CCX0.Z1.X2.Z2.X1.CZ02.CCX1.Z2.X1.Z1.X2.CCX0.X2.X1.K12
 bifunct_X_Z_d ← 7
 r30_b ← 8
-r24_e → 9
+!apply drel39 → 9
 
 -- K12.CCX1.X1.X2.CCX0.Z1.X2.X1.CZ02.CCX1.X1.Z1.X2.CCX0.X2.X1.K12
 bifunct_X_Z_c ← 5
