@@ -767,3 +767,24 @@ r25_b ← 3
 r32 → 0
 elim_K12 → 1
 CCX1
+
+
+-- ****************************************************************************
+-- The relation Z0.CCX2.Z0
+-- ****************************************************************************
+
+@name drel40
+
+Z0.CCX2.Z0
+!apply elim_SWAP01 ← 3
+!apply elim_SWAP01 ← 0
+!apply symmetry_CCX_c → 3
+
+-- SWAP01.SWAP01.Z0.SWAP01.CCX2.SWAP01.Z0.SWAP01.SWAP01
+symmetry_Z_a ← 5
+symmetry_Z_a ← 1
+
+-- SWAP01.Z1.CCX2.Z1.SWAP01
+r24_b → 1
+!apply symmetry_CCX_c ← 0
+CCX2
