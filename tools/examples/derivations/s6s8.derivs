@@ -123,9 +123,9 @@ bifunct_Z_c → 15
 
 -- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.M.X0.CX12.CCX1.CX12.X0.M.X1.X2.CCX0.X2.X1.X0.K12
 spatial_MX_a → 10
-spatial_MCX_c → 11
+!apply spatial_CX12  → 11
 spatial_MCCX1 → 12
-spatial_MCX_c → 13
+!apply spatial_CX12  → 13
 spatial_MX_a → 14
 !apply elim_M → 15
 

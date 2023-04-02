@@ -77,9 +77,6 @@ spatial_MZ_a M.Z0 = Z0.M
 spatial_MZ_b M.Z1 = Z1.M
 spatial_MZ_c M.Z2 = Z2.M
 
-spatial_MCX_c M.CX12 = CX12.M
-spatial_MCX_e M.CX20 = CX20.M
-
 spatial_MCZ_a M.CZ01 = CZ01.M
 spatial_MCZ_b M.CZ02 = CZ02.M
 spatial_MCZ_c M.CZ12 = CZ12.M
@@ -128,6 +125,7 @@ bifunct_X_CX_b CX21.X0 = X0.CX21
 bifunct_X_CX_c CX10.X2 = X2.CX10
 bifunct_X_CX_d CX01.X2 = X2.CX01
 bifunct_X_CX_e CX02.X1 = X1.CX02
+bifunct_X_CX_f CX20.X1 = X1.CX20
 
 bifunct_X_K_a X0.K12 = K12.X0
 

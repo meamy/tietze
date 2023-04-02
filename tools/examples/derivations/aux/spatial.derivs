@@ -15,6 +15,16 @@ bifunct_X_a ← 3
 expand_M ← 1
 CX01.M
 
+@name spatial_CX02
+M.CX02
+!apply expand_M_alt1 → 0
+bifunct_Z_CX_c → 3
+bifunct_X_CX_e ← 2
+bifunct_Z_CX_c → 1
+bifunct_X_CX_e ← 0
+!apply expand_M_alt1 ← 1
+CX02.M
+
 @name spatial_CX10
 M.CX10
 expand_M → 0
@@ -29,6 +39,26 @@ bifunct_X_Z_a ← 3
 !apply elim_Z1 → 4
 expand_M ← 1
 CX10.M
+
+@name spatial_CX12
+M.CX12
+expand_M → 0
+bifunct_Z_CX_b → 3
+bifunct_X_CX_a ← 2
+bifunct_Z_CX_b → 1
+bifunct_X_CX_a ← 0
+expand_M ← 1
+CX12.M
+
+@name spatial_CX20
+M.CX20
+!apply expand_M_alt1 → 0
+bifunct_Z_CX_a → 3
+bifunct_X_CX_f ← 2
+bifunct_Z_CX_a → 1
+bifunct_X_CX_f ← 0
+!apply expand_M_alt1 ← 1
+CX20.M
 
 
 -- *******************************************************************

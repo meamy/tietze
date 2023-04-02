@@ -123,7 +123,7 @@ r24_d → 4
 spatial_MZ_a → 1
 !apply spatial_CX10 → 2
 spatial_MCCX0 → 3
-spatial_MCX_e → 4
+!apply spatial_CX20  → 4
 !apply drel32 ← 5
 K12.Z0.CX10.CCX0.CX20.X0.Z0.K12
 
