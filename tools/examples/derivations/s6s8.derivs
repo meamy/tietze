@@ -15,9 +15,9 @@
 @name lemmak12cx21ccx2cx21k12
 
 K12.CX21.CCX2.CX21.K12
-r34 → 0
+!apply drel46 → 0
 r32 → 1
-r34 → 2
+!apply drel46 → 2
 elim_K12 → 3
 CX12.CCX1.CX12
 

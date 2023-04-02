@@ -60,10 +60,10 @@ X2.X1
 @name bifunct_Z_CX_d
 Z0.CX21
 elim_K12 ← 1
-r34 → 2
+!apply drel46 → 2
 bifunct_Z_K_a → 0
 bifunct_Z_CX_b → 1
 bifunct_Z_K_a → 2
-r34 ← 1
+!apply drel46 ← 1
 elim_K12 → 0
 CX21.Z0

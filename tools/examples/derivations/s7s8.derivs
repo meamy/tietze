@@ -14,8 +14,8 @@
 
 @name lemmak12cz01cx21ccx2
 K12.CZ01.CX21.CCX2
-r35_b → 0
-r34 → 1
+!apply drel49 → 0
+!apply drel46 → 1
 r32 → 2
 CX01.CX12.CCX1.K12
 
@@ -26,8 +26,8 @@ CX01.CX12.CCX1.K12
 
 @name lemmak12cx21cz01k12
 K12.CX21.CZ01.K12
-r34 → 0
-r35_b → 1
+!apply drel46 → 0
+!apply drel49 → 1
 elim_K12 → 2
 CX12.CX01
 
@@ -298,7 +298,7 @@ r36_c → 2
 
 
 -- K12.CX01.CX12.K12.CX21.CZ01
-r35_b_dag ← 0
+!apply drel50 ← 0
 !apply drel30 ← 1
 
 -- CZ01.CX21.K12.K12.CX21.CZ01

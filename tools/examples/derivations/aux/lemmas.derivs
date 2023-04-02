@@ -351,7 +351,7 @@ r25_b ← 1
 r12_e → 1
 
 -- K12.CX21.X2.X1.K12
-r34 → 0
+!apply drel46 → 0
 r25_b_dag → 1
 r25_a_dag → 2
 elim_K12 → 3
@@ -393,7 +393,7 @@ r5_d → 1
 
 -- K12.CCX2.CX02.X1.K12
 r25_a → 3
-r35_a ← 2
+!apply drel47 ← 2
 !apply drel29 → 1
 elim_K12 → 0
 CCX1.CZ02.Z1
@@ -589,7 +589,7 @@ elim_CX12 ← 2
 elim_K12 ← 3
 
 -- CX21.K12.CX12.K12.K12.CX12
-r34 ← 2
+!apply drel46 ← 2
 
 -- CX21.K12.K12.CX21.K12.CX12
 elim_K12 → 1
@@ -684,9 +684,9 @@ X2.Z2.M
 
 CZ01.CCX2.CZ01
 elim_K12 ← 0
-r35_b → 1
+!apply drel49 → 1
 r32 → 2
-r35_b → 3
+!apply drel49 → 3
 
 -- K12.CX01.CCX1.CX01.K12
 r1_c → 2
@@ -706,9 +706,9 @@ CCX2
 
 CZ02.CCX1.CZ02
 elim_K12 ← 2
-r35_a → 3
+!apply drel47 → 3
 r32 ← 1
-r35_a_dag → 0
+!apply drel48 → 0
 
 -- K12.CX02.CCX2.CX02.K12
 r1_a → 2
@@ -838,7 +838,7 @@ CX10.Z1.Z0
 
 CZ01.Z0
 elim_K12 ← 0
-r35_b → 1
+!apply drel49 → 1
 bifunct_Z_K_a ← 2
 
 -- K12.CZ01.Z0.K12
@@ -846,7 +846,7 @@ r27_c → 1
 
 -- K12.Z0.CZ01.K12
 bifunct_Z_K_a ← 0
-r35_b_dag ← 1
+!apply drel50 ← 1
 elim_K12 → 2
 Z0.CZ01
 
@@ -859,7 +859,7 @@ Z0.CZ01
 
 CZ02.Z0
 elim_K12 ← 0
-r35_a → 1
+!apply drel47 → 1
 bifunct_Z_K_a ← 2
 
 -- K12.CX02.Z0.K12
@@ -873,7 +873,7 @@ bifunct_Z_K_a ← 0
 expand_CX02 ← 2
 
 -- Z0.K12.CX02.K12
-r35_a ← 2
+!apply drel47 ← 2
 elim_K12 → 1
 Z0.CZ02
 
@@ -886,7 +886,7 @@ Z0.CZ02
 
 CZ01.Z1
 elim_K12 ← 0
-r35_b → 1
+!apply drel49 → 1
 
 -- K12.CX01.K12.Z1
 r25_a ← 2
@@ -897,6 +897,93 @@ r36_d → 2
 
 -- K12.X1.CX01.K12
 r25_a_dag → 0
-r35_b_dag ← 1
+!apply drel50 ← 1
 elim_K12 → 2
 Z1.CZ01
+
+
+-- ****************************************************************************
+-- The relation K12.CX21 = CX12.K12
+-- ****************************************************************************
+
+@name drel46
+
+K12.CX21
+expand_CX21 → 1
+elim_K12 → 0
+CX12.K12
+
+
+-- ****************************************************************************
+-- The relation K12.CZ02 = CX02.K12
+-- ****************************************************************************
+
+@name drel47
+
+K12.CZ02
+expand_CZ02 → 1
+!apply elim_SWAP12 ← 0
+!apply symmetry_K ← 1
+
+-- SWAP12.K12.CZ01.SWAP12
+expand_CZ01 → 2
+elim_K12 → 1
+
+-- SWAP12.CX01.K12.SWAP12
+!apply elim_SWAP12 ← 2
+!apply symmetry_K ← 3
+
+-- SWAP12.CX01.SWAP12.K12
+expand_CX02 ← 0
+CX02.K12
+
+
+-- ****************************************************************************
+-- The relation CZ02.K12 = K12.CX02
+-- ****************************************************************************
+
+@name drel48
+
+CZ02.K12
+!apply elim_CX02 ← 2
+elim_K12 ← 3
+
+-- CZ02.K12.CX02.K12.K12.CX02
+!apply drel47 ← 2
+
+-- CZ02.K12.K12.CZ02.K12.CX02
+elim_K12 → 1
+!apply elim_CZ02 → 0
+K12.CX02
+
+
+-- ****************************************************************************
+-- The relation K12.CZ01 = CX01.K12
+-- ****************************************************************************
+
+@name drel49
+
+K12.CZ01
+expand_CZ01 → 1
+elim_K12 → 0
+CX01.K12
+
+
+-- ****************************************************************************
+-- The relation CZ01.K12 = K12.CX01
+-- ****************************************************************************
+
+@name drel50
+
+CZ01.K12
+elim_CX01 ← 2
+elim_K12 ← 3
+
+-- CZ01.K12.CX01.K12.K12.CX01
+!apply drel49 ← 2
+
+-- CZ01.K12.K12.CZ01.K12.CX01
+elim_K12 → 1
+!apply elim_CZ01 → 0
+K12.CX01
+
