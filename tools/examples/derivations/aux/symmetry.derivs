@@ -1,4 +1,20 @@
 -- *******************************************************************
+-- Alternative Definitions for Symmetries
+-- *******************************************************************
+
+@name expand_SWAP02_alt1
+SWAP02
+expand_SWAP02 → 0
+expand_SWAP12 → 1
+symmetry_CX_c → 3
+symmetry_CX_c → 1
+!apply elim_SWAP01 → 7
+!apply elim_SWAP01 → 0
+!apply symmetry_CX_h ← 1
+CX02.CX20.CX02
+
+
+-- *******************************************************************
 -- Alternative Symmetries for Paul-X Gates
 -- *******************************************************************
 
@@ -25,6 +41,42 @@ expand_SWAP12 → 1
 r7 → 1
 expand_SWAP12 ← 2
 SWAP12.CX21.SWAP12
+
+@name symmetry_CX_e
+CX01
+!apply elim_SWAP01 ← 0
+expand_SWAP01 → 1
+elim_CX01 → 3
+!apply elim_CX10 ← 1
+r7_a ← 2
+expand_SWAP01 ← 2
+SWAP01.CX10.SWAP01
+
+@name symmetry_CX_f
+CX12
+symmetry_CX_c → 0
+expand_CX02 → 1
+!apply symmetry_CX_e → 2
+expand_SWAP02 ← 4
+expand_SWAP02 ← 0
+SWAP02.CX10.SWAP02
+
+@name symmetry_CX_g
+CX21
+!apply elim_SWAP12 ← 0
+expand_SWAP12 → 1
+r7 ← 2
+expand_SWAP12 ← 2
+SWAP12.CX12.SWAP12
+
+@name symmetry_CX_h
+CX20
+expand_CX20 → 0
+expand_SWAP02 → 2
+expand_SWAP02 → 0
+symmetry_CX_c ← 2
+!apply symmetry_CX_g ← 1
+SWAP01.CX21.SWAP01
 
 
 -- *******************************************************************
@@ -57,6 +109,27 @@ SWAP01.CCX2.SWAP01
 -- *******************************************************************
 -- Alternative Symmetries for Paul-Z Gates
 -- *******************************************************************
+
+@name symmetry_Z_a
+Z1
+!apply elim_SWAP02 ← 0
+!apply expand_SWAP02_alt1 → 1
+bifunct_Z_CX_c ← 3
+bifunct_Z_CX_a ← 2
+bifunct_Z_CX_c ← 1
+!apply expand_SWAP02_alt1 ← 2
+SWAP02.Z1.SWAP02
+
+@name symmetry_Z_b
+Z0
+!apply elim_SWAP02 ← 1
+!apply elim_Z2 ← 2
+!apply elim_SWAP02 ← 3
+expand_Z2 → 2
+!apply elim_SWAP02 → 1
+!apply elim_Z0 → 0
+!apply elim_SWAP02 → 0
+SWAP02.Z2.SWAP02
 
 @name symmetry_Z_c
 Z2

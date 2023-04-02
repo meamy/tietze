@@ -801,3 +801,30 @@ r17_a → 0
 !apply elim_CX21 ← 0
 r17_a_dag ← 1
 CX21.CX01
+
+
+-- ****************************************************************************
+-- The relation Z0.CX10 = CX10.Z1.Z0
+-- ****************************************************************************
+
+@name drel42
+
+Z0.CX10
+!apply elim_SWAP02 ← 2
+!apply elim_SWAP02 ← 1
+!apply elim_SWAP02 ← 0
+
+-- SWAP02.SWAP02.Z0.SWAP02.SWAP02.CX10.SWAP02.SWAP02
+expand_Z2 ← 1
+!apply symmetry_CX_f ← 2
+!apply drel19 → 1
+
+-- SWAP02.CX12.Z1.Z2.SWAP02
+!apply elim_SWAP02 ← 3
+!apply elim_SWAP02 ← 2
+
+-- SWAP02.CX12.SWAP02.SWAP02.Z1.SWAP02.SWAP02.Z2.SWAP02
+!apply symmetry_Z_a ← 3
+!apply symmetry_Z_b ← 4
+symmetry_CX_b ← 0
+CX10.Z1.Z0
