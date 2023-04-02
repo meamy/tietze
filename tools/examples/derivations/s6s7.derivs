@@ -39,5 +39,5 @@ r8_b → 12
 -- CZ02.CZ01.CZ02.CZ01
 r31_a → 1
 !apply elim_CZ02 → 0
-elim_CZ01 → 0
+!apply elim_CZ01 → 0
 ε

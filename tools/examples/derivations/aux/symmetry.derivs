@@ -37,7 +37,7 @@ CCX2
 expand_SWAP01 → 1
 elim_CX01 ← 5
 r10_e → 3
-elim_CX10 ← 4
+!apply elim_CX10 ← 4
 r10_d → 2
 elim_CX01 ← 3
 r10_e → 1

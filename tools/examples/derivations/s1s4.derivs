@@ -58,7 +58,7 @@ r5_c → 6
 
 -- X0.CCX2.X0.X2.CX01.CCX0.CCX0.CX10.X2.CX10.CX12.CCX2.CX01
 bifunct_X_CX_c → 7
-elim_CX10 → 8
+!apply elim_CX10 → 8
 elim_CCX0 → 5
 
 -- X0.CCX2.X0.X2.CX01.X2.CX12.CCX2.CX01

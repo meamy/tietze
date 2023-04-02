@@ -53,7 +53,7 @@ r18_b_dag → 3
 
 -- X1.CCX2.Z0.CZ01.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
 r30_e ← 2
-elim_CZ01 ← 1
+!apply elim_CZ01 ← 1
 !apply drel36 → 2
 
 -- X1.CZ01.CCX2.Z0.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
@@ -76,5 +76,5 @@ expand_S6 ← 6
 !apply s5s6s5s6s5s6 → 1
 
 -- CZ01.CZ01
-elim_CZ01 → 0
+!apply elim_CZ01 → 0
 ε

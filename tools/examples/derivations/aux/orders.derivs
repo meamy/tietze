@@ -8,7 +8,7 @@ expand_M → 1
 spatial_MX_a → 0
 !apply drel32 ← 1
 elim_X0 → 0
-elim_Z0 → 0
+!apply elim_Z0 → 0
 ε
 
 
@@ -21,7 +21,7 @@ SWAP01.SWAP01
 expand_SWAP01 → 1
 expand_SWAP01 → 0
 elim_CX01 → 2
-elim_CX10 → 1
+!apply elim_CX10 → 1
 elim_CX01 → 0
 ε
 
@@ -30,7 +30,7 @@ SWAP12.SWAP12
 expand_SWAP12 → 1
 expand_SWAP12 → 0
 elim_CX12 → 2
-elim_CX21 → 1
+!apply elim_CX21 → 1
 elim_CX12 → 0
 ε
 
@@ -70,6 +70,24 @@ elim_X0 → 1
 -- *******************************************************************
 -- CX Orders
 -- *******************************************************************
+
+@name elim_CX10
+CX10.CX10
+expand_CX10 → 1
+expand_CX10 → 0
+elim_K01 → 2
+elim_CX01 → 1
+elim_K01 → 0
+ε
+
+@name elim_CX21
+CX21.CX21
+expand_CX21 → 1
+expand_CX21 → 0
+elim_K12 → 2
+elim_CX12 → 1
+elim_K12 → 0
+ε
 
 @name elim_CX02
 CX02.CX02
@@ -117,12 +135,21 @@ elim_CCX0 → 1
 -- Pauli-Z Orders
 -- *******************************************************************
 
+@name elim_Z0
+Z0.Z0
+expand_Z0 → 1
+expand_Z0 → 0
+elim_K01 → 2
+elim_X0 → 1
+elim_K01 → 0
+ε
+
 @name elim_Z1
 Z1.Z1
 expand_Z1 → 1
 expand_Z1 → 0
 !apply elim_SWAP01 → 2
-elim_Z0 → 1
+!apply elim_Z0 → 1
 !apply elim_SWAP01 → 0
 ε
 
@@ -131,7 +158,7 @@ Z2.Z2
 expand_Z2 → 1
 expand_Z2 → 0
 !apply elim_SWAP02 → 2
-elim_Z0 → 1
+!apply elim_Z0 → 1
 !apply elim_SWAP02 → 0
 ε
 
@@ -140,12 +167,21 @@ elim_Z0 → 1
 -- CZ Orders
 -- *******************************************************************
 
+@name elim_CZ01
+CZ01.CZ01
+expand_CZ01 → 1
+expand_CZ01 → 0
+elim_K12 → 2
+elim_CX01 → 1
+elim_K12 → 0
+ε
+
 @name elim_CZ02
 CZ02.CZ02
 expand_CZ02 → 1
 expand_CZ02 → 0
 !apply elim_SWAP12 → 2
-elim_CZ01 → 1
+!apply elim_CZ01 → 1
 !apply elim_SWAP12 → 0
 ε
 

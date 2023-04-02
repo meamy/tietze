@@ -123,7 +123,7 @@ r8_f → 9
 
 -- X0.K12.CX12.CCX1.CX12.CX10.X0.CX20.CCX2.CCX1.CCX2.CX20.CX10.K12
 r8_f → 2
-elim_CX10 ← 4
+!apply elim_CX10 ← 4
 !apply drel6 → 5
 elim_X0 → 7
 
@@ -144,10 +144,10 @@ r5_b_dag → 3
 r10_c → 6
 r1_d → 6
 !apply drel12 → 5
-elim_CX21 → 4
+!apply elim_CX21 → 4
 
 -- X0.K12.CCX2.X0.CX20.CCX1.CX10.CCX2.CCX0.CCX1.CCX2.CX20.CX10.K12
-elim_CX10 ← 5
+!apply elim_CX10 ← 5
 r8_d → 6
 !apply drel18 → 7
 elim_CCX0 → 6
@@ -156,7 +156,7 @@ elim_CCX0 → 6
 elim_X0 ← 2
 !apply drel6 ← 3
 !apply drel8 → 5
-elim_CX10 → 6
+!apply elim_CX10 → 6
 
 -- X0.K12.X0.CX10.CCX2.CX20.CCX2.CCX0.CCX2.CX20.CX10.K12
 !apply elim_CX20 ← 4
@@ -168,7 +168,7 @@ elim_CCX0 → 7
 !apply elim_CCX2 → 6
 elim_CCX0 → 5
 !apply elim_CX20 → 4
-elim_CX10 → 3
+!apply elim_CX10 → 3
 
 -- X0.K12.X0.K12
 bifunct_X_K_a → 0

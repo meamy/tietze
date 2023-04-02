@@ -97,16 +97,11 @@ spatial_MCCX2 M.CCX2 = CCX2.M
 elim_X0 X0.X0 = ε
 
 elim_CX01 CX01.CX01 = ε
-elim_CX10 CX10.CX10 = ε
 elim_CX12 CX12.CX12 = ε
-elim_CX21 CX21.CX21 = ε
 
 elim_CCX0 CCX0.CCX0 = ε
 
-elim_Z0 Z0.Z0 = ε
-
-elim_CZ01 CZ01.CZ01 = ε
-
+elim_K01 K01.K01 = ε
 elim_K12 K12.K12 = ε
 
 
