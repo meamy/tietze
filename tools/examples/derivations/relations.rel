@@ -13,10 +13,59 @@ expand_S8 S8 = K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 
 
 -- *******************************************************************
+-- Derived Generators
+-- *******************************************************************
+
+-- No dependencies on derived generators.
+expand_Z0 Z0 = K01.X0.K01
+
+-- No dependencies on derived generators.
+expand_CZ01 CZ01 = K12.CX01.K12
+
+-- No dependencies on derived generators.
+expand_CX10 CX10 = K01.CX01.K01
+expand_CX21 CX21 = K12.CX12.K12
+
+-- Depends on Z0.
+expand_M M = X0.Z0.X0.Z0
+
+-- Depends on CX10 and CX21
+expand_SWAP01 SWAP01 = CX01.CX10.CX01
+expand_SWAP12 SWAP12 = CX12.CX21.CX12
+expand_SWAP02 SWAP02 = SWAP12.SWAP01.SWAP12
+
+-- Depends on SWAP01 and SWAP02
+expand_X1 X1 = SWAP01.X0.SWAP01
+expand_X2 X2 = SWAP02.X0.SWAP02
+
+-- Depends on Z0, SWAP01 and SWAP02
+expand_Z1 Z1 = SWAP01.Z0.SWAP01
+expand_Z2 Z2 = SWAP02.Z0.SWAP02
+
+-- Depends on SWAP12 and SWAP02.
+expand_CX02 CX02 = SWAP12.CX01.SWAP12
+expand_CX20 CX20 = SWAP02.CX02.SWAP02
+
+-- Depends on SWAP01 and SWAP02.
+expand_CCX1 CCX1 = SWAP01.CCX0.SWAP01
+expand_CCX2 CCX2 = SWAP02.CCX0.SWAP02
+
+-- Depends on CZ01, SWAP01, and SWAP02.
+expand_CZ02 CZ02 = SWAP12.CZ01.SWAP12
+expand_CZ12 CZ12 = SWAP01.CZ02.SWAP01
+
+
+-- *******************************************************************
+-- Symmetric Generators
+-- *******************************************************************
+
+symmetry_CX_c CX12 = SWAP01.CX02.SWAP01
+
+
+-- *******************************************************************
 -- Spatiality Relations
 -- *******************************************************************
 
-expand_M_0 M = X0.Z0.X0.Z0
 expand_M_1 M = X1.Z1.X1.Z1
 expand_M_2 M = X2.Z2.X2.Z2
 
@@ -39,31 +88,6 @@ spatial_MCZ_c M.CZ12 = CZ12.M
 spatial_MCCX0 M.CCX0 = CCX0.M
 spatial_MCCX1 M.CCX1 = CCX1.M
 spatial_MCCX2 M.CCX2 = CCX2.M
-
-
--- *******************************************************************
--- Symmetry Relations
--- *******************************************************************
-
-expand_SWAP01 SWAP01 = CX01.CX10.CX01
-expand_SWAP12 SWAP12 = CX12.CX21.CX12
-expand_SWAP02 SWAP02 = SWAP12.SWAP01.SWAP12
-
-symmetry_X_a X1 = SWAP01.X0.SWAP01
-symmetry_X_b X2 = SWAP02.X0.SWAP02
-
-symmetry_CX_a CX02 = SWAP12.CX01.SWAP12
-symmetry_CX_b CX20 = SWAP02.CX02.SWAP02
-symmetry_CX_c CX12 = SWAP01.CX02.SWAP01
-
-symmetry_CCX_a CCX1 = SWAP01.CCX0.SWAP01
-symmetry_CCX_b CCX2 = SWAP02.CCX0.SWAP02
-
-symmetry_Z_a Z1 = SWAP01.Z0.SWAP01
-symmetry_Z_b Z2 = SWAP02.Z0.SWAP02
-
-symmetry_CZ_a CZ02 = SWAP12.CZ01.SWAP12
-symmetry_CZ_b CZ12 = SWAP01.CZ02.SWAP01
 
 
 -- *******************************************************************

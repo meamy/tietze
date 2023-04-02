@@ -36,9 +36,9 @@ X2.X0
 
 @name bifunct_X_c
 X1.X2
-symmetry_X_a → 0
+expand_X1 → 0
 !apply bifunct_X_SWAP_b ← 2
 !apply bifunct_X_b → 1
 !apply bifunct_X_SWAP_b ← 0
-symmetry_X_a ← 1
+expand_X1 ← 1
 X2.X1

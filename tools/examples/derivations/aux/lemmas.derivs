@@ -431,22 +431,22 @@ Z0.CCX0
 !apply elim_SWAP01 ← 0
 
 -- SWAP01.SWAP01.Z0.SWAP01.SWAP01.CCX0.SWAP01.SWAP01
-symmetry_Z_a ← 1
-symmetry_CCX_a ← 2
+expand_Z1 ← 1
+expand_CCX1 ← 2
 
 -- SWAP01.Z1.CCX1.SWAP01
 !apply drel21 → 1
 
 -- SWAP01.CCX1.CZ02.Z1.SWAP01
-symmetry_CCX_a → 1
+expand_CCX1 → 1
 !apply elim_SWAP01 → 0
 
 -- CCX0.SWAP01.CZ02.Z1.SWAP01
-symmetry_Z_a → 3
+expand_Z1 → 3
 !apply elim_SWAP01 → 5
 
 -- CCX0.SWAP01.CZ02.SWAP01.Z0
-symmetry_CZ_b ← 1
+expand_CZ12 ← 1
 CCX0.CZ12.Z0
 
 
@@ -477,8 +477,8 @@ Z0.CZ12.CCX0
 @name drel25
 
 X1.CCX1
-symmetry_CCX_a → 1
-symmetry_X_a → 0
+expand_CCX1 → 1
+expand_X1 → 0
 
 -- SWAP01.X0.SWAP01.SWAP01.CCX0.SWAP01
 !apply elim_SWAP01 → 2
@@ -486,8 +486,8 @@ r13 → 1
 !apply elim_SWAP01 ← 2
 
 -- SWAP01.CCX0.SWAP01.SWAP01.X0.SWAP01
-symmetry_CCX_a ← 0
-symmetry_X_a ← 1
+expand_CCX1 ← 0
+expand_X1 ← 1
 CCX1.X1
 
 
@@ -498,8 +498,8 @@ CCX1.X1
 @name drel26
 
 X2.CCX2
-symmetry_CCX_b → 1
-symmetry_X_b → 0
+expand_CCX2 → 1
+expand_X2 → 0
 
 -- SWAP02.X0.SWAP02.SWAP02.CCX0.SWAP02
 !apply elim_SWAP02 → 2
@@ -507,8 +507,8 @@ r13 → 1
 !apply elim_SWAP02 ← 2
 
 -- SWAP02.CCX0.SWAP02.SWAP02.X0.SWAP02
-symmetry_CCX_b ← 0
-symmetry_X_b ← 1
+expand_CCX2 ← 0
+expand_X2 ← 1
 CCX2.X2
 
 
@@ -524,7 +524,7 @@ expand_SWAP12 ← 1
 
 -- CZ01.SWAP12
 !apply elim_SWAP12 ← 0
-symmetry_CZ_a ← 1
+expand_CZ02 ← 1
 
 -- SWAP12.CZ02
 expand_SWAP12 → 0
@@ -619,7 +619,7 @@ M.Z1.X1
 X0.Z0
 elim_X0 ← 2
 elim_Z0 ← 3
-expand_M_0 ← 0
+expand_M ← 0
 M.Z0.X0
 
 
@@ -727,15 +727,15 @@ CCX1
 @name drel38
 
 CZ12.CCX0.CZ12
-symmetry_CZ_b → 2
-symmetry_CZ_b → 0
-symmetry_CCX_a ← 2
+expand_CZ12 → 2
+expand_CZ12 → 0
+expand_CCX1 ← 2
 
 -- SWAP01.CZ02.CCX1.CZ02.SWAP01
 !apply drel37 → 1
 
 -- SWAP01.CCX1.SWAP01
-symmetry_CCX_a → 1
+expand_CCX1 → 1
 !apply elim_SWAP01 → 3
 !apply elim_SWAP01 → 0
 CCX0
@@ -781,8 +781,8 @@ Z0.CCX2.Z0
 !apply symmetry_CCX_c → 3
 
 -- SWAP01.SWAP01.Z0.SWAP01.CCX2.SWAP01.Z0.SWAP01.SWAP01
-symmetry_Z_a ← 5
-symmetry_Z_a ← 1
+expand_Z1 ← 5
+expand_Z1 ← 1
 
 -- SWAP01.Z1.CCX2.Z1.SWAP01
 r24_b → 1

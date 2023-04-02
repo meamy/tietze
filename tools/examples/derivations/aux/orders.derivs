@@ -4,7 +4,7 @@
 
 @name elim_M
 M.M
-expand_M_0 → 1
+expand_M → 1
 spatial_MX_a → 0
 !apply drel32 ← 1
 elim_X0 → 0
@@ -50,8 +50,8 @@ expand_SWAP02 → 0
 
 @name elim_X1
 X1.X1
-symmetry_X_a → 1
-symmetry_X_a → 0
+expand_X1 → 1
+expand_X1 → 0
 !apply elim_SWAP01 → 2
 elim_X0 → 1
 !apply elim_SWAP01 → 0
@@ -59,8 +59,8 @@ elim_X0 → 1
 
 @name elim_X2
 X2.X2
-symmetry_X_b → 1
-symmetry_X_b → 0
+expand_X2 → 1
+expand_X2 → 0
 !apply elim_SWAP02 → 2
 elim_X0 → 1
 !apply elim_SWAP02 → 0
@@ -73,8 +73,8 @@ elim_X0 → 1
 
 @name elim_CX02
 CX02.CX02
-symmetry_CX_a → 1
-symmetry_CX_a → 0
+expand_CX02 → 1
+expand_CX02 → 0
 !apply elim_SWAP12 → 2
 elim_CX01 → 1
 !apply elim_SWAP12 → 0
@@ -82,8 +82,8 @@ elim_CX01 → 1
 
 @name elim_CX20
 CX20.CX20
-symmetry_CX_b → 1
-symmetry_CX_b → 0
+expand_CX20 → 1
+expand_CX20 → 0
 !apply elim_SWAP02 → 2
 !apply elim_CX02 → 1
 !apply elim_SWAP02 → 0
@@ -96,8 +96,8 @@ symmetry_CX_b → 0
 
 @name elim_CCX1
 CCX1.CCX1
-symmetry_CCX_a → 1
-symmetry_CCX_a → 0
+expand_CCX1 → 1
+expand_CCX1 → 0
 !apply elim_SWAP01 → 2
 elim_CCX0 → 1
 !apply elim_SWAP01 → 0
@@ -105,8 +105,8 @@ elim_CCX0 → 1
 
 @name elim_CCX2
 CCX2.CCX2
-symmetry_CCX_b → 1
-symmetry_CCX_b → 0
+expand_CCX2 → 1
+expand_CCX2 → 0
 !apply elim_SWAP02 → 2
 elim_CCX0 → 1
 !apply elim_SWAP02 → 0
@@ -119,8 +119,8 @@ elim_CCX0 → 1
 
 @name elim_Z1
 Z1.Z1
-symmetry_Z_a → 1
-symmetry_Z_a → 0
+expand_Z1 → 1
+expand_Z1 → 0
 !apply elim_SWAP01 → 2
 elim_Z0 → 1
 !apply elim_SWAP01 → 0
@@ -128,8 +128,8 @@ elim_Z0 → 1
 
 @name elim_Z2
 Z2.Z2
-symmetry_Z_b → 1
-symmetry_Z_b → 0
+expand_Z2 → 1
+expand_Z2 → 0
 !apply elim_SWAP02 → 2
 elim_Z0 → 1
 !apply elim_SWAP02 → 0
@@ -142,8 +142,8 @@ elim_Z0 → 1
 
 @name elim_CZ02
 CZ02.CZ02
-symmetry_CZ_a → 1
-symmetry_CZ_a → 0
+expand_CZ02 → 1
+expand_CZ02 → 0
 !apply elim_SWAP12 → 2
 elim_CZ01 → 1
 !apply elim_SWAP12 → 0
@@ -151,8 +151,8 @@ elim_CZ01 → 1
 
 @name elim_CZ12
 CZ12.CZ12
-symmetry_CZ_b → 1
-symmetry_CZ_b → 0
+expand_CZ12 → 1
+expand_CZ12 → 0
 !apply elim_SWAP01 → 2
 !apply elim_CZ02 → 1
 !apply elim_SWAP01 → 0
