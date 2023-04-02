@@ -82,3 +82,21 @@ expand_Z1 ← 1
 expand_X1 ← 2
 expand_Z1 ← 3
 X1.Z1.X1.Z1
+
+@name expand_M_alt2
+M
+!apply elim_SWAP02 ← 0
+!apply expand_SWAP02_alt1 → 1
+!apply spatial_CX02 ← 3
+!apply spatial_CX20 ← 2
+!apply spatial_CX02 ← 1
+!apply expand_SWAP02_alt1 ← 2
+expand_M → 1
+!apply elim_SWAP02 ← 4
+!apply elim_SWAP02 ← 3
+!apply elim_SWAP02 ← 2
+expand_X2 ← 0
+expand_Z2 ← 1
+expand_X2 ← 2
+expand_Z2 ← 3
+X2.Z2.X2.Z2

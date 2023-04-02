@@ -67,8 +67,6 @@ symmetry_CX_c CX12 = SWAP01.CX02.SWAP01
 -- Spatiality Relations
 -- *******************************************************************
 
-expand_M_2 M = X2.Z2.X2.Z2
-
 spatial_MX_a M.X0 = X0.M
 spatial_MX_b M.X1 = X1.M
 spatial_MX_c M.X2 = X2.M
