@@ -29,3 +29,26 @@ bifunct_X_Z_a ← 3
 !apply elim_Z1 → 4
 expand_M ← 1
 CX10.M
+
+
+-- *******************************************************************
+-- Alternate Definitions for M
+-- *******************************************************************
+
+@name expand_M_alt1
+M
+!apply elim_SWAP01 ← 0
+expand_SWAP01 → 1
+!apply spatial_CX01 ← 3
+!apply spatial_CX10 ← 2
+!apply spatial_CX01 ← 1
+expand_SWAP01 ← 2
+expand_M → 1
+!apply elim_SWAP01 ← 4
+!apply elim_SWAP01 ← 3
+!apply elim_SWAP01 ← 2
+expand_X1 ← 0
+expand_Z1 ← 1
+expand_X1 ← 2
+expand_Z1 ← 3
+X1.Z1.X1.Z1
