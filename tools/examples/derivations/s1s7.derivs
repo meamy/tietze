@@ -67,7 +67,7 @@ r18_b → 15
 !apply drel40 → 13
 spatial_MCCX2 → 12
 !apply elim_M → 13
-r24_b → 11
+!apply drel51 → 11
 
 -- X0.X1.CCX2. X1.X0.CZ01.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
 !apply lemmax1x0cz01 → 3
@@ -81,7 +81,7 @@ spatial_MX_a ← 0
 
 -- M.X0.X1.CZ01.CCX2.Z1.Z0.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
 !apply elim_Z1 ← 4
-r24_b → 5
+!apply drel51 → 5
 !apply elim_Z0 ← 5
 !apply drel40 → 6
 

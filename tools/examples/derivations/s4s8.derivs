@@ -60,7 +60,7 @@ bifunct_X_Z_d → 9
 spatial_MZ_c → 8
 spatial_MX_c → 9
 bifunct_Z_b → 7
-r24_f → 5
+!apply drel54 → 5
 
 -- X0.X1.Z0.M.X2.CCX0.Z0.X2.M.X1
 spatial_MX_c → 3
@@ -117,7 +117,7 @@ r44_c → 6
 r27_a ← 3
 bifunct_Z_a → 7
 bifunct_Z_CX_a ← 6
-r24_d → 4
+!apply drel53 → 4
 
 -- K12.M.Z0.CX10.CCX0.CX20.Z0.X0.K12
 spatial_MZ_a → 1

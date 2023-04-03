@@ -154,7 +154,7 @@ K12
 !apply elim_SWAP12 ← 1
 expand_SWAP12 → 1
 !apply drel30 ← 0
-r34 → 1
+!apply drel46 → 1
 !apply drel30 ← 2
 r7 ← 0
 expand_SWAP12 ← 0

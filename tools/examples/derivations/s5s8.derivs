@@ -72,7 +72,7 @@ spatial_MX_c ← 3
 spatial_MZ_c → 8
 spatial_MX_c → 9
 r30_a → 7
-r24_f → 5
+!apply drel54 → 5
 
 -- K12.CCX1.X1.M.X2.CCX0.CZ12.X2.M.X1.CCX1.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 spatial_MX_c → 3
