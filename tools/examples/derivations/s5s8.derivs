@@ -119,7 +119,7 @@ spatial_MCCX1 → 9
 
 -- K12.CCX1.X1.X2.CCX0.X2.X1.Z1.CZ02.CCX1.Z1.X1.X2.CCX0.X2.X1.K12
 !apply drel22 → 9
-bifunct_Z_CZ_a → 8
+!apply bifunct_Z_CZ_a → 8
 !apply elim_Z1 → 7
 !apply elim_CZ02 → 7
 

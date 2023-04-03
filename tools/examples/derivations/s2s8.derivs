@@ -113,7 +113,7 @@ r27_b → 10
 !apply elim_Z1 → 9
 
 -- X0.K12.CX12.CCX1.CX12.CX10.X0.CX20.CCX0.CX12.Z2.CCX1.CX12.Z2.Z1.CCX0.CX20.CX10.K12
-bifunct_Z_c ← 13
+!apply bifunct_Z_c ← 13
 !apply drel19 ← 12
 !apply drel39 → 10
 
