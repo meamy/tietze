@@ -5,7 +5,7 @@
 @name elim_M
 M.M
 expand_M → 1
-spatial_MX_a → 0
+!apply spatial_X0 → 0
 !apply drel32 ← 1
 elim_X0 → 0
 !apply elim_Z0 → 0

@@ -125,7 +125,7 @@ bifunct_X_Z_c → 3
 
 -- K12.X0.X1.Z1.M.X1.K12.X1.X0
 !apply drel31 → 2
-spatial_MX_b → 5
+!apply spatial_X1 → 5
 !apply elim_X1 → 4
 
 -- K12.X0.M.Z1.M.K12.X1.X0

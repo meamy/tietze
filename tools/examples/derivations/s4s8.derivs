@@ -54,19 +54,19 @@ bifunct_Z_b ← 2
 -- X0.X1.Z0.Z2.X2.CCX0.Z0.X2.X1.Z2
 !apply drel35 → 3
 spatial_MZ_c ← 4
-spatial_MX_c ← 3
+!apply spatial_X2 ← 3
 bifunct_X_Z_d → 9
 !apply drel33 → 8
 spatial_MZ_c → 8
-spatial_MX_c → 9
+!apply spatial_X2 → 9
 bifunct_Z_b → 7
 !apply drel54 → 5
 
 -- X0.X1.Z0.M.X2.CCX0.Z0.X2.M.X1
-spatial_MX_c → 3
+!apply spatial_X2 → 3
 spatial_MCCX0 → 4
 spatial_MZ_a → 5
-spatial_MX_c → 6
+!apply spatial_X2 → 6
 !apply elim_M → 7
 
 -- X0.X1.Z0.X2.CCX0.Z0.X2.X1

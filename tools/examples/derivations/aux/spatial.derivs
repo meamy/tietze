@@ -1,4 +1,39 @@
 -- *******************************************************************
+-- Commutation with X
+-- *******************************************************************
+
+@name spatial_X0
+M.X0
+!apply expand_M_alt1 → 0
+bifunct_X_Z_a ← 3
+bifunct_X_a ← 2
+bifunct_X_Z_a ← 1
+bifunct_X_a ← 0
+!apply expand_M_alt1 ← 1
+X0.M
+
+@name spatial_X1
+M.X1
+expand_M → 0
+bifunct_X_Z_b ← 3
+bifunct_X_a → 2
+bifunct_X_Z_b ← 1
+bifunct_X_a → 0
+expand_M ← 1
+X1.M
+
+@name spatial_X2
+M.X2
+expand_M → 0
+bifunct_X_Z_f ← 3
+!apply bifunct_X_b → 2
+bifunct_X_Z_f ← 1
+!apply bifunct_X_b → 0
+expand_M ← 1
+X2.M
+
+
+-- *******************************************************************
 -- Commutation with CX
 -- *******************************************************************
 

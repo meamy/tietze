@@ -74,8 +74,8 @@ spatial_MCCX2 → 12
 
 --X0.X1.CCX2.M.CZ01.Z1.Z0.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
 spatial_MCCX2 ← 2
-spatial_MX_b ← 1
-spatial_MX_a ← 0
+!apply spatial_X1 ← 1
+!apply spatial_X0 ← 0
 !apply elim_CZ01 ← 3
 !apply drel36 → 4
 

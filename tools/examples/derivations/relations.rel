@@ -67,10 +67,6 @@ symmetry_CX_c CX12 = SWAP01.CX02.SWAP01
 -- Spatiality Relations
 -- *******************************************************************
 
-spatial_MX_a M.X0 = X0.M
-spatial_MX_b M.X1 = X1.M
-spatial_MX_c M.X2 = X2.M
-
 spatial_MZ_a M.Z0 = Z0.M
 spatial_MZ_b M.Z1 = Z1.M
 spatial_MZ_c M.Z2 = Z2.M
@@ -107,7 +103,6 @@ bifunct_X_a X0.X1 = X1.X0
 
 bifunct_Z_a Z0.Z1 = Z1.Z0
 bifunct_Z_b Z0.Z2 = Z2.Z0
-bifunct_Z_c Z1.Z2 = Z2.Z1
 
 bifunct_Z_K_a Z0.K12 = K12.Z0
 bifunct_X_K_b Z2.K01 = K01.Z2
@@ -128,7 +123,6 @@ bifunct_X_CX_f CX20.X1 = X1.CX20
 
 bifunct_X_K_a X0.K12 = K12.X0
 
-bifunct_Z_CZ_a CZ02.Z1 = Z1.CZ02
 bifunct_Z_CZ_b CZ12.Z0 = Z0.CZ12
 
 bifunct_X_CZ_a X1.CZ02 = CZ02.X1
