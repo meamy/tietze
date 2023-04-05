@@ -67,10 +67,6 @@ symmetry_CX_c CX12 = SWAP01.CX02.SWAP01
 -- Spatiality Relations
 -- *******************************************************************
 
-spatial_MZ_a M.Z0 = Z0.M
-spatial_MZ_b M.Z1 = Z1.M
-spatial_MZ_c M.Z2 = Z2.M
-
 spatial_MCZ_a M.CZ01 = CZ01.M
 spatial_MCZ_b M.CZ02 = CZ02.M
 spatial_MCZ_c M.CZ12 = CZ12.M
@@ -260,3 +256,5 @@ r44_a_dag CX12.CZ02.CZ01 = CZ02.CX12
 r44_b_dag CX01.CZ12.CZ02 = CZ12.CX01
 
 r46 CZ12.CCX0.K12.CX10.CCX0.CX20.K12 = K12.CX10.CCX0.CX20.K12.CZ12.CCX0
+
+r47 K01.K12 = K12.K01

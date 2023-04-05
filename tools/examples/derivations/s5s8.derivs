@@ -66,10 +66,10 @@ elim_X0 → 6
 bifunct_X_Z_d → 8
 bifunct_X_Z_d ← 2
 !apply drel35 → 3
-spatial_MZ_c ← 4
+!apply spatial_Z2 ← 4
 !apply spatial_X2 ← 3
 !apply drel33 → 8
-spatial_MZ_c → 8
+!apply spatial_Z2 → 8
 !apply spatial_X2 → 9
 r30_a → 7
 !apply drel54 → 5

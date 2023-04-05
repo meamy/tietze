@@ -97,6 +97,41 @@ CX20.M
 
 
 -- *******************************************************************
+-- Commutation with Z
+-- *******************************************************************
+
+@name spatial_Z0
+M.Z0
+!apply expand_M_alt1 → 0
+bifunct_Z_a ← 3
+bifunct_X_Z_b → 2
+bifunct_Z_a ← 1
+bifunct_X_Z_b → 0
+!apply expand_M_alt1 ← 1
+Z0.M
+
+@name spatial_Z1
+M.Z1
+expand_M → 0
+bifunct_Z_a → 3
+bifunct_X_Z_a → 2
+bifunct_Z_a → 1
+bifunct_X_Z_a → 0
+expand_M ← 1
+Z1.M
+
+@name spatial_Z2
+M.Z2
+expand_M → 0
+bifunct_Z_b → 3
+bifunct_X_Z_e → 2
+bifunct_Z_b → 1
+bifunct_X_Z_e → 0
+expand_M ← 1
+Z2.M
+
+
+-- *******************************************************************
 -- Alternate Definitions for M
 -- *******************************************************************
 
