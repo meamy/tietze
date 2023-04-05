@@ -30,7 +30,7 @@ CCX1.CCX2.CCX1.CZ02
 @name drel2
 
 CX12.CX21.CX12.CCX2
-r1_f ← 2
+!apply drel55 ← 2
 !apply elim_CX21 ← 3
 
 -- CX12.CX21.CCX2.CX21.CX21.CX12
@@ -301,7 +301,7 @@ elim_CX12 ← 0
 
 -- CX12.CX12.CCX0.CX12.CCX1.CX12.CCX0.CX12.CX12
 r10_b → 5
-r1_b → 5
+!apply drel56 → 5
 r10_b → 1
 
 -- CX12.CCX0.CX10.CCX1.CX10.CCX0.CX12
@@ -1087,3 +1087,51 @@ elim_K12 → 1
 r32_a ← 1
 elim_K01 → 0
 CCX0
+
+
+-- ****************************************************************************
+-- The relation CCX2.CX12 = CX12.CCX2
+-- ****************************************************************************
+
+@name drel55
+
+CCX2.CX12
+elim_K12 ← 0
+
+-- K12.K12.CCX2.CX12
+r32 → 1
+elim_K12 ← 4
+expand_CX21 ← 2
+
+-- K12.CCX1.CX21.K12
+r1_d → 1
+r32 ← 2
+expand_CX21 → 1
+
+-- K12.K12.CX12.K12.K12.CCX2
+elim_K12 → 3
+elim_K12 → 0
+CX12.CCX2
+
+
+-- ****************************************************************************
+-- The relation CCX0.CX10 = CX10.CCX0
+-- ****************************************************************************
+
+@name drel56
+
+CCX0.CX10
+elim_K01 ← 0
+
+-- K01.K01.CCX0.CX10
+r32_a → 1
+expand_CX10 → 3
+elim_K01 → 2
+
+-- K01.CCX1.CX01.K01
+r1_c → 1
+
+-- K01.CX01.CCX1.K01
+r32_a ← 2
+expand_CX10 ← 0
+CX10.CCX0

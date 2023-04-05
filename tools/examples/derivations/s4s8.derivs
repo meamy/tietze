@@ -75,7 +75,7 @@ bifunct_X_Z_f → 5
 !apply elim_X2 → 6
 
 -- X0.X1.Z0.CCX0.CX10.Z0.X1
-r1_b → 3
+!apply drel56 → 3
 bifunct_X_Z_b → 1
 !apply drel32 → 0
 r12_b → 3
@@ -185,7 +185,7 @@ elim_K12 → 7
 
 -- CX01.CX02.Z0.K12.CX10.CCX0.CX20.CX10.CCX0.CX20.K12.Z0.CX02.CX01
 !apply drel8 ← 6
-r1_b → 5
+!apply drel56 → 5
 r1_e → 8
 
 -- CX01.CX02.Z0.K12.CX10.CX10.CCX0.CX20.CX20.CCX0.K12.Z0.CX02.CX01

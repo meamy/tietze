@@ -44,8 +44,8 @@ r12_c → 14
 -- X0.X1.CCX2. X0.CX12.X1.X2.CCX1.X2.X1.X0.CX12.CCX2. X0.CX12.X1.X2.CCX1.CX12
 bifunct_X_CX_a ← 3
 bifunct_X_CX_a ← 13
-r1_f → 2
-r1_f ← 11
+!apply drel55 → 2
+!apply drel55 ← 11
 
 -- X0.X1.CX12.CCX2.X0.X1.X2.CCX1.X2.X1.X0.CCX2.CX12.CX12.X0.X1.X2.CCX1.CX12
 elim_CX12 → 12
