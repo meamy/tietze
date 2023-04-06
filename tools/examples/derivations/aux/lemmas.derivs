@@ -1135,3 +1135,24 @@ r1_c → 1
 r32_a ← 2
 expand_CX10 ← 0
 CX10.CCX0
+
+
+-- ****************************************************************************
+-- The relation CCX0.CZ02 = CZ12.CZ02.CCX0
+-- ****************************************************************************
+
+@name drel57
+
+CCX0.CZ02
+elim_CCX0 ← 2
+!apply elim_CZ02 ← 3
+!apply elim_CZ12 ← 4
+
+-- CCX0.CZ02.CCX0.CZ02.CZ12.CZ12.CZ02.CCX0
+r26_b ← 2
+
+-- CCX0.CZ02.CZ02.CCX0.CZ12.CZ02.CCX0
+!apply elim_CZ02 → 1
+elim_CCX0 → 0
+
+CZ12.CZ02.CCX0
