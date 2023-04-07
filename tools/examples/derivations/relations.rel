@@ -97,9 +97,6 @@ elim_K12 K12.K12 = ε
 
 bifunct_X_a X0.X1 = X1.X0
 
-bifunct_Z_a Z0.Z1 = Z1.Z0
-bifunct_Z_b Z0.Z2 = Z2.Z0
-
 bifunct_X_CX_a CX12.X0 = X0.CX12
 bifunct_X_CX_b CX21.X0 = X0.CX21
 bifunct_X_CX_c CX10.X2 = X2.CX10

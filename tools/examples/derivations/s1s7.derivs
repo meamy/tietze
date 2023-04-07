@@ -20,7 +20,7 @@ r18_b_dag → 2
 !apply drel34 → 1
 !apply spatial_Z0 → 3
 spatial_MCZ_a → 4
-bifunct_Z_a ← 2
+!apply bifunct_Z_a ← 2
 X0.X1.Z0.Z1.CZ01.M
 
 
@@ -36,7 +36,7 @@ r18_b → 0
 !apply drel31 → 2
 !apply spatial_Z0 ← 1
 spatial_MCZ_a ← 0
-bifunct_Z_a → 2
+!apply bifunct_Z_a → 2
 M.CZ01.Z1.Z0.X1.X0
 
 
@@ -91,7 +91,7 @@ bifunct_X_a → 1
 !apply elim_M → 0
 
 -- CZ01.Z1.Z0.X1.X0.Z1.Z0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
-bifunct_Z_a ← 1
+!apply bifunct_Z_a ← 1
 !apply drel34 → 2
 !apply bifunct_X_Z_a → 5
 !apply spatial_Z1 → 4
