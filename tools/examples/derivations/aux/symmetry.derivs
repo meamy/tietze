@@ -78,6 +78,19 @@ symmetry_CX_c ← 2
 !apply symmetry_CX_g ← 1
 SWAP01.CX21.SWAP01
 
+@name symmetry_CX_i
+CX21
+expand_CX21 → 0
+!apply symmetry_CX_f → 1
+!apply elim_SWAP02 ← 5
+symmetry_K_c ← 3
+!apply elim_SWAP02 ← 0
+symmetry_K_c ← 1
+expand_CX10 → 2
+elim_K01 → 4
+elim_K01 → 1
+SWAP02.CX01.SWAP02
+
 
 -- *******************************************************************
 -- Alternative Symmetries for CCX Gates
@@ -120,7 +133,7 @@ r17_a_dag → 2
 !apply elim_CX21 → 4
 !apply drel9 → 5
 !apply expand_SWAP02_alt1 ← 3
-symmetry_CX_i → 2
+!apply symmetry_CX_i → 2
 !apply elim_SWAP02 → 4
 elim_CX01 → 3
 SWAP02.CCX1.SWAP02
