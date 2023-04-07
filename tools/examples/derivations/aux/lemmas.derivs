@@ -1204,7 +1204,50 @@ K01.Z1
 CZ12.Z2
 expand_CZ12 → 0
 !apply bifunct_Z_SWAP_c ← 2
-r30_b → 1
+!apply drel62 → 1
 !apply bifunct_Z_SWAP_c ← 0
 expand_CZ12 ← 1
 Z2.CZ12
+
+
+-- ****************************************************************************
+-- The relation CX02.X2 = CX02.X2
+-- ****************************************************************************
+
+@name drel61
+
+CX02.X2
+!apply symmetry_X_c → 1
+expand_CX02 → 0
+!apply elim_SWAP12 → 2
+
+-- SWAP12.CX01.X1.SWAP12
+!apply elim_X1 ← 1
+r36_d → 2
+
+-- SWAP12.X1.CX01.SWAP12
+!apply elim_SWAP12 ← 2
+expand_CX02 ← 3
+!apply symmetry_X_c ← 0
+X2.CX02
+
+
+-- ****************************************************************************
+-- The relation CZ02.Z2 = Z2.CZ02
+-- ****************************************************************************
+
+@name drel62
+
+CZ02.Z2
+elim_K12 ← 0
+!apply drel47 → 1
+r25_b ← 2
+
+-- K12.CX02.X2.K12
+!apply drel61 → 1
+
+-- K12.X2.CX02.K12
+!apply drel47 ← 2
+r25_b → 1
+elim_K12 → 0
+Z2.CZ02
