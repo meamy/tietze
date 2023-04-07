@@ -61,6 +61,9 @@ expand_CZ12 CZ12 = SWAP01.CZ02.SWAP01
 
 symmetry_CX_b CX10 = SWAP02.CX12.SWAP02
 symmetry_CX_c CX12 = SWAP01.CX02.SWAP01
+symmetry_CX_i CX21 = SWAP02.CX01.SWAP02
+
+symmetry_K_c K01 = SWAP02.K12.SWAP02
 
 
 -- *******************************************************************
@@ -102,7 +105,6 @@ bifunct_X_CX_d CX01.X2 = X2.CX01
 bifunct_X_CX_f CX20.X1 = X1.CX20
 
 bifunct_X_K_a X0.K12 = K12.X0
-bifunct_X_K_b X2.K01 = K01.X2
 
 bifunct_Z_CX_a Z1.CX20 = CX20.Z1
 bifunct_Z_CX_b Z0.CX12 = CX12.Z0
@@ -215,7 +217,6 @@ r31_b CZ02.CZ12 = CZ12.CZ02
 r31_c CZ01.CZ12 = CZ12.CZ01
 
 r32 K12.CCX2 = CCX1.K12
-r32_a K01.CCX0 = CCX1.K01
 
 r36_a X0.CX10.X0 = CX10
 r36_b X0.CX20.X0 = CX20

@@ -129,9 +129,9 @@ Z2.X0
 @name bifunct_X_Z_f
 X2.Z0
 expand_Z0 → 1
-bifunct_X_K_b → 0
+!apply bifunct_X_K_b → 0
 !apply bifunct_X_b ← 1
-bifunct_X_K_b → 2
+!apply bifunct_X_K_b → 2
 expand_Z0 ← 0
 Z0.X2
 
@@ -152,9 +152,9 @@ X0.CX21
 @name bifunct_X_CX_c
 CX10.X2
 expand_CX10 → 0
-bifunct_X_K_b ← 2
+!apply bifunct_X_K_b ← 2
 bifunct_X_CX_d → 1
-bifunct_X_K_b ← 0
+!apply bifunct_X_K_b ← 0
 expand_CX10 ← 1
 X2.CX10
 
@@ -199,6 +199,22 @@ expand_X1 → 2
 !apply elim_SWAP01 → 4
 expand_CZ12 ← 0
 CZ12.X0
+
+
+-- *******************************************************************
+-- Bifunctoriality Between Pauli-X Gates and K Gates
+-- *******************************************************************
+
+@name bifunct_X_K_b
+X2.K01
+symmetry_K_c → 1
+expand_X2 → 0
+!apply elim_SWAP02 → 2
+bifunct_X_K_a → 1
+!apply elim_SWAP02 ← 2
+expand_X2 ← 3
+symmetry_K_c ← 0
+K01.X2
 
 
 -- *******************************************************************
@@ -330,7 +346,7 @@ Z2.K01
 elim_K12 ← 1
 r25_b_dag ← 0
 r47 ← 2
-bifunct_X_K_b → 1
+!apply bifunct_X_K_b → 1
 r47 ← 0
 r25_b_dag → 1
 elim_K12 → 2

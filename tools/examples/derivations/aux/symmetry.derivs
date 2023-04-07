@@ -105,6 +105,26 @@ symmetry_CX_c ← 3
 elim_CX12 → 2
 SWAP01.CCX2.SWAP01
 
+@name symmetry_CCX_f
+CCX1
+!apply elim_SWAP02 ← 0
+!apply expand_SWAP02_alt1 → 1
+!apply elim_CX02 ← 5
+r10_a → 3
+!apply elim_CX20 ← 4
+r10_c → 2
+!apply elim_CX02 ← 3
+r10_a → 1
+r17_a_dag → 2
+!apply elim_CX02 → 5
+!apply elim_CX21 → 4
+!apply drel9 → 5
+!apply expand_SWAP02_alt1 ← 3
+symmetry_CX_i → 2
+!apply elim_SWAP02 → 4
+elim_CX01 → 3
+SWAP02.CCX1.SWAP02
+
 
 -- *******************************************************************
 -- Alternative Symmetries for Paul-Z Gates
