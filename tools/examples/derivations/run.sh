@@ -1,5 +1,6 @@
-../../dist-newstyle/build/x86_64-linux/ghc-8.8.4/Lafont-0.1.0.0/x/validate_derivations/build/validate_derivations/validate_derivations \
-    generators.gens \
+cmd=$(find ../../ -name validate_derivations -type f)
+
+eval " $cmd" generators.gens \
     relations.rel \
     aux/lemmas.derivs \
     aux/orders.derivs \
