@@ -97,6 +97,64 @@ CX20.M
 
 
 -- *******************************************************************
+-- Commutation with CCX
+-- *******************************************************************
+
+@name spatial_CCX0
+M.CCX0
+expand_M → 0
+!apply drel23 → 3
+r13 → 2
+!apply drel23 → 1
+!apply bifunct_Z_CZ_b → 2
+!apply bifunct_X_CZ_b ← 3
+!apply elim_CZ12 → 4
+r13 → 0
+expand_M ← 1
+CCX0.M
+
+@name spatial_CCX1
+M.CCX1
+!apply expand_M_alt1 → 0
+!apply drel21 → 3
+!apply drel25 → 2
+!apply drel21 → 1
+!apply bifunct_Z_CZ_a → 2
+!apply bifunct_X_CZ_a ← 3
+!apply elim_CZ02 → 4
+!apply drel25 → 0
+!apply expand_M_alt1 ← 1
+CCX1.M
+
+@name spatial_CCX2
+M.CCX2
+!apply expand_M_alt2 → 0
+expand_CCX2 → 4
+expand_Z2 → 3
+expand_X2 → 2
+expand_Z2 → 1
+expand_X2 → 0
+!apply elim_SWAP02 → 11
+!apply elim_SWAP02 → 8
+!apply elim_SWAP02 → 5
+!apply elim_SWAP02 → 2
+expand_M ← 1
+!apply spatial_CCX0 → 1
+expand_M → 2
+!apply elim_SWAP02 ← 5
+!apply elim_SWAP02 ← 4
+!apply elim_SWAP02 ← 3
+!apply elim_SWAP02 ← 2
+expand_Z2 ← 12
+expand_X2 ← 9
+expand_Z2 ← 6
+expand_X2 ← 3
+expand_CCX2 ← 0
+!apply expand_M_alt2 ← 1
+CCX2.M
+
+
+-- *******************************************************************
 -- Commutation with Z
 -- *******************************************************************
 

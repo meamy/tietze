@@ -92,7 +92,7 @@ r5_f_dag → 8
 -- X0.K12.CX12.CCX1.CX12.CX10.X0.CX20.CCX0.Z1.M.Z2.CX12.CCX1.CX12.Z2.X1.Z1.CCX0.CX10.X1.X0.K12
 !apply spatial_Z2 → 10
 !apply spatial_CX12  → 11
-spatial_MCCX1 → 12
+!apply spatial_CCX1 → 12
 !apply spatial_CX12  → 13
 !apply spatial_Z2 → 14
 !apply drel31 → 16

@@ -65,7 +65,7 @@ r18_b → 15
 -- X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.X0.X1.Z1.M.Z0. CZ01.CCX2.CZ01.Z0.M.Z1.X1.X0.CX21.CCX2.CX21.CZ01
 !apply drel36 → 14
 !apply drel40 → 13
-spatial_MCCX2 → 12
+!apply spatial_CCX2 → 12
 !apply elim_M → 13
 !apply drel51 → 11
 
@@ -73,7 +73,7 @@ spatial_MCCX2 → 12
 !apply lemmax1x0cz01 → 3
 
 --X0.X1.CCX2.M.CZ01.Z1.Z0.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
-spatial_MCCX2 ← 2
+!apply spatial_CCX2 ← 2
 !apply spatial_X1 ← 1
 !apply spatial_X0 ← 0
 !apply elim_CZ01 ← 3

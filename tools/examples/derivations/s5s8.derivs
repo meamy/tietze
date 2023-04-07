@@ -77,7 +77,7 @@ elim_X0 → 6
 -- K12.CCX1.X1.M.X2.CCX0.CZ12.X2.M.X1.CCX1.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 !apply spatial_X2 → 3
 !apply spatial_X2 ← 7
-spatial_MCCX0 → 4
+!apply spatial_CCX0 → 4
 !apply spatial_CZ12 → 5
 !apply elim_M → 6
 
@@ -113,7 +113,7 @@ r18_e → 6
 !apply bifunct_X_Z_c ← 5
 !apply drel34 → 6
 !apply spatial_CZ02 → 8
-spatial_MCCX1 → 9
+!apply spatial_CCX1 → 9
 !apply drel31 → 11
 !apply elim_M → 10
 

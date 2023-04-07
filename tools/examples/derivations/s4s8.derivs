@@ -64,7 +64,7 @@ Z2.X0.X1.Z0.X2.CCX0.Z0.X2.X1.Z2
 
 -- X0.X1.Z0.M.X2.CCX0.Z0.X2.M.X1
 !apply spatial_X2 → 3
-spatial_MCCX0 → 4
+!apply spatial_CCX0 → 4
 !apply spatial_Z0 → 5
 !apply spatial_X2 → 6
 !apply elim_M → 7
@@ -122,7 +122,7 @@ bifunct_Z_CX_a ← 6
 -- K12.M.Z0.CX10.CCX0.CX20.Z0.X0.K12
 !apply spatial_Z0 → 1
 !apply spatial_CX10 → 2
-spatial_MCCX0 → 3
+!apply spatial_CCX0 → 3
 !apply spatial_CX20  → 4
 !apply drel32 ← 5
 K12.Z0.CX10.CCX0.CX20.X0.Z0.K12
