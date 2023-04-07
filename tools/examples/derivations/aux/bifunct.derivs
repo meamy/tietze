@@ -200,6 +200,15 @@ expand_X1 → 2
 expand_CZ12 ← 0
 CZ12.X0
 
+@name bifunct_X_CZ_c
+X2.CZ01
+expand_CZ01 → 1
+r25_b → 0
+!apply bifunct_Z_CX_e → 1
+r25_b_dag ← 2
+expand_CZ01 ← 0
+CZ01.X2
+
 
 -- *******************************************************************
 -- Bifunctoriality Between Pauli-X Gates and K Gates
@@ -326,6 +335,15 @@ expand_Z1 → 1
 !apply elim_SWAP01 → 0
 expand_CZ12 ← 1
 Z0.CZ12
+
+@name bifunct_Z_CZ_c
+CZ01.Z2
+expand_CZ01 → 0
+r25_b ← 2
+bifunct_X_CX_d → 1
+r25_b_dag → 0
+expand_CZ01 ← 1
+Z2.CZ01
 
 
 -- *******************************************************************

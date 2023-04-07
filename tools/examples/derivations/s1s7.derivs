@@ -19,7 +19,7 @@ r18_a_dag → 0
 r18_b_dag → 2
 !apply drel34 → 1
 !apply spatial_Z0 → 3
-spatial_MCZ_a → 4
+!apply spatial_CZ01 → 4
 !apply bifunct_Z_a ← 2
 X0.X1.Z0.Z1.CZ01.M
 
@@ -35,7 +35,7 @@ r18_a → 1
 r18_b → 0
 !apply drel31 → 2
 !apply spatial_Z0 ← 1
-spatial_MCZ_a ← 0
+!apply spatial_CZ01 ← 0
 !apply bifunct_Z_a → 2
 M.CZ01.Z1.Z0.X1.X0
 

@@ -100,7 +100,7 @@ CX01.K12.M.Z0.CX10.CCX0.CX20.Z0.X0.K12.CX01
 !apply drel50 ← 9
 
 -- K12.CZ01.M.Z0.CX10.CCX0.CX20.Z0.X0.CZ01.K12
-spatial_MCZ_a ← 1
+!apply spatial_CZ01 ← 1
 !apply drel43 → 2
 !apply elim_CZ01 ← 5
 r29_a ← 3

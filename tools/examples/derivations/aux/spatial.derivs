@@ -132,6 +132,41 @@ Z2.M
 
 
 -- *******************************************************************
+-- Commutation with CZ
+-- *******************************************************************
+
+@name spatial_CZ01
+M.CZ01
+!apply expand_M_alt2 → 0
+!apply bifunct_Z_CZ_c ← 3
+!apply bifunct_X_CZ_c → 2
+!apply bifunct_Z_CZ_c ← 1
+!apply bifunct_X_CZ_c → 0
+!apply expand_M_alt2 ← 1
+CZ01.M
+
+@name spatial_CZ02
+M.CZ02
+!apply expand_M_alt1 → 0
+!apply bifunct_Z_CZ_a ← 3
+!apply bifunct_X_CZ_a → 2
+!apply bifunct_Z_CZ_a ← 1
+!apply bifunct_X_CZ_a → 0
+!apply expand_M_alt1 ← 1
+CZ02.M
+
+@name spatial_CZ12
+M.CZ12
+expand_M → 0
+!apply bifunct_Z_CZ_b ← 3
+!apply bifunct_X_CZ_b → 2
+!apply bifunct_Z_CZ_b ← 1
+!apply bifunct_X_CZ_b → 0
+expand_M ← 1
+CZ12.M
+
+
+-- *******************************************************************
 -- Alternate Definitions for M
 -- *******************************************************************
 
