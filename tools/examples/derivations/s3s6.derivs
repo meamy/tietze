@@ -21,19 +21,19 @@ expand_S3 → 1
 expand_S6 → 0
 
 -- CX21.CCX2.CX21.X0.CCX2.X0.CX21.CCX2.CX21.X0.CCX2.X0
-bifunct_X_CX_b → 2
-bifunct_X_CX_b ← 5
+!apply bifunct_X_CX_b → 2
+!apply bifunct_X_CX_b ← 5
 
 -- CX21.CCX2.X0.CX21.CCX2.CX21.X0.CCX2.CX21.X0.CCX2.X0
 r5_a → 6
 r5_a_dag → 1
 
 -- CX21.X0.CX12.CCX2.CX21.CCX2.CX21.CCX2.CX12.X0.CX21.X0.CCX2.X0
-bifunct_X_CX_b → 10
+!apply bifunct_X_CX_b → 10
 elim_X0 → 9
 
 -- CX21.X0.CX12.CCX2.CX21.CCX2.CX21.CCX2.CX12.CX21.CCX2.X0
-bifunct_X_CX_b → 0
+!apply bifunct_X_CX_b → 0
 elim_CX12 ← 10
 elim_CX12 ← 1
 

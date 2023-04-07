@@ -6,7 +6,7 @@
 X0.SWAP12
 expand_SWAP12 → 1
 bifunct_X_CX_a ← 0
-bifunct_X_CX_b ← 1
+!apply bifunct_X_CX_b ← 1
 bifunct_X_CX_a ← 2
 expand_SWAP12 ← 0
 SWAP12.X0
@@ -15,7 +15,7 @@ SWAP12.X0
 X2.SWAP01
 expand_SWAP01 → 1
 bifunct_X_CX_d ← 0
-bifunct_X_CX_c ← 1
+!apply bifunct_X_CX_c ← 1
 bifunct_X_CX_d ← 2
 expand_SWAP01 ← 0
 SWAP01.X2
@@ -127,6 +127,40 @@ Z0.X2
 
 
 -- *******************************************************************
+-- Bifunctoriality Between Pauli-X Gates and CX Gates
+-- *******************************************************************
+
+@name bifunct_X_CX_b
+CX21.X0
+expand_CX21 → 0
+bifunct_X_K_a ← 2
+bifunct_X_CX_a → 1
+bifunct_X_K_a ← 0
+expand_CX21 ← 1
+X0.CX21
+
+@name bifunct_X_CX_c
+CX10.X2
+expand_CX10 → 0
+bifunct_X_K_b ← 2
+bifunct_X_CX_d → 1
+bifunct_X_K_b ← 0
+expand_CX10 ← 1
+X2.CX10
+
+@name bifunct_X_CX_e
+CX02.X1
+expand_CX02 → 0
+!apply elim_SWAP12 ← 4
+!apply symmetry_X_c ← 2
+bifunct_X_CX_d → 1
+!apply symmetry_X_c → 1
+!apply elim_SWAP12 → 0
+expand_CX02 ← 1
+X1.CX02
+
+
+-- *******************************************************************
 -- Bifunctoriality Between Pauli-X Gates and CZ Gates
 -- *******************************************************************
 
@@ -235,7 +269,7 @@ CZ02.Z1
 elim_K12 ← 0
 !apply drel47 → 1
 r25_a ← 2
-bifunct_X_CX_e → 1
+!apply bifunct_X_CX_e → 1
 r25_a_dag → 0
 !apply drel48 ← 1
 elim_K12 → 2
@@ -249,7 +283,7 @@ expand_Z1 ← 2
 elim_K12 ← 1
 !apply drel47 → 2
 r25_a ← 3
-bifunct_X_CX_e → 2
+!apply bifunct_X_CX_e → 2
 r25_a_dag → 1
 !apply drel48 ← 2
 elim_K12 → 3

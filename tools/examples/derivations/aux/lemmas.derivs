@@ -97,7 +97,7 @@ r10_b → 0
 r5_c → 1
 
 -- X2.CCX0.CX10.X2.CX10
-bifunct_X_CX_c → 2
+!apply bifunct_X_CX_c → 2
 !apply elim_CX10 → 3
 X2.CCX0.X2
 
@@ -131,7 +131,7 @@ r10_e → 0
 r5_d → 1
 
 -- X1.CCX2.CX02.X1.CX02
-bifunct_X_CX_e → 2
+!apply bifunct_X_CX_e → 2
 !apply elim_CX02 → 3
 X1.CCX2.X1
 
