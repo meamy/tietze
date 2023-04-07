@@ -167,13 +167,13 @@ SWAP02.Z2.SWAP02
 @name symmetry_Z_c
 Z2
 elim_K12 ← 0
-r25_b ← 1
+!apply drel64 ← 1
 !apply symmetry_X_c → 1
 !apply symmetry_K_a → 4
 !apply elim_SWAP12 → 3
 !apply symmetry_K_a → 0
 !apply elim_SWAP12 → 2
-r25_a → 2
+r25 → 2
 elim_K12 → 1
 SWAP12.Z1.SWAP12
 
