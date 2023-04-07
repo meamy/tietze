@@ -35,7 +35,7 @@ r18_a_dag → 10
 
 -- CZ01.CX21.CCX2.CX21.X0.CCX2.X0.CX21.CCX2.CX21.X0.CCX2.Z1.CZ01.X0
 r18_a_dag → 13
-bifunct_X_Z_a → 13
+!apply bifunct_X_Z_a → 13
 !apply elim_Z1 → 12
 
 -- CZ01.CX21.CCX2.CX21.X0.CCX2.X0.CX21.CCX2.CX21.X0.CCX2.X0.CZ01

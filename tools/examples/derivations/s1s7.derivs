@@ -93,7 +93,7 @@ bifunct_X_a → 1
 -- CZ01.Z1.Z0.X1.X0.Z1.Z0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
 bifunct_Z_a ← 1
 !apply drel34 → 2
-bifunct_X_Z_a → 5
+!apply bifunct_X_Z_a → 5
 !apply spatial_Z1 → 4
 !apply elim_Z1 → 3
 

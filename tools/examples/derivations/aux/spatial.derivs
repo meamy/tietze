@@ -5,9 +5,9 @@
 @name spatial_X0
 M.X0
 !apply expand_M_alt1 → 0
-bifunct_X_Z_a ← 3
+!apply bifunct_X_Z_a ← 3
 bifunct_X_a ← 2
-bifunct_X_Z_a ← 1
+!apply bifunct_X_Z_a ← 1
 bifunct_X_a ← 0
 !apply expand_M_alt1 ← 1
 X0.M
@@ -25,9 +25,9 @@ X1.M
 @name spatial_X2
 M.X2
 expand_M → 0
-bifunct_X_Z_f ← 3
+!apply bifunct_X_Z_f ← 3
 !apply bifunct_X_b → 2
-bifunct_X_Z_f ← 1
+!apply bifunct_X_Z_f ← 1
 !apply bifunct_X_b → 0
 expand_M ← 1
 X2.M
@@ -70,7 +70,7 @@ r36_a → 2
 elim_X0 ← 2
 r36_a → 0
 bifunct_Z_a ← 2
-bifunct_X_Z_a ← 3
+!apply bifunct_X_Z_a ← 3
 !apply elim_Z1 → 4
 expand_M ← 1
 CX10.M
@@ -114,9 +114,9 @@ Z0.M
 M.Z1
 expand_M → 0
 bifunct_Z_a → 3
-bifunct_X_Z_a → 2
+!apply bifunct_X_Z_a → 2
 bifunct_Z_a → 1
-bifunct_X_Z_a → 0
+!apply bifunct_X_Z_a → 0
 expand_M ← 1
 Z1.M
 
@@ -124,9 +124,9 @@ Z1.M
 M.Z2
 expand_M → 0
 bifunct_Z_b → 3
-bifunct_X_Z_e → 2
+!apply bifunct_X_Z_e → 2
 bifunct_Z_b → 1
-bifunct_X_Z_e → 0
+!apply bifunct_X_Z_e → 0
 expand_M ← 1
 Z2.M
 

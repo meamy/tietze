@@ -47,7 +47,7 @@ Z0.X2.X1.Z2.X0.K12.CX01
 @name lemmaz0x0x1z0x2ccx0z0x2x1z2
 
 Z2.X0.X1.Z0.X2.CCX0.Z0.X2.X1.Z2
-bifunct_X_Z_e ← 0
+!apply bifunct_X_Z_e ← 0
 !apply bifunct_X_Z_d ← 1
 bifunct_Z_b ← 2
 
@@ -71,7 +71,7 @@ spatial_MCCX0 → 4
 
 -- X0.X1.Z0.X2.CCX0.Z0.X2.X1
 r5_c → 3
-bifunct_X_Z_f → 5
+!apply bifunct_X_Z_f → 5
 !apply elim_X2 → 6
 
 -- X0.X1.Z0.CCX0.CX10.Z0.X1

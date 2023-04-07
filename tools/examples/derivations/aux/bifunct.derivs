@@ -29,6 +29,14 @@ bifunct_Z_CX_b → 2
 expand_SWAP12 ← 0
 SWAP12.Z0
 
+@name bifunct_Z_SWAP_b
+Z1.SWAP02
+!apply expand_SWAP02_alt1 → 1
+bifunct_Z_CX_c → 0
+bifunct_Z_CX_a → 1
+bifunct_Z_CX_c → 2
+!apply expand_SWAP02_alt1 ← 0
+SWAP02.Z1
 
 -- *******************************************************************
 -- Bifunctoriality Between Pauli-X Gates
@@ -57,25 +65,65 @@ X2.X1
 -- Bifunctoriality Between Pauli-X Gates and Paul-Z Gates
 -- *******************************************************************
 
+@name bifunct_X_Z_a
+X0.Z1
+elim_K12 ← 1
+bifunct_X_K_a → 0
+r25_a ← 2
+bifunct_X_a → 1
+bifunct_X_K_a → 2
+r25_a → 1
+elim_K12 → 0
+Z1.X0
+
 @name bifunct_X_Z_b
 X1.Z0
 expand_Z0 → 1
 !apply drel59 → 0
-bifunct_X_Z_a ← 1
+!apply bifunct_X_Z_a ← 1
 !apply drel58 → 2
 expand_Z0 ← 0
 Z0.X1
+
+@name bifunct_X_Z_c
+X2.Z1
+expand_Z1 → 1
+!apply bifunct_X_SWAP_b → 0
+!apply bifunct_X_Z_f → 1
+!apply bifunct_X_SWAP_b → 2
+expand_Z1 ← 0
+Z1.X2
 
 @name bifunct_X_Z_d
 X1.Z2
 elim_K12 ← 0
 r25_a_dag → 1
 r25_b ← 2
-bifunct_X_Z_c ← 1
+!apply bifunct_X_Z_c ← 1
 r25_b_dag → 0
 r25_a ← 1
 elim_K12 → 2
 Z2.X1
+
+@name bifunct_X_Z_e
+X0.Z2
+expand_Z2 → 1
+!apply elim_SWAP02 ← 0
+expand_X2 ← 1
+!apply bifunct_X_Z_f → 1
+expand_X2 → 2
+expand_Z2 ← 0
+!apply elim_SWAP02 → 2
+Z2.X0
+
+@name bifunct_X_Z_f
+X2.Z0
+expand_Z0 → 1
+bifunct_X_K_b → 0
+!apply bifunct_X_b ← 1
+bifunct_X_K_b → 2
+expand_Z0 ← 0
+Z0.X2
 
 
 -- *******************************************************************
