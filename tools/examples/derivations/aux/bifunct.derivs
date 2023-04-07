@@ -52,6 +52,32 @@ expand_X1 → 0
 expand_X1 ← 1
 X2.X1
 
+
+-- *******************************************************************
+-- Bifunctoriality Between Pauli-X Gates and Paul-Z Gates
+-- *******************************************************************
+
+@name bifunct_X_Z_b
+X1.Z0
+expand_Z0 → 1
+!apply drel59 → 0
+bifunct_X_Z_a ← 1
+!apply drel58 → 2
+expand_Z0 ← 0
+Z0.X1
+
+@name bifunct_X_Z_d
+X1.Z2
+elim_K12 ← 0
+r25_a_dag → 1
+r25_b ← 2
+bifunct_X_Z_c ← 1
+r25_b_dag → 0
+r25_a ← 1
+elim_K12 → 2
+Z2.X1
+
+
 -- *******************************************************************
 -- Bifunctoriality Between Pauli-Z Gates
 -- *******************************************************************

@@ -923,7 +923,7 @@ CX12.K12
 K12.CZ02
 expand_CZ02 → 1
 !apply elim_SWAP12 ← 0
-!apply symmetry_K ← 1
+!apply symmetry_K_a ← 1
 
 -- SWAP12.K12.CZ01.SWAP12
 expand_CZ01 → 2
@@ -931,7 +931,7 @@ elim_K12 → 1
 
 -- SWAP12.CX01.K12.SWAP12
 !apply elim_SWAP12 ← 2
-!apply symmetry_K ← 3
+!apply symmetry_K_a ← 3
 
 -- SWAP12.CX01.SWAP12.K12
 expand_CX02 ← 0
@@ -1156,3 +1156,40 @@ r26_b ← 2
 elim_CCX0 → 0
 
 CZ12.CZ02.CCX0
+
+
+-- ****************************************************************************
+-- The relation Z1.K01 = K01.X1
+-- ****************************************************************************
+
+@name drel58
+
+Z1.K01
+expand_Z1 → 0
+!apply symmetry_K_b → 3
+!apply elim_SWAP01 → 2
+
+-- SWAP01.Z0.K01.SWAP01
+expand_Z0 → 1
+elim_K01 → 3
+
+-- SWAP01.K01.X0.SWAP01
+!apply symmetry_K_b → 1
+!apply elim_SWAP01 → 0
+expand_X1 ← 1
+K01.X1
+
+
+-- ****************************************************************************
+-- The relation X1.K01 = K01.Z1
+-- ****************************************************************************
+
+@name drel59
+
+X1.K01
+!apply elim_Z1 ← 2
+elim_K01 ← 3
+!apply drel58 → 2
+elim_K01 → 1
+!apply elim_X1 → 0
+K01.Z1

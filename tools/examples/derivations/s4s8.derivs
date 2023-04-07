@@ -48,14 +48,14 @@ Z0.X2.X1.Z2.X0.K12.CX01
 
 Z2.X0.X1.Z0.X2.CCX0.Z0.X2.X1.Z2
 bifunct_X_Z_e ← 0
-bifunct_X_Z_d ← 1
+!apply bifunct_X_Z_d ← 1
 bifunct_Z_b ← 2
 
 -- X0.X1.Z0.Z2.X2.CCX0.Z0.X2.X1.Z2
 !apply drel35 → 3
 !apply spatial_Z2 ← 4
 !apply spatial_X2 ← 3
-bifunct_X_Z_d → 9
+!apply bifunct_X_Z_d → 9
 !apply drel33 → 8
 !apply spatial_Z2 → 8
 !apply spatial_X2 → 9
@@ -76,7 +76,7 @@ bifunct_X_Z_f → 5
 
 -- X0.X1.Z0.CCX0.CX10.Z0.X1
 !apply drel56 → 3
-bifunct_X_Z_b → 1
+!apply bifunct_X_Z_b→ 1
 !apply drel32 → 0
 r12_b → 3
 
@@ -84,7 +84,7 @@ r12_b → 3
 bifunct_X_a ← 4
 r36_a → 2
 r5_f → 3
-bifunct_X_Z_b → 5
+!apply bifunct_X_Z_b→ 5
 !apply elim_X1 → 6
 M.Z0.CX10.CCX0.CX20.Z0
 

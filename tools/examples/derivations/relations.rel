@@ -103,9 +103,7 @@ bifunct_Z_b Z0.Z2 = Z2.Z0
 bifunct_X_K_b Z2.K01 = K01.Z2
 
 bifunct_X_Z_a X0.Z1 = Z1.X0
-bifunct_X_Z_b X1.Z0 = Z0.X1
 bifunct_X_Z_c X2.Z1 = Z1.X2
-bifunct_X_Z_d X1.Z2 = Z2.X1
 bifunct_X_Z_e X0.Z2 = Z2.X0
 bifunct_X_Z_f X2.Z0 = Z0.X2
 

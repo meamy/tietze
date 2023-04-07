@@ -113,7 +113,7 @@ bifunct_X_Z_e ← 11
 !apply elim_CZ02 → 16
 
 -- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.M.X0.CX12.Z2.CCX1.Z1.CX12.X0.M.X1.Z2.X2.CCX0.X2.X1.X0.K12
-bifunct_X_Z_d → 19
+!apply bifunct_X_Z_d → 19
 !apply spatial_Z2 → 18
 bifunct_X_Z_e → 17
 !apply drel20 → 16

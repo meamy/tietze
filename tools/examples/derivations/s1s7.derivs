@@ -102,7 +102,7 @@ bifunct_X_Z_a → 5
 !apply elim_M → 3
 
 -- CZ01.Z0.X1.Z0.X0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
-bifunct_X_Z_b → 2
+!apply bifunct_X_Z_b→ 2
 !apply elim_Z0 → 1
 
 -- CZ01.X1.X0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
