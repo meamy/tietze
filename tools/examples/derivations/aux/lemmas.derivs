@@ -1334,3 +1334,46 @@ elim_K12 ← 2
 !apply elim_X2 → 1
 elim_K12 → 0
 Z2.K12
+
+
+-- ****************************************************************************
+-- The relation X1.CX10 = CX10.X1.X0
+-- ****************************************************************************
+
+@name drel67
+
+X1.CX10
+expand_X1 → 0
+!apply elim_SWAP01 ← 4
+!apply symmetry_CX_e ← 2
+
+-- SWAP01.X0.CX01.SWAP01
+r12_a → 1
+
+-- SWAP01.CX01.X0.X1.SWAP01
+!apply symmetry_CX_e → 1
+!apply elim_SWAP01 → 0
+expand_X1 → 3
+!apply elim_SWAP01 → 5
+expand_X1 ← 1
+CX10.X1.X0
+
+
+-- ****************************************************************************
+-- The relation CX10.X1 = X0.X1.CX10
+-- ****************************************************************************
+
+@name drel68
+
+CX10.X1
+!apply elim_CX10 ← 2
+!apply  elim_X1 ← 3
+elim_X0 ← 4
+
+-- CX10.X1.CX10.X1.X0.X0.X1.CX10
+!apply drel67 ← 2
+
+-- CX10.X1.X1.CX10.X0.X1.CX10
+!apply elim_X1 → 1
+!apply elim_CX10 → 0
+X0.X1.CX10

@@ -40,7 +40,7 @@ elim_X0 → 3
 r5_c_dag → 2
 !apply elim_X2 → 1
 r5_f_dag → 2
-r12_b_dag → 1
+!apply drel68 → 1
 bifunct_X_a → 1
 !apply elim_X1 → 0
 X0.CX10.CX20.CCX0

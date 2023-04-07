@@ -80,7 +80,7 @@ r5_c → 17
 !apply drel56 → 6
 
 -- X0.K12.CX12.CCX1.CX12.X1.CX10.CCX0.Z1.Z2.X1.CX12.CCX1.CX12.Z2.X1.Z1.CCX0.CX10.X1.X0.K12 
-r12_b → 5
+!apply drel67 → 5
 bifunct_X_a ← 6
 !apply bifunct_X_Z_d ← 10
 
@@ -100,7 +100,7 @@ r5_f_dag → 8
 
 -- X0.K12.CX12.CCX1.CX12.CX10.X0.CX20.CCX0.Z1.Z2.CX12.CCX1.CX12.Z2.Z1.X1.CCX0.CX10.X1.X0.K12
 r5_f → 16
-r12_b → 18
+!apply drel67 → 18
 bifunct_X_a → 20
 
 -- X0.K12.CX12.CCX1.CX12.CX10.X0.CX20.CCX0.Z1.Z2.CX12.CCX1.CX12.Z2.Z1.CCX0.CX20.CX10.X1.X1.X0.X0.K12

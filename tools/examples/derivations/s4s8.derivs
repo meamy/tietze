@@ -78,7 +78,7 @@ r5_c → 3
 !apply drel56 → 3
 !apply bifunct_X_Z_b→ 1
 !apply drel32 → 0
-r12_b → 3
+!apply drel67 → 3
 
 -- M.Z0.X0.CX10.X1.X0.CCX0.Z0.X1
 bifunct_X_a ← 4
