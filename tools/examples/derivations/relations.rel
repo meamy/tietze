@@ -110,9 +110,6 @@ bifunct_X_CX_f CX20.X1 = X1.CX20
 bifunct_X_K_a X0.K12 = K12.X0
 bifunct_X_K_b X2.K01 = K01.X2
 
-bifunct_X_CZ_a X1.CZ02 = CZ02.X1
-bifunct_X_CZ_b X0.CZ12 = CZ12.X0
-
 bifunct_Z_CX_a Z1.CX20 = CX20.Z1
 bifunct_Z_CX_b Z0.CX12 = CX12.Z0
 bifunct_Z_CX_c Z1.CX02 = CX02.Z1
