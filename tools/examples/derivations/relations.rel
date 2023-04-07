@@ -100,7 +100,6 @@ bifunct_X_a X0.X1 = X1.X0
 bifunct_Z_a Z0.Z1 = Z1.Z0
 bifunct_Z_b Z0.Z2 = Z2.Z0
 
-bifunct_Z_K_a Z0.K12 = K12.Z0
 bifunct_X_K_b Z2.K01 = K01.Z2
 
 bifunct_X_Z_a X0.Z1 = Z1.X0
@@ -118,8 +117,6 @@ bifunct_X_CX_e CX02.X1 = X1.CX02
 bifunct_X_CX_f CX20.X1 = X1.CX20
 
 bifunct_X_K_a X0.K12 = K12.X0
-
-bifunct_Z_CZ_b CZ12.Z0 = Z0.CZ12
 
 bifunct_X_CZ_a X1.CZ02 = CZ02.X1
 bifunct_X_CZ_b X0.CZ12 = CZ12.X0
@@ -212,9 +209,6 @@ r26_b CZ02.CCX0 = CCX0.CZ02.CZ12
 r26_c CZ01.CCX0 = CCX0.CZ01.CZ12
 r26_d CZ12.CCX1 = CCX1.CZ12.CZ02
 r26_e CZ01.CCX1 = CCX1.CZ01.CZ02
---
-r26_b_dag CCX0.CZ02 = CZ12.CZ02.CCX0
---
 r26_c_dag CCX0.CZ01 = CZ12.CZ01.CCX0
 r26_d_dag CCX1.CZ12 = CZ02.CZ12.CCX1
 r26_e_dag CCX1.CZ01 = CZ02.CZ01.CCX1

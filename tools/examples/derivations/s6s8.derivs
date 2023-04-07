@@ -62,7 +62,7 @@ elim_K12 ← 0
 !apply lemmak12cx21ccx2cx21k12 → 1
 
 -- K12.CX12.CCX1.CX12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX12.CCX1.CX12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
-r26_b_dag → 20
+!apply drel57 → 20
 r26_b → 7
 r31_b → 8
 r31_b → 20

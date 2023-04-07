@@ -52,9 +52,8 @@ expand_X1 → 0
 expand_X1 ← 1
 X2.X1
 
-
 -- *******************************************************************
--- Bifunctoriality Between Pauli-Y Gates
+-- Bifunctoriality Between Pauli-Z Gates
 -- *******************************************************************
 
 @name bifunct_Z_c
@@ -77,9 +76,9 @@ Z2.Z1
 Z0.CX21
 elim_K12 ← 1
 !apply drel46 → 2
-bifunct_Z_K_a → 0
+!apply bifunct_Z_K_a → 0
 bifunct_Z_CX_b → 1
-bifunct_Z_K_a → 2
+!apply bifunct_Z_K_a → 2
 !apply drel46 ← 1
 elim_K12 → 0
 CX21.Z0
@@ -90,7 +89,6 @@ CX21.Z0
 -- *******************************************************************
 
 @name bifunct_Z_CZ_a
-
 CZ02.Z1
 elim_K12 ← 0
 !apply drel47 → 1
@@ -100,3 +98,34 @@ r25_a_dag → 0
 !apply drel48 ← 1
 elim_K12 → 2
 Z1.CZ02
+
+@name bifunct_Z_CZ_b
+CZ12.Z0
+expand_CZ12 → 0
+!apply elim_SWAP01 ← 4
+expand_Z1 ← 2
+elim_K12 ← 1
+!apply drel47 → 2
+r25_a ← 3
+bifunct_X_CX_e → 2
+r25_a_dag → 1
+!apply drel48 ← 2
+elim_K12 → 3
+expand_Z1 → 1
+!apply elim_SWAP01 → 0
+expand_CZ12 ← 1
+Z0.CZ12
+
+
+-- *******************************************************************
+-- Bifunctoriality Between Pauli-Z Gates and K Gates
+-- *******************************************************************
+
+@name bifunct_Z_K_a
+Z0.K12
+expand_Z0 → 0
+r47 → 2
+bifunct_X_K_a → 1
+r47 → 0
+expand_Z0 ← 1
+K12.Z0
