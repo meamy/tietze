@@ -155,3 +155,14 @@ bifunct_X_K_a → 1
 r47 → 0
 expand_Z0 ← 1
 K12.Z0
+
+@name bifunct_Z_K_b
+Z2.K01
+elim_K12 ← 1
+r25_b_dag ← 0
+r47 ← 2
+bifunct_X_K_b → 1
+r47 ← 0
+r25_b_dag → 1
+elim_K12 → 2
+K01.Z2

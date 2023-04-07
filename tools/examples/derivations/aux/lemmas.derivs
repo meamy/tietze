@@ -1065,9 +1065,9 @@ CCX0
 
 Z2.CCX0.Z2
 elim_K01 ← 0
-bifunct_X_K_b ← 1
+!apply bifunct_Z_K_b ← 1
 r32_a → 2
-bifunct_X_K_b ← 3
+!apply bifunct_Z_K_b ← 3
 
 -- K01.Z2.CCX1.Z2.K01
 elim_K12 ← 1
