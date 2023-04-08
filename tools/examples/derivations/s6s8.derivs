@@ -142,7 +142,7 @@ bifunct_X_CX_a → 1
 elim_X0 ← 14
 r36_a → 12
 elim_X0 ← 15
-r36_b → 13
+!apply drel83 → 13
 r13 → 14
 
 -- K12.X0.CX12.CX21.CCX1.CX12.CX10.CX20.CCX0.CX12.CCX1.CX12.CX10.CX20.CCX0.X0.K12
