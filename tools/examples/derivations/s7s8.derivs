@@ -212,7 +212,7 @@ bifunct_Z_CX_b → 21
 -- K12.X1.X2.Z0.CZ12.CZ01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CZ12.CX12.CCX1.CZ02.X1.K12.CX21.CZ01
 !apply elim_CZ12 ← 22
 r29_c ← 20
-r27_b ← 20
+!apply drel80 ← 20
 r26_d → 22
 !apply drel21 → 21
 
@@ -267,7 +267,7 @@ r44_a_dag ← 7
 
 -- K12.X1.X2.Z0.CZ01.CX01.CZ12.CX12.CZ01.Z1.CZ12.X1.K12.CX21.CZ01
 !apply drel45 → 8
-r27_b → 7
+!apply drel80 → 7
 r29_c → 7
 !apply elim_CZ12 → 6
 
