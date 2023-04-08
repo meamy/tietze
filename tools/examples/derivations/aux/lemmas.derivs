@@ -1442,3 +1442,66 @@ elim_K12 ← 0
 elim_K12 → 2
 CZ02.CZ01
 
+
+-- ****************************************************************************
+-- The relation Z0.CX20 = CX20.Z2.Z0
+-- ****************************************************************************
+
+@name drel72
+
+Z0.CX20
+!apply symmetry_CX_j → 1
+!apply bifunct_Z_SWAP_a → 0
+
+-- SWAP12.Z0.CX10.SWAP12
+!apply drel42 → 1
+
+-- SWAP12.CX10.Z2.Z0.SWAP12
+!apply bifunct_Z_SWAP_a → 3
+!apply elim_SWAP12 ← 2
+!apply symmetry_Z_c ← 3
+
+-- SWAP12.CX10.SWAP12.Z2.Z0
+!apply symmetry_CX_j ← 0
+CX20.Z2.Z0
+
+
+-- ****************************************************************************
+-- The relation CX20.Z0 = Z0.Z2.CX20
+-- ****************************************************************************
+
+@name drel73
+
+CX20.Z0
+!apply elim_CX20 ← 2
+!apply elim_Z2 ← 3
+!apply elim_Z0 ← 4
+
+-- CX20.Z0.CX20.Z2.Z0.Z0.Z2.CX20
+!apply drel72 ← 2
+
+-- CX20.Z0.Z0.CX20.Z0.Z2.CX20
+!apply elim_Z0 → 1
+!apply elim_CX20 → 0
+Z0.Z2.CX20
+
+
+-- ****************************************************************************
+-- The relation K01.CX20 = CZ02.K01
+-- ****************************************************************************
+
+@name drel74
+
+K01.CX20
+expand_CX20 → 1
+symmetry_K_c → 0
+!apply elim_SWAP02 → 2
+
+-- SWAP02.K12.CX02.SWAP02
+!apply drel48 ← 1
+
+-- SWAP02.CZ02.K12.SWAP02
+!apply elim_SWAP02 ← 2
+symmetry_K_c ← 3
+!apply symmetry_CZ_a ← 0
+CZ02.K01

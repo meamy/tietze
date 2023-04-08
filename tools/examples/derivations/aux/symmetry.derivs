@@ -13,6 +13,20 @@ symmetry_CX_c → 1
 !apply symmetry_CX_h ← 1
 CX02.CX20.CX02
 
+@name expand_SWAP01_alt1
+SWAP01
+expand_SWAP01 → 0
+!apply elim_SWAP02 ← 3
+!apply elim_SWAP02 ← 2
+!apply elim_SWAP02 ← 1
+!apply elim_SWAP02 ← 0
+!apply symmetry_CX_i ← 7
+!apply symmetry_CX_f ← 4
+!apply symmetry_CX_i ← 1
+r7 ← 1
+expand_SWAP12 ← 1
+SWAP02.SWAP12.SWAP02
+
 
 -- *******************************************************************
 -- Alternative Symmetries for Paul-X Gates
@@ -90,6 +104,23 @@ expand_CX10 → 2
 elim_K01 → 4
 elim_K01 → 1
 SWAP02.CX01.SWAP02
+
+@name symmetry_CX_j
+CX20
+!apply symmetry_CX_h → 0
+!apply symmetry_CX_g → 1
+!apply symmetry_CX_f → 2
+!apply elim_SWAP02 ← 6
+!apply expand_SWAP01_alt1 ← 4
+!apply elim_SWAP02 ← 1
+!apply expand_SWAP01_alt1 ← 2
+expand_SWAP02 → 5
+!apply elim_SWAP01 → 7
+!apply elim_SWAP01 → 4
+expand_SWAP02 → 1
+!apply elim_SWAP01 → 3
+!apply elim_SWAP01 → 0
+SWAP12.CX10.SWAP12
 
 
 -- *******************************************************************
@@ -176,6 +207,29 @@ elim_K12 ← 0
 r25 → 2
 elim_K12 → 1
 SWAP12.Z1.SWAP12
+
+
+-- *******************************************************************
+-- Alternative Symmetries for CZ
+-- *******************************************************************
+
+@name symmetry_CZ_a
+CZ02
+!apply elim_SWAP02 ← 0
+!apply expand_SWAP02_alt1 → 1
+!apply elim_CZ02 ← 3
+r29_e ← 4
+!apply elim_CZ02 ← 2
+r29_f ← 3
+!apply drel73 → 4
+!apply bifunct_Z_b → 4
+!apply elim_Z2 → 3
+!apply elim_CZ02 ← 1
+r29_e ← 2
+r27_d → 3
+!apply elim_Z0 → 2
+!apply expand_SWAP02_alt1 ← 2
+SWAP02.CZ02.SWAP02
 
 
 -- *******************************************************************
