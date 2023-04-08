@@ -23,8 +23,8 @@ r8_b → 5
 r1_c ← 4
 r1_c → 7
 r10_e → 5
-r1_a → 5
-r1_a ← 5
+!apply drel91 → 5
+!apply drel91 ← 5
 
 -- CX01.CX02.CCX0.CX02.CCX1.CCX2.CX02.CCX1.CX02.CCX0.CX02.CX01.CX21.CCX2.CX21
 r10_a → 6
