@@ -114,7 +114,7 @@ r18_a → 10
 -- K12.M.Z0.Z1.CX10.CCX0.CZ12.CZ01.CX20.CZ01.Z0.Z1.X0.K12
 r44_c → 6
 !apply elim_CZ01 → 7
-r27_a ← 3
+!apply drel77 ← 3
 !apply bifunct_Z_a → 7
 bifunct_Z_CX_a ← 6
 !apply drel53 → 4
