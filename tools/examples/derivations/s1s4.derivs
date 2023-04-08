@@ -22,7 +22,7 @@ expand_S1 → 0
 r12_a → 14
 r12_a ← 9
 bifunct_X_a → 14
-r36_d → 12
+!apply drel82 → 12
 
 -- X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.CX02.X0.CX01.CCX2.CX01.X0.CX02.CCX0.CX02.CX01
 r10_e → 10
