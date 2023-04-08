@@ -67,7 +67,7 @@ r36_d → 1
 
 -- X2.CX01.X1.CX12.CCX1
 bifunct_X_CX_d ← 0
-r12_c_dag ← 1
+!apply drel70 ← 1
 
 -- CX01.CX12.X1.CCX1
 !apply drel25 → 2
@@ -80,7 +80,7 @@ CX01.CX12.CCX1.X1
 
 @name lemmax1cx12cx01x1x2
 X1.CX12.CX01.X1.X2
-r12_c → 0
+!apply drel69 → 0
 
 -- CX12.X1.X2.CX01.X1.X2
 bifunct_X_CX_d ← 2
@@ -288,7 +288,7 @@ r28_c → 5
 !apply bifunct_X_c → 1
 !apply elim_X1 ← 4
 r36_d → 2
-r12_c → 3
+!apply drel69 → 3
 
 -- K12.X2.CX01.CX12.X1.X2.X1.K12.CX21.CZ01
 !apply bifunct_X_c → 4

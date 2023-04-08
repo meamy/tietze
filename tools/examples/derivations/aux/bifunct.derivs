@@ -20,6 +20,15 @@ bifunct_X_CX_d ← 2
 expand_SWAP01 ← 0
 SWAP01.X2
 
+@name bifunct_X_SWAP_c
+X1.SWAP02
+!apply expand_SWAP02_alt1 → 1
+!apply bifunct_X_CX_e ← 0
+bifunct_X_CX_f ← 1
+!apply bifunct_X_CX_e ← 2
+!apply expand_SWAP02_alt1 ← 0
+SWAP02.X1
+
 @name bifunct_Z_SWAP_a
 Z0.SWAP12
 expand_SWAP12 → 1
@@ -160,13 +169,13 @@ X2.CX10
 
 @name bifunct_X_CX_e
 CX02.X1
-expand_CX02 → 0
-!apply elim_SWAP12 ← 4
-!apply symmetry_X_c ← 2
-bifunct_X_CX_d → 1
-!apply symmetry_X_c → 1
-!apply elim_SWAP12 → 0
-expand_CX02 ← 1
+expand_X1 → 1
+!apply elim_SWAP01 ← 0
+symmetry_CX_c ← 1
+bifunct_X_CX_a → 1
+symmetry_CX_c → 2
+expand_X1 ← 0
+!apply elim_SWAP01 → 2
 X1.CX02
 
 
