@@ -82,7 +82,7 @@ r5_c → 3
 
 -- M.Z0.X0.CX10.X1.X0.CCX0.Z0.X1
 bifunct_X_a ← 4
-r36_a → 2
+r36 → 2
 r5_f → 3
 !apply bifunct_X_Z_b→ 5
 !apply elim_X1 → 6
@@ -168,7 +168,7 @@ bifunct_X_K_a → 11
 
 -- CX01.CX02.CCX0.K12.Z0.CX10.CCX0.CX20.K12.CCX0.CZ12.K12.X0.CX10.CCX0.CX20.X0.Z0.K12.CX02.CX01
 elim_X0 ← 14
-r36_a → 12
+r36 → 12
 r13 → 13
 !apply drel83 → 14
 

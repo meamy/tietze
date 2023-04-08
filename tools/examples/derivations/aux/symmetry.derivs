@@ -37,7 +37,7 @@ X2
 !apply elim_SWAP12 ← 1
 expand_SWAP12 → 1
 !apply elim_X2 ← 2
-r36_c → 0
+!apply drel84 → 0
 r12_e → 1
 !apply drel70 ← 2
 expand_SWAP12 ← 0

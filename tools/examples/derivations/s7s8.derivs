@@ -294,7 +294,7 @@ r28_c → 5
 !apply bifunct_X_c → 4
 !apply elim_X1 → 5
 bifunct_X_CX_d ← 1
-r36_c → 2
+!apply drel84 → 2
 
 
 -- K12.CX01.CX12.K12.CX21.CZ01
