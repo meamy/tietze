@@ -1505,3 +1505,47 @@ symmetry_K_c → 0
 symmetry_K_c ← 3
 !apply symmetry_CZ_a ← 0
 CZ02.K01
+
+
+-- ****************************************************************************
+-- The relation CX10.Z0 = Z0.Z1.CX10
+-- ****************************************************************************
+
+@name drel75
+
+CX10.Z0
+!apply elim_CX10 ← 2
+!apply elim_Z1 ← 3
+!apply elim_Z0 ← 4
+
+-- CX10.Z0.CX10.Z1.Z0.Z0.Z1.CX10
+!apply drel42 ← 2
+
+-- CX10.Z0.Z0.CX10.Z0.Z1.CX10
+!apply elim_Z0 → 1
+!apply elim_CX10 → 0
+Z0.Z1.CX10
+
+-- ****************************************************************************
+-- The relation Z2.CX21 = CZ12.CX21.CZ12
+-- ****************************************************************************
+
+@name drel76
+
+Z2.CX21
+!apply symmetry_CX_i → 1
+expand_Z2 → 0
+!apply elim_SWAP02 → 2
+
+-- SWAP02.Z0.CX01.SWAP02
+r29_d → 1
+
+-- SWAP02.CZ01.CX01.CZ01.SWAP02
+!apply elim_SWAP02 ← 3
+!apply symmetry_CZ_d ← 4
+
+-- SWAP02.CZ01.CX01.SWAP02.CZ12
+!apply elim_SWAP02 ← 2
+!apply symmetry_CX_i ← 3
+!apply symmetry_CZ_d ← 0
+CZ12.CX21.CZ12
