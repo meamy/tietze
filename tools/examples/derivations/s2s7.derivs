@@ -20,7 +20,7 @@ r26_e → 0
 r26_a → 2
 
 -- CCX1.CZ01.CCX2.CZ02.CZ01.CCX1
-r31_a ← 3
+!apply drel71 ← 3
 !apply drel36 → 1
 
 -- CCX1.CCX2.CZ02.CCX1
