@@ -186,7 +186,7 @@ elim_K12 → 7
 -- CX01.CX02.Z0.K12.CX10.CCX0.CX20.CX10.CCX0.CX20.K12.Z0.CX02.CX01
 !apply drel8 ← 6
 !apply drel56 → 5
-r1_e → 8
+!apply drel94 → 8
 
 -- CX01.CX02.Z0.K12.CX10.CX10.CCX0.CX20.CX20.CCX0.K12.Z0.CX02.CX01
 !apply elim_CX20 → 7

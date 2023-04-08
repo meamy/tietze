@@ -85,7 +85,7 @@ elim_K01 → 1
 expand_CX10 ← 3
 
 -- K12.CX20.CCX0.CX10.K12.CZ12.CCX0
-r1_e ← 1
+!apply drel94 ← 1
 !apply drel8 ← 2
-r1_f → 1
+r1 → 1
 K12.CX10.CCX0.CX20.K12.CZ12.CCX0
