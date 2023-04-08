@@ -19,7 +19,7 @@ r44_a_dag ← 2
 r26_a_dag ← 3
 
 -- CCX1.CX01.CX12.CCX2.CZ02
-r1_c → 0
+!apply drel92 → 0
 elim_CX12 ← 1
 r8_f → 2
 !apply elim_CCX2 → 4
