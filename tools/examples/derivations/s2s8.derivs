@@ -142,7 +142,7 @@ r5_b_dag → 3
 !apply drel8 → 6
 !apply elim_CX20 ← 5
 r10_c → 6
-r1_d → 6
+!apply drel93 → 6
 !apply drel12 → 5
 !apply elim_CX21 → 4
 

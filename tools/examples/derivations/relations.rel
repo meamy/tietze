@@ -101,7 +101,6 @@ bifunct_Z_CX_c Z1.CX02 = CX02.Z1
 -- Some other rules
 -- *******************************************************************
 
-r1_d CCX1.CX21 = CX21.CCX1
 r1_e CCX0.CX20 = CX20.CCX0
 r1_f CCX0.CX10 = CX10.CCX0
 
