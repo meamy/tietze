@@ -154,11 +154,11 @@ CCX1
 !apply elim_SWAP02 ← 0
 !apply expand_SWAP02_alt1 → 1
 !apply elim_CX02 ← 5
-r10_a → 3
+!apply drel95 → 3
 !apply elim_CX20 ← 4
 r10_c → 2
 !apply elim_CX02 ← 3
-r10_a → 1
+!apply drel95 → 1
 r17_a_dag → 2
 !apply elim_CX02 → 5
 !apply elim_CX21 → 4

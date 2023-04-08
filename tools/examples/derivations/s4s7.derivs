@@ -121,10 +121,10 @@ r8_a ← 2
 r8_a ← 6
 
 -- CZ01.CX01.CX02.CCX0.CX02.CCX1.CX02.CCX0.CX02.CCX1.CX01.CZ01
-r10_a → 4
+!apply drel95 → 4
 !apply drel92 → 4
 !apply elim_CX02 ← 9
-r10_a → 7
+!apply drel95 → 7
 !apply drel9 → 8
 elim_CX01 → 9
 
