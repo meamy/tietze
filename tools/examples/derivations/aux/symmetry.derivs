@@ -226,7 +226,7 @@ r29_f ← 3
 !apply elim_Z2 → 3
 !apply elim_CZ02 ← 1
 r29_e ← 2
-r27_d → 3
+!apply drel81 → 3
 !apply elim_Z0 → 2
 !apply expand_SWAP02_alt1 ← 2
 SWAP02.CZ02.SWAP02
