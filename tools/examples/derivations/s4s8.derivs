@@ -178,7 +178,7 @@ r13 → 13
 !apply drel24 → 2
 
 -- CX01.CX02.Z0.CZ12.CCX0.K12.CX10.CCX0.CX20.K12.CCX0.CZ12.K12.CX10.CCX0.CX20.K12.Z0.CX02.CX01
-r46 → 3
+!apply misc2 → 3
 elim_CCX0 → 9
 !apply elim_CZ12 → 8
 elim_K12 → 7

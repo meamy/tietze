@@ -1,0 +1,91 @@
+-- ****************************************************************************
+-- Proof: CZ12.CCX0.K12.CX10.CCX0.CX20.K12 = K12.CX10.CCX0.CX20.K12.CZ12.CCX0
+-- ****************************************************************************
+
+-- ****************************************************************************
+-- Step 1: CZ02.CCX1.CX01.CX12.CCX2 = CX12.CCX2.CX01.CCX1.CZ02
+-- ****************************************************************************
+
+@name misc1
+
+CZ02.CCX1.CX01.CX12.CCX2
+!apply elim_CZ02 ← 2
+!apply drel37 → 0
+r28_a ← 1
+
+-- CCX1.CX01.CZ02.CX12.CCX2
+r44_a_dag ← 2
+!apply drel71 ← 3
+r26_a_dag ← 3
+
+-- CCX1.CX01.CX12.CCX2.CZ02
+r1_c → 0
+elim_CX12 ← 1
+r8_f → 2
+!apply elim_CCX2 → 4
+
+-- CX01.CX12.CCX2.CCX1.CZ02
+elim_CX01 ← 2
+elim_CX01 ← 5
+r10_e_dag → 3
+
+-- CX01.CX12.CX01.CX02.CCX2.CX01.CCX1.CZ02
+r17_c_dag → 3
+elim_CX01 → 2
+elim_CX12 → 1
+elim_CX01 → 0
+CX12.CCX2.CX01.CCX1.CZ02
+
+
+-- ****************************************************************************
+-- Step 2: CZ12.CCX0.K12.CX10.CCX0.CX20.K12 = K12.CX10.CCX0.CX20.K12.CZ12.CCX0
+-- ****************************************************************************
+
+@name misc2
+
+CZ12.CCX0.K12.CX10.CCX0.CX20.K12
+expand_CX10 → 3
+
+-- CZ12.CCX0.K12.K01.CX01.K01.CCX0.CX20.K12
+!apply drel63 → 5
+!apply drel74 → 6
+
+-- CZ12.CCX0.K12.K01.CX01.CCX1.CZ02.K01.K12
+r47 ← 2
+!apply drel85 → 1
+!apply drel86 ← 2
+!apply drel89 → 0
+
+-- K01.CX21.K12.CCX2.CX01.CCX1.CZ02.K01.K12
+expand_CX21 → 1
+elim_K12 → 3
+
+-- K01.K12.CX12.CCX2.CX01.CCX1.CZ02.K01.K12
+!apply misc1 ← 2
+
+-- K01.K12.CZ02.CCX1.CX01.CX12.CCX2.K01.K12
+r47 → 7
+!apply drel29 → 6
+elim_K12 ← 5
+expand_CX21 ← 6
+
+-- K01.K12.CZ02.CCX1.CX01.K12.CX21.CCX1.K01
+!apply drel63 ← 7
+elim_K01 ← 6
+!apply drel89 ← 7
+elim_K01 → 8
+r47 ← 5
+
+-- K01.K12.CZ02.CCX1.CX01.K01.K12.CZ12.CCX0
+r47 → 0
+elim_K01 ← 3
+!apply drel74 ← 2
+elim_K01 → 1
+!apply drel85 ← 2
+expand_CX10 ← 3
+
+-- K12.CX20.CCX0.CX10.K12.CZ12.CCX0
+r1_e ← 1
+!apply drel8 ← 2
+r1_f → 1
+K12.CX10.CCX0.CX20.K12.CZ12.CCX0
