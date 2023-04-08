@@ -109,7 +109,7 @@ X2.CCX0.X2
 @name drel6
 
 CX10.CCX2.CX10
-r10_d → 0
+!apply drel90 → 0
 elim_X0 ← 0
 r5_a → 1
 
@@ -1771,3 +1771,28 @@ expand_CZ12 → 0
 !apply elim_SWAP01 → 4
 !apply elim_SWAP01 → 1
 K01.CX21
+
+
+-- ****************************************************************************
+-- The relation CX10.CCX2.CX10 = CCX2.CX12
+-- ****************************************************************************
+
+@name drel90
+
+CX10.CCX2.CX10
+!apply elim_SWAP02 ← 3
+!apply elim_SWAP02 ← 0
+
+-- SWAP02.SWAP02.CX10.CCX2.CX10.SWAP02.SWAP02
+expand_CCX2 → 3
+!apply symmetry_CX_f ← 5
+!apply symmetry_CX_f ← 1
+
+-- SWAP02.CX12.CCX0.CX12.SWAP02
+r10_b → 1
+
+-- SWAP02.CCX0.CX10.SWAP02
+!apply elim_SWAP02 ← 2
+!apply symmetry_CX_f ← 3
+expand_CCX2 ← 0
+CCX2.CX12
