@@ -19,7 +19,7 @@ expand_S5 → 1
 expand_S3 → 0
 
 -- X0.CCX2.X0.X1.CCX2.X1.X0.CCX2.X0.X1.CCX2.X1
-r5_d → 9
+!apply drel96  → 9
 !apply elim_X1 → 11
 
 -- X0.CCX2.X0.X1.CCX2.X1.X0.CCX2.X0.CCX2.CX02
@@ -31,7 +31,7 @@ bifunct_X_CX_a → 7
 elim_X0 → 6
 
 -- X0.CCX2.X0.X1.CCX2.X1.CX12.CX02
-r5_d → 3
+!apply drel96  → 3
 !apply elim_X1 → 5
 
 -- X0.CCX2.X0.CCX2.CX02.CX12.CX02

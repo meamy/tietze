@@ -24,8 +24,8 @@ elim_X0 → 7
 elim_X0 → 2
 
 -- X0.CCX2.X1.CCX2.X1.CCX2.X1.CCX2.X1.X0
-r5_d → 6
-r5_d → 2
+!apply drel96  → 6
+!apply drel96  → 2
 
 -- X0.CCX2.CCX2.CX02.X1.X1.CCX2.CCX2.CX02.X1.X1.X0
 !apply elim_X1 → 9

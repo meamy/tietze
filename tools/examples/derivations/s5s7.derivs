@@ -15,7 +15,7 @@
 @name lemmacz01x1ccx2x1cz01
 
 CZ01.X1.CCX2.X1.CZ01
-r5_d → 1
+!apply drel96  → 1
 !apply elim_X1 → 3
 
 -- CZ01.CCX2.CX02.CZ01
@@ -24,7 +24,7 @@ r28_b → 2
 
 -- CCX2.CX02
 !apply elim_X1 ← 0
-r5_d → 1
+!apply drel96  → 1
 !apply bifunct_X_CX_e ← 3
 !apply elim_CX02 → 2
 X1.CCX2.X1
