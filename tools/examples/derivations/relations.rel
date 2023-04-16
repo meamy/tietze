@@ -90,7 +90,6 @@ bifunct_X_CX_a CX12.X0 = X0.CX12
 
 bifunct_X_K_a X0.K12 = K12.X0
 
-bifunct_Z_CX_a Z1.CX20 = CX20.Z1
 bifunct_Z_CX_b Z0.CX12 = CX12.Z0
 bifunct_Z_CX_c Z1.CX02 = CX02.Z1
 

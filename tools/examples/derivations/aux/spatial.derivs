@@ -88,9 +88,9 @@ CX12.M
 @name spatial_CX20
 M.CX20
 !apply expand_M_alt1 → 0
-bifunct_Z_CX_a → 3
+!apply bifunct_Z_CX_a → 3
 !apply bifunct_X_CX_f ← 2
-bifunct_Z_CX_a → 1
+!apply bifunct_Z_CX_a → 1
 !apply bifunct_X_CX_f ← 0
 !apply expand_M_alt1 ← 1
 CX20.M

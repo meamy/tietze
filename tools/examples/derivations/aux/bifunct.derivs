@@ -42,7 +42,7 @@ SWAP12.Z0
 Z1.SWAP02
 !apply expand_SWAP02_alt1 → 1
 bifunct_Z_CX_c → 0
-bifunct_Z_CX_a → 1
+!apply bifunct_Z_CX_a → 1
 bifunct_Z_CX_c → 2
 !apply expand_SWAP02_alt1 ← 0
 SWAP02.Z1
@@ -294,6 +294,17 @@ Z2.Z1
 -- *******************************************************************
 -- Bifunctoriality Between Pauli-Z and CX Gates
 -- *******************************************************************
+
+@name bifunct_Z_CX_a
+Z1.CX20
+expand_Z1 → 0
+!apply symmetry_CX_h → 3
+!apply elim_SWAP01 → 2
+!apply bifunct_Z_CX_d → 1
+!apply elim_SWAP01 ← 2
+expand_Z1 ← 3
+!apply symmetry_CX_h ← 0
+CX20.Z1
 
 @name bifunct_Z_CX_d
 Z0.CX21

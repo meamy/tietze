@@ -198,7 +198,7 @@ Z1
 !apply elim_SWAP02 ← 0
 !apply expand_SWAP02_alt1 → 1
 bifunct_Z_CX_c ← 3
-bifunct_Z_CX_a ← 2
+!apply bifunct_Z_CX_a ← 2
 bifunct_Z_CX_c ← 1
 !apply expand_SWAP02_alt1 ← 2
 SWAP02.Z1.SWAP02
