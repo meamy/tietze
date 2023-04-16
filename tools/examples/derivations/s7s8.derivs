@@ -66,7 +66,7 @@ X2.X1.CX01.CX12.CCX1
 !apply drel82 → 1
 
 -- X2.CX01.X1.CX12.CCX1
-bifunct_X_CX_d ← 0
+!apply bifunct_X_CX_d ← 0
 !apply drel70 ← 1
 
 -- CX01.CX12.X1.CCX1
@@ -83,7 +83,7 @@ X1.CX12.CX01.X1.X2
 !apply drel69 → 0
 
 -- CX12.X1.X2.CX01.X1.X2
-bifunct_X_CX_d ← 2
+!apply bifunct_X_CX_d ← 2
 !apply bifunct_X_c → 4
 !apply elim_X2 → 3
 
@@ -293,7 +293,7 @@ r28_c → 5
 -- K12.X2.CX01.CX12.X1.X2.X1.K12.CX21.CZ01
 !apply bifunct_X_c → 4
 !apply elim_X1 → 5
-bifunct_X_CX_d ← 1
+!apply bifunct_X_CX_d ← 1
 !apply drel84 → 2
 
 

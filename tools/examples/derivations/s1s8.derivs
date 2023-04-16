@@ -110,7 +110,7 @@ elim_CCX0 → 8
 
 -- K12.X0.X1.X2.CZ02.X2.Z1.CX01.X2.CZ02.CX01.X2.M.X1.K12.X1.X0
 !apply bifunct_X_Z_c → 5
-bifunct_X_CX_d → 7
+!apply bifunct_X_CX_d → 7
 !apply elim_X2 → 6
 
 -- K12.X0.X1.X2.CZ02.Z1.CX01.CZ02.CX01.X2.M.X1.K12.X1.X0
