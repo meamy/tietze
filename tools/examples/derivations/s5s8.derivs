@@ -136,7 +136,7 @@ r5_c → 3
 r5_c → 6
 !apply elim_X2 → 8
 !apply drel56 → 6
-r8_d → 4
+!apply drel97 → 4
 
 -- K12.X1.CCX1.CCX0.CCX0.CCX1.CCX0.CCX0.X1.K12
 elim_CCX0 → 6

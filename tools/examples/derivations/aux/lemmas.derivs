@@ -305,7 +305,7 @@ r10_b → 5
 r10_b → 1
 
 -- CX12.CCX0.CX10.CCX1.CX10.CCX0.CX12
-r8_d → 2
+!apply drel97 → 2
 elim_CCX0 → 4
 elim_CCX0 → 1
 r8_f → 0
@@ -1928,3 +1928,34 @@ expand_CX20 → 2
 !apply elim_SWAP02 → 4
 expand_CCX2 ← 0
 CCX2.CX02.X1
+
+
+-- ****************************************************************************
+-- The relation CX10.CCX1.CX10 = CCX0.CCX1.CCX0
+-- ****************************************************************************
+
+@name drel97
+
+CX10.CCX1.CX10
+!apply elim_SWAP01 ← 3
+expand_CCX1 → 1
+!apply elim_SWAP01 ← 0
+
+-- SWAP01.SWAP01.CX10.SWAP01.CCX0.SWAP01.CX10.SWAP01.SWAP01
+!apply symmetry_CX_e ← 5
+!apply symmetry_CX_e ← 1
+
+-- SWAP01.CX01.CCX0.CX01.SWAP01
+r8_c → 1
+
+-- SWAP01.CCX1.CCX0.CCX1.SWAP01
+expand_CCX1 → 3
+expand_CCX1 → 1
+
+-- SWAP01.SWAP01.CCX0.SWAP01.CCX0.SWAP01.CCX0.SWAP01.SWAP01
+!apply elim_SWAP01 → 7
+!apply elim_SWAP01 → 0
+
+-- CCX0.SWAP01.CCX0.SWAP01.CCX0
+expand_CCX1  ← 1
+CCX0.CCX1.CCX0
