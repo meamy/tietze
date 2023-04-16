@@ -41,9 +41,9 @@ SWAP12.Z0
 @name bifunct_Z_SWAP_b
 Z1.SWAP02
 !apply expand_SWAP02_alt1 → 1
-bifunct_Z_CX_c → 0
+!apply bifunct_Z_CX_c → 0
 !apply bifunct_Z_CX_a → 1
-bifunct_Z_CX_c → 2
+!apply bifunct_Z_CX_c → 2
 !apply expand_SWAP02_alt1 ← 0
 SWAP02.Z1
 
@@ -305,6 +305,17 @@ expand_Z1 → 0
 expand_Z1 ← 3
 !apply symmetry_CX_h ← 0
 CX20.Z1
+
+@name bifunct_Z_CX_c
+Z1.CX02
+expand_Z1 → 0
+!apply elim_SWAP01 ← 4
+symmetry_CX_c ← 2
+bifunct_Z_CX_b → 1
+symmetry_CX_c → 1
+expand_Z1 ← 3
+!apply elim_SWAP01 → 0
+CX02.Z1
 
 @name bifunct_Z_CX_d
 Z0.CX21
