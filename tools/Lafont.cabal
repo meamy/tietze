@@ -21,6 +21,7 @@ library
                        Lafont.Maybe
                        Lafont.Ring
                        Lafont.String
+                       Lafont.Edit.Internal.EIRules
                        Lafont.Generators.Algebraic.Internal.ModP
                        Lafont.Generators.Algebraic.Internal.Product
                        Lafont.Generators.Algebraic.ModP
@@ -54,12 +55,11 @@ library
                        Lafont.Rewrite.Rules
                        Lafont.Rewrite.Simplification
                        Lafont.Rewrite.Summary
---  build-depends:       base >=4.12 && <4.13,
   build-depends:       base,    
                        containers,
                        directory,
-                       split,
-                       newsynth
+                       newsynth,
+                       split
   hs-source-dirs:      src/Lafont
   default-language:    Haskell2010
 
@@ -75,7 +75,6 @@ library LafontExe
                        LafontExe.Logging.ErrorFormat
                        LafontExe.Logging.LineBased
                        LafontExe.Logging.Primitive
---  build-depends:       base >=4.12 && <4.13,
   build-depends:       base,
                        directory,
                        Lafont
@@ -85,7 +84,6 @@ library LafontExe
 common exe-with-file-io-props
   hs-source-dirs:      exe
   default-language:    Haskell2010
---  build-depends:       base >=4.12 && <4.13,
   build-depends:       base, 
                        directory,
                        Lafont,
@@ -122,6 +120,11 @@ common io-unit-test-props
 test-suite lafont-common-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Common-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-edit-eirules-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Edit-EIRules-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite lafont-either-tests
