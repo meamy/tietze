@@ -63,6 +63,12 @@ birel_nonull = RewriteRule { lhs         = w1
                            , derivedFrom = Nothing
                            }
 
+birel_rnull_d = RewriteRule { lhs         = w3
+                            , rhs         = []
+                            , equational  = True
+                            , derivedFrom = Just "src"
+                            }
+
 -----------------------------------------------------------------------------------------
 -- toEDir
 
@@ -129,25 +135,25 @@ test14 = TestCase (assertEqual "toIDir rejects bidirectional relation without nu
 -- asLeftDual
 
 test15 = TestCase (assertEqual "asLeftDual handles empty strings (edge case)."
-                               (Nothing :: Maybe (MonWord, Symbol))
+                               (Nothing :: Maybe (Symbol, MonWord))
                                (asLeftDual []))
 
 test16 = TestCase (assertEqual "asLeftDual handles long string (1/2)."
-                               (Just (dual, sym1) :: Maybe (MonWord, Symbol))
+                               (Just (sym1, dual) :: Maybe (Symbol, MonWord))
                                (asLeftDual w1))
     where dual = [sym1, sym2, sym3]
 
 test17 = TestCase (assertEqual "asLeftDual handles long string (2/2)."
-                               (Just (dual, sym3) :: Maybe (MonWord, Symbol))
+                               (Just (sym3, dual) :: Maybe (Symbol, MonWord))
                                (asLeftDual w2))
     where dual = [sym2, sym4, sym1]
 
 test18 = TestCase (assertEqual "asLeftDual handles short strings."
-                               (Just ([], sym4) :: Maybe (MonWord, Symbol))
+                               (Just (sym4, []) :: Maybe (Symbol, MonWord))
                                (asLeftDual w3))
 
 test19 = TestCase (assertEqual "asLeftDual handles pairings."
-                               (Just ([sym4], sym2) :: Maybe (MonWord, Symbol))
+                               (Just (sym2, [sym4]) :: Maybe (Symbol, MonWord))
                                (asLeftDual w4))
 
 -----------------------------------------------------------------------------------------
@@ -176,6 +182,88 @@ test24 = TestCase (assertEqual "asLeftDual handles pairings."
                                (asRightDual w4))
 
 -----------------------------------------------------------------------------------------
+-- asERule
+
+test25 = TestCase (assertEqual "asERule handles valid elimination with ldual (1/2)."
+                               (Just (sym3, erule) :: Maybe (Symbol, EIRule))
+                               (asERule True rname rel_rnull))
+    where rname = "rel1"
+          erule = EIRule rname [sym2, sym4, sym1] L2R False
+
+test26 = TestCase (assertEqual "asERule handles valid elimination with ldual (2/2)."
+                               (Just (sym2, erule) :: Maybe (Symbol, EIRule))
+                               (asERule True rname birel_lnull))
+    where rname = "rel2"
+          erule = EIRule rname [sym4] R2L False
+
+test27 = TestCase (assertEqual "asERule handles valid elimination with rdual (1/2)."
+                               (Just (sym2, erule) :: Maybe (Symbol, EIRule))
+                               (asERule False rname rel_rnull))
+    where rname = "rel3"
+          erule = EIRule rname [sym4, sym1, sym3] L2R False
+
+test28 = TestCase (assertEqual "asERule handles valid elimination with rdual (2/2)."
+                               (Just (sym4, erule) :: Maybe (Symbol, EIRule))
+                               (asERule False rname birel_lnull))
+    where rname = "rel3"
+          erule = EIRule rname [sym2] R2L False
+
+test29 = TestCase (assertEqual "asERule handles invalid elimination with ldual"
+                               (Nothing :: Maybe (Symbol, EIRule))
+                               (asERule True "x" rel_lnull))
+
+test30 = TestCase (assertEqual "asERule handles invalid elimination with rdual"
+                               (Nothing :: Maybe (Symbol, EIRule))
+                               (asERule False "x" rel_lnull))
+
+test31 = TestCase (assertEqual "asERule handles derived relations."
+                               (Just (sym4, erule) :: Maybe (Symbol, EIRule))
+                               (asERule True rname birel_rnull_d))
+    where rname = "rel4"
+          erule = EIRule rname [] L2R True
+
+-----------------------------------------------------------------------------------------
+-- asIRule
+
+test32 = TestCase (assertEqual "asIRule handles valid elimination with ldual (1/2)."
+                               (Just (sym1, erule) :: Maybe (Symbol, EIRule))
+                               (asIRule True rname rel_lnull))
+    where rname = "rel1"
+          erule = EIRule rname [sym1, sym2, sym3] L2R False
+
+test33 = TestCase (assertEqual "asIRule handles valid elimination with ldual (2/2)."
+                               (Just (sym2, erule) :: Maybe (Symbol, EIRule))
+                               (asIRule True rname birel_lnull))
+    where rname = "rel2"
+          erule = EIRule rname [sym4] L2R False
+
+test34 = TestCase (assertEqual "asIRule handles valid elimination with rdual (1/2)."
+                               (Just (sym1, erule) :: Maybe (Symbol, EIRule))
+                               (asIRule False rname rel_lnull))
+    where rname = "rel3"
+          erule = EIRule rname [sym2, sym3, sym1] L2R False
+
+test35 = TestCase (assertEqual "asIRule handles valid elimination with rdual (2/2)."
+                               (Just (sym4, erule) :: Maybe (Symbol, EIRule))
+                               (asIRule False rname birel_lnull))
+    where rname = "rel3"
+          erule = EIRule rname [sym2] L2R False
+
+test36 = TestCase (assertEqual "asIRule handles invalid elimination with ldual"
+                               (Nothing :: Maybe (Symbol, EIRule))
+                               (asIRule True "x" rel_rnull))
+
+test37 = TestCase (assertEqual "asIRule handles invalid elimination with rdual"
+                               (Nothing :: Maybe (Symbol, EIRule))
+                               (asIRule False "x" rel_rnull))
+
+test38 = TestCase (assertEqual "asIRule handles derived relations."
+                               (Just (sym4, erule) :: Maybe (Symbol, EIRule))
+                               (asIRule True rname birel_rnull_d))
+    where rname = "rel4"
+          erule = EIRule rname [] R2L True
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "Internal_toEDir_triv" test1,
@@ -201,6 +289,20 @@ tests = hUnitTestToTests $ TestList [TestLabel "Internal_toEDir_triv" test1,
                                      TestLabel "Internal_asRightDual_len4_a" test21,
                                      TestLabel "Internal_asRightDual_len4_b" test22,
                                      TestLabel "Internal_asRightDual_len1" test23,
-                                     TestLabel "Internal_asRightDual_len2" test24]
+                                     TestLabel "Internal_asRightDual_len2" test24,
+                                     TestLabel "Internal_asERule_Valid_LDual_1" test25,
+                                     TestLabel "Internal_asERule_Valid_LDual_2" test26,
+                                     TestLabel "Internal_asERule_Valid_RDual_1" test27,
+                                     TestLabel "Internal_asERule_Valid_RDual_2" test28,
+                                     TestLabel "Internal_asERule_Invalid_LDual" test29,
+                                     TestLabel "Internal_asERule_Invalid_RDual" test30,
+                                     TestLabel "Internal_asERule_Derived" test31,
+                                     TestLabel "Internal_asIRule_Valid_LDual_1" test32,
+                                     TestLabel "Internal_asIRule_Valid_LDual_2" test33,
+                                     TestLabel "Internal_asIRule_Valid_RDual_1" test34,
+                                     TestLabel "Internal_asIRule_Valid_RDual_2" test35,
+                                     TestLabel "Internal_asIRule_Invalid_LDual" test36,
+                                     TestLabel "Internal_asIRule_Invalid_RDual" test37,
+                                     TestLabel "Internal_asIRule_Derived" test38]
 
 main = defaultMain tests
