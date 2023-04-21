@@ -17,6 +17,9 @@ expand_S8 S8 = K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 -- *******************************************************************
 
 -- No dependencies on derived generators.
+expand_CX12 CX12 = X0.K01.K12.CCX0.K12.K01.X0.K01.K12.CCX0.K12.K01
+
+-- No dependencies on derived generators.
 expand_Z0 Z0 = K01.X0.K01
 
 -- No dependencies on derived generators.
