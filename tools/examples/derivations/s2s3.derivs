@@ -38,8 +38,8 @@ elim_X0 → 4
 !apply drel55 ← 3
 
 -- X0.CX12.CCX1.CCX2.CX12.CX12.CCX1.CCX2.CX12.CX12.CCX1.CCX2.CX12.X0
-elim_CX12 → 8
-elim_CX12 → 4
+!apply elim_CX12 → 8
+!apply elim_CX12 → 4
 
 -- X0.CX12.CCX1.CCX2.CCX1.CCX2.CCX1.CCX2.CX12.X0
 r40_a → 2
@@ -48,6 +48,6 @@ r40_a → 2
 !apply elim_CCX2 → 4
 !apply elim_CCX1 → 3
 !apply elim_CCX2 → 2
-elim_CX12 → 1
+!apply elim_CX12 → 1
 elim_X0 → 0
 ε

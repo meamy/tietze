@@ -140,13 +140,13 @@ r10_e → 1
 !apply drel9 ← 2
 !apply drel11 ← 3
 r17_c → 4
-elim_CX12 → 3
+!apply elim_CX12 → 3
 !apply drel9 ← 7
 expand_SWAP01 ← 5
 elim_CX01 → 2
 !apply elim_SWAP01 ← 5
 symmetry_CX_c ← 3
-elim_CX12 → 2
+!apply elim_CX12 → 2
 SWAP01.CCX2.SWAP01
 
 @name symmetry_CCX_f
@@ -173,11 +173,11 @@ SWAP02.CCX1.SWAP02
 CCX0
 !apply elim_SWAP12 ← 0
 expand_SWAP12 → 1
-elim_CX12 ← 5
+!apply elim_CX12 ← 5
 r10_b → 3
 !apply elim_CX21 ← 4
 r10_f → 2
-elim_CX12 ← 3
+!apply elim_CX12 ← 3
 r10_b → 1
 !apply drel10 → 2
 !apply drel8 → 3

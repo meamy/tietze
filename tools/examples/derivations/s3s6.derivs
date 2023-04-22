@@ -34,8 +34,8 @@ elim_X0 → 9
 
 -- CX21.X0.CX12.CCX2.CX21.CCX2.CX21.CCX2.CX12.CX21.CCX2.X0
 !apply bifunct_X_CX_b → 0
-elim_CX12 ← 10
-elim_CX12 ← 1
+!apply elim_CX12 ← 10
+!apply elim_CX12 ← 1
 
 -- X0.CX12.CX12.CX21.CX12.CCX2.CX21.CCX2.CX21.CCX2.CX12.CX21.CX12.CX12.CCX2.X0
 r7 → 2
@@ -59,7 +59,7 @@ r40_a ← 5
 -- X0.CX12.CX21.CX12.CX21.CX12.CX21.X0
 r7 → 1
 !apply elim_CX21 → 3
-elim_CX12 → 2
+!apply elim_CX12 → 2
 !apply elim_CX21 → 1
 elim_X0 → 0
 ε

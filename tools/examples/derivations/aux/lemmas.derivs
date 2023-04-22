@@ -35,7 +35,7 @@ CX12.CX21.CX12.CCX2
 
 -- CX12.CX21.CCX2.CX21.CX21.CX12
 !apply drel13 → 1
-elim_CX12 → 0
+!apply elim_CX12 → 0
 CCX1.CX12.CX21.CX12
 
 
@@ -115,7 +115,7 @@ r5_a → 1
 
 -- X0.CCX2.CX12.X0.CX12
 bifunct_X_CX_a → 2
-elim_CX12 → 3
+!apply elim_CX12 → 3
 X0.CCX2.X0
 
 
@@ -172,8 +172,8 @@ CX02.CX01
 
 CX10.CX12
 r17_b_dag → 0
-elim_CX12 → 3
-elim_CX12 ← 0
+!apply elim_CX12 → 3
+!apply elim_CX12 ← 0
 r17_b ← 1
 CX12.CX10
 
@@ -186,8 +186,8 @@ CX12.CX10
 
 CX12.CX02
 r17_c → 1
-elim_CX12 → 0
-elim_CX12 ← 3
+!apply elim_CX12 → 0
+!apply elim_CX12 ← 3
 r17_c_dag ← 0
 CX02.CX12
 
@@ -296,8 +296,8 @@ CCX1.CCX2.CCX1
 
 CCX0.CCX2.CCX1.CCX2.CCX0
 r8_f ← 1
-elim_CX12 ← 5
-elim_CX12 ← 0
+!apply elim_CX12 ← 5
+!apply elim_CX12 ← 0
 
 -- CX12.CX12.CCX0.CX12.CCX1.CX12.CCX0.CX12.CX12
 r10_b → 5
@@ -366,14 +366,14 @@ CX12.Z1.Z2
 @name drel20
 
 CX12.Z2
-elim_CX12 ← 2
+!apply elim_CX12 ← 2
 !apply elim_Z1 ← 3
 !apply elim_Z2 ← 4
 
 -- CX12.Z2.CX12.Z1.Z2.Z2.Z1.CX12
 !apply drel19 ← 2
 !apply elim_Z2 → 1
-elim_CX12 → 0
+!apply elim_CX12 → 0
 Z2.Z1.CX12
 
 
@@ -550,7 +550,7 @@ r7 → 4
 -- CX21.CX12.CX21.CZ01.CZ01.CX21.CX12.CX21.CZ02.SWAP12
 !apply elim_CZ01 → 3
 !apply elim_CX21 → 2
-elim_CX12 → 1
+!apply elim_CX12 → 1
 !apply elim_CX21 → 0
 
 -- CZ02.SWAP12
@@ -585,7 +585,7 @@ K12.CCX1
 @name drel30
 
 CX21.K12
-elim_CX12 ← 2
+!apply elim_CX12 ← 2
 elim_K12 ← 3
 
 -- CX21.K12.CX12.K12.K12.CX12
@@ -1409,7 +1409,7 @@ CX12.X1.X2
 @name drel70
 
 CX12.X1
-elim_CX12 ← 2
+!apply elim_CX12 ← 2
 !apply elim_X1 ← 3
 !apply elim_X2 ← 4
 
@@ -1418,7 +1418,7 @@ elim_CX12 ← 2
 
 -- CX12.X1.X1.CX12.X2.X1.CX12
 !apply elim_X1 → 1
-elim_CX12 → 0
+!apply elim_CX12 → 0
 X2.X1.CX12
 
 

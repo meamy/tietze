@@ -29,9 +29,9 @@ elim_CX01 → 0
 SWAP12.SWAP12
 expand_SWAP12 → 1
 expand_SWAP12 → 0
-elim_CX12 → 2
+!apply elim_CX12 → 2
 !apply elim_CX21 → 1
-elim_CX12 → 0
+!apply elim_CX12 → 0
 ε
 
 @name elim_SWAP02
@@ -80,12 +80,27 @@ elim_CX01 → 1
 elim_K01 → 0
 ε
 
+@name elim_CX12
+CX12.CX12
+expand_CX12 → 1
+expand_CX12 → 0
+elim_K12 → 5
+r5_b → 7
+!apply elim_CCX1 → 6
+!apply bifunct_X_CX_b ← 5
+r5_b ← 4
+elim_X0 → 3
+!apply elim_CCX1 → 2
+elim_X0 → 1
+elim_K12 → 0
+ε
+
 @name elim_CX21
 CX21.CX21
 expand_CX21 → 1
 expand_CX21 → 0
 elim_K12 → 2
-elim_CX12 → 1
+!apply elim_CX12 → 1
 elim_K12 → 0
 ε
 

@@ -65,7 +65,7 @@ elim_X0 → 0
 -- CZ01.CZ02.CX21.CX12.X0.CCX2.X0.CX21.CZ01.CX21.CCX2.CX21.CZ01
 r5_a_dag → 5
 elim_X0 → 4
-elim_CX12 → 3
+!apply elim_CX12 → 3
 
 -- CZ01.CZ02.CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01
 !apply lemmacz01cx21ccx2cx21 → 5

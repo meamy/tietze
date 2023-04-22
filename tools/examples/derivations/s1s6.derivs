@@ -48,7 +48,7 @@ bifunct_X_CX_a ← 13
 !apply drel55 ← 11
 
 -- X0.X1.CX12.CCX2.X0.X1.X2.CCX1.X2.X1.X0.CCX2.CX12.CX12.X0.X1.X2.CCX1.CX12
-elim_CX12 → 12
+!apply elim_CX12 → 12
 
 -- X0.X1.CX12.CCX2.X0.X1.X2.CCX1.X2.X1.X0.CCX2.X0.X1.X2.CCX1.CX12
 !apply drel69 → 1
@@ -118,7 +118,7 @@ r8_f → 6
 !apply bifunct_X_c → 4
 
 -- CX12.CX12.X1.X2.X2.X1
-elim_CX12 → 0
+!apply elim_CX12 → 0
 !apply elim_X2 → 1
 !apply elim_X1 → 0
 ε

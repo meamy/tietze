@@ -157,9 +157,9 @@ r8_f ← 8
 -- K12.X0.CX12.CX21.CCX1.CX12.CX10.CX20.CX12.CCX1.CX12.CX10.CX20.X0.K12
 !apply drel10 ← 5
 r17_b_dag → 5
-elim_CX12 → 8
+!apply elim_CX12 → 8
 !apply elim_CX20 → 7
-elim_CX12 → 6
+!apply elim_CX12 → 6
 
 -- K12.X0.CX12.CX21.CCX1.CX20.CCX1.CX12.CX10.CX20.X0.K12
 !apply elim_CX20 ← 4
