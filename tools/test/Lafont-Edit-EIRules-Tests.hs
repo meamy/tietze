@@ -17,6 +17,7 @@ sym1 = Symbol "x" []
 sym2 = Symbol "y" []
 sym3 = Symbol "z" []
 sym4 = Symbol "w" []
+sym5 = Symbol "a" []
 
 w1 = [sym1, sym2, sym3, sym1]
 w2 = [sym2, sym4, sym1, sym3]
@@ -404,6 +405,146 @@ test58 = TestCase (assertEqual "toIDict handles matches (right dual, @sym4)."
           erule3 = EIRule "r8" [] R2L True
 
 -----------------------------------------------------------------------------------------
+-- queryEIRule
+
+rule_selfdual_x = RewriteRule { lhs         = []
+                              , rhs         = [sym1, sym1]
+                              , equational  = False
+                              , derivedFrom = Nothing
+                              }
+
+rule_duallen3_x = RewriteRule { lhs         = []
+                              , rhs         = [sym2, sym3, sym4, sym1]
+                              , equational  = False
+                              , derivedFrom = Nothing
+                              }
+
+rule_selfdual_y = RewriteRule { lhs         = []
+                              , rhs         = [sym2, sym2]
+                              , equational  = False
+                              , derivedFrom = Nothing
+                              }
+
+rule_duallen3_y = RewriteRule { lhs         = []
+                              , rhs         = [sym3, sym4, sym1, sym2]
+                              , equational  = False
+                              , derivedFrom = Nothing
+                              }
+
+rule_duallen2_y = RewriteRule { lhs         = []
+                              , rhs         = [sym3, sym4, sym1]
+                              , equational  = False
+                              , derivedFrom = Nothing
+                              }
+
+rule_selfdual_z = RewriteRule { lhs         = []
+                              , rhs         = [sym3, sym3]
+                              , equational  = False
+                              , derivedFrom = Nothing
+                              }
+
+rule_duallen3_w = RewriteRule { lhs         = []
+                              , rhs         = [sym1, sym2, sym3, sym4]
+                              , equational  = False
+                              , derivedFrom = Nothing
+                              }
+
+qrdict0 = empty
+qrdict1 = addRule qrdict0 ("rel1", rule_selfdual_x)
+qrdict2 = addRule qrdict1 ("rel2", rule_duallen3_x)
+qrdict3 = addRule qrdict2 ("rel3", rule_selfdual_y)
+qrdict4 = addRule qrdict3 ("rel4", rule_duallen3_y)
+qrdict5 = addRule qrdict4 ("rel5", rule_duallen2_y)
+qrdict6 = addRule qrdict5 ("rel6", rule_selfdual_z)
+qrdict7 = addRule qrdict6 ("rel7", rule_duallen3_w)
+qrdict8 = addRule qrdict7 ("rel8", rule_selfdual_z)
+
+querydict0 = toIDict True qrdict7
+querydict1 = toIDict True qrdict8
+
+test59 = TestCase (assertEqual "queryEIRule with policy FirstRule and len 0."
+                               (Nothing :: Maybe EIRule)
+                               (queryEIRule querydict0 sym5 FirstRule))
+
+test60 = TestCase (assertEqual "queryEIRule with policy FirstRule and len 1."
+                               (Just irule :: Maybe EIRule)
+                               (queryEIRule querydict0 sym3 FirstRule))
+    where irule = EIRule "rel6" [sym3] L2R False
+
+test61 = TestCase (assertEqual "queryEIRule with policy FirstRule and len 3."
+                               (Just irule :: Maybe EIRule)
+                               (queryEIRule querydict0 sym2 FirstRule))
+    where irule = EIRule "rel3" [sym2] L2R False
+
+test62 = TestCase (assertEqual "queryEIRule with policy NoDefault and len 0."
+                               (Nothing :: Maybe EIRule)
+                               (queryEIRule querydict0 sym5 NoDefault))
+
+test63 = TestCase (assertEqual "queryEIRule with policy NoDefault and len 1."
+                               (Just irule :: Maybe EIRule)
+                               (queryEIRule querydict0 sym3 NoDefault))
+    where irule = EIRule "rel6" [sym3] L2R False
+
+test64 = TestCase (assertEqual "queryEIRule with policy NoDefault and len 3."
+                               (Nothing :: Maybe EIRule)
+                               (queryEIRule querydict0 sym2 NoDefault))
+
+test65 = TestCase (assertEqual "queryEIRule with policy SelfDual and no rules."
+                               (Nothing :: Maybe EIRule)
+                               (queryEIRule querydict0 sym5 SelfDual))
+
+test66 = TestCase (assertEqual "queryEIRule with policy SelfDual and not self-dual."
+                               (Nothing :: Maybe EIRule)
+                               (queryEIRule querydict0 sym4 SelfDual))
+
+test67 = TestCase (assertEqual "queryEIRule with policy SelfDual and one self-dual."
+                               (Just irule :: Maybe EIRule)
+                               (queryEIRule querydict0 sym1 SelfDual))
+    where irule = EIRule "rel1" [sym1] L2R False
+
+test68 = TestCase (assertEqual "queryEIRule with policy SelfDual and two self-duals."
+                               (Just irule :: Maybe EIRule)
+                               (queryEIRule querydict1 sym3 SelfDual))
+    where irule = EIRule "rel6" [sym3] L2R False
+
+test69 = TestCase (assertEqual "queryEIRule with policy MinimalDual and no rules."
+                               (Nothing :: Maybe EIRule)
+                               (queryEIRule querydict1 sym5 MinimalDual))
+
+test70 = TestCase (assertEqual "queryEIRule with policy MinimalDual and single rule."
+                               (Just irule :: Maybe EIRule)
+                               (queryEIRule querydict1 sym4 MinimalDual))
+    where irule = EIRule "rel7" [sym1, sym2, sym3] L2R False
+
+test71 = TestCase (assertEqual "queryEIRule with policy MinimalDual and unique minima."
+                               (Just irule :: Maybe EIRule)
+                               (queryEIRule querydict1 sym2 MinimalDual))
+    where irule = EIRule "rel3" [sym2] L2R False
+
+test72 = TestCase (assertEqual "queryEIRule with policy MinimalDual and many minima."
+                               (Just irule :: Maybe EIRule)
+                               (queryEIRule querydict1 sym3 MinimalDual))
+    where irule = EIRule "rel6" [sym3] L2R False
+
+test73 = TestCase (assertEqual "queryEIRule with policy MinimalDual and no rules."
+                               (Nothing :: Maybe EIRule)
+                               (queryEIRule querydict1 sym5 ShortestDual))
+
+test74 = TestCase (assertEqual "queryEIRule with policy MinimalDual and single rule."
+                               (Just irule :: Maybe EIRule)
+                               (queryEIRule querydict1 sym4 ShortestDual))
+    where irule = EIRule "rel7" [sym1, sym2, sym3] L2R False
+
+test75 = TestCase (assertEqual "queryEIRule with policy MinimalDual and unique minima."
+                               (Just irule :: Maybe EIRule)
+                               (queryEIRule querydict1 sym2 ShortestDual))
+    where irule = EIRule "rel3" [sym2] L2R False
+
+test76 = TestCase (assertEqual "queryEIRule with policy MinimalDual and many minima."
+                               (Nothing :: Maybe EIRule)
+                               (queryEIRule querydict1 sym3 ShortestDual))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "Internal_toEDir_triv" test1,
@@ -463,6 +604,24 @@ tests = hUnitTestToTests $ TestList [TestLabel "Internal_toEDir_triv" test1,
                                      TestLabel "toIDict_Empty_Right" test55,
                                      TestLabel "toIDict_NoMatch_Right" test56,
                                      TestLabel "toIDict_Match_Right_Elt1" test57,
-                                     TestLabel "toIDict_Match_Right_Elt2" test58]
+                                     TestLabel "toIDict_Match_Right_Elt2" test58,
+                                     TestLabel "queryEIRule_First_Len0" test59,
+                                     TestLabel "queryEIRule_First_Len1" test60,
+                                     TestLabel "queryEIRule_First_Len3" test61,
+                                     TestLabel "queryEIRule_NoDef_Len0" test62,
+                                     TestLabel "queryEIRule_NoDef_Len1" test63,
+                                     TestLabel "queryEIRule_NoDef_Len3" test64,
+                                     TestLabel "queryEIRule_SelfDual_Len0" test65,
+                                     TestLabel "queryEIRule_SelfDual_NoMatch" test66,
+                                     TestLabel "queryEIRule_SelfDual_1Match" test67,
+                                     TestLabel "queryEIRule_SelfDual_2Match" test68,
+                                     TestLabel "queryEIRule_Minuma_Len0" test69,
+                                     TestLabel "queryEIRule_Minuma_Len1" test70,
+                                     TestLabel "queryEIRule_Minuma_Unique" test71,
+                                     TestLabel "queryEIRule_Minuma_Many" test72,
+                                     TestLabel "queryEIRule_Shortest_Len0" test73,
+                                     TestLabel "queryEIRule_Shortest_Len1" test74,
+                                     TestLabel "queryEIRule_Shortest_Unique" test75,
+                                     TestLabel "queryEIRule_Shortest_Many" test76]
 
 main = defaultMain tests
