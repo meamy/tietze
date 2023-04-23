@@ -21,6 +21,7 @@ library
                        Lafont.Maybe
                        Lafont.Ring
                        Lafont.String
+                       Lafont.Edit.EIRules
                        Lafont.Edit.Internal.EIRules
                        Lafont.Generators.Algebraic.Internal.ModP
                        Lafont.Generators.Algebraic.Internal.Product

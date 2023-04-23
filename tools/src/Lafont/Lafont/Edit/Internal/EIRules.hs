@@ -2,6 +2,8 @@
 
 module Lafont.Edit.Internal.EIRules (
     EIRule ( .. ),
+    EIRuleFn,
+    IsLeftDual,
     toEDir,
     toIDir,
     asLeftDual,
@@ -19,7 +21,7 @@ import           Lafont.Rewrite.Rules
 -- * Helper methods to identify elimination/introduction rules.
 
 -- | A function that consumes a rewrite rule. If the rewrite rule satisfies the
--- requirements of a specifici EIRule type, then the direction and non-empty side of the
+-- requirements of a specific EIRule type, then the direction and non-empty side of the
 -- relation are returned. Otherwise, nothing is returned.
 type EIDirFn = RewriteRule -> Maybe (RuleDir, MonWord)
 
@@ -80,9 +82,16 @@ data EIRule = EIRule String MonWord RuleDir IsDerived deriving (Show,Eq)
 -- | Indicates if the dual string should appear on the left.
 type IsLeftDual = Bool
 
+-- | Consumes a flag that indicates whether the dualizing object in an elimination rule
+-- should appear on the left or right. Returns a function f that consumes both the name
+-- of a rewrite rule, and the rule itself. If the rule is of the correct EI type, then f
+-- returns the symbol to eliminate/introduce, and the details of the
+-- elimination/introduction. Otherwise, nothing is returned.
+type EIRuleFn = IsLeftDual -> String -> RewriteRule -> Maybe (Symbol, EIRule)
+
 -- | Implementation details for asERule and asIRule. The EIDirFn is the function used to
 -- determine the direction (and consequently the type) of the relation.
-asEIRule :: EIDirFn -> IsLeftDual -> String -> RewriteRule -> Maybe (Symbol, EIRule)
+asEIRule :: EIDirFn -> EIRuleFn
 asEIRule f isLeftDual relname rel =
     branchJust (f rel) $ \(dir, res) ->
         branchJust (asDual res) $ \(mor, dual) ->
@@ -90,18 +99,10 @@ asEIRule f isLeftDual relname rel =
     where asDual    = if isLeftDual then asLeftDual else asRightDual
           isDerived = isDerivedRule rel
 
--- | Consumes a flag that indicates whether the dualizing object in an elimination rule
--- should appear on the left or right. Returns a function f that consumes both the name
--- of a rewrite rule, and the rule itself. If the rule performs an elimination, then f
--- returns the symbol to eliminate, and the details of the elimination. Otherwise,
--- nothing is returned.
-asERule :: IsLeftDual -> String -> RewriteRule -> Maybe (Symbol, EIRule)
+-- | Implements EIRuleFn for elimination rules.
+asERule :: EIRuleFn
 asERule = asEIRule toEDir
 
--- | Consumes a flag that indicates whether the dualizing object in an introduction rule
--- should appear on the left or right. Returns a function f that consumes both the name
--- of a rewrite rule, and the rule itself. If the rule performs an introduction, then f
--- returns the symbol which is introduced, and the details of the introduction.
--- Otherwise, nothing is returned.
-asIRule :: IsLeftDual -> String -> RewriteRule -> Maybe (Symbol, EIRule)
+-- | Implements EIRuleFn for introduction rules.
+asIRule :: EIRuleFn
 asIRule = asEIRule toIDir
