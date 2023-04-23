@@ -28,5 +28,9 @@ instance Display Symbol where
     display (Symbol sym args) = foldl fn sym args
         where fn str n = str ++ "[" ++ show n ++ "]"
 
+instance Ord Symbol where
+    compare x y = if cmp == EQ then compare (args x) (args y) else cmp
+        where cmp = compare (name x) (name y)
+
 -- | Type definition for a string of generators (i.e., a word in a free monoid).
 type MonWord = [Symbol]
