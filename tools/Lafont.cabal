@@ -21,6 +21,7 @@ library
                        Lafont.Maybe
                        Lafont.Ring
                        Lafont.String
+                       Lafont.Edit.Dualize
                        Lafont.Edit.EIRules
                        Lafont.Edit.Internal.EIRules
                        Lafont.Generators.Algebraic.Internal.ModP
@@ -121,6 +122,11 @@ common io-unit-test-props
 test-suite lafont-common-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Common-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-edit-dualize-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Edit-Dualize-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite lafont-edit-eirules-tests
