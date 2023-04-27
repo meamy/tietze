@@ -82,11 +82,61 @@ test4 = TestCase (assertEqual "dualizeRule applied to a non-trivial rules."
           rhs = [sym3, sym7, sym7, sym7, sym5, sym6]
 
 -----------------------------------------------------------------------------------------
+-- * deriveIntro
+
+test5 = TestCase (assertEqual "deriveIntro applied to an empty word."
+                              (Just (5, []) :: Maybe (Int, [EIRewrite]))
+                              (deriveIntro True alt_iview3 5 []))
+
+test6 = TestCase (assertEqual "deriveIntro applied to a non-matching word."
+                              (Nothing :: Maybe (Int, [EIRewrite]))
+                              (deriveIntro True alt_iview3 5 [sym1, sym2, sym5]))
+
+test7 = TestCase (assertEqual "deriveIntro applied with left duals."
+                              (Just (11, deriv) :: Maybe (Int, [EIRewrite]))
+                              (deriveIntro True alt_iview3 5 [sym1, sym2, sym3]))
+    where deriv = [EIRewrite 5 alt3, EIRewrite 6 alt2, EIRewrite 9 alt1]
+
+test8 = TestCase (assertEqual "deriveIntro applied with right duals."
+                              (Just (8, deriv) :: Maybe (Int, [EIRewrite]))
+                              (deriveIntro False alt_iview3 5 [sym1, sym2, sym3]))
+    where deriv = [EIRewrite 5 alt1, EIRewrite 6 alt2, EIRewrite 7 alt3]
+
+-----------------------------------------------------------------------------------------
+-- * deriveElim
+
+test9 = TestCase (assertEqual "deriveElim applied to an empty word."
+                              (Just (5, []) :: Maybe (Int, [EIRewrite]))
+                              (deriveElim True alt_iview3 5 []))
+
+test10 = TestCase (assertEqual "deriveElim applied to a non-matching word."
+                               (Nothing :: Maybe (Int, [EIRewrite]))
+                               (deriveElim True alt_iview3 5 [sym1, sym2, sym5]))
+
+test11 = TestCase (assertEqual "deriveElim applied with left duals."
+                               (Just (4, deriv) :: Maybe (Int, [EIRewrite]))
+                               (deriveElim True alt_iview3 10 [sym1, sym2, sym3]))
+    where deriv = [EIRewrite 10 alt1, EIRewrite 8 alt2, EIRewrite 5 alt3]
+
+test12 = TestCase (assertEqual "deriveElim applied with right duals."
+                               (Just (7, deriv) :: Maybe (Int, [EIRewrite]))
+                               (deriveElim False alt_iview3 10 [sym1, sym2, sym3]))
+    where deriv = [EIRewrite 10 alt3, EIRewrite 9 alt2, EIRewrite 8 alt1]
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "dualizeRule_Missing_ERule" test1,
                                      TestLabel "dualizeRule_Missing_IRule" test2,
                                      TestLabel "dualizeRule_SelfDual" test3,
-                                     TestLabel "dualizeRule_Complex" test4]
+                                     TestLabel "dualizeRule_Complex" test4,
+                                     TestLabel "deriveIntro_Empty" test5,
+                                     TestLabel "deriveIntro_NoMatch" test6,
+                                     TestLabel "deriveIntro_LeftDual" test7,
+                                     TestLabel "deriveIntro_RightDual" test8,
+                                     TestLabel "deriveElim_Empty" test9,
+                                     TestLabel "deriveElim_NoMatch" test10,
+                                     TestLabel "deriveElim_LeftDual" test11,
+                                     TestLabel "deriveElim_RightDual" test12]
 
 main = defaultMain tests
