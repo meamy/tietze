@@ -69,18 +69,18 @@ asRightDual (symb:rest) = Just (symb, rest)
 -- if the apply keyword is required.
 type IsDerived = Bool
 
+-- | Indicates if the dual string should appear on the left.
+type IsLeftDual = Bool
+
 -- | Provides an elimination (or introduction) interface to a rewrite rule. The first
 -- argument is the name of the relation. The second argument is the dual object involved
 -- in the relation (any additional symbols introduced or eliminated in the process. The
 -- fourth argument is the direction the rule must be applied in to act as intended. The
 -- fourth argument indicates is the rule is derive d and therefore must be applied.
-data EIRule = EIRule String MonWord RuleDir IsDerived deriving (Show,Eq)
+data EIRule = EIRule String MonWord RuleDir IsLeftDual IsDerived deriving (Show,Eq)
 
 -----------------------------------------------------------------------------------------
 -- * Helper methods to extract elimination/introduction rules.
-
--- | Indicates if the dual string should appear on the left.
-type IsLeftDual = Bool
 
 -- | Consumes a flag that indicates whether the dualizing object in an elimination rule
 -- should appear on the left or right. Returns a function f that consumes both the name
@@ -95,7 +95,7 @@ asEIRule :: EIDirFn -> EIRuleFn
 asEIRule f isLeftDual relname rel =
     branchJust (f rel) $ \(dir, res) ->
         branchJust (asDual res) $ \(mor, dual) ->
-            Just (mor, EIRule relname dual dir isDerived)
+            Just (mor, EIRule relname dual dir isLeftDual isDerived)
     where asDual    = if isLeftDual then asLeftDual else asRightDual
           isDerived = isDerivedRule rel
 

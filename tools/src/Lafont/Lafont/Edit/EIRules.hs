@@ -27,7 +27,7 @@ import           Lafont.Rewrite.Rules
 
 -- | Returns the dual produced or consumed by an EIRule.
 getDual :: EIRule -> MonWord
-getDual (EIRule _ dual _ _) = dual
+getDual (EIRule _ dual _ _ _) = dual
 
 -----------------------------------------------------------------------------------------
 -- * Elimination/Introduction Construction Dictionary.

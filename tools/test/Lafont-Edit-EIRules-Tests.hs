@@ -191,25 +191,25 @@ test25 = TestCase (assertEqual "asERule handles valid elimination with ldual (1/
                                (Just (sym3, erule) :: Maybe (Symbol, EIRule))
                                (asERule True rname rel_rnull))
     where rname = "rel1"
-          erule = EIRule rname [sym2, sym4, sym1] L2R False
+          erule = EIRule rname [sym2, sym4, sym1] L2R True False
 
 test26 = TestCase (assertEqual "asERule handles valid elimination with ldual (2/2)."
                                (Just (sym2, erule) :: Maybe (Symbol, EIRule))
                                (asERule True rname birel_lnull))
     where rname = "rel2"
-          erule = EIRule rname [sym4] R2L False
+          erule = EIRule rname [sym4] R2L True False
 
 test27 = TestCase (assertEqual "asERule handles valid elimination with rdual (1/2)."
                                (Just (sym2, erule) :: Maybe (Symbol, EIRule))
                                (asERule False rname rel_rnull))
     where rname = "rel3"
-          erule = EIRule rname [sym4, sym1, sym3] L2R False
+          erule = EIRule rname [sym4, sym1, sym3] L2R False False
 
 test28 = TestCase (assertEqual "asERule handles valid elimination with rdual (2/2)."
                                (Just (sym4, erule) :: Maybe (Symbol, EIRule))
                                (asERule False rname birel_lnull))
     where rname = "rel3"
-          erule = EIRule rname [sym2] R2L False
+          erule = EIRule rname [sym2] R2L False False
 
 test29 = TestCase (assertEqual "asERule handles invalid elimination with ldual"
                                (Nothing :: Maybe (Symbol, EIRule))
@@ -223,7 +223,7 @@ test31 = TestCase (assertEqual "asERule handles derived relations."
                                (Just (sym4, erule) :: Maybe (Symbol, EIRule))
                                (asERule True rname birel_rnull_d))
     where rname = "rel4"
-          erule = EIRule rname [] L2R True
+          erule = EIRule rname [] L2R True True
 
 -----------------------------------------------------------------------------------------
 -- asIRule
@@ -232,25 +232,25 @@ test32 = TestCase (assertEqual "asIRule handles valid elimination with ldual (1/
                                (Just (sym1, erule) :: Maybe (Symbol, EIRule))
                                (asIRule True rname rel_lnull))
     where rname = "rel1"
-          erule = EIRule rname [sym1, sym2, sym3] L2R False
+          erule = EIRule rname [sym1, sym2, sym3] L2R True False
 
 test33 = TestCase (assertEqual "asIRule handles valid elimination with ldual (2/2)."
                                (Just (sym2, erule) :: Maybe (Symbol, EIRule))
                                (asIRule True rname birel_lnull))
     where rname = "rel2"
-          erule = EIRule rname [sym4] L2R False
+          erule = EIRule rname [sym4] L2R True False
 
 test34 = TestCase (assertEqual "asIRule handles valid elimination with rdual (1/2)."
                                (Just (sym1, erule) :: Maybe (Symbol, EIRule))
                                (asIRule False rname rel_lnull))
     where rname = "rel3"
-          erule = EIRule rname [sym2, sym3, sym1] L2R False
+          erule = EIRule rname [sym2, sym3, sym1] L2R False False
 
 test35 = TestCase (assertEqual "asIRule handles valid elimination with rdual (2/2)."
                                (Just (sym4, erule) :: Maybe (Symbol, EIRule))
                                (asIRule False rname birel_lnull))
     where rname = "rel3"
-          erule = EIRule rname [sym2] L2R False
+          erule = EIRule rname [sym2] L2R False False
 
 test36 = TestCase (assertEqual "asIRule handles invalid elimination with ldual"
                                (Nothing :: Maybe (Symbol, EIRule))
@@ -264,7 +264,7 @@ test38 = TestCase (assertEqual "asIRule handles derived relations."
                                (Just (sym4, erule) :: Maybe (Symbol, EIRule))
                                (asIRule True rname birel_rnull_d))
     where rname = "rel4"
-          erule = EIRule rname [] R2L True
+          erule = EIRule rname [] R2L True True
 
 -----------------------------------------------------------------------------------------
 -- toEDict
@@ -300,18 +300,18 @@ test41 = TestCase (assertEqual "toEDict handles matches (left dual, size)."
 test42 = TestCase (assertEqual "toEDict handles matches (left dual, @sym3)."
                                [erule]
                                (getEIRule (toEDict True elookup8) sym3))
-    where erule = EIRule "r4" [sym2, sym4, sym1] L2R False
+    where erule = EIRule "r4" [sym2, sym4, sym1] L2R True False
 
 test43 = TestCase (assertEqual "toEDict handles matches (left dual, @sym4)."
                                [erule1, erule2]
                                (getEIRule (toEDict True elookup8) sym4))
-    where erule1 = EIRule "r6" [] L2R False
-          erule2 = EIRule "r8" [] L2R True
+    where erule1 = EIRule "r6" [] L2R True False
+          erule2 = EIRule "r8" [] L2R True True
 
 test44 = TestCase (assertEqual "toEDict handles matches (left dual, @sym2)."
                                [erule]
                                (getEIRule (toEDict True elookup8) sym2))
-    where erule = EIRule "r7" [sym4] R2L False
+    where erule = EIRule "r7" [sym4] R2L True False
 
 -- Right duals.
 
@@ -330,14 +330,14 @@ test47 = TestCase (assertEqual "toEDict handles matches (right dual, size)."
 test48 = TestCase (assertEqual "toEDict handles matches (right dual, @sym2)."
                                [erule]
                                (getEIRule (toEDict False elookup8) sym2))
-    where erule = EIRule "r4" [sym4, sym1, sym3] L2R False
+    where erule = EIRule "r4" [sym4, sym1, sym3] L2R False False
 
 test49 = TestCase (assertEqual "toEDict handles matches (right dual, @sym4)."
                                [erule1, erule2, erule3]
                                (getEIRule (toEDict False elookup8) sym4))
-    where erule1 = EIRule "r6" [] L2R False
-          erule2 = EIRule "r7" [sym2] R2L False
-          erule3 = EIRule "r8" [] L2R True
+    where erule1 = EIRule "r6" []     L2R False False
+          erule2 = EIRule "r7" [sym2] R2L False False
+          erule3 = EIRule "r8" []     L2R False True
 
 -----------------------------------------------------------------------------------------
 -- toIDict
@@ -369,18 +369,18 @@ test51 = TestCase (assertEqual "toIDict handles non-matching dictionaries (left 
 test52 = TestCase (assertEqual "toIDict handles matches (left dual, @sym1)."
                                [erule]
                                (getEIRule (toIDict True ilookup8) sym1))
-    where erule = EIRule "rel4" [sym1, sym2, sym3] L2R False
+    where erule = EIRule "rel4" [sym1, sym2, sym3] L2R True False
 
 test53 = TestCase (assertEqual "toIDict handles matches (left dual, @sym4)."
                                [erule1, erule2]
                                (getEIRule (toIDict True ilookup8) sym4))
-    where erule1 = EIRule "rel6" [] R2L False
-          erule2 = EIRule "rel8" [] R2L True
+    where erule1 = EIRule "rel6" [] R2L True False
+          erule2 = EIRule "rel8" [] R2L True True
 
 test54 = TestCase (assertEqual "toIDict handles matches (left dual, @sym2)."
                                [erule]
                                (getEIRule (toIDict True ilookup8) sym2))
-    where erule = EIRule "rel7" [sym4] L2R False
+    where erule = EIRule "rel7" [sym4] L2R True False
 
 -- Right duals.
 
@@ -395,14 +395,14 @@ test56 = TestCase (assertEqual "toIDict handles non-matching dictionaries (right
 test57 = TestCase (assertEqual "toIDict handles matches (right dual, @sym1)."
                                [erule]
                                (getEIRule (toIDict False ilookup8) sym1))
-    where erule = EIRule "rel4" [sym2, sym3, sym1] L2R False
+    where erule = EIRule "rel4" [sym2, sym3, sym1] L2R False False
 
 test58 = TestCase (assertEqual "toIDict handles matches (right dual, @sym4)."
                                [erule1, erule2, erule3]
                                (getEIRule (toIDict False elookup8) sym4))
-    where erule1 = EIRule "r6" [] R2L False
-          erule2 = EIRule "r7" [sym2] L2R False
-          erule3 = EIRule "r8" [] R2L True
+    where erule1 = EIRule "r6" []     R2L False False
+          erule2 = EIRule "r7" [sym2] L2R False False
+          erule3 = EIRule "r8" []     R2L False True
 
 -----------------------------------------------------------------------------------------
 -- queryEIRule
@@ -469,12 +469,12 @@ test59 = TestCase (assertEqual "queryEIRule with policy FirstRule and len 0."
 test60 = TestCase (assertEqual "queryEIRule with policy FirstRule and len 1."
                                (Just irule :: Maybe EIRule)
                                (queryEIRule querydict0 sym3 FirstRule))
-    where irule = EIRule "rel6" [sym3] L2R False
+    where irule = EIRule "rel6" [sym3] L2R True False
 
 test61 = TestCase (assertEqual "queryEIRule with policy FirstRule and len 3."
                                (Just irule :: Maybe EIRule)
                                (queryEIRule querydict0 sym2 FirstRule))
-    where irule = EIRule "rel3" [sym2] L2R False
+    where irule = EIRule "rel3" [sym2] L2R True False
 
 test62 = TestCase (assertEqual "queryEIRule with policy NoDefault and len 0."
                                (Nothing :: Maybe EIRule)
@@ -483,7 +483,7 @@ test62 = TestCase (assertEqual "queryEIRule with policy NoDefault and len 0."
 test63 = TestCase (assertEqual "queryEIRule with policy NoDefault and len 1."
                                (Just irule :: Maybe EIRule)
                                (queryEIRule querydict0 sym3 NoDefault))
-    where irule = EIRule "rel6" [sym3] L2R False
+    where irule = EIRule "rel6" [sym3] L2R True False
 
 test64 = TestCase (assertEqual "queryEIRule with policy NoDefault and len 3."
                                (Nothing :: Maybe EIRule)
@@ -500,12 +500,12 @@ test66 = TestCase (assertEqual "queryEIRule with policy SelfDual and not self-du
 test67 = TestCase (assertEqual "queryEIRule with policy SelfDual and one self-dual."
                                (Just irule :: Maybe EIRule)
                                (queryEIRule querydict0 sym1 SelfDual))
-    where irule = EIRule "rel1" [sym1] L2R False
+    where irule = EIRule "rel1" [sym1] L2R True False
 
 test68 = TestCase (assertEqual "queryEIRule with policy SelfDual and two self-duals."
                                (Just irule :: Maybe EIRule)
                                (queryEIRule querydict1 sym3 SelfDual))
-    where irule = EIRule "rel6" [sym3] L2R False
+    where irule = EIRule "rel6" [sym3] L2R True False
 
 test69 = TestCase (assertEqual "queryEIRule with policy MinimalDual and no rules."
                                (Nothing :: Maybe EIRule)
@@ -514,17 +514,17 @@ test69 = TestCase (assertEqual "queryEIRule with policy MinimalDual and no rules
 test70 = TestCase (assertEqual "queryEIRule with policy MinimalDual and single rule."
                                (Just irule :: Maybe EIRule)
                                (queryEIRule querydict1 sym4 MinimalDual))
-    where irule = EIRule "rel7" [sym1, sym2, sym3] L2R False
+    where irule = EIRule "rel7" [sym1, sym2, sym3] L2R True False
 
 test71 = TestCase (assertEqual "queryEIRule with policy MinimalDual and unique minima."
                                (Just irule :: Maybe EIRule)
                                (queryEIRule querydict1 sym2 MinimalDual))
-    where irule = EIRule "rel3" [sym2] L2R False
+    where irule = EIRule "rel3" [sym2] L2R True False
 
 test72 = TestCase (assertEqual "queryEIRule with policy MinimalDual and many minima."
                                (Just irule :: Maybe EIRule)
                                (queryEIRule querydict1 sym3 MinimalDual))
-    where irule = EIRule "rel6" [sym3] L2R False
+    where irule = EIRule "rel6" [sym3] L2R True False
 
 test73 = TestCase (assertEqual "queryEIRule with policy MinimalDual and no rules."
                                (Nothing :: Maybe EIRule)
@@ -533,12 +533,12 @@ test73 = TestCase (assertEqual "queryEIRule with policy MinimalDual and no rules
 test74 = TestCase (assertEqual "queryEIRule with policy MinimalDual and single rule."
                                (Just irule :: Maybe EIRule)
                                (queryEIRule querydict1 sym4 ShortestDual))
-    where irule = EIRule "rel7" [sym1, sym2, sym3] L2R False
+    where irule = EIRule "rel7" [sym1, sym2, sym3] L2R True False
 
 test75 = TestCase (assertEqual "queryEIRule with policy MinimalDual and unique minima."
                                (Just irule :: Maybe EIRule)
                                (queryEIRule querydict1 sym2 ShortestDual))
-    where irule = EIRule "rel3" [sym2] L2R False
+    where irule = EIRule "rel3" [sym2] L2R True False
 
 test76 = TestCase (assertEqual "queryEIRule with policy MinimalDual and many minima."
                                (Nothing :: Maybe EIRule)

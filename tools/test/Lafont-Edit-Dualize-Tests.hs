@@ -27,11 +27,11 @@ rwrule1 = RewriteRule { lhs         = [sym1, sym2, sym3]
                       , derivedFrom = Nothing
                       }
 
-selfdual1 = EIRule "sd1" [sym1] L2R True
-selfdual2 = EIRule "sd2" [sym2] L2R False
-selfdual3 = EIRule "sd3" [sym3] L2R True
-selfdual4 = EIRule "sd4" [sym4] L2R False
-selfdual5 = EIRule "sd5" [sym5] L2R True
+selfdual1 = EIRule "sd1" [sym1] L2R False True
+selfdual2 = EIRule "sd2" [sym2] L2R False  False
+selfdual3 = EIRule "sd3" [sym3] L2R False True
+selfdual4 = EIRule "sd4" [sym4] L2R False False
+selfdual5 = EIRule "sd5" [sym5] L2R False True
 
 selfdual_eview0 = createView
 selfdual_eview1 = addRule selfdual_eview0 (sym4, selfdual4)
@@ -42,11 +42,11 @@ selfdual_iview1 = addRule selfdual_iview0 (sym1, selfdual1)
 selfdual_iview2 = addRule selfdual_iview1 (sym2, selfdual2)
 selfdual_iview3 = addRule selfdual_iview2 (sym3, selfdual3)
 
-alt1 = EIRule "alt1" [sym5, sym6] L2R True
-alt2 = EIRule "alt2" [sym7, sym7, sym7] L2R True
-alt3 = EIRule "alt3" [sym3] L2R True
-alt4 = EIRule "alt4" [sym2, sym4] L2R True
-alt5 = EIRule "alt5" [sym1] L2R True
+alt1 = EIRule "alt1" [sym5, sym6]       L2R False True
+alt2 = EIRule "alt2" [sym7, sym7, sym7] L2R False True
+alt3 = EIRule "alt3" [sym3]             L2R False True
+alt4 = EIRule "alt4" [sym2, sym4]       L2R False True
+alt5 = EIRule "alt5" [sym1]             L2R False True
 
 alt_eview0 = createView
 alt_eview1 = addRule alt_eview0 (sym4, alt4)
