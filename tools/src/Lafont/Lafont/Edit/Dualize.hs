@@ -100,19 +100,25 @@ seqToDer delta view n (sym:word) =
             Just (end, EIRewrite n rule:deriv)
 
 -- | This function expands elimination rules from symbols to words. The function takes
--- as input a flag indicating if duals appear on the left, a view of the elimination
--- rules in scope, the current index, and the word to eliminate at this index. If the
--- elimination is possible, then returns a sequence of eliminations, together with the
--- new index after the sequence of eliminations. Otherwise, nothing is returned.
-deriveElim :: IsLeftDual -> EIView -> Int -> MonWord -> Maybe (Int, [EIRewrite])
-deriveElim True  view n word = seqToDer (negate . length . getDual) view n word
-deriveElim False view n word = seqToDer (\_ -> (-1))                view n $ reverse word
+-- as input a view of in-scope elimination rules, the current index, and the word to
+-- eliminate at this index. Whether duals appear on the left or right is inferred from
+-- the view. If the elimination is possible, then returns a sequence of eliminations,
+-- together with the new index after the sequence of eliminations. Otherwise, nothing is
+-- returned. Note that derivation only fails if a elim rule is missing.
+deriveElim :: EIView -> Int -> MonWord -> Maybe (Int, [EIRewrite])
+deriveElim view n word = seqToDer delta view n seq
+    where lduals = hasLeftDuals view
+          seq    = if lduals then word else reverse word
+          delta  = if lduals then (negate . length . getDual) else (\_ -> (-1))
 
 -- | This function expands introduction rules from symbols to words. The function takes
--- as input a flag indicating if duals appear on the left, a view of the introduction
--- rules in scope, the current index, and the word to eliminate at this index. If the
--- introduction is possible, then returns a sequence of introductions, together with the
--- new index after the sequence of introduction. Otherwise, nothing is returned.
-deriveIntro :: IsLeftDual -> EIView -> Int -> MonWord -> Maybe (Int, [EIRewrite])
-deriveIntro True  view n word = seqToDer (length . getDual) view n $ reverse word
-deriveIntro False view n word = seqToDer (\_ -> 1)          view n word
+-- as input a view of in-scope introduction rules, the current index, and the word to
+-- introduce at this index. Whether duals appear on the left or right is inferred from
+-- the view. If the introduction is possible, then returns a sequence of introductions,
+-- together with the new index after the sequence of introduction. Otherwise, nothing is
+-- returned. Note that derivation only fails if an intro rule is missing.
+deriveIntro :: EIView -> Int -> MonWord -> Maybe (Int, [EIRewrite])
+deriveIntro view n word = seqToDer delta view n seq
+    where lduals = hasLeftDuals view
+          seq    = if lduals then reverse word else word
+          delta  = if lduals then (length . getDual) else (\_ -> 1)

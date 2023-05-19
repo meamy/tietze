@@ -103,15 +103,15 @@ test4 = TestCase (assertEqual "dualizeRule applied to a non-trivial rules."
 
 test5 = TestCase (assertEqual "deriveIntro applied to an empty word."
                               (Just (5, []) :: Maybe (Int, [EIRewrite]))
-                              (deriveIntro True lalt_iview 5 []))
+                              (deriveIntro lalt_iview 5 []))
 
 test6 = TestCase (assertEqual "deriveIntro applied to a non-matching word."
                               (Nothing :: Maybe (Int, [EIRewrite]))
-                              (deriveIntro True lalt_iview 5 [sym1, sym2, sym5]))
+                              (deriveIntro lalt_iview 5 [sym1, sym2, sym5]))
 
 test7 = TestCase (assertEqual "deriveIntro applied with left duals."
                               (Just (11, deriv) :: Maybe (Int, [EIRewrite]))
-                              (deriveIntro True lalt_iview 5 [sym1, sym2, sym3]))
+                              (deriveIntro lalt_iview 5 [sym1, sym2, sym3]))
     where r1    = getAltRule 1 True
           r2    = getAltRule 2 True
           r3    = getAltRule 3 True
@@ -119,7 +119,7 @@ test7 = TestCase (assertEqual "deriveIntro applied with left duals."
 
 test8 = TestCase (assertEqual "deriveIntro applied with right duals."
                               (Just (8, deriv) :: Maybe (Int, [EIRewrite]))
-                              (deriveIntro False ralt_iview 5 [sym1, sym2, sym3]))
+                              (deriveIntro ralt_iview 5 [sym1, sym2, sym3]))
     where r1    = getAltRule 1 False
           r2    = getAltRule 2 False
           r3    = getAltRule 3 False
@@ -130,15 +130,15 @@ test8 = TestCase (assertEqual "deriveIntro applied with right duals."
 
 test9 = TestCase (assertEqual "deriveElim applied to an empty word."
                               (Just (5, []) :: Maybe (Int, [EIRewrite]))
-                              (deriveElim True lalt_iview 5 []))
+                              (deriveElim lalt_iview 5 []))
 
 test10 = TestCase (assertEqual "deriveElim applied to a non-matching word."
                                (Nothing :: Maybe (Int, [EIRewrite]))
-                               (deriveElim True lalt_iview 5 [sym1, sym2, sym5]))
+                               (deriveElim lalt_iview 5 [sym1, sym2, sym5]))
 
 test11 = TestCase (assertEqual "deriveElim applied with left duals."
                                (Just (4, deriv) :: Maybe (Int, [EIRewrite]))
-                               (deriveElim True lalt_iview 10 [sym1, sym2, sym3]))
+                               (deriveElim lalt_iview 10 [sym1, sym2, sym3]))
     where r1    = getAltRule 1 True
           r2    = getAltRule 2 True
           r3    = getAltRule 3 True
@@ -146,7 +146,7 @@ test11 = TestCase (assertEqual "deriveElim applied with left duals."
 
 test12 = TestCase (assertEqual "deriveElim applied with right duals."
                                (Just (7, deriv) :: Maybe (Int, [EIRewrite]))
-                               (deriveElim False ralt_iview 10 [sym1, sym2, sym3]))
+                               (deriveElim ralt_iview 10 [sym1, sym2, sym3]))
     where r1    = getAltRule 1 False
           r2    = getAltRule 2 False
           r3    = getAltRule 3 False
