@@ -10,6 +10,7 @@ module Lafont.Edit.EIRules (
     getDual,
     getEICount,
     getEIRule,
+    hasLeftDual,
     queryEIRule,
     toEDict,
     toIDict
@@ -28,6 +29,10 @@ import           Lafont.Rewrite.Rules
 -- | Returns the dual produced or consumed by an EIRule.
 getDual :: EIRule -> MonWord
 getDual (EIRule _ dual _ _ _) = dual
+
+-- | Returns true if the dual appears on the left side of the EIRule.
+hasLeftDual :: EIRule -> IsLeftDual
+hasLeftDual (EIRule _ _ _ lflag _) = lflag
 
 -----------------------------------------------------------------------------------------
 -- * Elimination/Introduction Construction Dictionary.

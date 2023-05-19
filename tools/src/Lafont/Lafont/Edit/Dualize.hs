@@ -9,7 +9,8 @@ module Lafont.Edit.Dualize (
     deriveElim,
     deriveIntro,
     dualizeRule,
-    findRule
+    findRule,
+    hasLeftDuals
 ) where
 
 import qualified Data.Map             as Map
@@ -27,24 +28,32 @@ import           Lafont.Rewrite.Rules
 -- all elimination (resp. introduction) rules are equivalent up to isomorphism (e.g., the
 -- rules encode group inverses), this choice of syntactic representation still impacts
 -- the structure of a derivational proof. An EIView solves this problem by selecting a
--- single elimination (resp. introduction) rule for each symbol.
-newtype EIView = EIView (Map.Map Symbol EIRule)
+-- single elimination (resp. introduction) rule for each symbol. In addition, each EIView
+-- enforces that all duals appear strictly on either the left or right.
+data EIView = EIView IsLeftDual (Map.Map Symbol EIRule) deriving (Eq, Show)
 
 -- | Initializes a new EIView in which no symbol has elimination (resp. introduction)
 -- rule. The addRule method is used to assign rules to symbols.
-createView :: EIView
-createView = EIView Map.empty
+createView :: IsLeftDual -> EIView
+createView usingLeftDual = EIView usingLeftDual Map.empty
 
 -- | Consumes an EIView, and a pair consisting of a symbol and an EIRule. Returns a new
 -- view in which the given symbol is associated with the given EIRule, and all other
 -- mappings remain unchanged.
-addRule :: EIView -> (Symbol, EIRule) -> EIView
-addRule (EIView map) (sym, rule) = EIView $ Map.insert sym rule map
+addRule :: EIView -> (Symbol, EIRule) -> Maybe EIView
+addRule (EIView usingLeftDual map) (sym, rule) =
+    if usingLeftDual == hasLeftDual rule
+    then Just $ EIView usingLeftDual $ Map.insert sym rule map
+    else Nothing
 
 -- | Consumes an EIView and a symbol. If the symbol is associated with an EIRule, then
 -- returns the EIRule. Otherwise, nothing is returned.
 findRule :: EIView -> Symbol -> Maybe EIRule
-findRule (EIView map) sym = Map.lookup sym map
+findRule (EIView _ map) sym = Map.lookup sym map
+
+-- | Returns true if an EIVIew contains rules using left duals.
+hasLeftDuals :: EIView -> IsLeftDual
+hasLeftDuals (EIView usingLeftDual _) = usingLeftDual
 
 -----------------------------------------------------------------------------------------
 -- * Functions to Dualize Rewrite Rules.
@@ -75,7 +84,7 @@ dualizeRule eview iview rule =
 -----------------------------------------------------------------------------------------
 -- * Functions to Derive Dual Rewrite Rules.
 
--- | 
+-- | A variation of the Rewrite type to EIRules.
 data EIRewrite = EIRewrite Int EIRule deriving (Show,Eq)
 
 -- | Helper method to implement derivElim and deriveIntro. The additional function from
@@ -103,7 +112,7 @@ deriveElim False view n word = seqToDer (\_ -> (-1))                view n $ rev
 -- as input a flag indicating if duals appear on the left, a view of the introduction
 -- rules in scope, the current index, and the word to eliminate at this index. If the
 -- introduction is possible, then returns a sequence of introductions, together with the
--- new index after the sequence of introductions. Otherwise, nothing is returned.
+-- new index after the sequence of introduction. Otherwise, nothing is returned.
 deriveIntro :: IsLeftDual -> EIView -> Int -> MonWord -> Maybe (Int, [EIRewrite])
 deriveIntro True  view n word = seqToDer (length . getDual) view n $ reverse word
 deriveIntro False view n word = seqToDer (\_ -> 1)          view n word
