@@ -7,10 +7,10 @@ module Lafont.Edit.EIRules (
     -- Exports.
     EIDict,
     EIQueryType ( .. ),
-    getDual,
+    getInv,
     getEICount,
     getEIRule,
-    hasLeftDual,
+    hasLeftInv,
     queryEIRule,
     toEDict,
     toIDict
@@ -26,13 +26,13 @@ import           Lafont.Rewrite.Rules
 -----------------------------------------------------------------------------------------
 -- * Elimination/Introduction Rule Inspection.
 
--- | Returns the dual produced or consumed by an EIRule.
-getDual :: EIRule -> MonWord
-getDual (EIRule _ dual _ _ _) = dual
+-- | Returns the inverse produced or consumed by an EIRule.
+getInv :: EIRule -> MonWord
+getInv (EIRule _ inv _ _ _) = inv
 
--- | Returns true if the dual appears on the left side of the EIRule.
-hasLeftDual :: EIRule -> IsLeftDual
-hasLeftDual (EIRule _ _ _ lflag _) = lflag
+-- | Returns true if the inverse appears on the left side of the EIRule.
+hasLeftInv :: EIRule -> IsLeftInv
+hasLeftInv (EIRule _ _ _ lflag _) = lflag
 
 -----------------------------------------------------------------------------------------
 -- * Elimination/Introduction Construction Dictionary.
@@ -43,26 +43,27 @@ type EIMap = Map.Map Symbol [EIRule]
 -- | A mapping from symbols, to either their introduction or elimination rules.
 data EIDict = EIDict Int EIMap deriving (Eq,Show)
 
--- | A function that consumes the side duals must appear on, together with a dictionary
--- of rewrite rules. A dictionary of EIRules is constructed as follows. For each rewrite
--- rule (r) in th dictionary, if r is an EIRule of the intended type, then r is converted
--- to an EIRule with duals on the specified side, and then this rule is added to the
--- dictionary. Otherwise, the rule is ignored. The final dictionary is returned.
-type EIDictFn = IsLeftDual -> RuleDict -> EIDict
+-- | A function that consumes whether inverses appear on the left or right, together with
+-- a dictionary of rewrite rules. A dictionary of EIRules is constructed as follows. For
+-- each rewrite rule (r) in th dictionary, if r is an EIRule of the intended type, then r
+-- is converted to an EIRule with inverses on the specified side, and then this rule is
+-- added to the dictionary. Otherwise, the rule is ignored. The final dictionary is
+-- returned.
+type EIDictFn = IsLeftInv -> RuleDict -> EIDict
 
 -- | Implementation details for toEIDict. Provides a foldRules function according to the
 -- specifications of EIDictFn.
-eiFold :: EIRuleFn -> IsLeftDual -> (String, RewriteRule) -> (Int, EIMap) -> (Int, EIMap)
-eiFold f isLeftDual (name, rule) (sz, dict) = 
-    case f isLeftDual name rule of
+eiFold :: EIRuleFn -> IsLeftInv -> (String, RewriteRule) -> (Int, EIMap) -> (Int, EIMap)
+eiFold f isLeftInv (name, rule) (sz, dict) = 
+    case f isLeftInv name rule of
         Just (sym, eirule) -> (sz + 1, Map.insertWith (++) sym [eirule] dict)
         Nothing            -> (sz, dict)
 
 -- | Implementation details for toEDict and toIDict. The EIRuleFn is the function used to
 -- determine if each rewrite rule is in fact an EIRule of the correct type.
 toEIDict :: EIRuleFn -> EIDictFn
-toEIDict f isLeftDual rules = EIDict sz dict
-    where (sz, dict) = foldRules (eiFold f isLeftDual) (0, Map.empty) rules
+toEIDict f isLeftInv rules = EIDict sz dict
+    where (sz, dict) = foldRules (eiFold f isLeftInv) (0, Map.empty) rules
 
 -- | Implements EIDictFn for elimination rules.
 toEDict :: EIDictFn
@@ -88,23 +89,23 @@ getEIRule (EIDict _ dict) sym = Map.findWithDefault [] sym dict
 
 -- | An enumeration of EIRule query strategies:
 -- 1. FirstRule: returns the first matching EIRule.
--- 2. ShortestDual: returns the unique shortest dual, or nothing.
--- 3. MinimalDual: returns the first rule whose dual is of minimal length.
--- 4. SelfDual: returns a self-dual rule, or nothing.
+-- 2. ShortestInv: returns the unique shortest inverse, or nothing.
+-- 3. MinimalInv: returns the first rule whose inverse is of minimal length.
+-- 4. SelfInv: returns a self-inverse rule, or nothing.
 -- 5. NoDefault: returns the unique EIRule, or nothing.
 data EIQueryType = FirstRule
-                 | ShortestDual
-                 | MinimalDual
-                 | SelfDual
+                 | ShortestInv
+                 | MinimalInv
+                 | SelfInv
                  | NoDefault
                  deriving (Show,Eq)
 
 -- | Consumes a symbol and a list of EIRules for the symbol. Returns a rule indicating
--- that the symbol is self-dual.
-findSelfDual :: Symbol -> [EIRule] -> Maybe EIRule
-findSelfDual sym []     = Nothing
-findSelfDual sym (r:rs) = if isSelfDual then Just r else findSelfDual sym rs
-    where isSelfDual = getDual r == [sym]
+-- that the symbol is self-inverse.
+findSelfInv :: Symbol -> [EIRule] -> Maybe EIRule
+findSelfInv sym []     = Nothing
+findSelfInv sym (r:rs) = if isSelfInv then Just r else findSelfInv sym rs
+    where isSelfInv = getInv r == [sym]
 
 -- | Implementation details for findMinima. Consumes a list of EIRules. If the list is
 -- empty, then nothing is returned. Otherwise, returns a tuple (r, l, u) where l is a
@@ -119,12 +120,12 @@ findMinimaImpl (r:rs) =
             LT -> Just (r, len, True)
             EQ -> Just (r, len, False)
             GT -> Just res
-    where len = length $ getDual r
+    where len = length $ getInv r
 
 -- | Consumes a bool and a list of EIRules. If the list is empty, then nothing is
--- returned. Otherwise, returns the rule closest to the front of the list, whose dual is
--- of minimal length. If the boolean flag is set, and the minimal element is not unique,
--- then nothing is returned instead.
+-- returned. Otherwise, returns the rule closest to the front of the list, whose inverse
+-- is of minimal length. If the boolean flag is set, and the minimal element is not
+-- unique, then nothing is returned instead.
 findMinima :: Bool -> [EIRule] -> Maybe EIRule
 findMinima findUnique rules =
     branchJust (findMinimaImpl rules) $ \(rule, _, isUnique) ->
@@ -139,9 +140,9 @@ queryEIRule :: EIDict -> Symbol -> EIQueryType -> Maybe EIRule
 queryEIRule dict sym ty
     | null res = Nothing
     | otherwise  = case ty of
-        FirstRule    -> Just $ head res
-        ShortestDual -> findMinima True res
-        MinimalDual  -> findMinima False res
-        SelfDual     -> findSelfDual sym res
-        NoDefault    -> if null $ tail res then Just $ head res else Nothing
+        FirstRule   -> Just $ head res
+        ShortestInv -> findMinima True res
+        MinimalInv  -> findMinima False res
+        SelfInv     -> findSelfInv sym res
+        NoDefault   -> if null $ tail res then Just $ head res else Nothing
     where res = getEIRule dict sym

@@ -1,16 +1,16 @@
--- | This module provides tools to dualize a rewrite rule through a combination
+-- | This module provides tools to invert a rewrite rule through a combination
 -- of elimination and introduction rules.
 
-module Lafont.Edit.Dualize (
+module Lafont.Edit.Invert (
     EIRewrite ( .. ),
     EIView,
     addRule,
     createView,
     deriveElim,
     deriveIntro,
-    dualizeRule,
+    invertRule,
     findRule,
-    hasLeftDuals
+    hasLeftInvs
 ) where
 
 import qualified Data.Map             as Map
@@ -29,21 +29,21 @@ import           Lafont.Rewrite.Rules
 -- rules encode group inverses), this choice of syntactic representation still impacts
 -- the structure of a derivational proof. An EIView solves this problem by selecting a
 -- single elimination (resp. introduction) rule for each symbol. In addition, each EIView
--- enforces that all duals appear strictly on either the left or right.
-data EIView = EIView IsLeftDual (Map.Map Symbol EIRule) deriving (Eq, Show)
+-- enforces that all inverses appear strictly on either the left or right.
+data EIView = EIView IsLeftInv (Map.Map Symbol EIRule) deriving (Eq, Show)
 
 -- | Initializes a new EIView in which no symbol has elimination (resp. introduction)
 -- rule. The addRule method is used to assign rules to symbols.
-createView :: IsLeftDual -> EIView
-createView usingLeftDual = EIView usingLeftDual Map.empty
+createView :: IsLeftInv -> EIView
+createView usingLeftInv = EIView usingLeftInv Map.empty
 
 -- | Consumes an EIView, and a pair consisting of a symbol and an EIRule. Returns a new
 -- view in which the given symbol is associated with the given EIRule, and all other
 -- mappings remain unchanged.
 addRule :: EIView -> (Symbol, EIRule) -> Maybe EIView
-addRule (EIView usingLeftDual map) (sym, rule) =
-    if usingLeftDual == hasLeftDual rule
-    then Just $ EIView usingLeftDual $ Map.insert sym rule map
+addRule (EIView usingLeftInv map) (sym, rule) =
+    if usingLeftInv == hasLeftInv rule
+    then Just $ EIView usingLeftInv $ Map.insert sym rule map
     else Nothing
 
 -- | Consumes an EIView and a symbol. If the symbol is associated with an EIRule, then
@@ -51,38 +51,38 @@ addRule (EIView usingLeftDual map) (sym, rule) =
 findRule :: EIView -> Symbol -> Maybe EIRule
 findRule (EIView _ map) sym = Map.lookup sym map
 
--- | Returns true if an EIVIew contains rules using left duals.
-hasLeftDuals :: EIView -> IsLeftDual
-hasLeftDuals (EIView usingLeftDual _) = usingLeftDual
+-- | Returns true if an EIVIew contains rules using left inverses.
+hasLeftInvs :: EIView -> IsLeftInv
+hasLeftInvs (EIView usingLeftInv _) = usingLeftInv
 
 -----------------------------------------------------------------------------------------
--- * Functions to Dualize Rewrite Rules.
+-- * Functions to Invert Rewrite Rules.
 
--- | Implementation details for dualizeStr. Excepts that the word is reversed, so that
+-- | Implementation details for invertStr. Excepts that the word is reversed, so that
 -- the resulting string appears in a contravariant order.
-dualizeStrImpl :: EIView -> MonWord -> Maybe MonWord
-dualizeStrImpl _     []         = Just []
-dualizeStrImpl view (sym:word) =
+invertStrImpl :: EIView -> MonWord -> Maybe MonWord
+invertStrImpl _     []        = Just []
+invertStrImpl view (sym:word) =
     branchJust (findRule view sym) $ \rule ->
-        branchJust (dualizeStrImpl view word) $ \dword ->
-            Just $ getDual rule ++ dword
+        branchJust (invertStrImpl view word) $ \dword ->
+            Just $ getInv rule ++ dword
 
--- | Implements dualizeRule for a single side of a RewriteRule. Note that the dualize of
+-- | Implements invertRule for a single side of a RewriteRule. Note that the invert of
 -- the lhs and rhs only differ in the choice of view.
-dualizeStr :: EIView -> MonWord -> Maybe MonWord
-dualizeStr view word = dualizeStrImpl view $ reverse word
+invertStr :: EIView -> MonWord -> Maybe MonWord
+invertStr view word = invertStrImpl view $ reverse word
 
 -- | Consumes an EIView for elimination rules, an EIView for introduction rules, and an
 -- arbitrary rewrite rule. If a symbol appears in the rewrite rule which does not appear
 -- in the corresponding EIView (lhs is introduced, rhs is eliminated), then nothing is
--- returned. Otherwise, returns dual relation.
-dualizeRule :: EIView -> EIView -> RewriteRule -> Maybe (MonWord, MonWord)
-dualizeRule eview iview rule =
-    branchJust (dualizeStr eview $ rhs rule) $ \lstr ->
-        branchJust (dualizeStr iview $ lhs rule) $ \rstr -> Just (lstr, rstr)
+-- returned. Otherwise, returns inverted relation.
+invertRule :: EIView -> EIView -> RewriteRule -> Maybe (MonWord, MonWord)
+invertRule eview iview rule =
+    branchJust (invertStr eview $ rhs rule) $ \lstr ->
+        branchJust (invertStr iview $ lhs rule) $ \rstr -> Just (lstr, rstr)
 
 -----------------------------------------------------------------------------------------
--- * Functions to Derive Dual Rewrite Rules.
+-- * Functions to Derive Inverse Rewrite Rules.
 
 -- | A variation of the Rewrite type to EIRules.
 data EIRewrite = EIRewrite Int EIRule deriving (Show,Eq)
@@ -101,24 +101,24 @@ seqToDer delta view n (sym:word) =
 
 -- | This function expands elimination rules from symbols to words. The function takes
 -- as input a view of in-scope elimination rules, the current index, and the word to
--- eliminate at this index. Whether duals appear on the left or right is inferred from
+-- eliminate at this index. Whether inverses appear on the left or right is inferred from
 -- the view. If the elimination is possible, then returns a sequence of eliminations,
 -- together with the new index after the sequence of eliminations. Otherwise, nothing is
 -- returned. Note that derivation only fails if a elim rule is missing.
 deriveElim :: EIView -> Int -> MonWord -> Maybe (Int, [EIRewrite])
 deriveElim view n word = seqToDer delta view n seq
-    where lduals = hasLeftDuals view
-          seq    = if lduals then word else reverse word
-          delta  = if lduals then (negate . length . getDual) else (\_ -> (-1))
+    where linvs = hasLeftInvs view
+          seq    = if linvs then word else reverse word
+          delta  = if linvs then (negate . length . getInv) else (\_ -> (-1))
 
 -- | This function expands introduction rules from symbols to words. The function takes
 -- as input a view of in-scope introduction rules, the current index, and the word to
--- introduce at this index. Whether duals appear on the left or right is inferred from
+-- introduce at this index. Whether inverses appear on the left or right is inferred from
 -- the view. If the introduction is possible, then returns a sequence of introductions,
 -- together with the new index after the sequence of introduction. Otherwise, nothing is
 -- returned. Note that derivation only fails if an intro rule is missing.
 deriveIntro :: EIView -> Int -> MonWord -> Maybe (Int, [EIRewrite])
 deriveIntro view n word = seqToDer delta view n seq
-    where lduals = hasLeftDuals view
-          seq    = if lduals then reverse word else word
-          delta  = if lduals then (length . getDual) else (\_ -> 1)
+    where linvs = hasLeftInvs view
+          seq    = if linvs then reverse word else word
+          delta  = if linvs then (length . getInv) else (\_ -> 1)

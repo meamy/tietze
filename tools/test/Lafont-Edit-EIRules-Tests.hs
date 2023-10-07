@@ -135,87 +135,87 @@ test14 = TestCase (assertEqual "toIDir rejects bidirectional relation without nu
                                (toIDir birel_nonull))
 
 -----------------------------------------------------------------------------------------
--- asLeftDual
+-- asLeftInv
 
-test15 = TestCase (assertEqual "asLeftDual handles empty strings (edge case)."
+test15 = TestCase (assertEqual "asLeftInv handles empty strings (edge case)."
                                (Nothing :: Maybe (Symbol, MonWord))
-                               (asLeftDual []))
+                               (asLeftInv []))
 
-test16 = TestCase (assertEqual "asLeftDual handles long string (1/2)."
-                               (Just (sym1, dual) :: Maybe (Symbol, MonWord))
-                               (asLeftDual w1))
-    where dual = [sym1, sym2, sym3]
+test16 = TestCase (assertEqual "asLeftInv handles long string (1/2)."
+                               (Just (sym1, inv) :: Maybe (Symbol, MonWord))
+                               (asLeftInv w1))
+    where inv = [sym1, sym2, sym3]
 
-test17 = TestCase (assertEqual "asLeftDual handles long string (2/2)."
-                               (Just (sym3, dual) :: Maybe (Symbol, MonWord))
-                               (asLeftDual w2))
-    where dual = [sym2, sym4, sym1]
+test17 = TestCase (assertEqual "asLeftInv handles long string (2/2)."
+                               (Just (sym3, inv) :: Maybe (Symbol, MonWord))
+                               (asLeftInv w2))
+    where inv = [sym2, sym4, sym1]
 
-test18 = TestCase (assertEqual "asLeftDual handles short strings."
+test18 = TestCase (assertEqual "asLeftInv handles short strings."
                                (Just (sym4, []) :: Maybe (Symbol, MonWord))
-                               (asLeftDual w3))
+                               (asLeftInv w3))
 
-test19 = TestCase (assertEqual "asLeftDual handles pairings."
+test19 = TestCase (assertEqual "asLeftInv handles pairings."
                                (Just (sym2, [sym4]) :: Maybe (Symbol, MonWord))
-                               (asLeftDual w4))
+                               (asLeftInv w4))
 
 -----------------------------------------------------------------------------------------
--- asRightDual
+-- asRightInv
 
-test20 = TestCase (assertEqual "asRightDual handles empty strings (edge case)."
+test20 = TestCase (assertEqual "asRightInv handles empty strings (edge case)."
                                (Nothing :: Maybe (Symbol, MonWord))
-                               (asRightDual []))
+                               (asRightInv []))
 
-test21 = TestCase (assertEqual "asRightDual handles long string (1/2)."
-                               (Just (sym1, dual) :: Maybe (Symbol, MonWord))
-                               (asRightDual w1))
-    where dual = [sym2, sym3, sym1]
+test21 = TestCase (assertEqual "asRightInv handles long string (1/2)."
+                               (Just (sym1, inv) :: Maybe (Symbol, MonWord))
+                               (asRightInv w1))
+    where inv = [sym2, sym3, sym1]
 
-test22 = TestCase (assertEqual "asRightDual handles long string (2/2)."
-                               (Just (sym2, dual) :: Maybe (Symbol, MonWord))
-                               (asRightDual w2))
-    where dual = [sym4, sym1, sym3]
+test22 = TestCase (assertEqual "asRightInv handles long string (2/2)."
+                               (Just (sym2, inv) :: Maybe (Symbol, MonWord))
+                               (asRightInv w2))
+    where inv = [sym4, sym1, sym3]
 
-test23 = TestCase (assertEqual "asLeftDual handles short strings."
+test23 = TestCase (assertEqual "asLeftInv handles short strings."
                                (Just (sym4, []) :: Maybe (Symbol, MonWord))
-                               (asRightDual w3))
+                               (asRightInv w3))
 
-test24 = TestCase (assertEqual "asLeftDual handles pairings."
+test24 = TestCase (assertEqual "asLeftInv handles pairings."
                                (Just (sym4, [sym2]) :: Maybe (Symbol, MonWord))
-                               (asRightDual w4))
+                               (asRightInv w4))
 
 -----------------------------------------------------------------------------------------
 -- asERule
 
-test25 = TestCase (assertEqual "asERule handles valid elimination with ldual (1/2)."
+test25 = TestCase (assertEqual "asERule handles valid elimination with linv (1/2)."
                                (Just (sym3, erule) :: Maybe (Symbol, EIRule))
                                (asERule True rname rel_rnull))
     where rname = "rel1"
           erule = EIRule rname [sym2, sym4, sym1] L2R True False
 
-test26 = TestCase (assertEqual "asERule handles valid elimination with ldual (2/2)."
+test26 = TestCase (assertEqual "asERule handles valid elimination with linv (2/2)."
                                (Just (sym2, erule) :: Maybe (Symbol, EIRule))
                                (asERule True rname birel_lnull))
     where rname = "rel2"
           erule = EIRule rname [sym4] R2L True False
 
-test27 = TestCase (assertEqual "asERule handles valid elimination with rdual (1/2)."
+test27 = TestCase (assertEqual "asERule handles valid elimination with rinv (1/2)."
                                (Just (sym2, erule) :: Maybe (Symbol, EIRule))
                                (asERule False rname rel_rnull))
     where rname = "rel3"
           erule = EIRule rname [sym4, sym1, sym3] L2R False False
 
-test28 = TestCase (assertEqual "asERule handles valid elimination with rdual (2/2)."
+test28 = TestCase (assertEqual "asERule handles valid elimination with rinv (2/2)."
                                (Just (sym4, erule) :: Maybe (Symbol, EIRule))
                                (asERule False rname birel_lnull))
     where rname = "rel3"
           erule = EIRule rname [sym2] R2L False False
 
-test29 = TestCase (assertEqual "asERule handles invalid elimination with ldual"
+test29 = TestCase (assertEqual "asERule handles invalid elimination with linv"
                                (Nothing :: Maybe (Symbol, EIRule))
                                (asERule True "x" rel_lnull))
 
-test30 = TestCase (assertEqual "asERule handles invalid elimination with rdual"
+test30 = TestCase (assertEqual "asERule handles invalid elimination with rinv"
                                (Nothing :: Maybe (Symbol, EIRule))
                                (asERule False "x" rel_lnull))
 
@@ -228,35 +228,35 @@ test31 = TestCase (assertEqual "asERule handles derived relations."
 -----------------------------------------------------------------------------------------
 -- asIRule
 
-test32 = TestCase (assertEqual "asIRule handles valid elimination with ldual (1/2)."
+test32 = TestCase (assertEqual "asIRule handles valid elimination with linv (1/2)."
                                (Just (sym1, erule) :: Maybe (Symbol, EIRule))
                                (asIRule True rname rel_lnull))
     where rname = "rel1"
           erule = EIRule rname [sym1, sym2, sym3] L2R True False
 
-test33 = TestCase (assertEqual "asIRule handles valid elimination with ldual (2/2)."
+test33 = TestCase (assertEqual "asIRule handles valid elimination with linv (2/2)."
                                (Just (sym2, erule) :: Maybe (Symbol, EIRule))
                                (asIRule True rname birel_lnull))
     where rname = "rel2"
           erule = EIRule rname [sym4] L2R True False
 
-test34 = TestCase (assertEqual "asIRule handles valid elimination with rdual (1/2)."
+test34 = TestCase (assertEqual "asIRule handles valid elimination with rinv (1/2)."
                                (Just (sym1, erule) :: Maybe (Symbol, EIRule))
                                (asIRule False rname rel_lnull))
     where rname = "rel3"
           erule = EIRule rname [sym2, sym3, sym1] L2R False False
 
-test35 = TestCase (assertEqual "asIRule handles valid elimination with rdual (2/2)."
+test35 = TestCase (assertEqual "asIRule handles valid elimination with rinv (2/2)."
                                (Just (sym4, erule) :: Maybe (Symbol, EIRule))
                                (asIRule False rname birel_lnull))
     where rname = "rel3"
           erule = EIRule rname [sym2] L2R False False
 
-test36 = TestCase (assertEqual "asIRule handles invalid elimination with ldual"
+test36 = TestCase (assertEqual "asIRule handles invalid elimination with linv"
                                (Nothing :: Maybe (Symbol, EIRule))
                                (asIRule True "x" rel_rnull))
 
-test37 = TestCase (assertEqual "asIRule handles invalid elimination with rdual"
+test37 = TestCase (assertEqual "asIRule handles invalid elimination with rinv"
                                (Nothing :: Maybe (Symbol, EIRule))
                                (asIRule False "x" rel_rnull))
 
@@ -283,56 +283,56 @@ elookup6 = addRule elookup5 ("r6", birel_rnull)
 elookup7 = addRule elookup6 ("r7", birel_lnull)
 elookup8 = addRule elookup7 ("r8", birel_rnull_d)
 
--- Left duals.
+-- Left invs.
 
-test39 = TestCase (assertEqual "toEDict handles empty dictionaries (left duals)."
+test39 = TestCase (assertEqual "toEDict handles empty dictionaries (left invs)."
                                0
                                (getEICount $ toEDict True elookup0))
 
-test40 = TestCase (assertEqual "toEDict handles non-matching dictionaries (left duals)."
+test40 = TestCase (assertEqual "toEDict handles non-matching dictionaries (left invs)."
                                0
                                (getEICount $ toEDict True elookup3))
 
-test41 = TestCase (assertEqual "toEDict handles matches (left dual, size)."
+test41 = TestCase (assertEqual "toEDict handles matches (left inv, size)."
                                4
                                (getEICount $ toEDict True elookup8))
 
-test42 = TestCase (assertEqual "toEDict handles matches (left dual, @sym3)."
+test42 = TestCase (assertEqual "toEDict handles matches (left inv, @sym3)."
                                [erule]
                                (getEIRule (toEDict True elookup8) sym3))
     where erule = EIRule "r4" [sym2, sym4, sym1] L2R True False
 
-test43 = TestCase (assertEqual "toEDict handles matches (left dual, @sym4)."
+test43 = TestCase (assertEqual "toEDict handles matches (left inv, @sym4)."
                                [erule1, erule2]
                                (getEIRule (toEDict True elookup8) sym4))
     where erule1 = EIRule "r6" [] L2R True False
           erule2 = EIRule "r8" [] L2R True True
 
-test44 = TestCase (assertEqual "toEDict handles matches (left dual, @sym2)."
+test44 = TestCase (assertEqual "toEDict handles matches (left inv, @sym2)."
                                [erule]
                                (getEIRule (toEDict True elookup8) sym2))
     where erule = EIRule "r7" [sym4] R2L True False
 
--- Right duals.
+-- Right invs.
 
-test45 = TestCase (assertEqual "toEDict handles empty dictionaries (right duals)."
+test45 = TestCase (assertEqual "toEDict handles empty dictionaries (right invs)."
                                0
                                (getEICount $ toEDict False elookup0))
 
-test46 = TestCase (assertEqual "toEDict handles non-matching dictionaries (right duals)."
+test46 = TestCase (assertEqual "toEDict handles non-matching dictionaries (right invs)."
                                0
                                (getEICount $ toEDict False elookup3))
 
-test47 = TestCase (assertEqual "toEDict handles matches (right dual, size)."
+test47 = TestCase (assertEqual "toEDict handles matches (right inv, size)."
                                4
                                (getEICount $ toEDict False elookup8))
 
-test48 = TestCase (assertEqual "toEDict handles matches (right dual, @sym2)."
+test48 = TestCase (assertEqual "toEDict handles matches (right inv, @sym2)."
                                [erule]
                                (getEIRule (toEDict False elookup8) sym2))
     where erule = EIRule "r4" [sym4, sym1, sym3] L2R False False
 
-test49 = TestCase (assertEqual "toEDict handles matches (right dual, @sym4)."
+test49 = TestCase (assertEqual "toEDict handles matches (right inv, @sym4)."
                                [erule1, erule2, erule3]
                                (getEIRule (toEDict False elookup8) sym4))
     where erule1 = EIRule "r6" []     L2R False False
@@ -356,48 +356,48 @@ ilookup6 = addRule ilookup5 ("rel6", birel_rnull)
 ilookup7 = addRule ilookup6 ("rel7", birel_lnull)
 ilookup8 = addRule ilookup7 ("rel8", birel_rnull_d)
 
--- Left duals.
+-- Left invs.
 
-test50 = TestCase (assertEqual "toIDict handles empty dictionaries (left duals)."
+test50 = TestCase (assertEqual "toIDict handles empty dictionaries (left invs)."
                                0
                                (getEICount $ toIDict True ilookup0))
 
-test51 = TestCase (assertEqual "toIDict handles non-matching dictionaries (left duals)."
+test51 = TestCase (assertEqual "toIDict handles non-matching dictionaries (left invs)."
                                0
                                (getEICount $ toIDict True ilookup3))
 
-test52 = TestCase (assertEqual "toIDict handles matches (left dual, @sym1)."
+test52 = TestCase (assertEqual "toIDict handles matches (left inv, @sym1)."
                                [erule]
                                (getEIRule (toIDict True ilookup8) sym1))
     where erule = EIRule "rel4" [sym1, sym2, sym3] L2R True False
 
-test53 = TestCase (assertEqual "toIDict handles matches (left dual, @sym4)."
+test53 = TestCase (assertEqual "toIDict handles matches (left inv, @sym4)."
                                [erule1, erule2]
                                (getEIRule (toIDict True ilookup8) sym4))
     where erule1 = EIRule "rel6" [] R2L True False
           erule2 = EIRule "rel8" [] R2L True True
 
-test54 = TestCase (assertEqual "toIDict handles matches (left dual, @sym2)."
+test54 = TestCase (assertEqual "toIDict handles matches (left inv, @sym2)."
                                [erule]
                                (getEIRule (toIDict True ilookup8) sym2))
     where erule = EIRule "rel7" [sym4] L2R True False
 
--- Right duals.
+-- Right invs.
 
-test55 = TestCase (assertEqual "toIDict handles empty dictionaries (right duals)."
+test55 = TestCase (assertEqual "toIDict handles empty dictionaries (right invs)."
                                0
                                (getEICount $ toIDict False ilookup0))
 
-test56 = TestCase (assertEqual "toIDict handles non-matching dictionaries (right duals)."
+test56 = TestCase (assertEqual "toIDict handles non-matching dictionaries (right invs)."
                                0
                                (getEICount $ toIDict False ilookup3))
 
-test57 = TestCase (assertEqual "toIDict handles matches (right dual, @sym1)."
+test57 = TestCase (assertEqual "toIDict handles matches (right inv, @sym1)."
                                [erule]
                                (getEIRule (toIDict False ilookup8) sym1))
     where erule = EIRule "rel4" [sym2, sym3, sym1] L2R False False
 
-test58 = TestCase (assertEqual "toIDict handles matches (right dual, @sym4)."
+test58 = TestCase (assertEqual "toIDict handles matches (right inv, @sym4)."
                                [erule1, erule2, erule3]
                                (getEIRule (toIDict False elookup8) sym4))
     where erule1 = EIRule "r6" []     R2L False False
@@ -407,57 +407,57 @@ test58 = TestCase (assertEqual "toIDict handles matches (right dual, @sym4)."
 -----------------------------------------------------------------------------------------
 -- queryEIRule
 
-rule_selfdual_x = RewriteRule { lhs         = []
-                              , rhs         = [sym1, sym1]
-                              , equational  = False
-                              , derivedFrom = Nothing
-                              }
+rule_selfinv_x = RewriteRule { lhs         = []
+                             , rhs         = [sym1, sym1]
+                             , equational  = False
+                             , derivedFrom = Nothing
+                             }
 
-rule_duallen3_x = RewriteRule { lhs         = []
-                              , rhs         = [sym2, sym3, sym4, sym1]
-                              , equational  = False
-                              , derivedFrom = Nothing
-                              }
+rule_invlen3_x = RewriteRule { lhs         = []
+                             , rhs         = [sym2, sym3, sym4, sym1]
+                             , equational  = False
+                             , derivedFrom = Nothing
+                             }
 
-rule_selfdual_y = RewriteRule { lhs         = []
-                              , rhs         = [sym2, sym2]
-                              , equational  = False
-                              , derivedFrom = Nothing
-                              }
+rule_selfinv_y = RewriteRule { lhs         = []
+                             , rhs         = [sym2, sym2]
+                             , equational  = False
+                             , derivedFrom = Nothing
+                             }
 
-rule_duallen3_y = RewriteRule { lhs         = []
-                              , rhs         = [sym3, sym4, sym1, sym2]
-                              , equational  = False
-                              , derivedFrom = Nothing
-                              }
+rule_invlen3_y = RewriteRule { lhs         = []
+                             , rhs         = [sym3, sym4, sym1, sym2]
+                             , equational  = False
+                             , derivedFrom = Nothing
+                             }
 
-rule_duallen2_y = RewriteRule { lhs         = []
-                              , rhs         = [sym3, sym4, sym1]
-                              , equational  = False
-                              , derivedFrom = Nothing
-                              }
+rule_invlen2_y = RewriteRule { lhs         = []
+                             , rhs         = [sym3, sym4, sym1]
+                             , equational  = False
+                             , derivedFrom = Nothing
+                             }
 
-rule_selfdual_z = RewriteRule { lhs         = []
-                              , rhs         = [sym3, sym3]
-                              , equational  = False
-                              , derivedFrom = Nothing
-                              }
+rule_selfinv_z = RewriteRule { lhs         = []
+                             , rhs         = [sym3, sym3]
+                             , equational  = False
+                             , derivedFrom = Nothing
+                             }
 
-rule_duallen3_w = RewriteRule { lhs         = []
-                              , rhs         = [sym1, sym2, sym3, sym4]
-                              , equational  = False
-                              , derivedFrom = Nothing
-                              }
+rule_invlen3_w = RewriteRule { lhs         = []
+                             , rhs         = [sym1, sym2, sym3, sym4]
+                             , equational  = False
+                             , derivedFrom = Nothing
+                             }
 
 qrdict0 = empty
-qrdict1 = addRule qrdict0 ("rel1", rule_selfdual_x)
-qrdict2 = addRule qrdict1 ("rel2", rule_duallen3_x)
-qrdict3 = addRule qrdict2 ("rel3", rule_selfdual_y)
-qrdict4 = addRule qrdict3 ("rel4", rule_duallen3_y)
-qrdict5 = addRule qrdict4 ("rel5", rule_duallen2_y)
-qrdict6 = addRule qrdict5 ("rel6", rule_selfdual_z)
-qrdict7 = addRule qrdict6 ("rel7", rule_duallen3_w)
-qrdict8 = addRule qrdict7 ("rel8", rule_selfdual_z)
+qrdict1 = addRule qrdict0 ("rel1", rule_selfinv_x)
+qrdict2 = addRule qrdict1 ("rel2", rule_invlen3_x)
+qrdict3 = addRule qrdict2 ("rel3", rule_selfinv_y)
+qrdict4 = addRule qrdict3 ("rel4", rule_invlen3_y)
+qrdict5 = addRule qrdict4 ("rel5", rule_invlen2_y)
+qrdict6 = addRule qrdict5 ("rel6", rule_selfinv_z)
+qrdict7 = addRule qrdict6 ("rel7", rule_invlen3_w)
+qrdict8 = addRule qrdict7 ("rel8", rule_selfinv_z)
 
 querydict0 = toIDict True qrdict7
 querydict1 = toIDict True qrdict8
@@ -489,60 +489,60 @@ test64 = TestCase (assertEqual "queryEIRule with policy NoDefault and len 3."
                                (Nothing :: Maybe EIRule)
                                (queryEIRule querydict0 sym2 NoDefault))
 
-test65 = TestCase (assertEqual "queryEIRule with policy SelfDual and no rules."
+test65 = TestCase (assertEqual "queryEIRule with policy SelfInv and no rules."
                                (Nothing :: Maybe EIRule)
-                               (queryEIRule querydict0 sym5 SelfDual))
+                               (queryEIRule querydict0 sym5 SelfInv))
 
-test66 = TestCase (assertEqual "queryEIRule with policy SelfDual and not self-dual."
+test66 = TestCase (assertEqual "queryEIRule with policy SelfInv and not self-inv."
                                (Nothing :: Maybe EIRule)
-                               (queryEIRule querydict0 sym4 SelfDual))
+                               (queryEIRule querydict0 sym4 SelfInv))
 
-test67 = TestCase (assertEqual "queryEIRule with policy SelfDual and one self-dual."
+test67 = TestCase (assertEqual "queryEIRule with policy SelfInv and one self-inv."
                                (Just irule :: Maybe EIRule)
-                               (queryEIRule querydict0 sym1 SelfDual))
+                               (queryEIRule querydict0 sym1 SelfInv))
     where irule = EIRule "rel1" [sym1] L2R True False
 
-test68 = TestCase (assertEqual "queryEIRule with policy SelfDual and two self-duals."
+test68 = TestCase (assertEqual "queryEIRule with policy SelfInv and two self-invs."
                                (Just irule :: Maybe EIRule)
-                               (queryEIRule querydict1 sym3 SelfDual))
+                               (queryEIRule querydict1 sym3 SelfInv))
     where irule = EIRule "rel6" [sym3] L2R True False
 
-test69 = TestCase (assertEqual "queryEIRule with policy MinimalDual and no rules."
+test69 = TestCase (assertEqual "queryEIRule with policy MinimalInv and no rules."
                                (Nothing :: Maybe EIRule)
-                               (queryEIRule querydict1 sym5 MinimalDual))
+                               (queryEIRule querydict1 sym5 MinimalInv))
 
-test70 = TestCase (assertEqual "queryEIRule with policy MinimalDual and single rule."
+test70 = TestCase (assertEqual "queryEIRule with policy MinimalInv and single rule."
                                (Just irule :: Maybe EIRule)
-                               (queryEIRule querydict1 sym4 MinimalDual))
+                               (queryEIRule querydict1 sym4 MinimalInv))
     where irule = EIRule "rel7" [sym1, sym2, sym3] L2R True False
 
-test71 = TestCase (assertEqual "queryEIRule with policy MinimalDual and unique minima."
+test71 = TestCase (assertEqual "queryEIRule with policy MinimalInv and unique minima."
                                (Just irule :: Maybe EIRule)
-                               (queryEIRule querydict1 sym2 MinimalDual))
+                               (queryEIRule querydict1 sym2 MinimalInv))
     where irule = EIRule "rel3" [sym2] L2R True False
 
-test72 = TestCase (assertEqual "queryEIRule with policy MinimalDual and many minima."
+test72 = TestCase (assertEqual "queryEIRule with policy MinimalInv and many minima."
                                (Just irule :: Maybe EIRule)
-                               (queryEIRule querydict1 sym3 MinimalDual))
+                               (queryEIRule querydict1 sym3 MinimalInv))
     where irule = EIRule "rel6" [sym3] L2R True False
 
-test73 = TestCase (assertEqual "queryEIRule with policy MinimalDual and no rules."
+test73 = TestCase (assertEqual "queryEIRule with policy MinimalInv and no rules."
                                (Nothing :: Maybe EIRule)
-                               (queryEIRule querydict1 sym5 ShortestDual))
+                               (queryEIRule querydict1 sym5 ShortestInv))
 
-test74 = TestCase (assertEqual "queryEIRule with policy MinimalDual and single rule."
+test74 = TestCase (assertEqual "queryEIRule with policy MinimalInv and single rule."
                                (Just irule :: Maybe EIRule)
-                               (queryEIRule querydict1 sym4 ShortestDual))
+                               (queryEIRule querydict1 sym4 ShortestInv))
     where irule = EIRule "rel7" [sym1, sym2, sym3] L2R True False
 
-test75 = TestCase (assertEqual "queryEIRule with policy MinimalDual and unique minima."
+test75 = TestCase (assertEqual "queryEIRule with policy MinimalInv and unique minima."
                                (Just irule :: Maybe EIRule)
-                               (queryEIRule querydict1 sym2 ShortestDual))
+                               (queryEIRule querydict1 sym2 ShortestInv))
     where irule = EIRule "rel3" [sym2] L2R True False
 
-test76 = TestCase (assertEqual "queryEIRule with policy MinimalDual and many minima."
+test76 = TestCase (assertEqual "queryEIRule with policy MinimalInv and many minima."
                                (Nothing :: Maybe EIRule)
-                               (queryEIRule querydict1 sym3 ShortestDual))
+                               (queryEIRule querydict1 sym3 ShortestInv))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -561,29 +561,29 @@ tests = hUnitTestToTests $ TestList [TestLabel "Internal_toEDir_triv" test1,
                                      TestLabel "Internal_toIDir_l2r_bidir" test12,
                                      TestLabel "Internal_toIDir_r2l_bidir" test13,
                                      TestLabel "Internal_toIDir_nonull_bidir" test14,
-                                     TestLabel "Internal_asLeftDual_epsilon" test15,
-                                     TestLabel "Internal_asLeftDual_len4_a" test16,
-                                     TestLabel "Internal_asLeftDual_len4_b" test17,
-                                     TestLabel "Internal_asLeftDual_len1" test18,
-                                     TestLabel "Internal_asLeftDual_len2" test19,
-                                     TestLabel "Internal_asRightDual_epsilon" test20,
-                                     TestLabel "Internal_asRightDual_len4_a" test21,
-                                     TestLabel "Internal_asRightDual_len4_b" test22,
-                                     TestLabel "Internal_asRightDual_len1" test23,
-                                     TestLabel "Internal_asRightDual_len2" test24,
-                                     TestLabel "Internal_asERule_Valid_LDual_1" test25,
-                                     TestLabel "Internal_asERule_Valid_LDual_2" test26,
-                                     TestLabel "Internal_asERule_Valid_RDual_1" test27,
-                                     TestLabel "Internal_asERule_Valid_RDual_2" test28,
-                                     TestLabel "Internal_asERule_Invalid_LDual" test29,
-                                     TestLabel "Internal_asERule_Invalid_RDual" test30,
+                                     TestLabel "Internal_asLeftInv_epsilon" test15,
+                                     TestLabel "Internal_asLeftInv_len4_a" test16,
+                                     TestLabel "Internal_asLeftInv_len4_b" test17,
+                                     TestLabel "Internal_asLeftInv_len1" test18,
+                                     TestLabel "Internal_asLeftInv_len2" test19,
+                                     TestLabel "Internal_asRightInv_epsilon" test20,
+                                     TestLabel "Internal_asRightInv_len4_a" test21,
+                                     TestLabel "Internal_asRightInv_len4_b" test22,
+                                     TestLabel "Internal_asRightInv_len1" test23,
+                                     TestLabel "Internal_asRightInv_len2" test24,
+                                     TestLabel "Internal_asERule_Valid_LInv_1" test25,
+                                     TestLabel "Internal_asERule_Valid_LInv_2" test26,
+                                     TestLabel "Internal_asERule_Valid_RInv_1" test27,
+                                     TestLabel "Internal_asERule_Valid_RInv_2" test28,
+                                     TestLabel "Internal_asERule_Invalid_LInv" test29,
+                                     TestLabel "Internal_asERule_Invalid_RInv" test30,
                                      TestLabel "Internal_asERule_Derived" test31,
-                                     TestLabel "Internal_asIRule_Valid_LDual_1" test32,
-                                     TestLabel "Internal_asIRule_Valid_LDual_2" test33,
-                                     TestLabel "Internal_asIRule_Valid_RDual_1" test34,
-                                     TestLabel "Internal_asIRule_Valid_RDual_2" test35,
-                                     TestLabel "Internal_asIRule_Invalid_LDual" test36,
-                                     TestLabel "Internal_asIRule_Invalid_RDual" test37,
+                                     TestLabel "Internal_asIRule_Valid_LInv_1" test32,
+                                     TestLabel "Internal_asIRule_Valid_LInv_2" test33,
+                                     TestLabel "Internal_asIRule_Valid_RInv_1" test34,
+                                     TestLabel "Internal_asIRule_Valid_RInv_2" test35,
+                                     TestLabel "Internal_asIRule_Invalid_LInv" test36,
+                                     TestLabel "Internal_asIRule_Invalid_RInv" test37,
                                      TestLabel "Internal_asIRule_Derived" test38,
                                      TestLabel "toEDict_Empty_Left" test39,
                                      TestLabel "toEDict_NoMatch_Left" test40,
@@ -611,10 +611,10 @@ tests = hUnitTestToTests $ TestList [TestLabel "Internal_toEDir_triv" test1,
                                      TestLabel "queryEIRule_NoDef_Len0" test62,
                                      TestLabel "queryEIRule_NoDef_Len1" test63,
                                      TestLabel "queryEIRule_NoDef_Len3" test64,
-                                     TestLabel "queryEIRule_SelfDual_Len0" test65,
-                                     TestLabel "queryEIRule_SelfDual_NoMatch" test66,
-                                     TestLabel "queryEIRule_SelfDual_1Match" test67,
-                                     TestLabel "queryEIRule_SelfDual_2Match" test68,
+                                     TestLabel "queryEIRule_SelfInv_Len0" test65,
+                                     TestLabel "queryEIRule_SelfInv_NoMatch" test66,
+                                     TestLabel "queryEIRule_SelfInv_1Match" test67,
+                                     TestLabel "queryEIRule_SelfInv_2Match" test68,
                                      TestLabel "queryEIRule_Minuma_Len0" test69,
                                      TestLabel "queryEIRule_Minuma_Len1" test70,
                                      TestLabel "queryEIRule_Minuma_Unique" test71,

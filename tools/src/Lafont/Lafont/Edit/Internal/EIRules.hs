@@ -3,11 +3,11 @@
 module Lafont.Edit.Internal.EIRules (
     EIRule ( .. ),
     EIRuleFn,
-    IsLeftDual,
+    IsLeftInv,
     toEDir,
     toIDir,
-    asLeftDual,
-    asRightDual,
+    asLeftInv,
+    asRightInv,
     asERule,
     asIRule
 ) where
@@ -51,16 +51,16 @@ toIDir rule
 
 -- | Consumes a monoidal word. If the word is not empty, then returns the word split into
 -- its rightmost symbol and the remaining string. Otherwise, nothing is returned.
-asLeftDual :: MonWord -> Maybe (Symbol, MonWord)
-asLeftDual []     = Nothing
-asLeftDual [symb] = Just (symb, [])
-asLeftDual word   = Just (last word, init word)
+asLeftInv :: MonWord -> Maybe (Symbol, MonWord)
+asLeftInv []     = Nothing
+asLeftInv [symb] = Just (symb, [])
+asLeftInv word   = Just (last word, init word)
 
 -- | Consumes a monoidal word. If the word is not empty, then returns the word split into
 -- its leftmost symbol and the remaining string. Otherwise, nothing is returned.
-asRightDual :: MonWord -> Maybe (Symbol, MonWord)
-asRightDual []          = Nothing
-asRightDual (symb:rest) = Just (symb, rest)
+asRightInv :: MonWord -> Maybe (Symbol, MonWord)
+asRightInv []          = Nothing
+asRightInv (symb:rest) = Just (symb, rest)
 
 -----------------------------------------------------------------------------------------
 -- * Representation of an elimination or introduction (co-elimination) rule.
@@ -69,34 +69,34 @@ asRightDual (symb:rest) = Just (symb, rest)
 -- if the apply keyword is required.
 type IsDerived = Bool
 
--- | Indicates if the dual string should appear on the left.
-type IsLeftDual = Bool
+-- | Indicates if the inverse string should appear on the left.
+type IsLeftInv = Bool
 
 -- | Provides an elimination (or introduction) interface to a rewrite rule. The first
--- argument is the name of the relation. The second argument is the dual object involved
--- in the relation (any additional symbols introduced or eliminated in the process. The
+-- argument is the name of the relation. The second argument is the inverse word involved
+-- in the relation (any additional symbols introduced or eliminated in the process). The
 -- fourth argument is the direction the rule must be applied in to act as intended. The
 -- fourth argument indicates is the rule is derive d and therefore must be applied.
-data EIRule = EIRule String MonWord RuleDir IsLeftDual IsDerived deriving (Show,Eq)
+data EIRule = EIRule String MonWord RuleDir IsLeftInv IsDerived deriving (Show,Eq)
 
 -----------------------------------------------------------------------------------------
 -- * Helper methods to extract elimination/introduction rules.
 
--- | Consumes a flag that indicates whether the dualizing object in an elimination rule
+-- | Consumes a flag that indicates whether the inverse word in an elimination rule
 -- should appear on the left or right. Returns a function f that consumes both the name
 -- of a rewrite rule, and the rule itself. If the rule is of the correct EI type, then f
 -- returns the symbol to eliminate/introduce, and the details of the
 -- elimination/introduction. Otherwise, nothing is returned.
-type EIRuleFn = IsLeftDual -> String -> RewriteRule -> Maybe (Symbol, EIRule)
+type EIRuleFn = IsLeftInv -> String -> RewriteRule -> Maybe (Symbol, EIRule)
 
 -- | Implementation details for asERule and asIRule. The EIDirFn is the function used to
 -- determine the direction (and consequently the type) of the relation.
 asEIRule :: EIDirFn -> EIRuleFn
-asEIRule f isLeftDual relname rel =
+asEIRule f isLeftInv relname rel =
     branchJust (f rel) $ \(dir, res) ->
-        branchJust (asDual res) $ \(mor, dual) ->
-            Just (mor, EIRule relname dual dir isLeftDual isDerived)
-    where asDual    = if isLeftDual then asLeftDual else asRightDual
+        branchJust (asInv res) $ \(mor, inv) ->
+            Just (mor, EIRule relname inv dir isLeftInv isDerived)
+    where asInv     = if isLeftInv then asLeftInv else asRightInv
           isDerived = isDerivedRule rel
 
 -- | Implements EIRuleFn for elimination rules.
