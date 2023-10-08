@@ -57,4 +57,4 @@ checkGenerators hdl fname = do
     then do
         content <- readNamedFile fname
         hPutStr hdl $ processGeneratorLines content
-    else putStr ("File does not exist: " ++ fname ++ "\n")
+    else putStrLn ("File does not exist: " ++ fname)

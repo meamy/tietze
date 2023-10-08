@@ -53,7 +53,7 @@ propRelErr str substr (Right err) =
         RuleMissingRHS           -> Right RuleMissingRHS
         (UnknownGenName name)    -> Right (UnknownGenName name)
         (DuplicateRuleName name) -> Right (DuplicateRuleName name)
-    where update pos = relToAbsErrPos str substr pos
+    where update = relToAbsErrPos str substr
 
 -----------------------------------------------------------------------------------------
 -- * Functions to Validate Monoidal Words.

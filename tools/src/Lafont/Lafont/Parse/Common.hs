@@ -83,7 +83,7 @@ propCommonErr str substr err =
         UnexpectedEOF          -> UnexpectedEOF
         ExpectedEOF            -> ExpectedEOF
         UnknownParseError      -> UnknownParseError
-    where update pos = relToAbsErrPos str substr pos
+    where update = relToAbsErrPos str substr
 
 -----------------------------------------------------------------------------------------
 -- * Character Predicate (Not Define in Data.Char).

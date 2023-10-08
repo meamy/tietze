@@ -71,7 +71,7 @@ propDerErr str substr (Right err) =
         (UnknownDerivedRule name) -> Right (UnknownDerivedRule name)
         MissingInitialWord        -> Right MissingInitialWord
         MissingFinalWord          -> Right MissingFinalWord
-    where update pos = relToAbsErrPos str substr pos
+    where update = relToAbsErrPos str substr
 
 -----------------------------------------------------------------------------------------
 -- * Line Parsing Helper Methods.

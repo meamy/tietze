@@ -34,5 +34,5 @@ checkRelations :: Handle -> String -> String -> IO ()
 checkRelations hdl genFname relFname = do
     res <- doFilesExist [genFname, relFname]
     case res of
-        Just name -> putStr ("File does not exist: " ++ name ++ "\n")
+        Just name -> putStrLn ("File does not exist: " ++ name)
         Nothing   -> checkRelationsImpl hdl genFname relFname

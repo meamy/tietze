@@ -109,7 +109,7 @@ deriveElim :: EIView -> Int -> MonWord -> Maybe (Int, [EIRewrite])
 deriveElim view n word = seqToDer delta view n seq
     where linvs = hasLeftInvs view
           seq    = if linvs then word else reverse word
-          delta  = if linvs then (negate . length . getInv) else (\_ -> (-1))
+          delta  = if linvs then negate . length . getInv else const (- 1)
 
 -- | This function expands introduction rules from symbols to words. The function takes
 -- as input a view of in-scope introduction rules, the current index, and the word to
@@ -121,4 +121,4 @@ deriveIntro :: EIView -> Int -> MonWord -> Maybe (Int, [EIRewrite])
 deriveIntro view n word = seqToDer delta view n seq
     where linvs = hasLeftInvs view
           seq    = if linvs then reverse word else word
-          delta  = if linvs then (length . getInv) else (\_ -> 1)
+          delta  = if linvs then length . getInv else const 1

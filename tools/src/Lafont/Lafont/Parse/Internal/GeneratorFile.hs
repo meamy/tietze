@@ -50,7 +50,7 @@ propGenErr str substr (Right err) =
         InvalidGenName          -> Right InvalidGenName
         (InvalidGenSem pos msg) -> Right (InvalidGenSem (update pos) msg)
         DuplicateGenName name   -> Right (DuplicateGenName name)
-    where update pos = relToAbsErrPos str substr pos
+    where update = relToAbsErrPos str substr
 
 -----------------------------------------------------------------------------------------
 -- * Line Parsing Methods.

@@ -76,7 +76,7 @@ addGen (GenDict dict) (id, semv) = GenDict (Map.insert id semv dict)
 -- | Folds f over the (name, semv) entries of dict, and returns the accumulated value.
 foldGens :: ((String, Maybe a) -> b -> b) -> b -> GenDict a -> b
 foldGens f init (GenDict dict) = Map.foldrWithKey adjust init dict
-    where adjust key semv acc = f (key, semv) acc
+    where adjust key semv = f (key, semv)
 
 -- | Returns the alphabet described by the generators.
 toAlphabet :: GenDict a -> [String]

@@ -33,7 +33,7 @@ addRule (RuleDict dict) (id, rule) = RuleDict (Map.insert id rule dict)
 -- | Folds f over the (name, rule) entries of dict, and returns the accumulated value.
 foldRules :: ((String, RewriteRule) -> b -> b) -> b -> RuleDict -> b
 foldRules f v (RuleDict dict) = Map.foldrWithKey adjust v dict
-    where adjust key semv acc = f (key, semv) acc
+    where adjust key semv = f (key, semv)
 
 -- | Returns a rule by its name. If the rule does not exist, then nothing is returned. To
 -- check if a generator is recorded, then use (hasRule dict id).
