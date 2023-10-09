@@ -1,5 +1,3 @@
--- To run: [lafont_path] generators.gens relations.rels simple.derivs
---
 -- A proof in Lafont consists of one or more derivations.
 -- Multiple derivations can appear in a single file.
 -- For now we will focus on a single derivation.

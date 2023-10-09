@@ -1,0 +1,6 @@
+# A valid derivation.
+generators: generators.gens
+relations: relations.rels
+derivations:
+- simple.derivs
+obligations: []

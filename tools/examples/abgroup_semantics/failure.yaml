@@ -1,0 +1,5 @@
+# Semantically invalid relations.
+generators: generators.gens
+relations: bad.rels
+derivations: []
+obligations: []

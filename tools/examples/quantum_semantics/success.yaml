@@ -1,0 +1,5 @@
+# Semantically valid relations.
+generators: generators.gens
+relations: relations.rels
+derivations: []
+obligations: []

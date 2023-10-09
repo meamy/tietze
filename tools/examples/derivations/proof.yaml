@@ -1,0 +1,56 @@
+# Configurations for E8 proof.
+generators: generators.gens
+relations: relations.rels
+derivations:
+  # Structural Lemmas
+- aux/lemmas.derivs
+- aux/orders.derivs
+- aux/symmetry.derivs
+- aux/bifunct.derivs
+- aux/spatial.derivs
+- aux/misc.derivs
+  # S1 Obligations
+- s1s1.derivs
+- s1s2.derivs
+- s1s3.derivs
+- s1s4.derivs
+- s1s5.derivs
+- s1s6.derivs
+- s1s7.derivs
+- s1s8.derivs
+  # S2 Obligations
+- s2s2.derivs
+- s2s3.derivs
+- s2s4.derivs
+- s2s5.derivs
+- s2s6.derivs
+- s2s7.derivs
+- s2s8.derivs
+  # S3 Obligations
+- s3s3.derivs
+- s3s4.derivs
+- s3s5.derivs
+- s3s6.derivs
+- s3s7.derivs
+- s3s8.derivs
+  # S4 Obligations
+- s4s4.derivs
+- s4s5.derivs
+- s4s6.derivs
+- s4s7.derivs
+- s4s8.derivs
+  # S5 Obligations
+- s5s5.derivs
+- s5s6.derivs
+- s5s7.derivs
+- s5s8.derivs
+  # S6 Obligations
+- s6s6.derivs
+- s6s7.derivs
+- s6s8.derivs
+  # S7 Obligations
+- s7s7.derivs
+- s7s8.derivs
+  # S8 Obligations
+- s8s8.derivs
+obligations: []

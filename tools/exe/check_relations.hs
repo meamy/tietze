@@ -6,11 +6,22 @@ module Main where
 import System.Environment
 import System.IO
 import LafontExe.CheckRelations
+import LafontExe.IO.Configs
 
--- | Parses and validates arguments before calling checkFiles.
+-- | Helper method to pass configurations to checkRelations.
+runTool :: Config -> IO()
+runTool conf = checkRelations stdout gens rels
+    where gens = generators conf
+          rels = relations conf
+
+-- | Parses and validates arguments before calling checkRelations.
 main = do
     pname <- getProgName
     args <- getArgs
-    if (not ((length args) == 2))
-    then putStr ("usage: " ++ pname ++ " gen_file rel_file\n")
-    else checkRelations stdout (args !! 0) (args !! 1)
+    if length args /= 1
+    then putStrLn $ "usage: " ++ pname ++ " conf_file"
+    else do
+        res <- parseConfigYamlImpl $ head args
+        case res of
+            Left err   -> putStrLn $ printConfigErr err
+            Right conf -> runTool conf

@@ -10,10 +10,10 @@ import LafontExe.IO.Configs
 main = do
     pname <- getProgName
     args <- getArgs
-    if (not ((length args) == 1))
-    then putStrLn ("usage: " ++ pname ++ " conf_file")
+    if length args /= 1
+    then putStrLn $ "usage: " ++ pname ++ " conf_file"
     else do
-        res <- parseConfigYamlImpl $ args !! 0
+        res <- parseConfigYamlImpl $ head args
         case res of
             Left err   -> putStrLn $ printConfigErr err
             Right conf -> do

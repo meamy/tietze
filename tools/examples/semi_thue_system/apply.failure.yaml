@@ -1,0 +1,6 @@
+# Group derivations.
+generators: generators.gens
+relations: relations.rels
+derivations:
+- bad.apply.derivs
+obligations: []

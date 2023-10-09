@@ -1,5 +1,3 @@
--- To run: [path_to_lafont] generators.gens relations.rels error.derivs
---
 -- A tool that always prints "success" is no good at all!
 -- Let's see what happens when Lafont is presented with an invalid proof.
 -- We take the proof from simple.derivs, but offset a single step.
