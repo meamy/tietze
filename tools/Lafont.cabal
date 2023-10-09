@@ -72,6 +72,7 @@ library LafontExe
   exposed-modules:     LafontExe.CheckGenerators
                        LafontExe.CheckRelations
                        LafontExe.ValidateDerivations
+                       LafontExe.IO.Configs
                        LafontExe.IO.Files
                        LafontExe.Logic.Relations
                        LafontExe.Logging.ErrorFormat
@@ -79,6 +80,7 @@ library LafontExe
                        LafontExe.Logging.Primitive
   build-depends:       base,
                        directory,
+                       yaml,
                        Lafont
   hs-source-dirs:      src/LafontExe
   default-language:    Haskell2010
@@ -102,6 +104,10 @@ executable check_relations
 executable validate_derivations
   import:              exe-with-file-io-props
   main-is:             validate_derivations.hs
+
+executable yaml_test
+  import:              exe-with-file-io-props
+  main-is:             yaml_test.hs
 
 -----------------------------------------------------------------------------------------
 -- Unit tests.
