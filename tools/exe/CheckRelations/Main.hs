@@ -3,6 +3,7 @@
 
 module Main where
 
+import CheckRelations.CmdLn
 import System.Environment
 import System.IO
 import LafontExe.CheckRelations
@@ -16,12 +17,8 @@ runTool conf = checkRelations stdout gens rels
 
 -- | Parses and validates arguments before calling checkRelations.
 main = do
-    pname <- getProgName
-    args <- getArgs
-    if length args /= 1
-    then putStrLn $ "usage: " ++ pname ++ " conf_file"
-    else do
-        res <- parseConfigYamlImpl $ head args
-        case res of
-            Left err   -> putStrLn $ printConfigErr err
-            Right conf -> runTool conf
+    args <- getCmdArgs
+    res  <- parseConfigYamlImpl $ configs args
+    case res of
+        Left err   -> putStrLn $ printConfigErr err
+        Right conf -> runTool conf

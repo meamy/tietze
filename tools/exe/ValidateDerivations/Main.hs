@@ -2,6 +2,7 @@
 
 module Main where
 
+import ValidateDerivations.CmdLn
 import System.IO
 import System.Environment
 import LafontExe.IO.Configs
@@ -19,12 +20,8 @@ runTool conf =
 
 -- | Parses and validates arguments before calling validateDerivations.
 main = do
-    pname <- getProgName
-    args <- getArgs
-    if length args \= 1
-    then putStrLn $ "usage: " ++ pname ++ " conf_file"
-    else do
-        res <- parseConfigYamlImpl $ head args
-        case res of
-            Left err   -> putStrLn $ printConfigErr err
-            Right conf -> runTool conf
+    args <- getCmdArgs
+    res  <- parseConfigYamlImpl $ configs args
+    case res of
+        Left err   -> putStrLn $ printConfigErr err
+        Right conf -> runTool conf

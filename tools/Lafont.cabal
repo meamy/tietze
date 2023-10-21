@@ -72,6 +72,8 @@ library LafontExe
   exposed-modules:     LafontExe.CheckGenerators
                        LafontExe.CheckRelations
                        LafontExe.ValidateDerivations
+                       LafontExe.IO.CmdLnFlags
+                       LafontExe.IO.CmdLnParser
                        LafontExe.IO.Configs
                        LafontExe.IO.Files
                        LafontExe.Logic.Relations
@@ -79,6 +81,7 @@ library LafontExe
                        LafontExe.Logging.LineBased
                        LafontExe.Logging.Primitive
   build-depends:       base,
+                       cmdargs,
                        directory,
                        yaml,
                        Lafont
@@ -95,19 +98,23 @@ common exe-with-file-io-props
 
 executable check_generators
   import:              exe-with-file-io-props
-  main-is:             check_generators.hs
+  main-is:             CheckGenerators/Main.hs
+  other-modules:       CheckGenerators.CmdLn
 
 executable check_relations
   import:              exe-with-file-io-props
-  main-is:             check_relations.hs
+  main-is:             CheckRelations/Main.hs
+  other-modules:       CheckRelations.CmdLn
 
 executable validate_derivations
   import:              exe-with-file-io-props
-  main-is:             validate_derivations.hs
+  main-is:             ValidateDerivations/Main.hs
+  other-modules:       ValidateDerivations.CmdLn
 
 executable yaml_test
   import:              exe-with-file-io-props
-  main-is:             yaml_test.hs
+  main-is:             YamlTest/Main.hs
+  other-modules:       YamlTest.CmdLn
 
 -----------------------------------------------------------------------------------------
 -- Unit tests.
