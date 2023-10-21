@@ -23,9 +23,8 @@ data RewriteResult = RewriteResult { output  :: MonWord
 -- | Consumes a monoid word and a list of rewrites. Returned the string obtained by
 -- performing all rewrites in order, or failure data.
 simplify :: MonWord -> [Rewrite] -> RewriteResult
-simplify str []    = RewriteResult str 0 True
-simplify str rules = if checkRewrite str rule
-                     then let res = simplify (applyRewrite str rule) (tail rules)
-                          in RewriteResult (output res) (step res + 1) (success res)
-                     else RewriteResult str 0 False
-    where rule = head rules
+simplify str []     = RewriteResult str 0 True
+simplify str (r:rs) = if checkRewrite str r
+                      then let res = simplify (applyRewrite str r) rs
+                           in RewriteResult (output res) (step res + 1) (success res)
+                      else RewriteResult str 0 False

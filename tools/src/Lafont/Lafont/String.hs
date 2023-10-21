@@ -17,13 +17,11 @@ import           Lafont.Maybe
 -- | Consumes two strings (sub and str). If sub is a substring of str, then returns the
 -- first index at which sub appears. Otherwise, returns nothing.
 isSubstrAt :: String -> String -> Maybe Int
-isSubstrAt []  _  = Just 0
-isSubstrAt _   [] = Nothing
-isSubstrAt sub str
-    | null sub             = Just 0
-    | null str             = Nothing
-    | sub `isPrefixOf` str = Just 0
-    | otherwise            = maybeApply (sub `isSubstrAt` tail str) (+ 1)
+isSubstrAt []  _           = Just 0
+isSubstrAt _   []          = Nothing
+isSubstrAt sub str@(_:rst) = if sub `isPrefixOf` str
+                             then Just 0
+                             else maybeApply (sub `isSubstrAt` rst) (+ 1)
 
 -- | Consumes two strings (sub and str). Returns true if and only if sub is a substring
 -- of str.

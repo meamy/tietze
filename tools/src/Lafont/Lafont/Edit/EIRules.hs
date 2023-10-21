@@ -133,16 +133,18 @@ findMinima findUnique rules =
         then Just rule
         else Nothing
 
+-- | Implementation details for queryEIRule. Requires EIRules extracted from EIDIct for
+-- the specified symbol.
+_queryImpl :: EIQueryType -> Symbol -> [EIRule] -> Maybe EIRule
+_queryImpl _           _ []     = Nothing
+_queryImpl FirstRule   _ (r:_)  = Just r
+_queryImpl ShortestInv _ rules  = findMinima True rules
+_queryImpl MinimalInv  _ rules  = findMinima False rules
+_queryImpl SelfInv     s rules  = findSelfInv s rules
+_queryImpl NoDefault   _ (r:rs) = if null rs then Just r else Nothing
+
 -- | Consumes a dictionary of EIRules, a symbol, and a query type. If the symbol is not
 -- in the dictionary, then nothing is returned. Otherwise, returns a rule according to
 -- the query type. If no rule satisfies the query type, then nothing is returned.
 queryEIRule :: EIDict -> Symbol -> EIQueryType -> Maybe EIRule
-queryEIRule dict sym ty
-    | null res = Nothing
-    | otherwise  = case ty of
-        FirstRule   -> Just $ head res
-        ShortestInv -> findMinima True res
-        MinimalInv  -> findMinima False res
-        SelfInv     -> findSelfInv sym res
-        NoDefault   -> if null $ tail res then Just $ head res else Nothing
-    where res = getEIRule dict sym
+queryEIRule dict sym ty = _queryImpl ty sym $ getEIRule dict sym

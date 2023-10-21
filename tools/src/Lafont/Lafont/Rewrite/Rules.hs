@@ -63,7 +63,7 @@ checkRewrite :: MonWord -> Rewrite -> Bool
 checkRewrite str (Rewrite rule pos dir) = impl str pos
     where impl substr n = if n == 0
                           then checkRewriteRule substr rule dir
-                          else not (null substr) && impl (tail substr) (n - 1)
+                          else (not . null) substr && impl (tail substr) (n - 1)
 
 -- | Consumes a monoidal word and a rewrite. Returns the string obtained by applying the
 -- rewrite. Assumes that checkRewrite is true.

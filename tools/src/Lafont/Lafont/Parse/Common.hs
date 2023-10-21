@@ -108,11 +108,11 @@ isIdChar c   = isAlphaNum c
 -- pair (pre, post) such that str = pre + post and pre is the maximal prefix of str such
 -- that ((foldr (\x y -> (pred y) && y) True pre) == True).
 splitAtFirst :: (Char -> Bool) -> String -> (String, String)
-splitAtFirst _         []  = ("", "")
-splitAtFirst checkChar str = if checkChar (head str)
-                             then let (pre, post) = splitAtFirst checkChar (tail str)
-                                  in (head str : pre, post)
-                             else ("", str)
+splitAtFirst _         []          = ("", "")
+splitAtFirst checkChar str@(sym:rst) = if checkChar sym
+                                       then let (pre, post) = splitAtFirst checkChar rst
+                                            in (sym : pre, post)
+                                       else ("", str)
 
 -- | Consumes a predicate over characters (pred) and an input string (str). Attempts to
 -- parse (pre, post) = (splitAtFirst pred str), if there is anythin to parse. Otherwise,
@@ -125,8 +125,8 @@ parseNonEmpty checkChar str = if pre == "" then Nothing else Just (pre, post)
 -- coverted to an integer.
 parseNat :: String -> Maybe (Int, String)
 parseNat str
-    | digitStr == "" = Nothing
-    | otherwise      = Just (read digitStr :: Int, post)
+    | null digitStr = Nothing
+    | otherwise     = Just (read digitStr :: Int, post)
     where (digitStr, post) = splitAtFirst isDigit str
 
 -- | Consumes an input string (str). Returns the largest integral prefix of str coverted
@@ -145,10 +145,8 @@ trimSpacing str = (pre /= "", post)
 -- exists. Otherwise, returns nothing. An identifier must begin with a non-numeric
 -- character.
 parseId :: String -> Maybe (String, String)
-parseId ""  = Nothing
-parseId str
-    | isDigit (head str) = Nothing
-    | otherwise          = parseNonEmpty isIdChar str
+parseId ""        = Nothing
+parseId str@(sym:_) = if isDigit sym then Nothing else parseNonEmpty isIdChar str
 
 -- | Consumes a separator (sep) and an input string (str). Assume there exists at least
 -- one prefix of str of the form ( )*sep. Then let pre and post be strings such that pre
@@ -184,9 +182,7 @@ cleanLine line = stripComments $ snd $ trimSpacing line
 -- | Consumes a string (str), and two values (lval and rval). If str contains non-spacing
 -- characters, then lval is returned. Otherwise, rval is returned.
 branchOnSpacing :: String -> a -> b -> Either a b
-branchOnSpacing str lval rval
-    | trimmed == "" = Right rval
-    | otherwise     = Left lval
+branchOnSpacing str lval rval = if null trimmed then Right rval else Left lval
     where (_, trimmed) = trimSpacing str
 
 -- | Consumes a string (str), and two values of the same type (fval and tval). If str
@@ -215,6 +211,6 @@ isEOFSpacing = all isBlankLine
 -- with the number of the non-empty line.
 parseEOFSpacing :: [String] -> Int -> Maybe (Int, ParserError)
 parseEOFSpacing []           _   = Nothing
-parseEOFSpacing (line:lines) num
-    | isBlankLine line = parseEOFSpacing lines (num + 1)
-    | otherwise        = Just (num, ExpectedEOF)
+parseEOFSpacing (line:lines) num = if isBlankLine line
+                                   then parseEOFSpacing lines (num + 1)
+                                   else Just (num, ExpectedEOF)
