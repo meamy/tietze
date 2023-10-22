@@ -19,6 +19,7 @@ library
                        Lafont.Graph
                        Lafont.Internal.Graph
                        Lafont.Maybe
+                       Lafont.Named
                        Lafont.Ring
                        Lafont.String
                        Lafont.Edit.EIRules
@@ -155,6 +156,11 @@ test-suite lafont-either-tests
 test-suite lafont-maybe-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Maybe-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-named-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Named-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite lafont-ring-tests

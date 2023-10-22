@@ -5,6 +5,7 @@ module LafontExe.ValidateDerivations where
 import           Data.Maybe
 import           Lafont.Either
 import           Lafont.Graph
+import           Lafont.Named
 import           Lafont.Parse.DerivationFile
 import           Lafont.Rewrite.Abstraction
 import           Lafont.Rewrite.Derivations
@@ -22,10 +23,6 @@ import           System.IO
 -- * Helpers.
 
 -- | Helper types to simplify code.
-type NamedData a = (String, Int, a)
-type NamedPreDerivation = NamedData PreDerivation
-type NamedAbsDerivation = NamedData AbsDerivation
-type NamedDerivation = NamedData Derivation
 type ListParseRV a = Either (String, Int, DFPError) [a]
 
 -- | Displays an unmet dependency as a human-readable string.
@@ -38,34 +35,24 @@ printCycle :: DepCycle -> String
 printCycle = foldPath f ""
     where f n v str = "\n" ++ show (n + 1) ++ ". " ++ v ++ str
 
--- | Appends an unnamed list to a named list.
-addToNamedList :: String -> [NamedData a] -> [a] -> Int -> [NamedData a]
-addToNamedList _    named []          _   = named
-addToNamedList name named (a:unnamed) num = (name, num, a) : rest
-    where rest = addToNamedList name named unnamed (num + 1)
-
--- | Extracts the third element from a triple.
-third :: (a, b, c) -> c
-third (_, _, x) = x
-
 -----------------------------------------------------------------------------------------
 -- * Logic.
 
 -- | Folds concretization across all named derivations.
-concretize :: DerivationMetadata -> [NamedAbsDerivation] -> Either (String, Int, Int) [NamedDerivation]
-concretize _    []                            = Right []
-concretize meta ((fname, num, x):derivations) =
+concretize :: DerivationMetadata -> [Named AbsDerivation] -> Either (String, Int, Int) [Named Derivation]
+concretize _    []                              = Right []
+concretize meta ((Named src idx x):derivations) =
     case concretizeDerivation meta x of
-        Left pos         -> Left (fname, num, pos)
-        Right derivation -> updateRight (concretize meta derivations)
-                                        (\rest -> (fname, num, derivation) : rest)
+        Left pos    -> Left (src, idx, pos)
+        Right deriv -> updateRight (concretize meta derivations) $ \rest ->
+            Named src idx deriv : rest
 
 -- | Consumes a list of pairs, where each tuple contains the name of a derivation file
 -- and the Derivation it describes. If the dependency graph induced by the list of
 -- derivations is invalid, then the error is printed. Otherwise, if a step in a
 -- derivation is invalid, then a summary of the failure is printed. Otherwise, a success
 -- message is printed.
-verifyDerivations :: [NamedAbsDerivation] -> String
+verifyDerivations :: [Named AbsDerivation] -> String
 verifyDerivations named =
     case detectDerivationError absDerivations of
         Just (Left unmet)  -> "Unmet dependency: " ++ printUnmetDep unmet ++ "\n"
@@ -73,68 +60,68 @@ verifyDerivations named =
         Nothing            -> case concretize (dmap, emap) named of
             Left (fname, num, pos) -> describeFailedApply fname num pos
             Right derivations      -> verifyDerivationSteps derivations
-    where absDerivations = map third named
-          dmap = makeDerivationMap absDerivations
-          emap = identifyEquationalRules dmap
+    where absDerivations = map value named
+          dmap           = makeDerivationMap absDerivations
+          emap           = identifyEquationalRules dmap
 
 -- | Consumes a list of pairs, where each tuple contains the name of a derivation file
 -- and the Derivation it describes. If a derivation is invalid, then a summary of the
 -- failure is printed. Otherwise, a success message is printed.
-verifyDerivationSteps :: [NamedDerivation] -> String
-verifyDerivationSteps []                                     = "Success.\n"
-verifyDerivationSteps ((fname, num, derivation):derivations) =
+verifyDerivationSteps :: [Named Derivation] -> String
+verifyDerivationSteps []                                  = "Success.\n"
+verifyDerivationSteps ((Named src idx deriv):derivations) =
     if success res
     then if output res == final summary
          then verifyDerivationSteps derivations
-         else describeIncorrectResult fname num (final summary) (output res)
-    else describeIncorrectStep fname num (output res) (step res)
-    where Derivation summary rewrites = derivation
-          res = simplify (initial summary) rewrites
+         else describeIncorrectResult src idx (final summary) (output res)
+    else describeIncorrectStep src idx (output res) (step res)
+    where Derivation summary rewrites = deriv
+          res                         = simplify (initial summary) rewrites
 
 -- | Consumes a list of derivation files and a list of known generators (gens). If all
 -- derivations preparse correctly, then returns a list of pairs, where each pair contains
 -- the name of a file and the PreDerivation it describes. Otherwise, a parsing error is
 -- returned.
-readDerivationFiles :: [String] -> [String] -> IO (ListParseRV NamedPreDerivation)
-readDerivationFiles []             _    = return (Right [])
+readDerivationFiles :: [String] -> [String] -> IO (ListParseRV (Named PreDerivation))
+readDerivationFiles []             _    = return $ Right []
 readDerivationFiles (fname:fnames) gens = do
     content <- readFile fname
     case preparseDerivationFile gens (lines content) 1 of
-        Left (errLn, err) -> return (Left (fname, errLn, err))
+        Left (errLn, err) -> return $ Left (fname, errLn, err)
         Right preList     -> do
             ioRes <- readDerivationFiles fnames gens
-            return (updateRight ioRes (\res -> addToNamedList fname res preList 1))
+            return $ updateRight ioRes $ \res -> addToNamedList fname res preList 1
 
 -- Consumes a dictionary of rewrite rules (rules) and a list of named PreDerivations. If
 -- each PreDerivation summary is either unnamed or has a unqiue name (with respect to the
 -- relations and other PreDerivations), then a set of PreDerivation summary names is
 -- returned. Otherwise, the file name of the first PreDerivation with a duplicate summary
 -- name is returned.
-listDerivedRules :: RuleDict -> [NamedPreDerivation] -> Either (String, Int) DRuleSet
-listDerivedRules _     []                       = Right nullRuleSet
-listDerivedRules rules ((fname, num, pre):rest) =
+listDerivedRules :: RuleDict -> [Named PreDerivation] -> Either (String, Int) DRuleSet
+listDerivedRules _     []           = Right nullRuleSet
+listDerivedRules rules (named:rest) =
     case listDerivedRules rules rest of
         Left  err -> Left err
         Right set -> case addSummaryToSymbols rules set summary of
-            Nothing   -> Left (fname, num)
+            Nothing   -> Left (source named, identifier named)
             Just set' -> Right set'
-    where summary = parsed pre
+    where summary = parsed $ value named
 
 -- | Consumes a dictionary of rewrite rules (rules) and a list of pairs, where each pair
 -- contains the name of a file and the PreDerivation data it describes. If all files
 -- parse correctly, then returns a list of pairs, where each pair contains the name of a
 -- pair and the Derivation it describes. Otherwise, a parsing error is returned. Requires
 -- that all derived rules have already been recorded in rules
-parseRewriteSections :: RuleDict -> DRuleSet -> [NamedPreDerivation] -> ListParseRV NamedAbsDerivation
-parseRewriteSections _     _       []                       = Right []
-parseRewriteSections rules derived ((fname, num, pre):rest) =
+parseRewriteSections :: RuleDict -> DRuleSet -> [Named PreDerivation] -> ListParseRV (Named AbsDerivation)
+parseRewriteSections _     _       []                         = Right []
+parseRewriteSections rules derived ((Named src idx pre):rest) =
     case parseDerivationFile rules derived pre of
-        Left (errLn, err) -> Left (fname, errLn, err)
-        Right derivation  -> updateRight (parseRewriteSections rules derived rest)
-                                         (\res -> (fname, num, derivation) : res)
+        Left (ln, err) -> Left (src, ln, err)
+        Right deriv    -> updateRight (parseRewriteSections rules derived rest) $ \v ->
+            Named src idx deriv : v
 
 -- |
-processPreDerivations :: Handle -> [NamedPreDerivation] -> RuleDict -> [String] -> IO ()
+processPreDerivations :: Handle -> [Named PreDerivation] -> RuleDict -> [String] -> IO ()
 processPreDerivations hdl pres rules gens =
     case listDerivedRules rules pres of
         Left (fname, num) -> hPutStr hdl $ logFromFile fname 0 $ reportDupRule num
@@ -175,7 +162,7 @@ validateDerivationsImpl hdl genFname relFname derivFnames = do
 -- line number.
 validateDerivations :: Handle -> String -> String -> [String] -> IO ()
 validateDerivations hdl genFname relFname derivFnames = do
-    res <- doFilesExist (genFname:(relFname:derivFnames))
+    res <- doFilesExist $ genFname:relFname:derivFnames
     case res of
-        Just name -> hPutStr hdl ("File does not exist: " ++ name ++ "\n")
+        Just name -> hPutStr hdl $ "File does not exist: " ++ name ++ "\n"
         Nothing   -> validateDerivationsImpl hdl genFname relFname derivFnames
