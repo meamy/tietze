@@ -79,6 +79,7 @@ library LafontExe
                        LafontExe.IO.Files
                        LafontExe.Logic.Relations
                        LafontExe.Logging.ErrorFormat
+                       LafontExe.Logging.Graph
                        LafontExe.Logging.LineBased
                        LafontExe.Logging.Primitive
   build-depends:       base,
@@ -288,12 +289,18 @@ test-suite lafont-parse-semantics-tests
   type:                exitcode-stdio-1.0
   build-depends:       newsynth
 
-test-suite lafontexe-logging-linebasedlogging-tests
+test-suite lafontexe-logging-graph-tests
+  import:              io-unit-test-props
+  main-is:             LafontExe-Logging-Graph-Tests.hs
+  type:                exitcode-stdio-1.0
+  build-depends:       containers
+
+test-suite lafontexe-logging-linebased-tests
   import:              io-unit-test-props
   main-is:             LafontExe-Logging-LineBased-Tests.hs
   type:                exitcode-stdio-1.0
 
-test-suite lafontexe-logging-primitivelogging-tests
+test-suite lafontexe-logging-primitive-tests
   import:              io-unit-test-props
   main-is:             LafontExe-Logging-Primitive-Tests.hs
   type:                exitcode-stdio-1.0

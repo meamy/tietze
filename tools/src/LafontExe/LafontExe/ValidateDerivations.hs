@@ -4,7 +4,6 @@ module LafontExe.ValidateDerivations where
 
 import           Data.Maybe
 import           Lafont.Either
-import           Lafont.Graph
 import           Lafont.Named
 import           Lafont.Parse.DerivationFile
 import           Lafont.Rewrite.Abstraction
@@ -15,6 +14,7 @@ import           Lafont.Rewrite.Simplification
 import           Lafont.Rewrite.Summary
 import           LafontExe.IO.Files
 import           LafontExe.Logging.ErrorFormat
+import           LafontExe.Logging.Graph
 import           LafontExe.Logging.LineBased
 import           LafontExe.Logic.Relations
 import           System.IO
@@ -24,16 +24,6 @@ import           System.IO
 
 -- | Helper types to simplify code.
 type ListParseRV a = Either (String, Int, DFPError) [a]
-
--- | Displays an unmet dependency as a human-readable string.
-printUnmetDep :: UnmetDep -> String
-printUnmetDep (UnmetDep ""  dst) = dst
-printUnmetDep (UnmetDep src dst) = src ++ " -> " ++ dst
-
--- | Displays a cycle as a humnan-readable list. The list starts on a new line.
-printCycle :: DepCycle -> String
-printCycle = foldPath f ""
-    where f n v str = "\n" ++ show (n + 1) ++ ". " ++ v ++ str
 
 -----------------------------------------------------------------------------------------
 -- * Logic.
