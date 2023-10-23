@@ -3,9 +3,12 @@
 module LafontExe.IO.Files where
 
 import           System.Directory
+import           Lafont.Either
+import           Lafont.Named
+import           Lafont.Parse.DerivationFile
 
 -----------------------------------------------------------------------------------------
--- * Reading/Writing.
+-- * General-Purpose Reading/Writing.
 
 -- | Pairs together the name of a file, and its contents.
 data FileData = FileData String [String]
@@ -15,6 +18,33 @@ readNamedFile :: String -> IO FileData
 readNamedFile name = do
     contents <- readFile name
     return (FileData name $ lines contents)
+
+-----------------------------------------------------------------------------------------
+-- * Specialized Reading/Writing.
+
+-- | Function to parse a structured file. Takes as input the lines of a file (as a list
+-- of strings) and the current line number. Returns either a line number and error, or a
+-- list of parsed elements.
+type Parser a b = [String] -> Int -> Either (Int, a) [b]
+
+-- | Represents a parsing error (file name, line number, and error type) or a list of
+-- parsed elements associated with their source file names.
+type ParseFilesRV a b = Either (String, Int, a) [Named b]
+
+-- | Takes as input a structured file parser and a list of paths to structured files.
+-- Returns a parsing result, as described by the ParseFileRV type.
+readStructuredFiles :: Parser a b -> [String] -> IO (ParseFilesRV a b)
+readStructuredFiles _ []             = return $ Right []
+readStructuredFiles f (fname:fnames) = do
+    content <- readFile fname
+    case f (lines content) 1 of
+        Left (ln, err) -> return $ Left (fname, ln, err)
+        Right pcontent -> do
+            parsed <- readStructuredFiles f fnames
+            return $ updateRight parsed $ \res -> addToNamedList fname res pcontent 1
+
+-- | Specializations.
+readDerivationFiles gens = readStructuredFiles (preparseDerivationFile gens)
 
 -----------------------------------------------------------------------------------------
 -- * Existence Checking.

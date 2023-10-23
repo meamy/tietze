@@ -20,16 +20,10 @@ import           LafontExe.Logic.Relations
 import           System.IO
 
 -----------------------------------------------------------------------------------------
--- * Helpers.
-
--- | Helper types to simplify code.
-type ListParseRV a = Either (String, Int, DFPError) [a]
-
------------------------------------------------------------------------------------------
 -- * Logic.
 
 -- | Folds concretization across all named derivations.
-concretize :: DerivationMetadata -> [Named AbsDerivation] -> Either (String, Int, Int) [Named Derivation]
+concretize :: DerivationMetadata -> [Named AbsDerivation] -> ParseFilesRV Int Derivation
 concretize _    []                              = Right []
 concretize meta ((Named src idx x):derivations) =
     case concretizeDerivation meta x of
@@ -68,20 +62,6 @@ verifyDerivationSteps ((Named src idx deriv):derivations) =
     where Derivation summary rewrites = deriv
           res                         = simplify (initial summary) rewrites
 
--- | Consumes a list of derivation files and a list of known generators (gens). If all
--- derivations preparse correctly, then returns a list of pairs, where each pair contains
--- the name of a file and the PreDerivation it describes. Otherwise, a parsing error is
--- returned.
-readDerivationFiles :: [String] -> [String] -> IO (ListParseRV (Named PreDerivation))
-readDerivationFiles []             _    = return $ Right []
-readDerivationFiles (fname:fnames) gens = do
-    content <- readFile fname
-    case preparseDerivationFile gens (lines content) 1 of
-        Left (errLn, err) -> return $ Left (fname, errLn, err)
-        Right preList     -> do
-            ioRes <- readDerivationFiles fnames gens
-            return $ updateRight ioRes $ \res -> addToNamedList fname res preList 1
-
 -- Consumes a dictionary of rewrite rules (rules) and a list of named PreDerivations. If
 -- each PreDerivation summary is either unnamed or has a unqiue name (with respect to the
 -- relations and other PreDerivations), then a set of PreDerivation summary names is
@@ -102,7 +82,7 @@ listDerivedRules rules (named:rest) =
 -- parse correctly, then returns a list of pairs, where each pair contains the name of a
 -- pair and the Derivation it describes. Otherwise, a parsing error is returned. Requires
 -- that all derived rules have already been recorded in rules
-parseRewriteSections :: RuleDict -> DRuleSet -> [Named PreDerivation] -> ListParseRV (Named AbsDerivation)
+parseRewriteSections :: RuleDict -> DRuleSet -> [Named PreDerivation] -> ParseFilesRV DFPError AbsDerivation
 parseRewriteSections _     _       []                         = Right []
 parseRewriteSections rules derived ((Named src idx pre):rest) =
     case parseDerivationFile rules derived pre of
@@ -110,14 +90,14 @@ parseRewriteSections rules derived ((Named src idx pre):rest) =
         Right deriv    -> updateRight (parseRewriteSections rules derived rest) $ \v ->
             Named src idx deriv : v
 
--- |
+-- | 
 processPreDerivations :: Handle -> [Named PreDerivation] -> RuleDict -> [String] -> IO ()
 processPreDerivations hdl pres rules gens =
     case listDerivedRules rules pres of
         Left (fname, num) -> hPutStr hdl $ logFromFile fname 0 $ reportDupRule num
         Right derived     -> case parseRewriteSections rules derived pres of
-            Left (fname, errLn, err) -> hPutStr hdl $ logEitherMsg fname errLn err
-            Right derivations        -> hPutStr hdl $ verifyDerivations derivations
+            Left (fname, ln, err) -> hPutStr hdl $ logEitherMsg fname ln err
+            Right derivations     -> hPutStr hdl $ verifyDerivations derivations
 
 -- | Consumes a handle, a list of derivation files (DerivFnames), a dictionary of rewrite
 -- rules (rules), and a list of generators (gens). If all derivations parse correctly,
@@ -126,10 +106,10 @@ processPreDerivations hdl pres rules gens =
 -- number.
 processDerivationFiles :: Handle -> [String] -> RuleDict -> [String] -> IO ()
 processDerivationFiles hdl fnames rules gens = do
-    readResult <- readDerivationFiles fnames gens
+    readResult <- readDerivationFiles gens fnames
     case readResult of
-        Left (fname, errLn, err) -> hPutStr hdl $ logEitherMsg fname errLn err
-        Right pres               -> processPreDerivations hdl pres rules gens
+        Left (fname, ln, err) -> hPutStr hdl $ logEitherMsg fname ln err
+        Right pres            -> processPreDerivations hdl pres rules gens
 
 -- | See validateDerivations. Requires that both files exist, whereas validateDerivations
 -- does not imporse this assumption
