@@ -16,6 +16,7 @@ import           LafontExe.IO.Files
 import           LafontExe.Logging.ErrorFormat
 import           LafontExe.Logging.Graph
 import           LafontExe.Logging.LineBased
+import           LafontExe.Logic.Derivations
 import           LafontExe.Logic.Relations
 import           System.IO
 
@@ -24,29 +25,12 @@ import           System.IO
 
 -- | Folds concretization across all named derivations.
 concretize :: DerivationMetadata -> [Named AbsDerivation] -> ParseFilesRV Int Derivation
-concretize _    []                              = Right []
-concretize meta ((Named src idx x):derivations) =
-    case concretizeDerivation meta x of
+concretize _    []                                 = Right []
+concretize meta ((Named src idx derv):derivations) =
+    case concretizeDerivation meta derv of
         Left pos    -> Left (src, idx, pos)
         Right deriv -> updateRight (concretize meta derivations) $ \rest ->
             Named src idx deriv : rest
-
--- | Consumes a list of pairs, where each tuple contains the name of a derivation file
--- and the Derivation it describes. If the dependency graph induced by the list of
--- derivations is invalid, then the error is printed. Otherwise, if a step in a
--- derivation is invalid, then a summary of the failure is printed. Otherwise, a success
--- message is printed.
-verifyDerivations :: [Named AbsDerivation] -> String
-verifyDerivations named =
-    case detectDerivationError absDerivations of
-        Just (Left unmet)  -> "Unmet dependency: " ++ printUnmetDep unmet ++ "\n"
-        Just (Right cycle) -> "Dependency cycle detected: " ++ printCycle cycle ++ "\n"
-        Nothing            -> case concretize (dmap, emap) named of
-            Left (fname, num, pos) -> describeFailedApply fname num pos
-            Right derivations      -> verifyDerivationSteps derivations
-    where absDerivations = map value named
-          dmap           = makeDerivationMap absDerivations
-          emap           = identifyEquationalRules dmap
 
 -- | Consumes a list of pairs, where each tuple contains the name of a derivation file
 -- and the Derivation it describes. If a derivation is invalid, then a summary of the
@@ -62,42 +46,22 @@ verifyDerivationSteps ((Named src idx deriv):derivations) =
     where Derivation summary rewrites = deriv
           res                         = simplify (initial summary) rewrites
 
--- Consumes a dictionary of rewrite rules (rules) and a list of named PreDerivations. If
--- each PreDerivation summary is either unnamed or has a unqiue name (with respect to the
--- relations and other PreDerivations), then a set of PreDerivation summary names is
--- returned. Otherwise, the file name of the first PreDerivation with a duplicate summary
--- name is returned.
-listDerivedRules :: RuleDict -> [Named PreDerivation] -> Either (String, Int) DRuleSet
-listDerivedRules _     []           = Right nullRuleSet
-listDerivedRules rules (named:rest) =
-    case listDerivedRules rules rest of
-        Left  err -> Left err
-        Right set -> case addSummaryToSymbols rules set summary of
-            Nothing   -> Left (source named, identifier named)
-            Just set' -> Right set'
-    where summary = parsed $ value named
-
--- | Consumes a dictionary of rewrite rules (rules) and a list of pairs, where each pair
--- contains the name of a file and the PreDerivation data it describes. If all files
--- parse correctly, then returns a list of pairs, where each pair contains the name of a
--- pair and the Derivation it describes. Otherwise, a parsing error is returned. Requires
--- that all derived rules have already been recorded in rules
-parseRewriteSections :: RuleDict -> DRuleSet -> [Named PreDerivation] -> ParseFilesRV DFPError AbsDerivation
-parseRewriteSections _     _       []                         = Right []
-parseRewriteSections rules derived ((Named src idx pre):rest) =
-    case parseDerivationFile rules derived pre of
-        Left (ln, err) -> Left (src, ln, err)
-        Right deriv    -> updateRight (parseRewriteSections rules derived rest) $ \v ->
-            Named src idx deriv : v
-
--- | 
-processPreDerivations :: Handle -> [Named PreDerivation] -> RuleDict -> [String] -> IO ()
-processPreDerivations hdl pres rules gens =
-    case listDerivedRules rules pres of
-        Left (fname, num) -> hPutStr hdl $ logFromFile fname 0 $ reportDupRule num
-        Right derived     -> case parseRewriteSections rules derived pres of
-            Left (fname, ln, err) -> hPutStr hdl $ logEitherMsg fname ln err
-            Right derivations     -> hPutStr hdl $ verifyDerivations derivations
+-- | Consumes a list of pairs, where each tuple contains the name of a derivation file
+-- and the Derivation it describes. If the dependency graph induced by the list of
+-- derivations is invalid, then the error is printed. Otherwise, if a step in a
+-- derivation is invalid, then a summary of the failure is printed. Otherwise, a success
+-- message is printed.
+verifyDerivations :: [Named AbsDerivation] -> String
+verifyDerivations named =
+    case detectDerivationError absDerivations of
+        Just (Left unmet)  -> "Unmet dependency: " ++ printUnmetDep unmet ++ "\n"
+        Just (Right cycle) -> "Dependency cycle detected: " ++ printCycle cycle ++ "\n"
+        Nothing            -> case concretize (dmap, emap) named of
+            Left (fname, num, pos) -> describeFailedApply fname num pos
+            Right derivs           -> verifyDerivationSteps derivs
+    where absDerivations = map value named
+          dmap           = makeDerivationMap absDerivations
+          emap           = identifyEquationalRules dmap
 
 -- | Consumes a handle, a list of derivation files (DerivFnames), a dictionary of rewrite
 -- rules (rules), and a list of generators (gens). If all derivations parse correctly,
@@ -109,7 +73,10 @@ processDerivationFiles hdl fnames rules gens = do
     readResult <- readDerivationFiles gens fnames
     case readResult of
         Left (fname, ln, err) -> hPutStr hdl $ logEitherMsg fname ln err
-        Right pres            -> processPreDerivations hdl pres rules gens
+        Right prederivs       -> case processPreDerivations prederivs rules gens of
+            DupDeriv fname id     -> hPutStr hdl $ logFromFile fname 0 $ reportDupRule id
+            BadDeriv fname ln err -> hPutStr hdl $ logEitherMsg fname ln err
+            NamedDerivs derivs    -> hPutStr hdl $ verifyDerivations derivs
 
 -- | See validateDerivations. Requires that both files exist, whereas validateDerivations
 -- does not imporse this assumption
