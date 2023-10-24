@@ -11,6 +11,7 @@ module Lafont.Rewrite.Abstraction (
     DerivationMap,
     AbsRewrite,
     DepCycle,
+    addDRules,
     registerDerivations,
     addDerivationToGraph,
     addDerivationsToGraph,
@@ -25,6 +26,7 @@ import           Data.Maybe
 import           Lafont.Either
 import           Lafont.Graph
 import           Lafont.Maybe
+import           Lafont.Rewrite.Lookup
 import           Lafont.Rewrite.Internal.Abstraction
 import           Lafont.Rewrite.Rules
 import           Lafont.Rewrite.Summary
@@ -37,15 +39,19 @@ import           Lafont.Rewrite.Summary
 -- proof consists of abstract rewrites.
 data AbsDerivation = AbsDerivation DerivationSummary [AbsRewrite] deriving (Eq,Show)
 
+-- | Helper method to get summary from abstract derivation.
+_getSummary :: AbsDerivation -> DerivationSummary
+_getSummary (AbsDerivation summary _) = summary
+
 -----------------------------------------------------------------------------------------
 -- * Derivation to Graph Conversion
 
 -- | Consumes a list of derivations (list). Returns a dependency graph with a vertex for
 -- each derivation in list. A special vertex is added for unnamed derivations ("").
 registerDerivations :: [AbsDerivation] -> DepGraph
-registerDerivations []                               = DepGraph (addVertex nullgraph "")
-registerDerivations ((AbsDerivation summary _):list) =
-    case propName $ meta summary of
+registerDerivations []           = DepGraph (addVertex nullgraph "")
+registerDerivations (deriv:list) =
+    case propName $ meta $ _getSummary deriv of
         Just name -> DepGraph (addVertex g name)
         Nothing   -> DepGraph g
     where (DepGraph g) = registerDerivations list
@@ -101,20 +107,19 @@ getDerivation (DerivationMap map) name = name `Map.lookup` map
 makeDerivationMap :: [AbsDerivation] -> DerivationMap
 makeDerivationMap []                       = DerivationMap Map.empty
 makeDerivationMap (derivation:derivations) =
-    case propName $ meta summary of
+    case propName $ meta $ _getSummary derivation of
         Just name -> DerivationMap (Map.insert name derivation dict)
         Nothing   -> DerivationMap dict
-    where (AbsDerivation summary _) = derivation
-          (DerivationMap dict) = makeDerivationMap derivations
+    where (DerivationMap dict) = makeDerivationMap derivations
 
 -----------------------------------------------------------------------------------------
 -- * Equationality of Abstract Relations
 
 -- | Updates emap according to isEqn.
 ierBody :: DerivationMap -> String -> [AbsRewrite] -> EqMap -> Bool -> EqMap
-ierBody dmap name rewrites emap isEqn
-    | isEqn     = ierSplit dmap name rewrites emap
-    | otherwise = setAsOrientated emap name
+ierBody dmap name rewrites emap isEqn = if isEqn
+                                        then ierSplit dmap name rewrites emap
+                                        else setAsOrientated emap name
 
 -- | Analyzes the steps of a derivation to assert equationality.
 ierSplit :: DerivationMap -> String -> [AbsRewrite] -> EqMap -> EqMap
@@ -131,13 +136,25 @@ ierSplit dmap name (Right r:rewrites) emap = ierBody dmap name rewrites emap' is
 
 -- | Fold implementation for identifyEquationalRules.
 ierFold :: DerivationMap -> String -> AbsDerivation -> EqMap -> EqMap
-ierFold dmap name (AbsDerivation _ rewrites) emap
-    | emap `containsRule` name  = emap
-    | otherwise                 = ierSplit dmap name rewrites emap
+ierFold dmap name (AbsDerivation _ rewrites) emap = if emap `containsRule` name
+                                                    then emap
+                                                    else ierSplit dmap name rewrites emap
 
 -- | Consumes a list of abstract deriviations. It is assumed that the abstract
 -- derivations have passed a detectDerivationError test (e.g., all dependencies are met
 -- and the graph is acyclic). Returns an equational map for the derivations.
 identifyEquationalRules :: DerivationMap -> EqMap
 identifyEquationalRules (DerivationMap dmap) = Map.foldrWithKey f defaultEqMap dmap
-    where f = ierFold (DerivationMap dmap)
+    where f = ierFold $ DerivationMap dmap
+
+-----------------------------------------------------------------------------------------
+-- * Interpreting Abstract Derivations as Rules
+
+-- | Consumes a rule dictionary and a list of absolute derivations. Records the summaries
+-- of all named derivations in the rule dictionary, and returns the resulting dictionary.
+addDRules :: RuleDict -> [AbsDerivation] -> RuleDict
+addDRules rules derivs = Prelude.foldr f rules sums
+    where dmap  = makeDerivationMap derivs
+          emap  = identifyEquationalRules dmap
+          sums  = Prelude.map _getSummary derivs
+          f s m = addDRule m emap s

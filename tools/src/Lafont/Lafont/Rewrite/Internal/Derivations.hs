@@ -33,7 +33,7 @@ type DerivationMetadata = (DerivationMap, EqMap)
 -- returned. Otherwise, nothing is returned.
 concretizeApply :: EqMap -> DerivationSummary -> Apply -> Maybe Rewrite
 concretizeApply emap sum (Apply name pos dir) = if dir == L2R || equational rule
-                                                then Just (Rewrite rule pos dir)
+                                                then Just $ Rewrite rule pos dir
                                                 else Nothing
     where rule = createSummaryRule emap sum
 
@@ -45,8 +45,8 @@ concretizeApply emap sum (Apply name pos dir) = if dir == L2R || equational rule
 concretizeRewrite :: DerivationMetadata -> AbsRewrite -> Maybe Rewrite
 concretizeRewrite _            (Left  rw) = Just rw
 concretizeRewrite (dmap, emap) (Right ap) =
-    branchJust (dmap `getDerivation` name)
-        (\(AbsDerivation sum _) -> concretizeApply emap sum ap)
+    branchJust (dmap `getDerivation` name) $ \(AbsDerivation sum _) ->
+        concretizeApply emap sum ap
     where (Apply name _ _) = ap
 
 -- | Consumes a line number (num), a derivation map (dmap), an equational map (emap), and

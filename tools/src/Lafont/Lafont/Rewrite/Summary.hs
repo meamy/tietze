@@ -10,6 +10,7 @@ module Lafont.Rewrite.Summary (
     -- Exports.
     RewritePreamble ( .. ),
     DerivationSummary ( .. ),
+    addDRule,
     defaultEqMap,
     setAsEquational,
     setAsOrientated,
@@ -52,11 +53,11 @@ defaultEqMap = EqMap Map.empty
 
 -- | Records that the derivation name is equational in map.
 setAsEquational :: EqMap -> String -> EqMap
-setAsEquational (EqMap map) name = EqMap (Map.insert name True map)
+setAsEquational (EqMap map) name = EqMap $ Map.insert name True map
 
 -- | Records that the derivation name is orientated in map.
 setAsOrientated :: EqMap -> String -> EqMap
-setAsOrientated (EqMap map) name = EqMap (Map.insert name False map)
+setAsOrientated (EqMap map) name = EqMap $ Map.insert name False map
 
 -- | Records true if name is recorded in map.
 containsRule :: EqMap -> String -> Bool
@@ -85,7 +86,18 @@ createSummaryRule emap sum = RewriteRule lhs rhs eqn from
     where lhs  = initial sum
           rhs  = final sum
           eqn  = isSummaryEquational emap sum
-          from = propName (meta sum)
+          from = propName $ meta sum
+
+-- | Consumes a rule dictionary, an equationality map (emap) a summary recorded in the
+-- map (sum). If the summary is named, then returns a new rule dictionary obtained by
+-- recording the summary as a rule (createSummaryRule). Otherwise, the original
+-- dictionary is returned.
+addDRule :: RuleDict -> EqMap -> DerivationSummary -> RuleDict
+addDRule rules emap sum =
+    case propName $ meta sum of
+        Nothing   -> rules
+        Just name -> addRule rules (name, rule)
+    where rule = createSummaryRule emap sum
 
 -----------------------------------------------------------------------------------------
 -- * Functions to Register Derivations as Relations.
@@ -100,7 +112,7 @@ hasDerivedRule (DRuleSet rels) rel = rel `Set.member` rels
 
 -- | Adds a relation symbol to a DRuleSet.
 addDerivedRule :: DRuleSet -> String -> DRuleSet
-addDerivedRule (DRuleSet rels) rel = DRuleSet (rel `Set.insert` rels)
+addDerivedRule (DRuleSet rels) rel = DRuleSet $ rel `Set.insert` rels
 
 -- | Consumes a list of summaries (sums).  Returns a list of derived relation names.
 addSummaryToSymbols :: RuleDict -> DRuleSet -> DerivationSummary -> Maybe DRuleSet
@@ -109,5 +121,5 @@ addSummaryToSymbols rules rels sum =
         Nothing   -> Just rels
         Just name -> if isDefined name
                      then Nothing
-                     else Just (rels `addDerivedRule` name)
+                     else Just $ rels `addDerivedRule` name
     where isDefined rel = rels `hasDerivedRule` rel || rules `hasRule` rel

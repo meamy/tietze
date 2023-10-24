@@ -7,6 +7,7 @@ import Lafont.Common
 import Lafont.Rewrite.Abstraction
 import Lafont.Rewrite.Common
 import Lafont.Rewrite.Internal.Abstraction
+import Lafont.Rewrite.Lookup
 import Lafont.Rewrite.Rules
 import Lafont.Rewrite.Summary
 
@@ -268,6 +269,33 @@ test25 = TestCase (assertEqual "identifyEquationalRules internal nodes (6/6)."
                                (emap `isEquationalDerivation` rel8))
 
 -----------------------------------------------------------------------------------------
+-- addDRules
+
+absRule1 = RewriteRule [] [] True $ Just rel1
+absRule2 = RewriteRule [] [] True $ Just rel2
+absRule3 = RewriteRule [] [] True $ Just rel3
+
+rules1 = addRule empty  ("r1", rule1)
+rules2 = addRule rules1 ("r2", rule1)
+rules3 = addRule rules2 ("r3", rule1) 
+rules4 = addRule rules3 ("rel1", absRule1)
+rules5 = addRule rules4 ("rel2", absRule2)
+rules6 = addRule rules5 ("rel3", absRule3)
+
+test26 = TestCase (assertEqual "addDRules handles empty lists."
+                               rules3
+                               (addDRules rules3 []))
+
+test27 = TestCase (assertEqual "addDRules handles singleton lists."
+                               rules4
+                               (addDRules rules3 [derivationNode1]))
+
+test28 = TestCase (assertEqual "addDRules handles mixed lists."
+                               rules6
+                               (addDRules rules3 proof))
+    where proof = [derivation1, derivation2, derivationNode9, derivation3]
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "makeDerivationMap_0Insert_1" test1,
@@ -294,6 +322,9 @@ tests = hUnitTestToTests $ TestList [TestLabel "makeDerivationMap_0Insert_1" tes
                                      TestLabel "identifyEquationalRules_Int_3" test22,
                                      TestLabel "identifyEquationalRules_Int_4" test23,
                                      TestLabel "identifyEquationalRules_Int_5" test24,
-                                     TestLabel "identifyEquationalRules_Int_6" test25]
+                                     TestLabel "identifyEquationalRules_Int_6" test25,
+                                     TestLabel "addDRules_empty" test26,
+                                     TestLabel "addDRules_singleton" test27,
+                                     TestLabel "addDRules_mixed" test28]
 
 main = defaultMain tests

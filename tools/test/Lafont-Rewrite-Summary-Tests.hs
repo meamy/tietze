@@ -53,11 +53,20 @@ rule1a = RewriteRule word1 word2 False (Just name1)
 rule1b :: RewriteRule
 rule1b = RewriteRule word1 word2 False (Just name2)
 
+rule1c :: RewriteRule
+rule1c = RewriteRule word1 word2 True (Just name2)
+
 rule2 :: RewriteRule
 rule2 = RewriteRule word1 word3 False (Just name1)
 
 rule3 :: RewriteRule
 rule3 = RewriteRule word1 word3 True Nothing
+
+-- Creates a rule dictionary.
+
+rules1 = addRule empty  ("r1", RewriteRule [] [] False Nothing)
+rules2 = addRule rules1 ("r2", RewriteRule [] [] False Nothing)
+rules3 = addRule rules2 ("r3", RewriteRule [] [] False Nothing)
 
 -----------------------------------------------------------------------------------------
 -- createSummaryRule
@@ -94,11 +103,11 @@ test4 = TestCase (assertEqual "createSummaryRule respects name in metadata."
                               (createSummaryRule emap0 summary4))
 
 test5 = TestCase (assertEqual "createSummaryRule respects emap (1/2)."
-                              (RewriteRule word1 word2 False (Just name1))
+                              rule1a
                               (createSummaryRule emap1 summary1))
 
 test6 = TestCase (assertEqual "createSummaryRule respects emap (2/2)."
-                              (RewriteRule word1 word2 True (Just name2))
+                              rule1c
                               (createSummaryRule emap1 summary4))
 
 -----------------------------------------------------------------------------------------
@@ -177,6 +186,21 @@ test22 = TestCase (assertEqual "addSummaryToSymbols rejects summaries with exist
     where summary = DerivationSummary meta2 word1 word3
 
 -----------------------------------------------------------------------------------------
+-- addDRule
+
+test23 = TestCase (assertEqual "addDRule handles unnamed derivations."
+                               rules3
+                               (addDRule rules3 emap1 summary5))
+
+test24 = TestCase (assertEqual "addDRule handles named directed derivations."
+                               (addRule rules3 (name1, rule1a))
+                               (addDRule rules3 emap1 summary1))
+
+test25 = TestCase (assertEqual "addDRule handles named equational derivations."
+                               (addRule rules3 (name2, rule1c))
+                               (addDRule rules3 emap1 summary4))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "createSummaryRule_Basic" test1,
@@ -200,6 +224,9 @@ tests = hUnitTestToTests $ TestList [TestLabel "createSummaryRule_Basic" test1,
                                      TestLabel "addSummaryToSymbols_Unnamed" test19,
                                      TestLabel "addSummaryToSymbols_Success" test20,
                                      TestLabel "addSummaryToSymbols_RuleName" test21,
-                                     TestLabel "addSummaryToSymbols_Duplicate" test22]
+                                     TestLabel "addSummaryToSymbols_Duplicate" test22,
+                                     TestLabel "addDRule_unnamed" test23,
+                                     TestLabel "addDRule_directed" test24,
+                                     TestLabel "addDRule_equational" test25]
 
 main = defaultMain tests
