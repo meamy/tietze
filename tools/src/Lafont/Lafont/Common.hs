@@ -3,7 +3,8 @@
 module Lafont.Common (
     Display ( .. ),
     Symbol ( .. ),
-    MonWord
+    MonWord,
+    toSymbol
 ) where
 
 -----------------------------------------------------------------------------------------
@@ -23,6 +24,10 @@ class Display a where
 data Symbol = Symbol { name :: String
                      , args :: [Int]
                      } deriving (Eq,Show)
+
+-- |
+toSymbol :: String -> Symbol
+toSymbol name = Symbol name []
 
 instance Display Symbol where
     display (Symbol sym args) = foldl fn sym args

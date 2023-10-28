@@ -60,6 +60,17 @@ test11 = TestCase (assertEqual "Display defaults to comparison by parameters (EQ
                                (compare sym3 sym3))
 
 -----------------------------------------------------------------------------------------
+-- Symbol: toSymbol
+
+test12 = TestCase (assertEqual "Display a symbol with zero parameters (1/2)."
+                               (Symbol "name1" [])
+                               (toSymbol "name1"))
+
+test13 = TestCase (assertEqual "Display a symbol with zero parameters (2/2)."
+                               (Symbol "name2" [])
+                               (toSymbol "name2"))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "Symbol_Display_NoParamsOne" test1,
@@ -72,6 +83,8 @@ tests = hUnitTestToTests $ TestList [TestLabel "Symbol_Display_NoParamsOne" test
                                      TestLabel "Symbol_Ord_ByStr_LT" test8,
                                      TestLabel "Symbol_Ord_ByParams_GT" test9,
                                      TestLabel "Symbol_Ord_ByParams_LT" test10,
-                                     TestLabel "Symbol_Ord_ByParams_EQ" test11]
+                                     TestLabel "Symbol_Ord_ByParams_EQ" test11,
+                                     TestLabel "toSymbol_1" test12,
+                                     TestLabel "toSymbol_2" test13]
 
 main = defaultMain tests
