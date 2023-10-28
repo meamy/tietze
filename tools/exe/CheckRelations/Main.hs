@@ -10,7 +10,7 @@ import LafontExe.CheckRelations
 import LafontExe.IO.Configs
 
 -- | Helper method to pass configurations to checkRelations.
-runTool :: Config -> IO()
+runTool :: Config -> IO ()
 runTool conf = checkRelations stdout gens rels
     where gens = generators conf
           rels = relations conf

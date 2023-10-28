@@ -1,4 +1,4 @@
--- |
+-- | Utilities to parse and validate relations.
 
 module LafontExe.Logic.Relations where
 

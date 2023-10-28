@@ -2,14 +2,12 @@
 
 module LafontExe.ValidateDerivations where
 
-import           Data.Maybe
 import           Lafont.Either
 import           Lafont.Named
 import           Lafont.Parse.DerivationFile
 import           Lafont.Rewrite.Abstraction
 import           Lafont.Rewrite.Derivations
 import           Lafont.Rewrite.Lookup
-import           Lafont.Rewrite.Rules
 import           Lafont.Rewrite.Simplification
 import           Lafont.Rewrite.Summary
 import           LafontExe.IO.Files
@@ -79,7 +77,7 @@ processDerivationFiles hdl fnames rules gens = do
             NamedDerivs derivs    -> hPutStr hdl $ verifyDerivations derivs
 
 -- | See validateDerivations. Requires that both files exist, whereas validateDerivations
--- does not imporse this assumption
+-- does not impose this assumption.
 validateDerivationsImpl :: Handle -> String -> String  -> [String] -> IO ()
 validateDerivationsImpl hdl genFname relFname derivFnames = do
     genFile <- readNamedFile genFname

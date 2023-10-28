@@ -9,7 +9,7 @@ import LafontExe.IO.Configs
 import LafontExe.ValidateDerivations
 
 -- | Helper method to pass configurations to validateDerivations.
-runTool :: Config -> IO()
+runTool :: Config -> IO ()
 runTool conf =
     if null ders
     then putStrLn "No derivations to prove."

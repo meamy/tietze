@@ -13,7 +13,7 @@ import           System.IO
 -- * Logic.
 
 -- | See checkRelations. Requires that both files exist, whereas checkRelations does not
--- imporse this assumption
+-- impose this assumption.
 checkRelationsImpl :: Handle -> String -> String -> IO ()
 checkRelationsImpl hdl genFname relFname = do
     genFile <- readNamedFile genFname
