@@ -3,12 +3,14 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
+import qualified Data.Set as Set
 import Data.Maybe
 import Lafont.Common
 import Lafont.Edit.Invert
 import Lafont.Edit.EIRules
 import Lafont.Edit.Internal.EIRules
 import Lafont.Rewrite.Common
+import Lafont.Rewrite.Lookup
 import Lafont.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
@@ -33,8 +35,8 @@ mkSelfInvEView isLeftInv = (eview1, eview2)
     where erule1 = EIRule "sd4" [sym4] L2R isLeftInv False
           erule2 = EIRule "sd5" [sym5] L2R isLeftInv True
           eview0 = createView isLeftInv
-          eview1 = fromJust $ addRule eview0 (sym4, erule1)
-          eview2 = fromJust $ addRule eview1 (sym5, erule2)
+          eview1 = fromJust $ addEIRule eview0 (sym4, erule1)
+          eview2 = fromJust $ addEIRule eview1 (sym5, erule2)
 
 mkSelfInvIView :: IsLeftInv -> (EIView, EIView)
 mkSelfInvIView isLeftInv = (eview2, eview3)
@@ -42,9 +44,9 @@ mkSelfInvIView isLeftInv = (eview2, eview3)
           erule2 = EIRule "sd2" [sym2] L2R isLeftInv False
           erule3 = EIRule "sd3" [sym3] L2R isLeftInv True
           eview0 = createView isLeftInv
-          eview1 = fromJust $ addRule eview0 (sym1, erule1)
-          eview2 = fromJust $ addRule eview1 (sym2, erule2)
-          eview3 = fromJust $ addRule eview2 (sym3, erule3)
+          eview1 = fromJust $ addEIRule eview0 (sym1, erule1)
+          eview2 = fromJust $ addEIRule eview1 (sym2, erule2)
+          eview3 = fromJust $ addEIRule eview2 (sym3, erule3)
 
 (rsd_eview1, rsd_eview2) = mkSelfInvEView False
 (lsd_iview1, lsd_iview2) = mkSelfInvIView True
@@ -60,15 +62,15 @@ getAltRule _ _ = error "Unknown alt rule."
 mkAltEView :: IsLeftInv -> EIView
 mkAltEView isLeftInv = eview2
     where eview0 = createView isLeftInv
-          eview1 = fromJust $ addRule eview0 (sym4, getAltRule 4 isLeftInv)
-          eview2 = fromJust $ addRule eview1 (sym5, getAltRule 5 isLeftInv)
+          eview1 = fromJust $ addEIRule eview0 (sym4, getAltRule 4 isLeftInv)
+          eview2 = fromJust $ addEIRule eview1 (sym5, getAltRule 5 isLeftInv)
 
 mkAltIView :: IsLeftInv -> EIView
 mkAltIView isLeftInv = iview3
     where iview0 = createView isLeftInv
-          iview1 = fromJust $ addRule iview0 (sym1, getAltRule 1 isLeftInv)
-          iview2 = fromJust $ addRule iview1 (sym2, getAltRule 2 isLeftInv)
-          iview3 = fromJust $ addRule iview2 (sym3, getAltRule 3 isLeftInv)
+          iview1 = fromJust $ addEIRule iview0 (sym1, getAltRule 1 isLeftInv)
+          iview2 = fromJust $ addEIRule iview1 (sym2, getAltRule 2 isLeftInv)
+          iview3 = fromJust $ addEIRule iview2 (sym3, getAltRule 3 isLeftInv)
 
 lalt_eview = mkAltEView True
 lalt_iview = mkAltIView True
@@ -167,13 +169,94 @@ test15 = TestCase (assertBool "hasLeftInvs works for right invs (1/2)."
 test16 = TestCase (assertBool "hasLeftInvs works for right invs (2/2)."
                               (not $ hasLeftInvs rsd_eview2))
 
-test17 = TestCase (assertEqual "addRule ensures left-handedness."
+test17 = TestCase (assertEqual "addEIRule ensures left-handedness."
                                (Nothing :: Maybe EIView)
-                               (addRule lsd_iview2 (sym1, getAltRule 2 False)))
+                               (addEIRule lsd_iview2 (sym1, getAltRule 2 False)))
 
-test18 = TestCase (assertEqual "addRule ensures right-handedness."
+test18 = TestCase (assertEqual "addEIRule ensures right-handedness."
                                (Nothing :: Maybe EIView)
-                               (addRule rsd_eview2 (sym1, getAltRule 2 True)))
+                               (addEIRule rsd_eview2 (sym1, getAltRule 2 True)))
+
+-----------------------------------------------------------------------------------------
+-- * viewByQuery
+
+rule_selfinv_x = RewriteRule { lhs         = []
+                             , rhs         = [sym1, sym1]
+                             , equational  = True
+                             , derivedFrom = Nothing
+                             }
+
+rule_invlen3_x = RewriteRule { lhs         = []
+                             , rhs         = [sym2, sym3, sym4, sym1]
+                             , equational  = True
+                             , derivedFrom = Nothing
+                             }
+
+rule_selfinv_y = RewriteRule { lhs         = []
+                             , rhs         = [sym2, sym2]
+                             , equational  = True
+                             , derivedFrom = Nothing
+                             }
+
+rule_invlen3_y = RewriteRule { lhs         = []
+                             , rhs         = [sym3, sym4, sym1, sym2]
+                             , equational  = True
+                             , derivedFrom = Nothing
+                             }
+
+rule_invlen2_y = RewriteRule { lhs         = []
+                             , rhs         = [sym3, sym4, sym2]
+                             , equational  = True
+                             , derivedFrom = Nothing
+                             }
+
+rule_selfinv_z = RewriteRule { lhs         = []
+                             , rhs         = [sym3, sym3]
+                             , equational  = True
+                             , derivedFrom = Nothing
+                             }
+
+rule_invlen3_w = RewriteRule { lhs         = []
+                             , rhs         = [sym1, sym2, sym3, sym4]
+                             , equational  = True
+                             , derivedFrom = Nothing
+                             }
+
+qrdict0 = empty
+qrdict1 = addRule qrdict0 ("rel1", rule_selfinv_x)
+qrdict2 = addRule qrdict1 ("rel2", rule_invlen3_x)
+qrdict3 = addRule qrdict2 ("rel3", rule_selfinv_y)
+qrdict4 = addRule qrdict3 ("rel4", rule_invlen3_y)
+qrdict5 = addRule qrdict4 ("rel5", rule_invlen2_y)
+qrdict6 = addRule qrdict5 ("rel6", rule_selfinv_z)
+qrdict7 = addRule qrdict6 ("rel7", rule_invlen3_w)
+qrdict8 = addRule qrdict7 ("rel8", rule_selfinv_z)
+
+qedict = toEDict True qrdict8
+
+checkQuery :: ViewQueryRes -> Maybe Symbol
+checkQuery (QueryFailure sym) = Just sym
+checkQuery (QuerySuccess _)   = Nothing
+
+test19 = TestCase (assertEqual "viewByQuery success using SelfInv."
+                               Nothing
+                               (checkQuery $ viewByQuery symset SelfInv qedict))
+      where symset = Set.fromList [sym1, sym2, sym3]
+
+test20 = TestCase (assertEqual "viewByQuery success using MinimalInv."
+                               Nothing
+                               (checkQuery $ viewByQuery symset MinimalInv qedict))
+      where symset = Set.fromList [sym1, sym2, sym3, sym4]
+
+test21 = TestCase (assertEqual "viewByQuery failure using SelfInv."
+                               (Just sym7)
+                               (checkQuery $ viewByQuery symset SelfInv qedict))
+      where symset = Set.fromList [sym1, sym2, sym7, sym3]
+
+test22 = TestCase (assertEqual "viewByQuery failure using MinimalInv."
+                               (Just sym7)
+                               (checkQuery $ viewByQuery symset MinimalInv qedict))
+      where symset = Set.fromList [sym1, sym2, sym7, sym3, sym4]
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -194,7 +277,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "invertRule_Missing_ERule" test1,
                                      TestLabel "hasLeftInvs_Left_2" test14,
                                      TestLabel "hasLeftInvs_Right_1" test15,
                                      TestLabel "hasLeftInvs_Right_2" test16,
-                                     TestLabel "addRule_Lefthand" test17,
-                                     TestLabel "addRule_Righthand" test18]
+                                     TestLabel "addEIRule_Lefthand" test17,
+                                     TestLabel "addEIRule_Righthand" test18,
+                                     TestLabel "viewByQuery_Success_1" test19,
+                                     TestLabel "viewByQuery_Success_2" test20,
+                                     TestLabel "viewByQuery_Failure_1" test21,
+                                     TestLabel "viewByQuery_Failure_1" test22]
 
 main = defaultMain tests

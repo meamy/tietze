@@ -4,16 +4,19 @@
 module Lafont.Edit.Invert (
     EIRewrite ( .. ),
     EIView,
-    addRule,
+    ViewQueryRes ( .. ),
+    addEIRule,
     createView,
     deriveElim,
     deriveIntro,
     invertRule,
-    findRule,
-    hasLeftInvs
+    findEIRule,
+    hasLeftInvs,
+    viewByQuery
 ) where
 
 import qualified Data.Map             as Map
+import qualified Data.Set             as Set
 import           Lafont.Common
 import           Lafont.Maybe
 import           Lafont.Edit.EIRules
@@ -40,20 +43,47 @@ createView usingLeftInv = EIView usingLeftInv Map.empty
 -- | Consumes an EIView, and a pair consisting of a symbol and an EIRule. Returns a new
 -- view in which the given symbol is associated with the given EIRule, and all other
 -- mappings remain unchanged.
-addRule :: EIView -> (Symbol, EIRule) -> Maybe EIView
-addRule (EIView usingLeftInv map) (sym, rule) =
+addEIRule :: EIView -> (Symbol, EIRule) -> Maybe EIView
+addEIRule (EIView usingLeftInv map) (sym, rule) =
     if usingLeftInv == hasLeftInv rule
     then Just $ EIView usingLeftInv $ Map.insert sym rule map
     else Nothing
 
 -- | Consumes an EIView and a symbol. If the symbol is associated with an EIRule, then
 -- returns the EIRule. Otherwise, nothing is returned.
-findRule :: EIView -> Symbol -> Maybe EIRule
-findRule (EIView _ map) sym = Map.lookup sym map
+findEIRule :: EIView -> Symbol -> Maybe EIRule
+findEIRule (EIView _ map) sym = Map.lookup sym map
 
 -- | Returns true if an EIVIew contains rules using left inverses.
 hasLeftInvs :: EIView -> IsLeftInv
 hasLeftInvs (EIView usingLeftInv _) = usingLeftInv
+
+-----------------------------------------------------------------------------------------
+-- * View Generation (by query policy).
+
+-- | Encodes an EI view of symbol queries, or the first symbol whose query failed.
+data ViewQueryRes = QueryFailure Symbol
+                  | QuerySuccess EIView
+                  deriving (Show, Eq)
+
+-- | Implementation details for viewByQuery (fold function).
+viewByQueryImpl :: EIDict -> EIQueryType -> Symbol -> ViewQueryRes -> ViewQueryRes
+viewByQueryImpl _    _  _   rv@(QueryFailure _) = rv
+viewByQueryImpl dict ty sym (QuerySuccess view) =
+    case queryEIRule dict sym ty of
+        Nothing   -> QueryFailure sym
+        Just rule -> case addEIRule view (sym, rule) of
+            Nothing    -> QueryFailure sym
+            Just view' -> QuerySuccess view'
+
+-- | Consumes a set of symbols, a query type, and an EI dictionary. If each symbol can be
+-- queried successfully in the EI dictionary, then returns a EI view with the
+-- corresponding query results. Otherwise, the first symbol is returned whose query could
+-- not be satisfied.
+viewByQuery :: Set.Set Symbol -> EIQueryType -> EIDict -> ViewQueryRes
+viewByQuery symset ty dict = Set.foldr f v symset
+    where v = QuerySuccess $ createView $ isAppliedOnLeft dict
+          f = viewByQueryImpl dict ty
 
 -----------------------------------------------------------------------------------------
 -- * Functions to Invert Rewrite Rules.
@@ -63,7 +93,7 @@ hasLeftInvs (EIView usingLeftInv _) = usingLeftInv
 invertStrImpl :: EIView -> MonWord -> Maybe MonWord
 invertStrImpl _     []        = Just []
 invertStrImpl view (sym:word) =
-    branchJust (findRule view sym) $ \rule ->
+    branchJust (findEIRule view sym) $ \rule ->
         branchJust (invertStrImpl view word) $ \dword ->
             Just $ getInv rule ++ dword
 
@@ -85,7 +115,7 @@ invertRule eview iview rule =
 -- * Functions to Derive Inverse Rewrite Rules.
 
 -- | A variation of the Rewrite type to EIRules.
-data EIRewrite = EIRewrite Int EIRule deriving (Show,Eq)
+data EIRewrite = EIRewrite Int EIRule deriving (Show, Eq)
 
 -- | Helper method to implement derivElim and deriveIntro. The additional function from
 -- EIRule to integer is used to track the current index in the derivation. Specifically,
@@ -94,7 +124,7 @@ data EIRewrite = EIRewrite Int EIRule deriving (Show,Eq)
 seqToDer :: (EIRule -> Int) -> EIView -> Int -> MonWord -> Maybe (Int, [EIRewrite])
 seqToDer _     _    n []         = Just (n, [])
 seqToDer delta view n (sym:word) =
-    branchJust (findRule view sym) $ \rule ->
+    branchJust (findEIRule view sym) $ \rule ->
         let n' = n + delta rule
         in branchJust (seqToDer delta view n' word) $ \(end, deriv) ->
             Just (end, EIRewrite n rule:deriv)
