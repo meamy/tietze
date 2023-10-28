@@ -7,6 +7,7 @@ module Lafont.Edit.EIRules (
     -- Exports.
     EIDict,
     EIQueryType ( .. ),
+    isAppliedOnLeft,
     getInv,
     getEICount,
     getEIRule,
@@ -41,7 +42,7 @@ hasLeftInv (EIRule _ _ _ lflag _) = lflag
 type EIMap = Map.Map Symbol [EIRule]
 
 -- | A mapping from symbols, to either their introduction or elimination rules.
-data EIDict = EIDict Int EIMap deriving (Eq,Show)
+data EIDict = EIDict Bool Int EIMap deriving (Eq, Show)
 
 -- | A function that consumes whether inverses appear on the left or right, together with
 -- a dictionary of rewrite rules. A dictionary of EIRules is constructed as follows. For
@@ -62,7 +63,7 @@ eiFold f isLeftInv (name, rule) (sz, dict) =
 -- | Implementation details for toEDict and toIDict. The EIRuleFn is the function used to
 -- determine if each rewrite rule is in fact an EIRule of the correct type.
 toEIDict :: EIRuleFn -> EIDictFn
-toEIDict f isLeftInv rules = EIDict sz dict
+toEIDict f isLeftInv rules = EIDict isLeftInv sz dict
     where (sz, dict) = foldRules (eiFold f isLeftInv) (0, Map.empty) rules
 
 -- | Implements EIDictFn for elimination rules.
@@ -76,13 +77,17 @@ toIDict = toEIDict asIRule
 -----------------------------------------------------------------------------------------
 -- * Dictionary Access.
 
+-- | Returns the side on which inverse elements appear.
+isAppliedOnLeft :: EIDict -> Bool
+isAppliedOnLeft (EIDict onLeft _ _) = onLeft
+
 -- | Returns the number of rules in the EIDict.
 getEICount :: EIDict -> Int
-getEICount (EIDict sz _) = sz
+getEICount (EIDict _ sz _) = sz
 
 -- | Returns all rules matching a given symbol in an EIDict.
 getEIRule :: EIDict -> Symbol -> [EIRule]
-getEIRule (EIDict _ dict) sym = Map.findWithDefault [] sym dict
+getEIRule (EIDict _ _ dict) sym = Map.findWithDefault [] sym dict
 
 -----------------------------------------------------------------------------------------
 -- * Dictionary Query.

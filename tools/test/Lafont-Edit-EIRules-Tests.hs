@@ -545,6 +545,25 @@ test76 = TestCase (assertEqual "queryEIRule with policy MinimalInv and many mini
                                (queryEIRule querydict1 sym3 ShortestInv))
 
 -----------------------------------------------------------------------------------------
+-- isAppliedOnLeft
+
+test77 = TestCase (assertEqual "isAppliedOnLeft with toEDict and inverses on left."
+                               True
+                               (isAppliedOnLeft $ toEDict True elookup8))
+
+test78 = TestCase (assertEqual "isAppliedOnLeft with toIDict and inverses on left."
+                               True
+                               (isAppliedOnLeft $ toIDict True elookup8))
+
+test79 = TestCase (assertEqual "isAppliedOnLeft with toEDict and inverses on right."
+                               False
+                               (isAppliedOnLeft $ toEDict False elookup8))
+
+test80 = TestCase (assertEqual "isAppliedOnLeft with toIDict and inverses on right."
+                               False
+                               (isAppliedOnLeft $ toIDict False elookup8))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "Internal_toEDir_triv" test1,
@@ -622,6 +641,10 @@ tests = hUnitTestToTests $ TestList [TestLabel "Internal_toEDir_triv" test1,
                                      TestLabel "queryEIRule_Shortest_Len0" test73,
                                      TestLabel "queryEIRule_Shortest_Len1" test74,
                                      TestLabel "queryEIRule_Shortest_Unique" test75,
-                                     TestLabel "queryEIRule_Shortest_Many" test76]
+                                     TestLabel "queryEIRule_Shortest_Many" test76,
+                                     TestLabel "isAppliedOnLeft_toEDict_True" test77,
+                                     TestLabel "isAppliedOnLeft_toIDict_True" test78,
+                                     TestLabel "isAppliedOnLeft_toEDict_False" test79,
+                                     TestLabel "isAppliedOnLeft_toIDict_False" test80]
 
 main = defaultMain tests

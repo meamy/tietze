@@ -25,7 +25,7 @@ data Symbol = Symbol { name :: String
                      , args :: [Int]
                      } deriving (Eq,Show)
 
--- |
+-- | Converts a string to a symbol without any parameters.
 toSymbol :: String -> Symbol
 toSymbol name = Symbol name []
 
