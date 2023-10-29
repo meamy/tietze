@@ -3,6 +3,7 @@
 module Lafont.Edit.Internal.EIRules (
     EIRule ( .. ),
     EIRuleFn,
+    IsDerived,
     IsLeftInv,
     toEDir,
     toIDir,

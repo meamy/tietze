@@ -1,17 +1,23 @@
 -- | This module provides tools to work with elimination and introduction
 -- rules for monoid elements.
 
+{-# LANGUAGE DeriveDataTypeable #-}
+
 module Lafont.Edit.EIRules (
     -- Re-exports from internals.
     EIRule,
+    IsDerived,
+    IsLeftInv,
     -- Exports.
     EIDict,
     EIQueryType ( .. ),
-    isAppliedOnLeft,
-    getInv,
     getEICount,
     getEIRule,
+    getInv,
+    getRelName,
     hasLeftInv,
+    isAppliedOnLeft,
+    isDerived,
     queryEIRule,
     toEDict,
     toIDict
@@ -19,13 +25,19 @@ module Lafont.Edit.EIRules (
 
 import           Lafont.Maybe
 import           Lafont.Common
+import           Data.Data
 import qualified Data.Map             as Map
+import           Data.Typeable
 import           Lafont.Edit.Internal.EIRules
 import           Lafont.Rewrite.Lookup
 import           Lafont.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
 -- * Elimination/Introduction Rule Inspection.
+
+-- | Returns the relation associated with an EIRule.
+getRelName :: EIRule -> String
+getRelName (EIRule name _ _ _ _) = name
 
 -- | Returns the inverse produced or consumed by an EIRule.
 getInv :: EIRule -> MonWord
@@ -34,6 +46,10 @@ getInv (EIRule _ inv _ _ _) = inv
 -- | Returns true if the inverse appears on the left side of the EIRule.
 hasLeftInv :: EIRule -> IsLeftInv
 hasLeftInv (EIRule _ _ _ lflag _) = lflag
+
+-- | Returns if an EIRule is derived.
+isDerived :: EIRule -> IsDerived
+isDerived (EIRule _ _ _ _ deriv) = deriv
 
 -----------------------------------------------------------------------------------------
 -- * Elimination/Introduction Construction Dictionary.
@@ -103,7 +119,7 @@ data EIQueryType = FirstRule
                  | MinimalInv
                  | SelfInv
                  | NoDefault
-                 deriving (Show,Eq)
+                 deriving (Show, Eq, Data, Typeable, Enum)
 
 -- | Consumes a symbol and a list of EIRules for the symbol. Returns a rule indicating
 -- that the symbol is self-inverse.
