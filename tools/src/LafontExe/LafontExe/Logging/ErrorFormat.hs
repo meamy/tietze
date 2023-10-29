@@ -1,12 +1,34 @@
 -- | Functions to format error messages.
 
-module LafontExe.Logging.ErrorFormat where
+module LafontExe.Logging.ErrorFormat (
+    describeFailedApply,
+    describeIncorrectResult,
+    describeIncorrectStep,
+    reportMissingERule,
+    reportMissingIRule,
+    reportDupRule,
+    reportInvalidRule,
+    reportUnknownGen
+) where
 
 import           Lafont.Common
 import           LafontExe.Logging.Primitive
 
 -----------------------------------------------------------------------------------------
--- * Miscellaneous Error Logging.
+-- * Relation Error Logging.
+
+-- | Consumes the name of a rule, and returns an error message stating that the rule is
+-- semantically invalid.
+reportInvalidRule :: String -> String
+reportInvalidRule rname = "Rule contradicts semantics: " ++ rname ++ "\n"
+
+-- | Consumes the name of a rule, and returns an error message stating that the rule
+-- contains an unknown generator.
+reportUnknownGen :: String -> String
+reportUnknownGen rname = "Rule contains an unknown generator: " ++ rname ++ "\n"
+
+-----------------------------------------------------------------------------------------
+-- * Derivation Error Logging.
 
 -- | Consumes the name of a derivation file (fname) and the index of a derivation (num).
 -- Returns the first line of a derivation validation error.
@@ -50,12 +72,19 @@ describeFailedApply fname num pos = fstLine ++ "\n" ++ sndLine ++ "\n" ++ thdLin
 reportDupRule :: Int -> String
 reportDupRule num = "Rule at index " ++ show num ++ " has duplicate name."
 
--- | Consumes the name of a rule, and returns an error message stating that the rule is
--- semantically invalid.
-reportInvalidRule :: String -> String
-reportInvalidRule rname = "Rule contradicts semantics: " ++ rname ++ "\n"
+-----------------------------------------------------------------------------------------
+-- * EIRule Error Logging.
 
--- | Consumes the name of a rule, and returns an error message stating that the rule
--- contains an unknown generator.
-reportUnknownGen :: String -> String
-reportUnknownGen rname = "Rule contains an unknown generator: " ++ rname ++ "\n"
+-- | Consumes an EIRule type (ty) and a symbol (sym). Returns a line stating that a rule
+-- of type ty could not be found for sym.
+reportMissingEIRule :: String -> Symbol -> String
+reportMissingEIRule ty sym = "Unable to find " ++ ty ++ " rule for " ++ symstr ++ ".\n"
+    where symstr = display sym
+
+-- | Specializes reportMissingEIRule for ty=elimination.
+reportMissingERule :: Symbol -> String
+reportMissingERule = reportMissingEIRule "elimination"
+
+-- | Specializes reportMissingEIRule for ty=introduction.
+reportMissingIRule :: Symbol -> String
+reportMissingIRule = reportMissingEIRule "introduction"
