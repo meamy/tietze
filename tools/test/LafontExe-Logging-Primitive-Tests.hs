@@ -4,6 +4,8 @@ import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Lafont.Common
+import Lafont.Edit.Internal.EIRules
+import Lafont.Edit.Invert
 import Lafont.Rewrite.Rules
 import LafontExe.Logging.Primitive
 
@@ -71,6 +73,41 @@ test8 = TestCase (assertEqual "logRule can display derived rules."
                               (logRule ("rel4", rule1)))
 
 -----------------------------------------------------------------------------------------
+-- logEIRule
+
+Just (sym1, eirule1) = asIRule True "rel1" rule3
+Just (sym2, eirule2) = asERule True "name" rule4
+
+test9 = TestCase (assertEqual "logEIRule handles primitive relations."
+                              "rel1"
+                              (logEIRule eirule1))
+
+test10 = TestCase (assertEqual "logEIRule handles derived relations."
+                               "name [derived]"
+                               (logEIRule eirule2))
+
+-----------------------------------------------------------------------------------------
+-- logEIRuleByQuery
+
+sym3 = Symbol "zzz" []
+
+view0      = createView True
+Just view1 = addEIRule view0 (sym1, eirule1)
+Just view2 = addEIRule view1 (sym3, eirule2)
+
+test11 = TestCase (assertEqual "logEIRuleByQuery handles failed queries."
+                               "xyz: (unknown)"
+                               (logEIRuleByQuery view0 sym1))
+
+test12 = TestCase (assertEqual "logEIRuleByQuery handles primitive queries."
+                               "xyz: rel1"
+                               (logEIRuleByQuery view2 sym1))
+
+test13 = TestCase (assertEqual "logEIRuleByQuery handles primitive queries."
+                               "zzz: name [derived]"
+                               (logEIRuleByQuery view2 sym3))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "logWord_EmptyString" test1,
@@ -80,6 +117,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "logWord_EmptyString" test1,
                                      TestLabel "logRule_EquationalOne" test5,
                                      TestLabel "logRule_EquationalTwo" test6,
                                      TestLabel "logRule_ProductionRule" test7,
-                                     TestLabel "logRule_Derived" test8]
+                                     TestLabel "logRule_Derived" test8,
+                                     TestLabel "logEIRule_Primitive" test9,
+                                     TestLabel "logEIRule_Derived" test10,
+                                     TestLabel "logEIRuleByQuery_Fail" test11,
+                                     TestLabel "logEIRuleByQuery_Primitive" test12,
+                                     TestLabel "logEIRuleByQuery_Derived" test13]
 
 main = defaultMain tests
