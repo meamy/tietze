@@ -72,12 +72,14 @@ library
 library LafontExe
   exposed-modules:     LafontExe.CheckGenerators
                        LafontExe.CheckRelations
+                       LafontExe.QueryEIRules
                        LafontExe.ValidateDerivations
                        LafontExe.IO.CmdLnFlags
                        LafontExe.IO.CmdLnParser
                        LafontExe.IO.Configs
                        LafontExe.IO.Files
                        LafontExe.Logic.Derivations
+                       LafontExe.Logic.QueryEIRules
                        LafontExe.Logic.Relations
                        LafontExe.Logging.ErrorFormat
                        LafontExe.Logging.Graph
@@ -85,6 +87,7 @@ library LafontExe
                        LafontExe.Logging.Primitive
   build-depends:       base,
                        cmdargs,
+                       containers,
                        directory,
                        yaml,
                        Lafont
@@ -108,6 +111,13 @@ executable check_relations
   import:              exe-with-file-io-props
   main-is:             CheckRelations/Main.hs
   other-modules:       CheckRelations.CmdLn
+
+executable query_eirule
+  import:              exe-with-file-io-props
+  main-is:             QueryEIRules/Main.hs
+  other-modules:       QueryEIRules.CmdLn
+  build-depends:       containers,
+                       split
 
 executable validate_derivations
   import:              exe-with-file-io-props
@@ -140,10 +150,11 @@ test-suite lafont-common-tests
   main-is:             Lafont-Common-Tests.hs
   type:                exitcode-stdio-1.0
 
-test-suite lafont-edit-dualize-tests
+test-suite lafont-edit-invert-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Edit-Invert-Tests.hs
   type:                exitcode-stdio-1.0
+  build-depends:       containers
 
 test-suite lafont-edit-eirules-tests
   import:              basic-unit-test-props
