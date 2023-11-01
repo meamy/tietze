@@ -1493,7 +1493,7 @@ Z0.Z2.CX20
 @name drel74
 
 K01.CX20
-expand_CX20 → 1
+symmetry_CX_a → 1
 symmetry_K_c → 0
 !apply elim_SWAP02 → 2
 
@@ -1805,13 +1805,13 @@ CCX2.CX12
 CCX2.CX02
 expand_CCX2 → 0
 !apply elim_SWAP02 ← 4
-expand_CX20 ← 2
+symmetry_CX_a ← 2
 
 -- SWAP02.CCX0.CX20.SWAP02
 !apply drel94 → 1
 
 -- SWAP02.CX20.CCX0.SWAP02
-expand_CX20 → 1
+symmetry_CX_a → 1
 expand_CCX2 ← 3
 !apply elim_SWAP02 → 0
 CX02.CCX2
@@ -1922,7 +1922,7 @@ r5_f → 1
 !apply bifunct_X_SWAP_c → 3
 
 -- SWAP02.CCX0.CX20.SWAP02.X1
-expand_CX20 → 2
+symmetry_CX_a → 2
 !apply elim_SWAP02 → 4
 expand_CCX2 ← 0
 CCX2.CX02.X1

@@ -119,11 +119,11 @@ elim_CX01 → 1
 
 @name elim_CX20
 CX20.CX20
-expand_CX20 → 1
 expand_CX20 → 0
-!apply elim_SWAP02 → 2
-!apply elim_CX02 → 1
-!apply elim_SWAP02 → 0
+!apply bifunct_X_CX_f ← 3
+r5_f ← 2
+!apply elim_X1 → 1
+elim_CCX0 → 0
 ε
 
 

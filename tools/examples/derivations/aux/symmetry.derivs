@@ -85,7 +85,7 @@ SWAP12.CX12.SWAP12
 
 @name symmetry_CX_h
 CX20
-expand_CX20 → 0
+symmetry_CX_a → 0
 expand_SWAP02 → 2
 expand_SWAP02 → 0
 symmetry_CX_c ← 2
