@@ -73,9 +73,10 @@ X2.X0
 @name bifunct_X_c
 X1.X2
 expand_X1 → 0
-!apply bifunct_X_SWAP_b ← 2
+!apply bifunct_X_b → 3
+!apply bifunct_X_CX_d → 2
 !apply bifunct_X_b → 1
-!apply bifunct_X_SWAP_b ← 0
+!apply bifunct_X_CX_d → 0
 expand_X1 ← 1
 X2.X1
 
@@ -180,24 +181,24 @@ X2.CX01
 
 @name bifunct_X_CX_e
 CX02.X1
-expand_X1 → 1
+symmetry_X_a → 1
 !apply elim_SWAP01 ← 0
 symmetry_CX_c ← 1
 bifunct_X_CX_a → 1
 symmetry_CX_c → 2
-expand_X1 ← 0
+symmetry_X_a ← 0
 !apply elim_SWAP01 → 2
 X1.CX02
 
 @name bifunct_X_CX_f
 CX20.X1
-expand_X1 → 1
+symmetry_X_a → 1
 !apply symmetry_CX_h → 0
 !apply elim_SWAP01 → 2
 !apply bifunct_X_CX_b → 1
 !apply elim_SWAP01 ← 2
 !apply symmetry_CX_h ← 3
-expand_X1 ← 0
+symmetry_X_a ← 0
 X1.CX20
 
 
@@ -224,9 +225,9 @@ CZ02.X1
 X0.CZ12
 expand_CZ12 → 1
 !apply elim_SWAP01 ← 0
-expand_X1 ← 1
+symmetry_X_a ← 1
 !apply bifunct_X_CZ_a → 1
-expand_X1 → 2
+symmetry_X_a → 2
 !apply elim_SWAP01 → 4
 expand_CZ12 ← 0
 CZ12.X0

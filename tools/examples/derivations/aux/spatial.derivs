@@ -240,9 +240,9 @@ expand_M → 1
 !apply elim_SWAP01 ← 4
 !apply elim_SWAP01 ← 3
 !apply elim_SWAP01 ← 2
-expand_X1 ← 0
+symmetry_X_a ← 0
 expand_Z1 ← 1
-expand_X1 ← 2
+symmetry_X_a ← 2
 expand_Z1 ← 3
 X1.Z1.X1.Z1
 
