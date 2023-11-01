@@ -4,6 +4,7 @@
 module Lafont.Edit.Invert (
     EIRewrite ( .. ),
     EIView,
+    InversionProof ( .. ),
     ViewQueryRes ( .. ),
     addEIRule,
     createView,
@@ -11,6 +12,7 @@ module Lafont.Edit.Invert (
     deriveIntro,
     invertRule,
     findEIRule,
+    getInvProof,
     hasLeftInvs,
     viewByQuery
 ) where
@@ -22,6 +24,7 @@ import           Lafont.Maybe
 import           Lafont.Edit.EIRules
 import           Lafont.Edit.Internal.EIRules
 import           Lafont.Rewrite.Abstraction
+import           Lafont.Rewrite.Common
 import           Lafont.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
@@ -112,10 +115,13 @@ invertRule eview iview rule =
         branchJust (invertStr iview $ lhs rule) $ \rstr -> Just (lstr, rstr)
 
 -----------------------------------------------------------------------------------------
--- * Functions to Derive Inverse Rewrite Rules.
+-- * Type to Encode EIRule Derivations.
 
--- | A variation of the Rewrite type to EIRules.
+-- | A variation of the Rewrite type for EIRules.
 data EIRewrite = EIRewrite Int EIRule deriving (Show, Eq)
+
+-----------------------------------------------------------------------------------------
+-- * Functions to Derive Inverse Rewrite Rules.
 
 -- | Helper method to implement derivElim and deriveIntro. The additional function from
 -- EIRule to integer is used to track the current index in the derivation. Specifically,
@@ -152,3 +158,45 @@ deriveIntro view n word = seqToDer delta view n seq
     where linvs = hasLeftInvs view
           seq    = if linvs then reverse word else word
           delta  = if linvs then length . getInv else const 1
+
+-- | Summarizes a derivation proof to invert a relation. The rewrite rule envoked during
+-- the swapStep is the relation under inversion. The proof is as follows:
+--      <invLhs>
+--      <introStep[0]>
+--      <introStep[1]>
+--      ...
+--      <introStep[n]>
+--      <swapStep>
+--      <elimStep[0]>
+--      <elimStep[1]>
+--      ...
+--      <elimStep[m]>
+data InversionProof = InversionProof { invLhs    :: MonWord
+                                     , invRhs    :: MonWord
+                                     , introStep :: [EIRewrite]
+                                     , swapStep  :: Rewrite
+                                     , elimStep  :: [EIRewrite]
+                                     } deriving (Show, Eq)
+
+-- | Implementation details for getInvProof. Explicitly consumes the inverted left-hand
+-- side and right-hand side.
+getInvProofImpl :: EIView -> EIView -> RewriteRule -> MonWord -> MonWord
+                          -> Maybe InversionProof
+getInvProofImpl eview iview rule linv rinv =
+    branchJust (deriveIntro iview pos1 $ lhs rule) $ \(_, isteps) ->
+        branchJust (deriveElim eview pos2 $ rhs rule) $ \(_, esteps) ->
+            Just $ InversionProof linv rinv isteps swap esteps
+    where swap = Rewrite rule pos2 L2R
+          pos1 = if hasLeftInvs eview then length linv else 0
+          pos2 = if hasLeftInvs eview then pos1 else length rinv
+
+-- | Takes as input a view of elimination rules (eview), a view of introduction rules
+-- (iview), and a rewrite rule. Attempts to invert the rule, according to eview and
+-- iview. The type of the new rule will be determined by (invertRule eview iview rule).
+-- The rule will be defined via a derivational proof.
+getInvProof :: EIView -> EIView -> RewriteRule -> Maybe InversionProof
+getInvProof eview iview rule =
+    if hasLeftInvs eview == hasLeftInvs iview
+    then Nothing
+    else branchJust (invertRule eview iview rule) $ \(linv, rinv) ->
+        getInvProofImpl eview iview rule linv rinv

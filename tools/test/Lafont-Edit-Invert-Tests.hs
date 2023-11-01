@@ -73,11 +73,15 @@ mkAltIView isLeftInv = iview3
           iview3 = fromJust $ addEIRule iview2 (sym3, getAltRule 3 isLeftInv)
 
 lalt_eview = mkAltEView True
+ralt_eview = mkAltEView False
 lalt_iview = mkAltIView True
 ralt_iview = mkAltIView False
 
 -----------------------------------------------------------------------------------------
 -- * invertRule
+
+linv = [sym2, sym4, sym1]
+rinv = [sym3, sym7, sym7, sym7, sym5, sym6]
 
 test1 = TestCase (assertEqual "invertRule fails when an elimination rule is missing."
                               (Nothing :: Maybe (MonWord, MonWord))
@@ -95,13 +99,16 @@ test3 = TestCase (assertEqual "invertRule applied to a self-inv case."
 
 -- This case was also validated by-hand.
 test4 = TestCase (assertEqual "invertRule applied to a non-trivial rules."
-                              (Just (lhs, rhs) :: Maybe (MonWord, MonWord))
+                              (Just (linv, rinv) :: Maybe (MonWord, MonWord))
                               (invertRule lalt_eview ralt_iview rwrule1))
-    where lhs = [sym2, sym4, sym1]
-          rhs = [sym3, sym7, sym7, sym7, sym5, sym6]
 
 -----------------------------------------------------------------------------------------
 -- * deriveIntro
+
+intro = [EIRewrite 3 r1, EIRewrite 4 r2, EIRewrite 5 r3]
+    where r1 = getAltRule 1 False
+          r2 = getAltRule 2 False
+          r3 = getAltRule 3 False
 
 test5 = TestCase (assertEqual "deriveIntro applied to an empty word."
                               (Just (5, []) :: Maybe (Int, [EIRewrite]))
@@ -120,15 +127,15 @@ test7 = TestCase (assertEqual "deriveIntro applied with left invs."
           deriv = [EIRewrite 5 r3, EIRewrite 6 r2, EIRewrite 9 r1]
 
 test8 = TestCase (assertEqual "deriveIntro applied with right invs."
-                              (Just (8, deriv) :: Maybe (Int, [EIRewrite]))
-                              (deriveIntro ralt_iview 5 [sym1, sym2, sym3]))
-    where r1    = getAltRule 1 False
-          r2    = getAltRule 2 False
-          r3    = getAltRule 3 False
-          deriv = [EIRewrite 5 r1, EIRewrite 6 r2, EIRewrite 7 r3]
+                              (Just (6, intro) :: Maybe (Int, [EIRewrite]))
+                              (deriveIntro ralt_iview 3 [sym1, sym2, sym3]))
 
 -----------------------------------------------------------------------------------------
 -- * deriveElim
+
+elim = [EIRewrite 3 r1, EIRewrite 2 r2]
+    where r1 = getAltRule 5 True
+          r2 = getAltRule 4 True
 
 test9 = TestCase (assertEqual "deriveElim applied to an empty word."
                               (Just (5, []) :: Maybe (Int, [EIRewrite]))
@@ -138,13 +145,17 @@ test10 = TestCase (assertEqual "deriveElim applied to a non-matching word."
                                (Nothing :: Maybe (Int, [EIRewrite]))
                                (deriveElim lalt_iview 5 [sym1, sym2, sym5]))
 
-test11 = TestCase (assertEqual "deriveElim applied with left invs."
+test11 = TestCase (assertEqual "deriveElim applied with left invs (1/2)."
                                (Just (4, deriv) :: Maybe (Int, [EIRewrite]))
                                (deriveElim lalt_iview 10 [sym1, sym2, sym3]))
     where r1    = getAltRule 1 True
           r2    = getAltRule 2 True
           r3    = getAltRule 3 True
           deriv = [EIRewrite 10 r1, EIRewrite 8 r2, EIRewrite 5 r3]
+
+test27 = TestCase (assertEqual "deriveElim applied with left invs (2/2)."
+                               (Just (0, elim) :: Maybe (Int, [EIRewrite]))
+                               (deriveElim lalt_eview 3 [sym5, sym4]))
 
 test12 = TestCase (assertEqual "deriveElim applied with right invs."
                                (Just (7, deriv) :: Maybe (Int, [EIRewrite]))
@@ -241,22 +252,43 @@ checkQuery (QuerySuccess _)   = Nothing
 test19 = TestCase (assertEqual "viewByQuery success using SelfInv."
                                Nothing
                                (checkQuery $ viewByQuery symset SelfInv qedict))
-      where symset = Set.fromList [sym1, sym2, sym3]
+    where symset = Set.fromList [sym1, sym2, sym3]
 
 test20 = TestCase (assertEqual "viewByQuery success using MinimalInv."
                                Nothing
                                (checkQuery $ viewByQuery symset MinimalInv qedict))
-      where symset = Set.fromList [sym1, sym2, sym3, sym4]
+    where symset = Set.fromList [sym1, sym2, sym3, sym4]
 
 test21 = TestCase (assertEqual "viewByQuery failure using SelfInv."
                                (Just sym7)
                                (checkQuery $ viewByQuery symset SelfInv qedict))
-      where symset = Set.fromList [sym1, sym2, sym7, sym3]
+    where symset = Set.fromList [sym1, sym2, sym7, sym3]
 
 test22 = TestCase (assertEqual "viewByQuery failure using MinimalInv."
                                (Just sym7)
                                (checkQuery $ viewByQuery symset MinimalInv qedict))
-      where symset = Set.fromList [sym1, sym2, sym7, sym3, sym4]
+    where symset = Set.fromList [sym1, sym2, sym7, sym3, sym4]
+
+-----------------------------------------------------------------------------------------
+-- * getInvProof
+
+test23 = TestCase (assertEqual "getInvProof handles misaligned edict and idict (1/2)."
+                               Nothing
+                               (getInvProof lalt_eview lalt_iview rwrule1))
+
+test24 = TestCase (assertEqual "getInvProof handles misaligned edict and idict (2/2)."
+                               Nothing
+                               (getInvProof ralt_eview ralt_iview rwrule1))
+
+test25 = TestCase (assertEqual "getInvProof handles missing symbols."
+                               Nothing
+                               (getInvProof lalt_eview ralt_iview rule_invlen3_w))
+
+-- This case was also validated by-hand.
+test26 = TestCase (assertEqual "getInvProof handles invertible relations."
+                               (Just (InversionProof linv rinv intro swap elim))
+                               (getInvProof lalt_eview ralt_iview rwrule1))
+    where swap = Rewrite rwrule1 3 L2R
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -271,7 +303,8 @@ tests = hUnitTestToTests $ TestList [TestLabel "invertRule_Missing_ERule" test1,
                                      TestLabel "deriveIntro_RightInv" test8,
                                      TestLabel "deriveElim_Empty" test9,
                                      TestLabel "deriveElim_NoMatch" test10,
-                                     TestLabel "deriveElim_LeftInv" test11,
+                                     TestLabel "deriveElim_LeftInv_1" test11,
+                                     TestLabel "deriveElim_LeftInv_2" test27,
                                      TestLabel "deriveElim_RightInv" test12,
                                      TestLabel "hasLeftInvs_Left_1" test13,
                                      TestLabel "hasLeftInvs_Left_2" test14,
@@ -282,6 +315,10 @@ tests = hUnitTestToTests $ TestList [TestLabel "invertRule_Missing_ERule" test1,
                                      TestLabel "viewByQuery_Success_1" test19,
                                      TestLabel "viewByQuery_Success_2" test20,
                                      TestLabel "viewByQuery_Failure_1" test21,
-                                     TestLabel "viewByQuery_Failure_1" test22]
+                                     TestLabel "viewByQuery_Failure_1" test22,
+                                     TestLabel "getInvProof_fail_bothLHS" test23,
+                                     TestLabel "getInvProof_fail_bothRHS" test24,
+                                     TestLabel "getInvProof_fail_missingSymb" test25,
+                                     TestLabel "getInvProof_fail_success" test26]
 
 main = defaultMain tests
