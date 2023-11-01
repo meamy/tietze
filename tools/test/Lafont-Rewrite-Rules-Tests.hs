@@ -165,6 +165,41 @@ test20 = TestCase $ assertBool "Can deteect that a rule is derived (2/2)"
                                (isDerivedRule rule6)
 
 -----------------------------------------------------------------------------------------
+-- Tests display methods for rewrites.
+
+test21 = TestCase $ assertEqual "Can format a L2R primitive rewrite rule."
+                                "rule1 → 5"
+                                (formatRewrite "rule1" False L2R 5)
+
+test22 = TestCase $ assertEqual "Can format a L2R primitive rewrite rule."
+                                "rule2 ← 7"
+                                (formatRewrite "rule2" False R2L 7)
+
+test23 = TestCase $ assertEqual "Can format a L2R derived rewrite rule."
+                                "!apply rule3 → 9"
+                                (formatRewrite "rule3" True L2R 9)
+
+test24 = TestCase $ assertEqual "Can format a L2R dervied rewrite rule."
+                                "!apply rule4 ← 11"
+                                (formatRewrite "rule4" True R2L 11)
+
+test25 = TestCase $ assertEqual "Can display a L2R primitive rewrite rule."
+                                "rule1 → 5"
+                                (showRewrite "rule1" (Rewrite rule1 5 L2R))
+
+test26 = TestCase $ assertEqual "Can display a L2R primitive rewrite rule."
+                                "rule2 ← 7"
+                                (showRewrite "rule2" (Rewrite rule1 7 R2L))
+
+test27 = TestCase $ assertEqual "Can display a L2R derived rewrite rule."
+                                "!apply rule3 → 9"
+                                (showRewrite "rule3" (Rewrite rule5 9 L2R))
+
+test28 = TestCase $ assertEqual "Can display a L2R dervied rewrite rule."
+                                "!apply rule4 ← 11"
+                                (showRewrite "rule4" (Rewrite rule5 11 R2L))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "CheckRuleForwards" test1,
@@ -186,6 +221,14 @@ tests = hUnitTestToTests $ TestList [TestLabel "CheckRuleForwards" test1,
                                      TestLabel "DetectsNonDerivedRulesOne" test17,
                                      TestLabel "DetectsNonDerivedRulesTwo" test18,
                                      TestLabel "DetectsDerivedRulesOne" test19,
-                                     TestLabel "DetectsDerivedRulesTwo" test20]
+                                     TestLabel "DetectsDerivedRulesTwo" test20,
+                                     TestLabel "formatRewrite1" test21,
+                                     TestLabel "formatRewrite2" test22,
+                                     TestLabel "formatRewrite3" test23,
+                                     TestLabel "formatRewrite4" test24,
+                                     TestLabel "showRewrite1" test25,
+                                     TestLabel "showRewrite2" test26,
+                                     TestLabel "showRewrite3" test27,
+                                     TestLabel "showRewrite4" test28]
 
 main = defaultMain tests

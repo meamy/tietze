@@ -291,6 +291,30 @@ test26 = TestCase (assertEqual "getInvProof handles invertible relations."
     where swap = Rewrite rwrule1 3 L2R
 
 -----------------------------------------------------------------------------------------
+-- * display
+
+l2r_prule = EIRule "sd4" [sym4] L2R False False
+l2r_drule = EIRule "sd5" [sym5] L2R False True
+r2l_prule = EIRule "sd6" [sym4] R2L True False
+r2l_drule = EIRule "sd7" [sym6] R2L True True
+
+test28 = TestCase (assertEqual "Can format a L2R primitive rewrite rule."
+                               "sd4 → 5"
+                               (display (EIRewrite 5 l2r_prule)))
+
+test29 = TestCase (assertEqual "Can format a L2R primitive rewrite rule."
+                               "sd6 ← 7"
+                               (display (EIRewrite 7 r2l_prule)))
+
+test30 = TestCase (assertEqual "Can format a L2R derived rewrite rule."
+                               "!apply sd5 → 9"
+                               (display (EIRewrite 9 l2r_drule)))
+
+test31 = TestCase (assertEqual "Can format a L2R dervied rewrite rule."
+                               "!apply sd7 ← 11"
+                               (display (EIRewrite 11 r2l_drule)))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "invertRule_Missing_ERule" test1,
@@ -319,6 +343,10 @@ tests = hUnitTestToTests $ TestList [TestLabel "invertRule_Missing_ERule" test1,
                                      TestLabel "getInvProof_fail_bothLHS" test23,
                                      TestLabel "getInvProof_fail_bothRHS" test24,
                                      TestLabel "getInvProof_fail_missingSymb" test25,
-                                     TestLabel "getInvProof_fail_success" test26]
+                                     TestLabel "getInvProof_fail_success" test26,
+                                     TestLabel "display_EIRewrite_1" test28,
+                                     TestLabel "display_EIRewrite_2" test29,
+                                     TestLabel "display_EIRewrite_3" test30,
+                                     TestLabel "display_EIRewrite_4" test31]
 
 main = defaultMain tests

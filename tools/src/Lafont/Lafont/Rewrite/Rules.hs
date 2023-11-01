@@ -5,11 +5,13 @@
 module Lafont.Rewrite.Rules (
     RewriteRule ( .. ),
     Rewrite ( .. ),
-    isDerivedRule,
-    checkRewriteRule,
+    applyRewrite,
     applyRewriteRule,
     checkRewrite,
-    applyRewrite
+    checkRewriteRule,
+    formatRewrite,
+    isDerivedRule,
+    showRewrite
 ) where
 
 import           Data.Maybe
@@ -31,7 +33,7 @@ data RewriteRule = RewriteRule { lhs         :: MonWord
                                , rhs         :: MonWord
                                , equational  :: Bool
                                , derivedFrom :: Maybe String
-                               } deriving (Show,Eq)
+                               } deriving (Show, Eq)
 
 -- | Consumes a rule. Returns true if the rule is derived.
 isDerivedRule :: RewriteRule -> Bool
@@ -55,7 +57,19 @@ applyRewriteRule str rule R2L = applyProductionRule str (rhs rule) (lhs rule)
 -- * Rewrites.
 
 -- | Applies a rewrite rule at the specified position, in the specified direction.
-data Rewrite = Rewrite RewriteRule RulePos RuleDir deriving (Show,Eq)
+data Rewrite = Rewrite RewriteRule RulePos RuleDir deriving (Show, Eq)
+
+-- | Helper method to generate rewrite strings.
+formatRewrite :: String -> Bool -> RuleDir -> Int -> String
+formatRewrite name applied dir pos = appstr ++ name ++ dirstr ++ show pos
+    where appstr = if applied then "!apply " else ""
+          dirstr = if dir == L2R then " → " else " ← "
+
+-- | Takes as input the name of a relation, and a rewrite using said relation. Returns a
+-- textual representation of the rewrite, as in a derivation file.
+showRewrite :: String -> Rewrite -> String
+showRewrite name (Rewrite rule pos dir) = formatRewrite name applied dir pos
+    where applied = isJust $ derivedFrom rule
 
 -- | Consumes a monoidal word and a rewrite. Returns true if rule matches at the position
 -- indicated by the rewrite.

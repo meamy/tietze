@@ -120,6 +120,10 @@ invertRule eview iview rule =
 -- | A variation of the Rewrite type for EIRules.
 data EIRewrite = EIRewrite Int EIRule deriving (Show, Eq)
 
+instance Display EIRewrite where
+    display (EIRewrite pos (EIRule name _ dir _ isDerived)) = str
+        where str = formatRewrite name isDerived dir pos
+
 -----------------------------------------------------------------------------------------
 -- * Functions to Derive Inverse Rewrite Rules.
 
