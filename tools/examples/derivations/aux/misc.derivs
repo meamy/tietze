@@ -14,7 +14,7 @@ CZ02.CCX1.CX01.CX12.CCX2
 r28_a ← 1
 
 -- CCX1.CX01.CZ02.CX12.CCX2
-r44_a_dag ← 2
+!apply drel108 → 2
 !apply drel71 ← 3
 r26_a_dag ← 3
 

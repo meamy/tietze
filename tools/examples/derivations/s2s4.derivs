@@ -30,9 +30,9 @@ CX01.CX02.X2.X1.X0
 @name lemmacx02cx01x0
 
 CX02.CX01.X0
-r12_a_dag → 1
+!apply drel105 ← 1
 !apply bifunct_X_CX_e → 0
-r12_d_dag → 1
+!apply drel106 ← 1
 !apply bifunct_X_b ← 1
 bifunct_X_a ← 0
 X0.X1.X2.CX02.CX01
@@ -100,9 +100,9 @@ elim_X0 → 6
 !apply elim_CX02 → 10
 
 -- X0.CX01.CX02.X2.X1.CCX0.X1.X2.CX21.CCX2.CX21.X2.X1.CCX0.X1.X2.CX21.CCX2.CX02.CX21.X0
-r12_e_dag ← 14
+!apply drel107 → 14
 r12_e ← 10
-r12_e_dag ← 6
+!apply drel107 → 6
 
 -- X0.CX01.CX02.X2.X1.CCX0.CX21.X2.CCX2.X2.CX21.CCX0.CX21.X2.CCX2.CX02.CX21.X0
 !apply drel26 → 13
@@ -123,7 +123,7 @@ r8_b → 8
 !apply elim_CCX1 → 5
 
 -- X0.CX01.CX02.X2.X1.CX21.X2.CX02.CX21.X0
-r12_e_dag → 5
+!apply drel107 ← 5
 
 -- X0.CX01.CX02.X2.X1.X1.X2.CX21.CX02.CX21.X0
 !apply elim_X1 → 4
