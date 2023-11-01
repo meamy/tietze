@@ -58,7 +58,7 @@ CX21.CX02
 @name lemmacx21cx01cx02
 
 CX21.CX01.CX02
-r17_a_dag → 1
+!apply drel110 ← 1
 !apply elim_CX21 → 0
 !apply elim_CX02 → 2
 CX02.CX21

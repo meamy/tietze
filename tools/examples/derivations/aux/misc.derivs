@@ -16,7 +16,7 @@ r28_a ← 1
 -- CCX1.CX01.CZ02.CX12.CCX2
 !apply drel108 → 2
 !apply drel71 ← 3
-r26_a_dag ← 3
+!apply drel114 → 3
 
 -- CCX1.CX01.CX12.CCX2.CZ02
 !apply drel92 → 0
@@ -30,7 +30,7 @@ elim_CX01 ← 5
 !apply drel103 ← 3
 
 -- CX01.CX12.CX01.CX02.CCX2.CX01.CCX1.CZ02
-r17_c_dag → 3
+!apply drel112 ← 3
 elim_CX01 → 2
 !apply elim_CX12 → 1
 elim_CX01 → 0

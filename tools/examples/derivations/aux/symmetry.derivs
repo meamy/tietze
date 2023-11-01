@@ -159,7 +159,7 @@ CCX1
 r10_c → 2
 !apply elim_CX02 ← 3
 !apply drel95 → 1
-r17_a_dag → 2
+!apply drel110 ← 2
 !apply elim_CX02 → 5
 !apply elim_CX21 → 4
 !apply drel9 → 5
@@ -181,7 +181,7 @@ r10_f → 2
 r10_b → 1
 !apply drel10 → 2
 !apply drel8 → 3
-r17_d_dag → 3
+!apply drel113 ← 3
 !apply elim_CX10 → 6
 !apply elim_CX21 → 5
 !apply elim_CX10 → 4

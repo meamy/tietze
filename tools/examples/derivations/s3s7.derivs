@@ -20,21 +20,21 @@ expand_S7 → 0
 
 -- CZ01.CX21.CCX2.CX21.CZ01.X0.CCX2.X0.CZ01.CX21.CCX2.CX21.CZ01.X0.CCX2.X0
 r18_a → 7
-r18_a_dag → 4
+!apply drel118 ← 4
 
 -- CZ01.CX21.CCX2.CX21.X0.Z1.CZ01.CCX2.CZ01.Z1.X0.CX21.CCX2.CX21.CZ01.X0.CCX2.X0
 !apply drel36 → 6
 !apply drel51 → 5
 
 -- CZ01.CX21.CCX2.CX21.X0.CCX2.X0.CX21.CCX2.CX21.CZ01.X0.CCX2.X0
-r18_a_dag → 10
+!apply drel118 ← 10
 !apply elim_CZ01 ← 14
 !apply drel36 → 12
 !apply elim_Z1 ← 13
 !apply drel51 → 11
 
 -- CZ01.CX21.CCX2.CX21.X0.CCX2.X0.CX21.CCX2.CX21.X0.CCX2.Z1.CZ01.X0
-r18_a_dag → 13
+!apply drel118 ← 13
 !apply bifunct_X_Z_a → 13
 !apply elim_Z1 → 12
 

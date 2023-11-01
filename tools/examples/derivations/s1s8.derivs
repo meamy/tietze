@@ -54,7 +54,7 @@ elim_K12 → 11
 
 -- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.Z1.CCX1.Z1.X2.CZ02.CCX0.CZ02.X2.X1.Z1.CCX1.K12.X1.X0
 r18_c → 11
-r18_c_dag → 6
+!apply drel120 ← 6
 !apply bifunct_Z_CZ_a → 8
 !apply bifunct_Z_CZ_a ← 11
 

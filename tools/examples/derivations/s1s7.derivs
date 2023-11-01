@@ -15,8 +15,8 @@
 @name lemmacz01x0x1
 
 CZ01.X0.X1
-r18_a_dag → 0
-r18_b_dag → 2
+!apply drel118 ← 0
+!apply drel119 ← 2
 !apply drel34 → 1
 !apply spatial_Z0 → 3
 !apply spatial_CZ01 → 4
@@ -51,8 +51,8 @@ expand_S7 → 1
 expand_S1 → 0
 
 -- X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.CZ01.X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.CZ01
-r18_a_dag → 9
-r18_b_dag → 11
+!apply drel118 ← 9
+!apply drel119 ← 11
 
 -- X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.X0.Z1.X1.Z0.CZ01.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.CZ01
 r18_a → 16
