@@ -43,7 +43,7 @@ logQueryResults symset eview iview = estr ++ "\n" ++ istr
 -- not have satisfying EIRules.
 handleDerivedRels :: RuleDict -> [Named AbsDerivation] -> EIQuery -> String
 handleDerivedRels rules named (EIQuery symset isLeftInv ty) =
-    case resolveEIQuery drules symset isLeftInv ty of
+    case resolveEIQuery drules symset symset isLeftInv ty of
         EQueryFailure sym          -> reportMissingERule sym
         IQueryFailure sym          -> reportMissingIRule sym
         EIQuerySuccess eview iview -> logQueryResults symset eview iview
