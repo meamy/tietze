@@ -47,7 +47,7 @@ r28_a → 9
 -- X0.CCX2.K12.X1.X2.CZ02.CCX0.CCX1.CX01.CCX0.CZ02.X2.X1.X0.K12
 !apply drel29 → 1
 !apply drel25 ← 2
-r5_e_dag → 3
+!apply drel101 ← 3
 
 -- X0.K12.X1.X2.CX01.CCX1.CZ02.CCX0.CCX1.CX01.CCX0.CZ02.X2.X1.X0.K12
 !apply elim_CZ02 ← 5
