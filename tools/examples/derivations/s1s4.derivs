@@ -37,7 +37,7 @@ r8_a → 14
 !apply elim_CCX2 → 13
 
 -- X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.CX02.X0.CX02.X0.CX12.CCX0.CCX2.CX01
-r12_d → 9
+!apply drel126 → 9
 !apply elim_CX02 → 8
 !apply bifunct_X_b → 8
 elim_X0 → 9
@@ -48,7 +48,7 @@ elim_X0 → 9
 
 -- X0.CCX2.CX02.X0.CX01.CX02.CCX0.X2.CX12.CCX0.CCX2.CX01
 !apply drel9 → 4
-r12_d → 3
+!apply drel126 → 3
 !apply elim_CX02 → 2
 
 -- X0.CCX2.X0.X2.CX01.CCX0.X2.CX12.CCX0.CCX2.CX01
