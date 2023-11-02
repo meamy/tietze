@@ -83,7 +83,7 @@ SWAP01.CX21.SWAP01
 
 @name symmetry_CX_i
 CX21
-r2 → 0
+!apply drel124 → 0
 !apply symmetry_CX_f → 1
 !apply elim_SWAP02 ← 5
 expand_K01 ← 3

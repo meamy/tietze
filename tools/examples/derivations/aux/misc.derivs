@@ -57,7 +57,7 @@ r47 ← 2
 !apply drel89 → 0
 
 -- K01.CX21.K12.CCX2.CX01.CCX1.CZ02.K01.K12
-r2 → 1
+!apply drel124 → 1
 elim_K12 → 3
 
 -- K01.K12.CX12.CCX2.CX01.CCX1.CZ02.K01.K12
@@ -67,7 +67,7 @@ elim_K12 → 3
 r47 → 7
 !apply drel29 → 6
 elim_K12 ← 5
-r2 ← 6
+!apply drel124 ← 6
 
 -- K01.K12.CZ02.CCX1.CX01.K12.CX21.CCX1.K01
 !apply drel63 ← 7

@@ -101,8 +101,8 @@ elim_K12 → 0
 
 @name elim_CX21
 CX21.CX21
-r2 → 1
-r2 → 0
+!apply drel124 → 1
+!apply drel124 → 0
 elim_K12 → 2
 !apply elim_CX12 → 1
 elim_K12 → 0
