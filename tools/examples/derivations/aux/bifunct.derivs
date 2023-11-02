@@ -152,11 +152,11 @@ Z0.X2
 
 @name bifunct_X_CX_b
 CX21.X0
-expand_CX21 → 0
+r2 → 0
 bifunct_X_K_a ← 2
 bifunct_X_CX_a → 1
 bifunct_X_K_a ← 0
-expand_CX21 ← 1
+r2 ← 1
 X0.CX21
 
 @name bifunct_X_CX_c

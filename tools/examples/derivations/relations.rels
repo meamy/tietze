@@ -25,6 +25,9 @@ expand_X1   X1   = CX01.X0.CX01.X0
 -- Depends on X1.
 expand_CX20 CX20 = CCX0.X1.CCX0.X1
 
+-- Depends on CX20.
+expand_CX21 CX21 = CX20.CX01.CX20.CX01
+
 -- Depends on CX10.
 expand_SWAP01 SWAP01 = CX01.CX10.CX01
 
@@ -33,9 +36,6 @@ expand_CCX1 CCX1 = SWAP01.CCX0.SWAP01
 
 -- Depends on CCX1.
 expand_CX12 CX12 = K12.X0.CCX1.X0.CCX1.K12
-
--- Depends on CX12.
-expand_CX21 CX21 = K12.CX12.K12
 
 -- Depends on Z0.
 expand_M M = X0.Z0.X0.Z0
@@ -107,6 +107,8 @@ bifunct_Z_CX_b Z0.CX12 = CX12.Z0
 -- *******************************************************************
 
 r1 CCX0.CX10 = CX10.CCX0
+
+r2 CX21 = K12.CX12.K12
 
 r5_a X0.CCX2 = CCX2.CX12.X0
 r5_b X0.CCX1 = CCX1.CX21.X0
