@@ -1983,7 +1983,7 @@ CCX2.X0
 X0.CX21.CCX1
 elim_X0 ← 3
 !apply elim_CCX1 ← 4
-r5_b → 3
+!apply drel127 → 3
 !apply elim_CCX1 → 2
 !apply elim_CX21 → 1
 elim_X0 → 0
@@ -2432,3 +2432,33 @@ expand_CX02 ← 0
 !apply bifunct_X_SWAP_a ← 1
 !apply symmetry_X_c ← 2
 CX02.X0.X2
+
+
+-- ****************************************************************************
+-- The relation X0.CCX1 = CCX1.CX21.X0
+-- ****************************************************************************
+
+@name drel127
+
+X0.CCX1
+elim_K12 ← 2
+
+-- X0.CCX1.K12.K12
+r32 ← 1
+bifunct_X_K_a → 0
+
+-- K12.X0.CCX2.K12
+r5_a → 1
+
+-- K12.CCX2.CX12.X0.K12
+r32 → 0
+
+-- CCX1.K12.CX12.X0.K12
+expand_CX12 → 2
+elim_K12 → 1
+
+-- CCX1.CX21.K12.X0.K12
+bifunct_X_K_a → 3
+elim_K12 → 2
+CCX1.CX21.X0
+

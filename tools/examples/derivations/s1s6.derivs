@@ -82,7 +82,7 @@ bifunct_X_CX_a ← 13
 !apply drel98 ← 3
 
 -- X0.CX12.X1.X0.CX12.CCX2.CCX1.X0.CCX2.X0.CCX1.X1.CX12
-r5_b → 9
+!apply drel127 → 9
 
 -- X0.CX12.X1.X0.CX12.CCX2.CCX1.X0.CCX2.CCX1.CX21.X0.X1.CX12
 bifunct_X_a ← 2
@@ -93,7 +93,7 @@ elim_X0 → 0
 r5_a → 5
 
 -- CX12.X1.CX12.CCX2.CCX1.CCX2.CX12.X0.CCX1.CX21.X0.X1.CX12
-r5_b → 7
+!apply drel127 → 7
 
 -- CX12.X1.CX12.CCX2.CCX1.CCX2.CX12.CCX1.CX21.X0.CX21.X0.X1.CX12
 !apply bifunct_X_CX_b → 8

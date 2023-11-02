@@ -89,10 +89,10 @@ CX12.CX12
 !apply drel125 ← 1
 !apply drel125 ← 0
 elim_K12 → 5
-r5_b → 7
+!apply drel127 → 7
 !apply elim_CCX1 → 6
 !apply bifunct_X_CX_b ← 5
-r5_b ← 4
+!apply drel127 ← 4
 elim_X0 → 3
 !apply elim_CCX1 → 2
 elim_X0 → 1
