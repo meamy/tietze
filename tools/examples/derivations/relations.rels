@@ -17,8 +17,6 @@ expand_S8 S8 = K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 -- *******************************************************************
 
 -- No dependencies on derived generators.
-expand_CX10 CX10 = K01.CX01.K01
-expand_Z0   Z0   = K01.X0.K01
 expand_CZ01 CZ01 = K12.CX01.K12
 expand_X1   X1   = CX01.X0.CX01.X0
 
@@ -39,6 +37,13 @@ expand_CX02 CX02 = SWAP12.CX01.SWAP12
 
 -- Depends on CX02.
 expand_SWAP02 SWAP02 = CX02.CX20.CX02
+
+-- Depends on SWAP02.
+expand_K01 K01 = SWAP02.K12.SWAP02
+
+-- Depends on K01.
+expand_CX10 CX10 = K01.CX01.K01
+expand_Z0   Z0   = K01.X0.K01
 
 -- Depends on CX10.
 expand_SWAP01 SWAP01 = CX01.CX10.CX01
@@ -75,8 +80,6 @@ symmetry_X_a X1 = SWAP01.X0.SWAP01
 symmetry_CX_a CX20 = SWAP02.CX02.SWAP02
 symmetry_CX_b CX10 = SWAP02.CX12.SWAP02
 symmetry_CX_c CX12 = SWAP01.CX02.SWAP01
-
-symmetry_K_c K01 = SWAP02.K12.SWAP02
 
 
 -- *******************************************************************

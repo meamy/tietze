@@ -8,7 +8,6 @@ Dyadic(3)
 X0   := X[0]
 CX01 := CX[0][1]
 K01  := K[0][1]
-K12  := K[1][2]
 CCX0 := CCX[1][2][0]
 
 
@@ -16,10 +15,9 @@ CCX0 := CCX[1][2][0]
 -- Derived Generators
 -- **************************************************************************************
 
--- A non-trivial derivation using X0, CCX0, K01, and K12.
+-- Non-trivial derivations using X0, CCX0, and K12.
 CX12 := CX[1][2]
-
--- Conjugations by K01 or K12.
+K12  := K[1][2]
 Z0   := Z[0]
 CX10 := CX[1][0]
 CX21 := CX[2][1]

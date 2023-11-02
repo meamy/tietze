@@ -248,13 +248,13 @@ CZ01.X2
 
 @name bifunct_X_K_b
 X2.K01
-symmetry_K_c → 1
+expand_K01 → 1
 expand_X2 → 0
 !apply elim_SWAP02 → 2
 bifunct_X_K_a → 1
 !apply elim_SWAP02 ← 2
 expand_X2 ← 3
-symmetry_K_c ← 0
+expand_K01 ← 0
 K01.X2
 
 

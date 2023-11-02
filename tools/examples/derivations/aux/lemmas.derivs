@@ -1260,7 +1260,7 @@ Z2.CZ02
 @name drel63
 
 K01.CCX0
-symmetry_K_c → 0
+expand_K01 → 0
 !apply elim_SWAP02 ← 4
 expand_CCX2 ← 2
 
@@ -1269,7 +1269,7 @@ r32 → 1
 
 -- SWAP02.CCX1.K12.SWAP02
 !apply elim_SWAP02 ← 2
-symmetry_K_c ← 3
+expand_K01 ← 3
 !apply symmetry_CCX_f ← 0
 CCX1.K01
 
@@ -1283,14 +1283,14 @@ CCX1.K01
 X2.K12
 expand_X2 → 0
 !apply elim_SWAP02 ← 4
-symmetry_K_c ← 2
+expand_K01 ← 2
 
 -- SWAP02.X0.K01.SWAP02
 elim_K01 ← 1
 expand_Z0 ← 2
 
 -- SWAP02.K01.Z0.SWAP02
-symmetry_K_c → 1
+expand_K01 → 1
 !apply elim_SWAP02 → 0
 
 -- K12.SWAP02.Z0.SWAP02
@@ -1494,7 +1494,7 @@ Z0.Z2.CX20
 
 K01.CX20
 symmetry_CX_a → 1
-symmetry_K_c → 0
+expand_K01 → 0
 !apply elim_SWAP02 → 2
 
 -- SWAP02.K12.CX02.SWAP02
@@ -1502,7 +1502,7 @@ symmetry_K_c → 0
 
 -- SWAP02.CZ02.K12.SWAP02
 !apply elim_SWAP02 ← 2
-symmetry_K_c ← 3
+expand_K01 ← 3
 !apply symmetry_CZ_a ← 0
 CZ02.K01
 
@@ -2373,3 +2373,4 @@ r18_f → 3
 !apply elim_Z2 → 1
 elim_X0 → 0
 CZ02.X0
+
