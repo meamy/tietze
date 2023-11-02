@@ -143,8 +143,8 @@ elim_CCX0 → 1
 
 @name elim_CCX2
 CCX2.CCX2
-expand_CCX2 → 1
-expand_CCX2 → 0
+symmetry_CCX_a → 1
+symmetry_CCX_a → 0
 !apply elim_SWAP02 → 2
 elim_CCX0 → 1
 !apply elim_SWAP02 → 0

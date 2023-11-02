@@ -16,7 +16,7 @@
 
 K12.CX21.CCX2.CX21.K12
 !apply drel46 → 0
-r32 → 1
+!apply drel128 → 1
 !apply drel46 → 2
 elim_K12 → 3
 CX12.CCX1.CX12

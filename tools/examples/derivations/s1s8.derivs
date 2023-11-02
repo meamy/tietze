@@ -18,7 +18,7 @@ X0.K12.X0.X1.CCX2
 bifunct_X_K_a → 0
 elim_X0 → 1
 !apply drel65 → 0
-r32 → 1
+!apply drel128 → 1
 Z1.CCX1.K12
 
 
