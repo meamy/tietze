@@ -34,6 +34,12 @@ expand_CX12 CX12 = K12.CX21.K12
 -- Depends on CX12 and CX21
 expand_SWAP12 SWAP12 = CX12.CX21.CX12
 
+-- Depends on SWAP12.
+expand_CX02 CX02 = SWAP12.CX01.SWAP12
+
+-- Depends on CX02.
+expand_SWAP02 SWAP02 = CX02.CX20.CX02
+
 -- Depends on CX10.
 expand_SWAP01 SWAP01 = CX01.CX10.CX01
 
@@ -43,18 +49,12 @@ expand_CCX1 CCX1 = SWAP01.CCX0.SWAP01
 -- Depends on Z0.
 expand_M M = X0.Z0.X0.Z0
 
--- Depends on SWAP01 and SWAP12.
-expand_SWAP02 SWAP02 = SWAP01.SWAP12.SWAP01
-
 -- Depends on SWAP01 and SWAP02.
 expand_X2 X2 = SWAP02.X0.SWAP02
 
 -- Depends on Z0, SWAP01 and SWAP02.
 expand_Z1 Z1 = SWAP01.Z0.SWAP01
 expand_Z2 Z2 = SWAP02.Z0.SWAP02
-
--- Depends on SWAP12 and SWAP02.
-expand_CX02 CX02 = SWAP12.CX01.SWAP12
 
 -- Depends on SWAP01 and SWAP02.
 expand_CCX2 CCX2 = SWAP02.CCX0.SWAP02
@@ -67,6 +67,8 @@ expand_CZ12 CZ12 = SWAP01.CZ02.SWAP01
 -- *******************************************************************
 -- Symmetric Generators
 -- *******************************************************************
+
+symmetry_SWAP02 SWAP02 = SWAP01.SWAP12.SWAP01
 
 symmetry_X_a X1 = SWAP01.X0.SWAP01
 

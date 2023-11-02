@@ -22,11 +22,11 @@ SWAP01.X2
 
 @name bifunct_X_SWAP_c
 X1.SWAP02
-!apply expand_SWAP02_alt1 → 1
+expand_SWAP02 → 1
 !apply bifunct_X_CX_e ← 0
 !apply bifunct_X_CX_f ← 1
 !apply bifunct_X_CX_e ← 2
-!apply expand_SWAP02_alt1 ← 0
+expand_SWAP02 ← 0
 SWAP02.X1
 
 @name bifunct_Z_SWAP_a
@@ -40,11 +40,11 @@ SWAP12.Z0
 
 @name bifunct_Z_SWAP_b
 Z1.SWAP02
-!apply expand_SWAP02_alt1 → 1
+expand_SWAP02 → 1
 !apply bifunct_Z_CX_c → 0
 !apply bifunct_Z_CX_a → 1
 !apply bifunct_Z_CX_c → 2
-!apply expand_SWAP02_alt1 ← 0
+expand_SWAP02 ← 0
 SWAP02.Z1
 
 @name bifunct_Z_SWAP_c

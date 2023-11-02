@@ -38,9 +38,9 @@ expand_SWAP12 → 0
 SWAP02.SWAP02
 expand_SWAP02 → 1
 expand_SWAP02 → 0
-!apply elim_SWAP01 → 2
-!apply elim_SWAP12 → 1
-!apply elim_SWAP01 → 0
+!apply elim_CX02 → 2
+!apply elim_CX20 → 1
+!apply elim_CX02 → 0
 ε
 
 
