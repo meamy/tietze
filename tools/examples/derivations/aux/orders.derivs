@@ -86,8 +86,8 @@ elim_K01 → 0
 
 @name elim_CX12
 CX12.CX12
-expand_CX12 → 1
-expand_CX12 → 0
+r3 → 1
+r3 → 0
 elim_K12 → 5
 r5_b → 7
 !apply elim_CCX1 → 6
