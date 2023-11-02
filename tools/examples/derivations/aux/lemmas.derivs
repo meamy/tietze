@@ -2387,3 +2387,25 @@ elim_K12 ← 0
 expand_CX12 ← 1
 K12.CX12.K12
 
+
+-- ****************************************************************************
+-- The relation CX12 = K12.X0.CCX1.X0.CCX1.K12
+-- ****************************************************************************
+
+@name drel125
+
+
+K12.X0.CCX1.X0.CCX1.K12
+expand_CCX1 → 4
+expand_CCX1 → 2
+
+-- K12.X0.SWAP01.CCX0.SWAP01.X0.SWAP01.CCX0.SWAP01.K12
+symmetry_X_a ← 4
+!apply elim_SWAP01 ← 1
+
+-- K12.SWAP01.SWAP01.X0.SWAP01.CCX0.X1.CCX0.SWAP01.K12
+symmetry_X_a ← 2
+expand_CX20 ← 2
+symmetry_CX_l ← 1
+expand_CX12 ← 0
+CX12

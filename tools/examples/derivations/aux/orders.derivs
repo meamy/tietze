@@ -86,8 +86,8 @@ elim_K01 → 0
 
 @name elim_CX12
 CX12.CX12
-r3 → 1
-r3 → 0
+!apply drel125 ← 1
+!apply drel125 ← 0
 elim_K12 → 5
 r5_b → 7
 !apply elim_CCX1 → 6
@@ -120,10 +120,11 @@ elim_CX01 → 1
 @name elim_CX20
 CX20.CX20
 expand_CX20 → 0
-!apply bifunct_X_CX_f ← 3
-r5_f ← 2
-!apply elim_X1 → 1
-elim_CCX0 → 0
+!apply elim_X1 ← 5
+r5_f ← 3
+!apply elim_X1 → 2
+elim_CCX0 → 1
+!apply elim_X1 → 0
 ε
 
 

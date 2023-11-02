@@ -21,7 +21,7 @@ expand_CZ01 CZ01 = K12.CX01.K12
 expand_X1   X1   = CX01.X0.CX01.X0
 
 -- Depends on X1.
-expand_CX20 CX20 = CCX0.X1.CCX0.X1
+expand_CX20 CX20 = X1.CCX0.X1.CCX0
 
 -- Depends on CX20.
 expand_CX21 CX21 = CX20.CX01.CX20.CX01
@@ -80,6 +80,7 @@ symmetry_X_a X1 = SWAP01.X0.SWAP01
 symmetry_CX_a CX20 = SWAP02.CX02.SWAP02
 symmetry_CX_b CX10 = SWAP02.CX12.SWAP02
 symmetry_CX_c CX12 = SWAP01.CX02.SWAP01
+symmetry_CX_l CX21 = SWAP01.CX20.SWAP01
 
 
 -- *******************************************************************
@@ -114,8 +115,6 @@ bifunct_Z_CX_b Z0.CX12 = CX12.Z0
 -- *******************************************************************
 
 r1 CCX0.CX10 = CX10.CCX0
-
-r3 CX12 = K12.X0.CCX1.X0.CCX1.K12
 
 r5_a X0.CCX2 = CCX2.CX12.X0
 r5_b X0.CCX1 = CCX1.CX21.X0
