@@ -15,7 +15,7 @@
 @name lemmax0cx01cx02
 
 X0.CX01.CX02
-r12_a → 0
+r12 → 0
 !apply bifunct_X_CX_e ← 2
 !apply drel126 → 1
 !apply bifunct_X_b → 2
@@ -101,7 +101,7 @@ elim_X0 → 6
 
 -- X0.CX01.CX02.X2.X1.CCX0.X1.X2.CX21.CCX2.CX21.X2.X1.CCX0.X1.X2.CX21.CCX2.CX02.CX21.X0
 !apply drel107 → 14
-r12_e ← 10
+!apply drel133 ← 10
 !apply drel107 → 6
 
 -- X0.CX01.CX02.X2.X1.CCX0.CX21.X2.CCX2.X2.CX21.CCX0.CX21.X2.CCX2.CX02.CX21.X0

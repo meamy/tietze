@@ -41,9 +41,9 @@ X2.M
 M.CX01
 expand_M → 0
 !apply drel78 ← 3
-r12_a → 2
+r12 → 2
 !apply drel78 ← 1
-r12_a → 0
+r12 → 0
 !apply bifunct_X_Z_b→ 2
 bifunct_X_a ← 3
 !apply elim_X1 → 4

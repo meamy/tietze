@@ -52,11 +52,11 @@ expand_SWAP02 → 0
 X1.X1
 expand_X1 → 1
 expand_X1 → 0
-r12_a → 5
+r12 → 5
 bifunct_X_a → 6
 elim_X0 → 7
 elim_CX01 → 4
-r12_a ← 2
+r12 ← 2
 elim_X0 → 1
 elim_CX01 → 0
 ε
