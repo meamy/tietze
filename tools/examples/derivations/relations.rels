@@ -11,6 +11,8 @@ expand_S6 S6 = CX21.CCX2.CX21
 expand_S7 S7 = CZ01.CX21.CCX2.CX21.CZ01
 expand_S8 S8 = K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 
+expand_M M = X0.Z0.X0.Z0
+
 
 -- *******************************************************************
 -- Derived Generators
@@ -50,9 +52,6 @@ expand_SWAP01 SWAP01 = CX01.CX10.CX01
 
 -- Depends on SWAP01.
 expand_CCX1 CCX1 = SWAP01.CCX0.SWAP01
-
--- Depends on Z0.
-expand_M M = X0.Z0.X0.Z0
 
 -- Depends on SWAP01 and SWAP02.
 expand_X2 X2 = SWAP02.X0.SWAP02
@@ -180,11 +179,7 @@ r26_c CZ01.CCX0 = CCX0.CZ01.CZ12
 r26_d CZ12.CCX1 = CCX1.CZ12.CZ02
 r26_e CZ01.CCX1 = CCX1.CZ01.CZ02
 
-
--- *******************************************************************
--- Some other rules
--- *******************************************************************
-
+-- Can be rewritten in terms of commutators. For example, r8c is about CXC and CXN.
 r8_a CX02.CCX0.CX02 = CCX2.CCX0.CCX2
 r8_b CX21.CCX2.CX21 = CCX1.CCX2.CCX1
 r8_c CX01.CCX0.CX01 = CCX1.CCX0.CCX1
