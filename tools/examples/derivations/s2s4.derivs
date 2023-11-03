@@ -45,7 +45,7 @@ X0.X1.X2.CX02.CX01
 @name lemmacx02cx01cx21
 
 CX02.CX01.CX21
-r17_a → 1
+!apply drel134 → 1
 !apply elim_CX02 → 0
 !apply elim_CX21 → 2
 CX21.CX02
@@ -130,7 +130,7 @@ r8_b → 8
 !apply elim_X2 → 3
 
 -- X0.CX01.CX02.CX21.CX02.CX21.X0
-r17_a ← 2
+!apply drel134 ← 2
 
 -- X0.CX01.CX01.X0
 elim_CX01 → 1
