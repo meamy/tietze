@@ -87,6 +87,7 @@ symmetry_CCX_a CCX2 = SWAP02.CCX0.SWAP02
 symmetry_Z_d Z1 = SWAP01.Z0.SWAP01
 
 symmetry_CZ_e CZ12 = SWAP12.CZ12.SWAP12
+symmetry_CZ_f CZ01 = SWAP01.CZ01.SWAP01
 
 -- *******************************************************************
 -- Order rules
@@ -161,7 +162,6 @@ r18_d X1.CZ12 = CZ12.Z2.X1
 r18_e X2.CZ12 = CZ12.Z1.X2
 r18_f X0.CZ02 = CZ02.Z2.X0
 
-r44_a CZ01.CZ02.CX12 = CX12.CZ02
 r44_b CX01.CZ12 = CZ02.CZ12.CX01
 
 -- Can be rewritten in terms of commutators.
