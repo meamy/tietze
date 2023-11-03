@@ -25,7 +25,7 @@ expand_S6 → 0
 !apply bifunct_X_CX_b ← 5
 
 -- CX21.CCX2.X0.CX21.CCX2.CX21.X0.CCX2.CX21.X0.CCX2.X0
-r5_a → 6
+r5 → 6
 !apply drel98 ← 1
 
 -- CX21.X0.CX12.CCX2.CX21.CCX2.CX21.CCX2.CX12.X0.CX21.X0.CCX2.X0

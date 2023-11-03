@@ -99,7 +99,7 @@ bifunct_X_a ← 6
 !apply elim_M → 15
 
 -- X0.K12.CX12.CCX1.CX12.CX10.X0.CX20.CCX0.Z1.Z2.CX12.CCX1.CX12.Z2.Z1.X1.CCX0.CX10.X1.X0.K12
-r5_f → 16
+!apply drel131 → 16
 !apply drel67 → 18
 bifunct_X_a → 20
 

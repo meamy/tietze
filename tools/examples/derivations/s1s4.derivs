@@ -29,7 +29,7 @@ r10_e → 10
 !apply drel91 → 10
 !apply elim_CX12 ← 13
 bifunct_X_CX_a ← 12
-r5_a ← 11
+r5 ← 11
 
 -- X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.CX02.X0.CX02.X0.CCX2.CX12.CX02.CCX0.CX02.CX01
 !apply drel55 → 12
@@ -80,7 +80,7 @@ elim_CX01 → 7
 elim_CX01 → 5
 
 -- X0.CCX2.X0.CCX2.CX12
-r5_a → 2
+r5 → 2
 bifunct_X_CX_a → 3
 
 -- X0.CCX2.CCX2.X0.CX12.CX12
