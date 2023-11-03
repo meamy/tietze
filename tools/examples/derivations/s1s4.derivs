@@ -54,7 +54,7 @@ elim_X0 → 9
 -- X0.CCX2.X0.X2.CX01.CCX0.X2.CX12.CCX0.CCX2.CX01
 !apply elim_CX12 ← 9
 r10_b → 7
-r5_c → 6
+!apply drel130 → 6
 
 -- X0.CCX2.X0.X2.CX01.CCX0.CCX0.CX10.X2.CX10.CX12.CCX2.CX01
 !apply bifunct_X_CX_c → 7

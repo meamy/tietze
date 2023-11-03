@@ -70,7 +70,7 @@ Z2.X0.X1.Z0.X2.CCX0.Z0.X2.X1.Z2
 !apply elim_M → 7
 
 -- X0.X1.Z0.X2.CCX0.Z0.X2.X1
-r5_c → 3
+!apply drel130 → 3
 !apply bifunct_X_Z_f → 5
 !apply elim_X2 → 6
 
