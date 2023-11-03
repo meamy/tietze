@@ -113,10 +113,28 @@ bifunct_Z_CX_b Z0.CX12 = CX12.Z0
 
 
 -- *******************************************************************
--- Some other rules
+-- Commutivity
 -- *******************************************************************
 
 r1 CCX0.CX10 = CX10.CCX0
+
+r13 X0.CCX0 = CCX0.X0
+
+r36 X0.CX10.X0 = CX10
+
+r47 K01.K12 = K12.K01
+
+r31_b CZ02.CZ12 = CZ12.CZ02
+r31_c CZ01.CZ12 = CZ12.CZ01
+
+r28_a CX01.CZ02 = CZ02.CX01
+r28_b CX02.CZ01 = CZ01.CX02
+r28_c CX12.CZ01 = CZ01.CX12
+
+
+-- *******************************************************************
+-- Some other rules
+-- *******************************************************************
 
 r5 X0.CCX2 = CCX2.CX12.X0
 
@@ -134,8 +152,6 @@ r10_e CX01.CCX2.CX01 = CCX2.CX02
 r10_f CX21.CCX0.CX21 = CCX0.CX20
 
 r12 X0.CX01 = CX01.X0.X1
-
-r13 X0.CCX0 = CCX0.X0
 
 r17_a CX01 = CX02.CX21.CX02.CX21
 r17_b CX10 = CX12.CX20.CX12.CX20
@@ -157,20 +173,11 @@ r26_c CZ01.CCX0 = CCX0.CZ01.CZ12
 r26_d CZ12.CCX1 = CCX1.CZ12.CZ02
 r26_e CZ01.CCX1 = CCX1.CZ01.CZ02
 
-r28_a CX01.CZ02 = CZ02.CX01
-r28_b CX02.CZ01 = CZ01.CX02
-r28_c CX12.CZ01 = CZ01.CX12
-
 r29_a Z1.CX10 = CZ01.CX10.CZ01
 r29_c Z1.CX12 = CZ12.CX12.CZ12
 r29_d Z0.CX01 = CZ01.CX01.CZ01
 r29_e Z0.CX02 = CZ02.CX02.CZ02
 r29_f Z2.CX20 = CZ02.CX20.CZ02
-
-r31_b CZ02.CZ12 = CZ12.CZ02
-r31_c CZ01.CZ12 = CZ12.CZ01
-
-r36 X0.CX10.X0 = CX10
 
 r40_a CCX1.CCX2.CCX1 = CCX2.CCX1.CCX2
 r40_b CCX2.CCX0.CCX2 = CCX0.CCX2.CCX0
@@ -178,5 +185,3 @@ r40_b CCX2.CCX0.CCX2 = CCX0.CCX2.CCX0
 r44_a CZ01.CZ02.CX12 = CX12.CZ02
 r44_b CZ02.CZ12.CX01 = CX01.CZ12
 r44_c CZ12.CZ01.CX20 = CX20.CZ01
-
-r47 K01.K12 = K12.K01
