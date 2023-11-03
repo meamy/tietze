@@ -199,7 +199,7 @@ CX02.CX12
 @name drel12
 
 CX20.CX21
-r17_d → 0
+!apply drel136 → 0
 !apply elim_CX21 → 3
 !apply elim_CX21 ← 0
 !apply drel113 → 1
@@ -2207,7 +2207,7 @@ CX02
 
 CX21.CX10.CX21.CX10
 !apply elim_CX20 ← 4
-r17_d → 4
+!apply drel136 → 4
 !apply elim_CX10 → 3
 !apply elim_CX21 → 2
 !apply elim_CX10 → 1
@@ -2665,3 +2665,32 @@ symmetry_CX_l → 2
 symmetry_CX_c ← 4
 symmetry_CX_c ← 0
 CX12.CX20.CX12.CX20
+
+
+-- ****************************************************************************
+-- The relation CX20 = CX10.CX21.CX10.CX21
+-- ****************************************************************************
+
+@name drel136
+
+CX20
+symmetry_CX_a → 0
+
+-- SWAP02.CX02.SWAP02
+r17_c → 1
+
+-- SWAP02.CX12.CX01.CX12.CX01.SWAP02
+!apply elim_SWAP02 ← 4
+!apply symmetry_CX_i ← 5
+
+-- SWAP02.CX12.CX01.CX12.SWAP02.CX21
+!apply elim_SWAP02 ← 3
+symmetry_CX_b ← 4
+
+-- SWAP02.CX12.CX01.SWAP02.CX10.CX21
+!apply elim_SWAP02 ← 2
+!apply symmetry_CX_i ← 3
+
+-- SWAP02.CX12.SWAP02.CX21.CX10.CX21
+symmetry_CX_b ← 0
+CX10.CX21.CX10.CX21
