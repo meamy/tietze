@@ -2016,7 +2016,7 @@ CCX0.X2
 X2.CX01.CCX1
 !apply elim_X2 ← 3
 !apply elim_CCX1 ← 4
-r5_e → 3
+!apply drel129 → 3
 !apply elim_CCX1 → 2
 elim_CX01 → 1
 !apply elim_X2 → 0
@@ -2473,4 +2473,31 @@ K12.CCX2
 expand_CCX2 → 1
 elim_K12 → 0
 CCX1.K12
+
+
+-- ****************************************************************************
+-- The relation X2.CCX1 = CCX1.CX01.X2
+-- ****************************************************************************
+
+@name drel129
+
+X2.CCX1
+elim_K01 ← 2
+
+-- X2.CCX1.K01.K01
+!apply drel63 ← 1
+!apply bifunct_X_K_b → 0
+
+-- K01.X2.CCX0.K01
+r5_c → 1
+
+-- K01.CCX0.CX10.X2.K01
+!apply drel63 → 0
+!apply bifunct_X_K_b → 3
+
+-- CCX1.K01.CX10.K01.X2
+expand_CX10 → 2
+elim_K01 → 4
+elim_K01 → 1
+CCX1.CX01.X2
 
