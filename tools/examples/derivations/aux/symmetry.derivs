@@ -145,7 +145,7 @@ expand_SWAP02 → 1
 !apply elim_CX02 ← 5
 !apply drel95 → 3
 !apply elim_CX20 ← 4
-r10_c → 2
+!apply drel140 → 2
 !apply elim_CX02 ← 3
 !apply drel95 → 1
 !apply drel110 ← 2
