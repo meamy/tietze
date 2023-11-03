@@ -25,7 +25,7 @@ bifunct_X_a → 14
 !apply drel82 → 12
 
 -- X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.CX02.X0.CX01.CCX2.CX01.X0.CX02.CCX0.CX02.CX01
-r10_e → 10
+!apply drel141 → 10
 !apply drel91 → 10
 !apply elim_CX12 ← 13
 bifunct_X_CX_a ← 12

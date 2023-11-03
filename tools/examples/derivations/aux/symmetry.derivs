@@ -121,11 +121,11 @@ CCX2
 !apply elim_SWAP01 ← 0
 expand_SWAP01 → 1
 elim_CX01 ← 5
-r10_e → 3
+!apply drel141 → 3
 !apply elim_CX10 ← 4
 !apply drel90 → 2
 elim_CX01 ← 3
-r10_e → 1
+!apply drel141 → 1
 !apply drel9 ← 2
 !apply drel11 ← 3
 expand_CX02 → 4

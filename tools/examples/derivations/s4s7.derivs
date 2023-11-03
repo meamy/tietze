@@ -23,10 +23,10 @@ elim_CX01 ← 2
 elim_CX01 ← 5
 
 -- CX01.CCX2.CX01.CX01.CCX0.CX01.CX01.CCX2.CX01.CZ01.CCX1.CCX2.CCX1
-r10_e → 0
+!apply drel141 → 0
 !apply drel91 → 0
 r8_c → 2
-r10_e → 5
+!apply drel141 → 5
 
 -- CX02.CCX2.CCX1.CCX0.CCX1.CCX2.CX02.CZ01.CCX1.CCX2.CCX1
 r28_b → 6
@@ -48,7 +48,7 @@ r8_c ← 2
 
 -- CX02.CCX2.CX01.CCX0.CX01.CCX2.CX02
 !apply drel91 ← 0
-r10_e ← 0
+!apply drel141 ← 0
 elim_CX01 → 2
 !apply drel91 → 4
 !apply drel103 → 4
