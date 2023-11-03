@@ -173,7 +173,7 @@ r10_c → 5
 !apply drel8 → 5
 
 -- K12.X0.CX12.CX20.CX12.CX20.CX10.X0.K12
-r17_b ← 2
+!apply drel135 ← 2
 !apply elim_CX10 → 2
 elim_X0 → 1
 elim_K12 → 0
