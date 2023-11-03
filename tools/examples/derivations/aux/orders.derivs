@@ -166,8 +166,8 @@ elim_K01 → 0
 
 @name elim_Z1
 Z1.Z1
-expand_Z1 → 1
-expand_Z1 → 0
+symmetry_Z_d → 1
+symmetry_Z_d → 0
 !apply elim_SWAP01 → 2
 !apply elim_Z0 → 1
 !apply elim_SWAP01 → 0

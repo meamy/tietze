@@ -241,9 +241,9 @@ expand_M → 1
 !apply elim_SWAP01 ← 3
 !apply elim_SWAP01 ← 2
 symmetry_X_a ← 0
-expand_Z1 ← 1
+symmetry_Z_d ← 1
 symmetry_X_a ← 2
-expand_Z1 ← 3
+symmetry_Z_d ← 3
 X1.Z1.X1.Z1
 
 @name expand_M_alt2

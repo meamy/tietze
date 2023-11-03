@@ -212,7 +212,7 @@ elim_K12 ← 0
 !apply elim_SWAP12 → 3
 !apply symmetry_K_a → 0
 !apply elim_SWAP12 → 2
-r25 → 2
+!apply drel137 → 2
 elim_K12 → 1
 SWAP12.Z1.SWAP12
 

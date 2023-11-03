@@ -385,14 +385,14 @@ Z2.Z1.CX12
 
 Z1.CCX1
 elim_K12 ← 0
-r25 ← 1
+!apply drel137 ← 1
 !apply drel29 ← 2
 
 -- K12.X1.CCX2.K12
 !apply drel96  → 1
 
 -- K12.CCX2.CX02.X1.K12
-r25 → 3
+!apply drel137 → 3
 !apply drel47 ← 2
 !apply drel29 → 1
 elim_K12 → 0
@@ -431,7 +431,7 @@ Z0.CCX0
 !apply elim_SWAP01 ← 0
 
 -- SWAP01.SWAP01.Z0.SWAP01.SWAP01.CCX0.SWAP01.SWAP01
-expand_Z1 ← 1
+symmetry_Z_d ← 1
 expand_CCX1 ← 2
 
 -- SWAP01.Z1.CCX1.SWAP01
@@ -442,7 +442,7 @@ expand_CCX1 → 1
 !apply elim_SWAP01 → 0
 
 -- CCX0.SWAP01.CZ02.Z1.SWAP01
-expand_Z1 → 3
+symmetry_Z_d → 3
 !apply elim_SWAP01 → 5
 
 -- CCX0.SWAP01.CZ02.SWAP01.Z0
@@ -781,8 +781,8 @@ Z0.CCX2.Z0
 !apply symmetry_CCX_c → 3
 
 -- SWAP01.SWAP01.Z0.SWAP01.CCX2.SWAP01.Z0.SWAP01.SWAP01
-expand_Z1 ← 5
-expand_Z1 ← 1
+symmetry_Z_d ← 5
+symmetry_Z_d ← 1
 
 -- SWAP01.Z1.CCX2.Z1.SWAP01
 !apply drel51 → 1
@@ -889,7 +889,7 @@ elim_K12 ← 0
 !apply drel49 → 1
 
 -- K12.CX01.K12.Z1
-r25 ← 2
+!apply drel137 ← 2
 
 -- K12.CX01.X1.K12
 !apply elim_X1 ← 1
@@ -998,9 +998,9 @@ Z1.CCX2.Z1
 elim_K12 ← 0
 
 -- K12.K12.Z1.CCX2.Z1
-r25 ← 1
+!apply drel137 ← 1
 !apply drel128 → 2
-r25 ← 3
+!apply drel137 ← 3
 
 -- K12.X1.CCX1.X1.K12
 !apply drel25 → 1
@@ -1043,8 +1043,8 @@ CCX1
 @name drel53
 
 Z1.CCX0.Z1
-expand_Z1 → 2
-expand_Z1 → 0
+symmetry_Z_d → 2
+symmetry_Z_d → 0
 
 -- SWAP01.Z0.SWAP01.CCX0.SWAP01.Z0.SWAP01
 expand_CCX1 ← 2
@@ -1165,7 +1165,7 @@ CZ12.CZ02.CCX0
 @name drel58
 
 Z1.K01
-expand_Z1 → 0
+symmetry_Z_d → 0
 !apply symmetry_K_b → 3
 !apply elim_SWAP01 → 2
 
@@ -1309,7 +1309,7 @@ elim_K12 ← 2
 !apply elim_Z1 ← 3
 
 -- K12.X1.K12.Z1.Z1.K12
-r25 ← 2
+!apply drel137 ← 2
 
 -- K12.X1.X1.K12.Z1.K12
 !apply elim_X1 → 1
@@ -1581,13 +1581,13 @@ Z1.CX10
 CX01.Z0
 !apply elim_SWAP01 ← 2
 !apply symmetry_CX_e → 0
-expand_Z1 ← 2
+symmetry_Z_d ← 2
 
 -- SWAP01.CX10.Z1.SWAP01
 !apply drel77 → 1
 
 -- SWAP01.Z1.CX10.SWAP01
-expand_Z1 → 1
+symmetry_Z_d → 1
 !apply elim_SWAP01 → 0
 !apply symmetry_CX_e ← 1
 Z0.CX01
@@ -1623,7 +1623,7 @@ CX21
 CX12.Z1
 elim_K12 ← 0
 !apply drel30 ← 1
-r25 ← 2
+!apply drel137 ← 2
 
 -- K12.CX21.X1.K12
 !apply elim_X1 ← 1
@@ -2694,3 +2694,15 @@ symmetry_CX_b ← 4
 -- SWAP02.CX12.SWAP02.CX21.CX10.CX21
 symmetry_CX_b ← 0
 CX10.CX21.CX10.CX21
+
+
+-- ****************************************************************************
+-- The relation X1.K12 = K12.Z1
+-- ****************************************************************************
+
+@name drel137
+
+X1.K12
+elim_K12 ← 0
+expand_Z1 ← 1
+K12.Z1

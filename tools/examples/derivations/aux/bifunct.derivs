@@ -89,10 +89,10 @@ X2.X1
 X0.Z1
 elim_K12 ← 1
 bifunct_X_K_a → 0
-r25 ← 2
+!apply drel137 ← 2
 bifunct_X_a → 1
 bifunct_X_K_a → 2
-r25 → 1
+!apply drel137 → 1
 elim_K12 → 0
 Z1.X0
 
@@ -107,11 +107,11 @@ Z0.X1
 
 @name bifunct_X_Z_c
 X2.Z1
-expand_Z1 → 1
+symmetry_Z_d → 1
 !apply bifunct_X_SWAP_b → 0
 !apply bifunct_X_Z_f → 1
 !apply bifunct_X_SWAP_b → 2
-expand_Z1 ← 0
+symmetry_Z_d ← 0
 Z1.X2
 
 @name bifunct_X_Z_d
@@ -121,7 +121,7 @@ elim_K12 ← 0
 !apply drel64 ← 2
 !apply bifunct_X_Z_c ← 1
 !apply drel66 → 0
-r25 ← 1
+!apply drel137 ← 1
 elim_K12 → 2
 Z2.X1
 
@@ -283,10 +283,10 @@ Z2.Z0
 @name bifunct_Z_c
 Z1.Z2
 elim_K12 ← 0
-r25 ← 1
+!apply drel137 ← 1
 !apply drel64 ← 2
 !apply bifunct_X_c → 1
-r25 → 2
+!apply drel137 → 2
 !apply drel64 → 1
 elim_K12 → 0
 Z2.Z1
@@ -298,23 +298,23 @@ Z2.Z1
 
 @name bifunct_Z_CX_a
 Z1.CX20
-expand_Z1 → 0
+symmetry_Z_d → 0
 !apply symmetry_CX_h → 3
 !apply elim_SWAP01 → 2
 !apply bifunct_Z_CX_d → 1
 !apply elim_SWAP01 ← 2
-expand_Z1 ← 3
+symmetry_Z_d ← 3
 !apply symmetry_CX_h ← 0
 CX20.Z1
 
 @name bifunct_Z_CX_c
 Z1.CX02
-expand_Z1 → 0
+symmetry_Z_d → 0
 !apply elim_SWAP01 ← 4
 symmetry_CX_c ← 2
 bifunct_Z_CX_b → 1
 symmetry_CX_c → 1
-expand_Z1 ← 3
+symmetry_Z_d ← 3
 !apply elim_SWAP01 → 0
 CX02.Z1
 
@@ -366,7 +366,7 @@ CX10.Z2
 CZ02.Z1
 elim_K12 ← 0
 !apply drel47 → 1
-r25 ← 2
+!apply drel137 ← 2
 !apply bifunct_X_CX_e → 1
 !apply drel65 → 0
 !apply drel48 ← 1
@@ -377,15 +377,15 @@ Z1.CZ02
 CZ12.Z0
 expand_CZ12 → 0
 !apply elim_SWAP01 ← 4
-expand_Z1 ← 2
+symmetry_Z_d ← 2
 elim_K12 ← 1
 !apply drel47 → 2
-r25 ← 3
+!apply drel137 ← 3
 !apply bifunct_X_CX_e → 2
 !apply drel65 → 1
 !apply drel48 ← 2
 elim_K12 → 3
-expand_Z1 → 1
+symmetry_Z_d → 1
 !apply elim_SWAP01 → 0
 expand_CZ12 ← 1
 Z0.CZ12
