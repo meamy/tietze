@@ -106,7 +106,7 @@ elim_X0 → 8
 !apply drel69 → 8
 
 -- CX12.X1.CX12.CCX2.CCX1.CCX2.CX12.CCX1.CX12.X1.X2
-r8_f → 6
+!apply drel132 → 6
 
 -- CX12.X1.CX12.CCX2.CCX1.CCX2.CCX2.CCX1.CCX2.X1.X2
 !apply elim_CCX2 → 5
