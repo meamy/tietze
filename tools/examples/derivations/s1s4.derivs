@@ -72,7 +72,7 @@ elim_CX01 ← 5
 !apply drel91 ← 3
 
 -- X0.CCX2.X0.CCX2.CX02.CX01.CX12.CX01
-r17_c → 4
+expand_CX02 → 4
 
 -- X0.CCX2.X0.CCX2.CX12.CX01.CX12.CX01.CX01.CX12.CX01
 elim_CX01 → 7

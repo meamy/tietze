@@ -185,7 +185,7 @@ CX12.CX10
 @name drel11
 
 CX12.CX02
-r17_c → 1
+expand_CX02 → 1
 !apply elim_CX12 → 0
 !apply elim_CX12 ← 3
 !apply drel112 → 0
@@ -863,14 +863,14 @@ elim_K12 ← 0
 !apply bifunct_Z_K_a ← 2
 
 -- K12.CX02.Z0.K12
-expand_CX02 → 1
+symmetry_CX_m → 1
 !apply bifunct_Z_SWAP_a ← 3
 !apply drel78 → 2
 !apply bifunct_Z_SWAP_a ← 1
 !apply bifunct_Z_K_a ← 0
 
 -- Z0.K12.SWAP12.CX01.SWAP12.K12
-expand_CX02 ← 2
+symmetry_CX_m ← 2
 
 -- Z0.K12.CX02.K12
 !apply drel47 ← 2
@@ -934,7 +934,7 @@ elim_K12 → 1
 !apply symmetry_K_a ← 3
 
 -- SWAP12.CX01.SWAP12.K12
-expand_CX02 ← 0
+symmetry_CX_m ← 0
 CX02.K12
 
 
@@ -1218,7 +1218,7 @@ Z2.CZ12
 
 CX02.X2
 !apply symmetry_X_c → 1
-expand_CX02 → 0
+symmetry_CX_m → 0
 !apply elim_SWAP12 → 2
 
 -- SWAP12.CX01.X1.SWAP12
@@ -1227,7 +1227,7 @@ expand_CX02 → 0
 
 -- SWAP12.X1.CX01.SWAP12
 !apply elim_SWAP12 ← 2
-expand_CX02 ← 3
+symmetry_CX_m ← 3
 !apply symmetry_X_c ← 0
 X2.CX02
 
@@ -1643,7 +1643,7 @@ Z1.CX12
 @name drel81
 
 CX02.Z0
-expand_CX02 → 0
+symmetry_CX_m → 0
 !apply bifunct_Z_SWAP_a ← 2
 
 -- SWAP12.CX01.Z0.SWAP12
@@ -1651,7 +1651,7 @@ expand_CX02 → 0
 
 -- SWAP12.Z0.CX01.SWAP12
 !apply bifunct_Z_SWAP_a ← 0
-expand_CX02 ← 1
+symmetry_CX_m ← 1
 Z0.CX02
 
 
@@ -2191,7 +2191,7 @@ CX10
 
 CX01.CX12.CX01.CX12
 !apply elim_CX02 ← 4
-r17_c → 4
+expand_CX02 → 4
 !apply elim_CX12 → 3
 elim_CX01 → 2
 !apply elim_CX12 → 1
@@ -2418,7 +2418,7 @@ CX12
 @name drel126
 
 X0.CX02
-expand_CX02 → 1
+symmetry_CX_m → 1
 
 -- X0.SWAP12.CX01.SWAP12
 !apply bifunct_X_SWAP_a → 0
@@ -2428,7 +2428,7 @@ r12 → 1
 !apply elim_SWAP12 ← 2
 
 -- SWAP12.CX01.SWAP12.SWAP12.X0.X1.SWAP12
-expand_CX02 ← 0
+symmetry_CX_m ← 0
 !apply bifunct_X_SWAP_a ← 1
 !apply symmetry_X_c ← 2
 CX02.X0.X2
@@ -2620,7 +2620,7 @@ CX01
 !apply elim_SWAP12 ← 0
 
 -- SWAP12.SWAP12.CX01.SWAP12.SWAP12
-expand_CX02 ← 1
+symmetry_CX_m ← 1
 !apply drel112 ← 1
 
 -- SWAP12.CX01.CX12.CX01.CX12.SWAP12
@@ -2629,14 +2629,14 @@ expand_CX02 ← 1
 
 -- SWAP12.CX01.CX12.CX01.SWAP12.CX21
 !apply elim_SWAP12 ← 3
-expand_CX02 ← 4
+symmetry_CX_m ← 4
 
 -- SWAP12.CX01.CX12.SWAP12.CX02.CX21
 !apply elim_SWAP12 ← 2
 !apply symmetry_CX_g ← 3
 
 -- SWAP12.CX01.SWAP12.CX21.CX02.CX21
-expand_CX02 ← 0
+symmetry_CX_m ← 0
 CX02.CX21.CX02.CX21
 
 
@@ -2677,7 +2677,7 @@ CX20
 symmetry_CX_a → 0
 
 -- SWAP02.CX02.SWAP02
-r17_c → 1
+expand_CX02 → 1
 
 -- SWAP02.CX12.CX01.CX12.CX01.SWAP02
 !apply elim_SWAP02 ← 4
