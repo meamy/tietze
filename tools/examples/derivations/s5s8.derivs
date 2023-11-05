@@ -96,12 +96,12 @@ r13 → 12
 elim_X0 → 13
 
 -- K12.CCX1.X1.X2.CCX0.CZ12.X2.X1.CCX1.X1.X2.CZ12.CCX0.X2.X1.K12
-r18_e → 10
+!apply drel148 → 10
 !apply drel147 → 9
 !apply drel116 ← 8
 r31_b → 8
 !apply drel147 → 7
-r18_e → 6
+!apply drel148 → 6
 !apply elim_CZ12 → 5
 
 -- K12.CCX1.X1.X2.CCX0.Z1.X2.Z2.X1.CZ02.CCX1.Z2.X1.Z1.X2.CCX0.X2.X1.K12

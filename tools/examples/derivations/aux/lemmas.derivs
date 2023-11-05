@@ -2352,7 +2352,7 @@ CZ12.X1
 X2.Z1.CZ12
 !apply elim_X2 ← 3
 !apply elim_CZ12 ← 4
-r18_e → 3
+!apply drel148 → 3
 !apply elim_CZ12 → 2
 !apply elim_Z1 → 1
 !apply elim_X2 → 0
@@ -3000,3 +3000,32 @@ r18_f → 1
 symmetry_X_a ← 4
 expand_CZ12 ← 0
 CZ12.Z2.X1
+
+
+-- ****************************************************************************
+-- The relation X2.CZ12 = CZ12.Z1.X2
+-- ****************************************************************************
+
+@name drel148
+
+X2.CZ12
+!apply symmetry_CZ_d → 1
+expand_X2 → 0
+
+-- SWAP02.X0.SWAP02.SWAP02.CZ01.SWAP02
+!apply elim_SWAP02 → 2
+
+-- SWAP02.X0.CZ01.SWAP02
+r18_a → 1
+
+-- SWAP02.CZ01.Z1.X0.SWAP02
+!apply elim_SWAP02 ← 3
+expand_X2 ← 4
+
+-- SWAP02.CZ01.Z1.SWAP02.X2
+!apply elim_SWAP02 ← 2
+!apply symmetry_Z_a ← 3
+
+-- SWAP02.CZ01.SWAP02.Z1.X2
+!apply symmetry_CZ_d ← 0
+CZ12.Z1.X2
