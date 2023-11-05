@@ -2304,7 +2304,7 @@ CZ01.X0
 X1.Z0.CZ01
 !apply elim_X1 ← 3
 !apply elim_CZ01 ← 4
-r18_b → 3
+!apply drel145 → 3
 !apply elim_CZ01 → 2
 !apply elim_Z0 → 1
 !apply elim_X1 → 0
@@ -2925,3 +2925,28 @@ symmetry_CCX_a → 1
 -- CCX0.SWAP02.CCX0.SWAP02.CCX0
 symmetry_CCX_a ← 1
 CCX0.CCX2.CCX0
+
+
+-- ****************************************************************************
+-- The relation X1.CZ01 = CZ01.Z0.X1
+-- ****************************************************************************
+
+@name drel145
+
+X1.CZ01
+!apply symmetry_CZ_b → 1
+symmetry_X_a → 0
+
+-- SWAP01.X0.SWAP01.SWAP01.CZ01.SWAP01
+!apply elim_SWAP01 → 2
+
+-- SWAP01.X0.CZ01.SWAP01
+r18_a → 1
+
+-- SWAP01.CZ01.Z1.X0.SWAP01
+symmetry_Z_d → 2
+!apply symmetry_CZ_b ← 0
+
+-- CZ01.Z0.SWAP01.X0.SWAP01
+symmetry_X_a ← 2
+CZ01.Z0.X1

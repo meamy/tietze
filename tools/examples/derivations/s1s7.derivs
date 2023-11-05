@@ -32,7 +32,7 @@ X0.X1.Z0.Z1.CZ01.M
 
 X1.X0.CZ01
 r18_a → 1
-r18_b → 0
+!apply drel145 → 0
 !apply drel31 → 2
 !apply spatial_Z0 ← 1
 !apply spatial_CZ01 ← 0
@@ -56,7 +56,7 @@ expand_S1 → 0
 
 -- X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.X0.Z1.X1.Z0.CZ01.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.CZ01
 r18_a → 16
-r18_b → 15
+!apply drel145 → 15
 
 -- X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.X0.Z1.X1.Z0.CZ01.CCX2.CZ01.Z0.X1.Z1.X0.CX21.CCX2.CX21.CZ01
 !apply drel34 → 10
