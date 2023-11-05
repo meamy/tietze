@@ -15,7 +15,7 @@
 @name lemmacx02cx01k12x0x1x2cz02
 
 CX02.CX01.K12.X0.X1.X2.CZ02
-r18_c → 5
+!apply drel146 → 5
 !apply bifunct_X_CZ_a → 4
 r18_f → 3
 !apply drel47 → 2
@@ -35,7 +35,7 @@ CZ02.X2.X1.X0.K12.CX01.CX02
 !apply drel48 ← 4
 r18_f → 3
 !apply bifunct_X_CZ_a → 2
-r18_c → 1
+!apply drel146 → 1
 !apply elim_CZ02 → 0
 Z0.X2.X1.Z2.X0.K12.CX01
 
