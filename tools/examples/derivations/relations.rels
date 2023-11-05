@@ -151,7 +151,6 @@ r5 X0.CCX2 = CCX2.CX12.X0
 
 -- Can be rewritten in terms of commutators.
 r10_b CX12.CCX0.CX12 = CCX0.CX10
-r10_f CX21.CCX0.CX21 = CCX0.CX20
 
 r18_a X0.CZ01 = CZ01.Z1.X0
 r18_f X0.CZ02 = CZ02.Z2.X0
