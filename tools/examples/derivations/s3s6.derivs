@@ -38,12 +38,12 @@ elim_X0 → 9
 !apply elim_CX12 ← 1
 
 -- X0.CX12.CX12.CX21.CX12.CCX2.CX21.CCX2.CX21.CCX2.CX12.CX21.CX12.CX12.CCX2.X0
-r7 → 2
-r7 → 10
+!apply drel154 → 2
+!apply drel154 → 10
 
 -- X0.CX12.CX21.CX12.CX21.CCX2.CX21.CCX2.CX21.CCX2.CX21.CX12.CX21.CX12.CCX2.X0
 !apply drel2 → 11
-r7 → 12
+!apply drel154 → 12
 
 -- X0.CX12.CX21.CX12.CX21.CCX2.CX21.CCX2.CX21.CCX2.CX21.CCX1.CX21.CX12.CX21.X0
 !apply drel143 → 6
@@ -57,7 +57,7 @@ r40_a ← 5
 !apply elim_CCX1 → 5
 
 -- X0.CX12.CX21.CX12.CX21.CX12.CX21.X0
-r7 → 1
+!apply drel154 → 1
 !apply elim_CX21 → 3
 !apply elim_CX12 → 2
 !apply elim_CX21 → 1
