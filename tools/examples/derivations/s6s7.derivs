@@ -19,10 +19,10 @@ expand_S7 → 1
 expand_S6 → 0
 
 -- CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01
-r8_b → 0
-r8_b → 4
-r8_b → 8
-r8_b → 12
+!apply drel143 → 0
+!apply drel143 → 4
+!apply drel143 → 8
+!apply drel143 → 12
 
 -- CCX1.CCX2.CCX1.CZ01.CCX1.CCX2.CCX1.CZ01.CCX1.CCX2.CCX1.CZ01.CCX1.CCX2.CCX1.CZ01
 !apply drel1 → 11

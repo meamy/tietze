@@ -110,12 +110,12 @@ elim_X0 → 6
 !apply elim_X2 → 8
 
 -- X0.CX01.CX02.X2.X1.CCX0.CX21.CCX2.CX21.CCX0.CX21.CCX2.X2.CX02.CX21.X0
-r8_b → 6
+!apply drel143 → 6
 !apply drel16 → 5
 
 -- X0.CX01.CX02.X2.X1.CCX1.CCX2.CCX1.CX21.CCX2.X2.CX02.CX21.X0
 !apply elim_CX21 ← 10
-r8_b → 8
+!apply drel143 → 8
 
 -- X0.CX01.CX02.X2.X1.CCX1.CCX2.CCX1.CCX1.CCX2.CCX1.CX21.X2.CX02.CX21.X0
 !apply elim_CCX1 → 7

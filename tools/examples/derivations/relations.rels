@@ -137,7 +137,6 @@ r28_b CX02.CZ01 = CZ01.CX02
 r28_c CX12.CZ01 = CZ01.CX12
 
 -- Can be rewritten in terms of commutation. For example, r8c is about CXC and CXN.
-r8_b CX21.CCX2.CX21 = CCX1.CCX2.CCX1
 r8_c CX01.CCX0.CX01 = CCX1.CCX0.CCX1
 r8_e CX20.CCX2.CX20 = CCX0.CCX2.CCX0
 

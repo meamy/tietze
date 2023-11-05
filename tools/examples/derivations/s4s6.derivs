@@ -19,7 +19,7 @@ expand_S6 → 1
 expand_S4 → 0
 
 -- CX01.CX02.CCX0.CX02.CX01.CX21.CCX2.CX21.CX01.CX02.CCX0.CX02.CX01.CX21.CCX2.CX21
-r8_b → 5
+!apply drel143 → 5
 !apply drel92 ← 4
 !apply drel92 → 7
 !apply drel141 → 5
@@ -33,7 +33,7 @@ r8_b → 5
 -- CX01.CX02.CCX0.CX02.CCX1.CCX2.CCX1.CX01.CCX0.CX01.CX02.CX21.CCX2.CX21
 !apply drel142 → 1
 r8_c → 7
-r8_b → 11
+!apply drel143 → 11
 
 -- CX01.CCX2.CCX0.CCX2.CCX1.CCX2.CCX1.CCX1.CCX0.CCX1.CX02.CCX1.CCX2.CCX1
 r40_a → 11
