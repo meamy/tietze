@@ -130,7 +130,7 @@ elim_X0 → 7
 -- X0.K12.CCX2.CCX1.CX10.X0.CCX2.CX20.CCX2.CCX1.CCX2.CX20.CX10.K12
 !apply elim_CX20 ← 6
 !apply drel144 → 7
-r40_b → 8
+!apply drel149 → 8
 elim_CCX0 → 7
 
 -- X0.K12.CCX2.CCX1.CX10.X0.CX20.CCX2.CCX0.CCX1.CCX2.CX20.CX10.K12
@@ -163,7 +163,7 @@ elim_X0 ← 2
 !apply drel144 → 5
 
 -- X0.K12.X0.CX10.CX20.CCX0.CCX2.CCX0.CCX2.CCX0.CCX2.CX20.CX10.K12
-r40_b → 8
+!apply drel149 → 8
 elim_CCX0 → 7
 !apply elim_CCX2 → 6
 elim_CCX0 → 5
