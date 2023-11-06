@@ -45,7 +45,7 @@ bifunct_X_a ← 7
 
 -- X1.X2.X0.CZ02.CCX0.CZ02.X0.X2.X1
 !apply drel123 ← 5
-r18_f → 2
+!apply drel156 → 2
 
 -- X1.X2.CZ02.Z2.X0.CCX0.X0.Z2.CZ02.X2.X1
 r13 → 4
