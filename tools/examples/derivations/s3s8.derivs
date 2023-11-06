@@ -41,7 +41,7 @@ elim_K12 → 11
 !apply elim_X2 → 10
 
 -- X0.CCX2.K12.X1.X2.CZ02.CCX0.CZ02.CCX1.CX01.CZ02.CCX0.CZ02.X2.X1.X0.K12
-r28_a → 9
+!apply drel166 → 9
 !apply drel37 → 7
 
 -- X0.CCX2.K12.X1.X2.CZ02.CCX0.CCX1.CX01.CCX0.CZ02.X2.X1.X0.K12
@@ -61,7 +61,7 @@ elim_CCX0 → 7
 !apply elim_CCX1 → 6
 
 -- X0.K12.X1.X2.CX01.CZ02.CX01.CZ02.X2.X1.X0.K12
-r28_a → 6
+!apply drel166 → 6
 !apply elim_CZ02 → 5
 elim_CX01 → 4
 !apply elim_X2 → 3

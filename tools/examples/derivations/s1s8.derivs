@@ -114,7 +114,7 @@ elim_CCX0 → 8
 !apply elim_X2 → 6
 
 -- K12.X0.X1.X2.CZ02.Z1.CX01.CZ02.CX01.X2.M.X1.K12.X1.X0
-r28_a → 6
+!apply drel166 → 6
 elim_CX01 → 7
 !apply bifunct_Z_CZ_a → 4
 !apply elim_CZ02 → 5
