@@ -64,8 +64,8 @@ elim_K12 ← 0
 -- K12.CX12.CCX1.CX12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX12.CCX1.CX12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
 !apply drel57 → 20
 !apply drel150 → 7
-r31_b → 8
-r31_b → 20
+!apply drel164 → 8
+!apply drel164 → 20
 !apply elim_CZ02 → 21
 !apply elim_CZ02 → 9
 
@@ -85,7 +85,7 @@ r31_b → 20
 
 -- K12.CX12.CCX1.CX12.X0.X1.X2.CCX0.X2.X1.M.Z2.X0.CX12.CZ12.CCX1.CX12.X0.X1.X2.CZ12.CCX0.X2.X1.X0.K12
 !apply drel153 → 14
-r31_b ← 15
+!apply drel164 ← 15
 !apply elim_CZ12 ← 18
 !apply drel158 ← 16
 !apply bifunct_X_CZ_b ← 18
