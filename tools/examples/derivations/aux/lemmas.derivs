@@ -1166,7 +1166,7 @@ CZ12.CZ02.CCX0
 
 Z1.K01
 symmetry_Z_d → 0
-!apply symmetry_K_b → 3
+symmetry_K_b → 3
 !apply elim_SWAP01 → 2
 
 -- SWAP01.Z0.K01.SWAP01
@@ -1174,7 +1174,7 @@ expand_Z0 → 1
 elim_K01 → 3
 
 -- SWAP01.K01.X0.SWAP01
-!apply symmetry_K_b → 1
+symmetry_K_b → 1
 !apply elim_SWAP01 → 0
 symmetry_X_a ← 1
 K01.X1
@@ -1754,14 +1754,14 @@ CCX1.K12
 
 CZ12.K01
 expand_CZ12 → 0
-!apply symmetry_K_b → 3
+symmetry_K_b → 3
 !apply elim_SWAP01 → 2
 
 -- SWAP01.CZ02.K01.SWAP01
 !apply drel74 ← 1
 
 -- SWAP01.K01.CX20.SWAP01
-!apply symmetry_K_b → 1
+symmetry_K_b → 1
 !apply elim_SWAP01 → 0
 
 -- K01.SWAP01.CX20.SWAP01
@@ -3197,7 +3197,7 @@ symmetry_CX_m → 1
 !apply elim_SWAP12 → 3
 
 -- SWAP01.SWAP12.CX01.CX10.CX01.SWAP12.SWAP01
-r7_a → 2
+!apply drel161 → 2
 
 -- SWAP01.SWAP12.CX10.CX01.CX10.SWAP12.SWAP01
 !apply elim_SWAP12 ← 4
@@ -3422,3 +3422,29 @@ elim_K12 ← 2
 expand_Z1 ← 3
 expand_CZ01 ← 0
 CZ01.Z1.X0
+
+
+-- ****************************************************************************
+-- The relation CX01.CX10.CX01 = CX10.CX01.CX10
+-- ****************************************************************************
+
+@name drel161
+
+CX01.CX10.CX01
+elim_K01 ← 3
+expand_SWAP01 ← 0
+
+-- SWAP01.K01.K01
+symmetry_K_b → 1
+!apply elim_SWAP01 → 0
+
+-- K01.SWAP01.K01
+expand_SWAP01 → 1
+
+-- K01.CX01.CX10.CX01.K01
+expand_CX10 → 2
+
+-- K01.CX01.K01.CX01.K01.CX01.K01
+expand_CX10 ← 4
+expand_CX10 ← 0
+CX10.CX01.CX10

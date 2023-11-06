@@ -61,7 +61,7 @@ CX01
 expand_SWAP01 → 1
 elim_CX01 → 3
 !apply elim_CX10 ← 1
-r7_a ← 2
+!apply drel161 ← 2
 expand_SWAP01 ← 2
 SWAP01.CX10.SWAP01
 
@@ -277,15 +277,3 @@ expand_SWAP12 → 1
 !apply drel154 ← 0
 expand_SWAP12 ← 0
 SWAP12.K12.SWAP12
-
-@name symmetry_K_b
-K01
-!apply elim_SWAP01 ← 1
-expand_SWAP01 → 1
-expand_CX10 → 2
-expand_CX10 ← 0
-elim_K01 ← 4
-expand_CX10 ← 2
-r7_a ← 0
-expand_SWAP01 ← 0
-SWAP01.K01.SWAP01
