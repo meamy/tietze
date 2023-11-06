@@ -226,38 +226,24 @@ SWAP01.Z2.SWAP01
 
 @name symmetry_CZ_a
 CZ02
-!apply elim_SWAP02 ← 0
-expand_SWAP02 → 1
-!apply elim_CZ02 ← 3
-r29_e ← 4
-!apply elim_CZ02 ← 2
-r29_f ← 3
-!apply drel73 → 4
-!apply bifunct_Z_b → 4
-!apply elim_Z2 → 3
-!apply elim_CZ02 ← 1
-r29_e ← 2
-!apply drel81 → 3
-!apply elim_Z0 → 2
-expand_SWAP02 ← 2
+!apply elim_SWAP01 ← 1
+!apply elim_SWAP01 ← 0
+expand_CZ12 ← 1
+symmetry_CZ_e → 1
+expand_CZ12 → 2
+symmetry_SWAP02 ← 4
+symmetry_SWAP02 ← 0
 SWAP02.CZ02.SWAP02
 
 @name symmetry_CZ_b
 CZ01
-!apply elim_SWAP01 ← 0
-expand_SWAP01 → 1
-!apply elim_CZ01 ← 3
-r29_d ← 4
-!apply elim_CZ01 ← 2
-r29_a ← 3
-!apply drel75 → 4
-!apply bifunct_Z_a → 4
-!apply elim_Z1 → 3
-!apply elim_CZ01 ← 1
-r29_d ← 2
-!apply drel78 → 3
-!apply elim_Z0 → 2
-expand_SWAP01 ← 2
+!apply elim_SWAP12 ← 1
+!apply elim_SWAP12 ← 0
+expand_CZ02 ← 1
+!apply symmetry_CZ_a → 1
+expand_CZ02 → 2
+!apply symmetry_SWAP01_alt ← 4
+!apply symmetry_SWAP01_alt ← 0
 SWAP01.CZ01.SWAP01
 
 @name symmetry_CZ_c

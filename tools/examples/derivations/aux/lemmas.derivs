@@ -2773,7 +2773,7 @@ expand_CZ02 → 2
 !apply elim_SWAP12 → 1
 
 -- SWAP01.CZ01.SWAP12.CZ12.CX01.SWAP12.SWAP01
-symmetry_CZ_f → 1
+!apply symmetry_CZ_b → 1
 !apply elim_SWAP01 → 0
 
 -- CZ01.SWAP01.SWAP12.CZ12.CX01.SWAP12.SWAP01
@@ -3126,7 +3126,7 @@ CCX2.CZ02.CZ01
 
 CZ01.CCX1
 expand_CCX1 → 1
-symmetry_CZ_f → 0
+!apply symmetry_CZ_b → 0
 
 -- SWAP01.CZ01.SWAP01.SWAP01.CCX0.SWAP01
 !apply elim_SWAP01 → 2
@@ -3135,7 +3135,7 @@ symmetry_CZ_f → 0
 r26_c → 1
 
 -- SWAP01.CCX0.CZ01.CZ12.SWAP01
-symmetry_CZ_f → 2
+!apply symmetry_CZ_b → 2
 
 -- SWAP01.CCX0.SWAP01.CZ01.SWAP01.CZ12.SWAP01
 !apply symmetry_CZ_c ← 4

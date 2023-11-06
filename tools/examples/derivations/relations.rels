@@ -89,7 +89,6 @@ symmetry_CCX_b CCX2 = SWAP12.CCX1.SWAP12
 symmetry_Z_d Z1 = SWAP01.Z0.SWAP01
 
 symmetry_CZ_e CZ12 = SWAP12.CZ12.SWAP12
-symmetry_CZ_f CZ01 = SWAP01.CZ01.SWAP01
 
 -- *******************************************************************
 -- Order rules
