@@ -31,7 +31,7 @@ X0.X1.Z0.Z1.CZ01.M
 @name lemmax1x0cz01
 
 X1.X0.CZ01
-r18_a → 1
+!apply drel160 → 1
 !apply drel145 → 0
 !apply drel31 → 2
 !apply spatial_Z0 ← 1
@@ -55,7 +55,7 @@ expand_S1 → 0
 !apply drel119 ← 11
 
 -- X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.X0.Z1.X1.Z0.CZ01.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.CZ01
-r18_a → 16
+!apply drel160 → 16
 !apply drel145 → 15
 
 -- X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.X0.Z1.X1.Z0.CZ01.CCX2.CZ01.Z0.X1.Z1.X0.CX21.CCX2.CX21.CZ01
