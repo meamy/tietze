@@ -146,8 +146,6 @@ r8_c CX01.CCX0.CX01 = CCX1.CCX0.CCX1
 -- Commutators ("Pushing Through")
 -- *******************************************************************
 
-r12 X0.CX01 = CX01.X0.X1
-
 r5 X0.CCX2 = CCX2.CX12.X0
 
 -- Can be rewritten in terms of commutators.
