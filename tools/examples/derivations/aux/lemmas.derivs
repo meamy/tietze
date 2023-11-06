@@ -3265,3 +3265,28 @@ r18_a → 1
 !apply symmetry_Z_c ← 3
 expand_CZ02 ← 0
 CZ02.Z2.X0
+
+
+-- ****************************************************************************
+-- The relation Z1.CX10 = CZ01.CX10.CZ01
+-- ****************************************************************************
+
+@name drel157
+
+Z1.CX10
+symmetry_Z_d → 0
+
+-- SWAP01.Z0.SWAP01.CX10
+!apply elim_SWAP01 ← 4
+!apply symmetry_CX_e ← 2
+
+-- SWAP01.Z0.CX01.SWAP01
+r29_d → 1
+
+-- SWAP01.CZ01.CX01.CZ01.SWAP01
+!apply symmetry_CX_e → 2
+
+-- SWAP01.CZ01.SWAP01.CX10.SWAP01.CZ01.SWAP01
+!apply symmetry_CZ_b ← 4
+!apply symmetry_CZ_b ← 0
+CZ01.CX10.CZ01

@@ -103,7 +103,7 @@ CX01.K12.M.Z0.CX10.CCX0.CX20.Z0.X0.K12.CX01
 !apply spatial_CZ01 ← 1
 !apply drel43 → 2
 !apply elim_CZ01 ← 5
-r29_a ← 3
+!apply drel157 ← 3
 
 -- K12.M.Z0.Z1.CX10.CZ01.CCX0.CX20.Z0.X0.CZ01.K12
 r26_c → 5
