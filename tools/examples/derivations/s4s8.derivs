@@ -106,7 +106,7 @@ CX01.K12.M.Z0.CX10.CCX0.CX20.Z0.X0.K12.CX01
 !apply drel157 ← 3
 
 -- K12.M.Z0.Z1.CX10.CZ01.CCX0.CX20.Z0.X0.CZ01.K12
-r26_c → 5
+!apply drel159 → 5
 r31_c → 6
 r18_a → 10
 !apply drel43 ← 9

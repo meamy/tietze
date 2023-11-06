@@ -231,7 +231,7 @@ CZ01.CCX1.CCX0.CCX1
 !apply drel153 → 4
 
 -- CCX1.CZ01.CCX0.CZ02.CCX1.CZ12.CZ02
-r26_c → 1
+!apply drel159 → 1
 r31_b ← 6
 !apply drel37 → 4
 
@@ -2240,7 +2240,7 @@ CCX2.CZ02
 CZ12.CZ01.CCX0
 !apply elim_CZ01 ← 3
 elim_CCX0 ← 4
-r26_c → 3
+!apply drel159 → 3
 elim_CCX0 → 2
 !apply elim_CZ01 → 1
 !apply elim_CZ12 → 0
@@ -3074,7 +3074,7 @@ expand_CZ02 → 0
 !apply elim_SWAP12 → 2
 
 -- SWAP12.CZ01.CCX0.SWAP12
-r26_c → 1
+!apply drel159 → 1
 
 -- SWAP12.CCX0.CZ01.CZ12.SWAP12
 !apply symmetry_CCX_g → 1
@@ -3132,7 +3132,7 @@ expand_CCX1 → 1
 !apply elim_SWAP01 → 2
 
 -- SWAP01.CZ01.CCX0.SWAP01
-r26_c → 1
+!apply drel159 → 1
 
 -- SWAP01.CCX0.CZ01.CZ12.SWAP01
 !apply symmetry_CZ_b → 2
@@ -3330,3 +3330,66 @@ expand_CZ12 ← 6
 symmetry_CX_c ← 3
 expand_CZ12 ← 0
 CZ12.CX12.CZ12
+
+
+-- ****************************************************************************
+-- The relation CZ01.CCX0 = CCX0.CZ01.CZ12
+-- ****************************************************************************
+
+@name drel159
+
+CZ01.CCX0
+elim_K12 ← 0
+elim_K01 ← 1
+
+-- K12.K01.K01.K12.CZ01.CCX0
+!apply drel49 → 3
+
+-- K12.K01.K01.CX01.K12.CCX0
+elim_K01 ← 4
+expand_CX10 ← 2
+
+-- K12.K01.CX10.K01.K12.CCX0
+r47 → 3
+
+-- K12.K01.CX10.K12.K01.CCX0
+!apply drel63 → 4
+
+-- K12.K01.CX10.K12.CCX1.K01
+!apply drel29 ← 3
+
+-- K12.K01.CX10.CCX2.K12.K01
+!apply elim_CX10 ← 4
+
+-- K12.K01.CX10.CCX2.CX10.CX10.K12.K01
+!apply drel6 → 2
+
+-- K12.K01.X0.CCX2.X0.CX10.K12.K01
+r5 → 2
+elim_X0 → 4
+
+-- K12.K01.CCX2.CX12.CX10.K12.K01
+r47 ← 5
+expand_CX10 → 4
+elim_K01 → 6
+
+-- K12.K01.CCX2.CX12.K01.CX01.K12
+elim_K12 ← 5
+expand_CZ01 ← 6
+
+-- K12.K01.CCX2.CX12.K01.K12.CZ01
+r47 ← 0
+!apply drel86 → 1
+r47 → 4
+
+-- K01.CCX1.K12.CX12.K12.K01.CZ01
+!apply drel85 ← 0
+
+-- CCX0.K01.K12.CX12.K12.K01.CZ01
+!apply drel124 ← 2
+!apply drel89 ← 1
+elim_K01 → 2
+
+-- CCX0.CZ12.CZ01
+r31_c ← 1
+CCX0.CZ01.CZ12
