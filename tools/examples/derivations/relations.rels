@@ -134,7 +134,6 @@ r47 K01.K12 = K12.K01
 r31_c CZ01.CZ12 = CZ12.CZ01
 
 r28_a CX01.CZ02 = CZ02.CX01
-r28_c CX12.CZ01 = CZ01.CX12
 
 -- Can be rewritten in terms of commutation: CXC.CXN = CXN.CXC
 r8_c CX01.CCX0.CX01 = CCX1.CCX0.CCX1
