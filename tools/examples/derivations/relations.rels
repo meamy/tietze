@@ -156,7 +156,6 @@ r18_a X0.CZ01 = CZ01.Z1.X0
 r44_b CX01.CZ12 = CZ02.CZ12.CX01
 
 -- Can be rewritten in terms of commutators.
-r29_c Z1.CX12 = CZ12.CX12.CZ12
 r29_d Z0.CX01 = CZ01.CX01.CZ01
 
 -- Can be rewritten in terms of commutators.
