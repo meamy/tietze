@@ -3466,3 +3466,28 @@ expand_X1 ← 1
 -- CX01.X1.X0
 bifunct_X_a ← 1
 CX01.X0.X1
+
+
+-- ****************************************************************************
+-- The relation CX02.CZ01 = CZ01.CX02
+-- ****************************************************************************
+
+@name drel163
+
+CX02.CZ01
+!apply elim_SWAP12 ← 2
+symmetry_CX_m → 0
+
+-- SWAP12.CX01.SWAP12.CZ01.SWAP12.SWAP12
+expand_CZ02 ← 2
+
+-- SWAP12.CX01.CZ02.SWAP12
+r28_a → 1
+
+-- SWAP12.CZ02.CX01.SWAP12
+expand_CZ02 → 1
+
+-- SWAP12.SWAP12.CZ02.SWAP12.CX01.SWAP12
+symmetry_CX_m ← 3
+!apply elim_SWAP12 → 0
+CZ01.CX02

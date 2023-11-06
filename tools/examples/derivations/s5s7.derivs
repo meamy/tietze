@@ -19,7 +19,7 @@ CZ01.X1.CCX2.X1.CZ01
 !apply elim_X1 → 3
 
 -- CZ01.CCX2.CX02.CZ01
-r28_b → 2
+!apply drel163 → 2
 !apply drel36 → 0
 
 -- CCX2.CX02
