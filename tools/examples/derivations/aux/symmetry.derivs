@@ -2,6 +2,19 @@
 -- Alternative Symmetries Definitions
 -- *******************************************************************
 
+@name symmetry_SWAP02
+SWAP02
+expand_SWAP02 → 0
+!apply elim_SWAP01 ← 3
+!apply elim_SWAP01 ← 2
+symmetry_CX_c ← 3
+!apply elim_SWAP01 ← 1
+symmetry_CX_l ← 2
+!apply elim_SWAP01 ← 0
+symmetry_CX_c ← 1
+expand_SWAP12 ← 1
+SWAP01.SWAP12.SWAP01
+
 @name symmetry_SWAP02_alt
 SWAP02
 expand_SWAP02 → 0
@@ -70,16 +83,16 @@ CX12
 symmetry_CX_c → 0
 symmetry_CX_m → 1
 !apply symmetry_CX_e → 2
-symmetry_SWAP02 ← 4
-symmetry_SWAP02 ← 0
+!apply symmetry_SWAP02 ← 4
+!apply symmetry_SWAP02 ← 0
 SWAP02.CX10.SWAP02
 
 @name symmetry_CX_g
 CX21
 symmetry_CX_l → 0
 symmetry_CX_a → 1
-symmetry_SWAP02 → 3
-symmetry_SWAP02 → 1
+!apply symmetry_SWAP02 → 3
+!apply symmetry_SWAP02 → 1
 !apply elim_SWAP01 → 7
 !apply elim_SWAP01 → 0
 symmetry_CX_c ← 1
@@ -88,8 +101,8 @@ SWAP12.CX12.SWAP12
 @name symmetry_CX_h
 CX20
 symmetry_CX_a → 0
-symmetry_SWAP02 → 2
-symmetry_SWAP02 → 0
+!apply symmetry_SWAP02 → 2
+!apply symmetry_SWAP02 → 0
 symmetry_CX_c ← 2
 !apply symmetry_CX_g ← 1
 SWAP01.CX21.SWAP01
@@ -116,10 +129,10 @@ CX20
 symmetry_SWAP01 ← 4
 !apply elim_SWAP02 ← 1
 symmetry_SWAP01 ← 2
-symmetry_SWAP02 → 5
+!apply symmetry_SWAP02 → 5
 !apply elim_SWAP01 → 7
 !apply elim_SWAP01 → 4
-symmetry_SWAP02 → 1
+!apply symmetry_SWAP02 → 1
 !apply elim_SWAP01 → 3
 !apply elim_SWAP01 → 0
 SWAP12.CX10.SWAP12
@@ -161,8 +174,8 @@ CCX0
 !apply elim_SWAP01 ← 0
 expand_CCX1 ← 1
 !apply symmetry_CCX_f → 1
-symmetry_SWAP02 → 3
-symmetry_SWAP02 → 1
+!apply symmetry_SWAP02 → 3
+!apply symmetry_SWAP02 → 1
 !apply elim_SWAP01 → 7
 !apply elim_SWAP01 → 0
 expand_CCX1 → 2
@@ -231,8 +244,8 @@ CZ02
 expand_CZ12 ← 1
 symmetry_CZ_e → 1
 expand_CZ12 → 2
-symmetry_SWAP02 ← 4
-symmetry_SWAP02 ← 0
+!apply symmetry_SWAP02 ← 4
+!apply symmetry_SWAP02 ← 0
 SWAP02.CZ02.SWAP02
 
 @name symmetry_CZ_b
@@ -258,8 +271,8 @@ CZ12
 expand_CZ12 → 0
 expand_CZ02 → 1
 !apply symmetry_CZ_b → 2
-symmetry_SWAP02 ← 4
-symmetry_SWAP02 ← 0
+!apply symmetry_SWAP02 ← 4
+!apply symmetry_SWAP02 ← 0
 SWAP02.CZ01.SWAP02
 
 

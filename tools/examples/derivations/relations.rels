@@ -72,7 +72,6 @@ expand_CZ12 CZ12 = SWAP01.CZ02.SWAP01
 -- Symmetric Generators
 -- *******************************************************************
 
-symmetry_SWAP02 SWAP02 = SWAP01.SWAP12.SWAP01
 symmetry_SWAP01 SWAP01 = SWAP02.SWAP12.SWAP02
 
 symmetry_X_a X1 = SWAP01.X0.SWAP01
