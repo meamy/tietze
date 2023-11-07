@@ -826,7 +826,7 @@ expand_Z2 ← 1
 -- SWAP02.CX12.SWAP02.SWAP02.Z1.SWAP02.SWAP02.Z2.SWAP02
 !apply symmetry_Z_a ← 3
 !apply symmetry_Z_b ← 4
-symmetry_CX_b ← 0
+!apply symmetry_CX_b  ← 0
 CX10.Z1.Z0
 
 
@@ -2525,7 +2525,7 @@ symmetry_CCX_a → 1
 expand_X2 ← 4
 
 -- CCX0.SWAP02.CX12.SWAP02.X2
-symmetry_CX_b ← 1
+!apply symmetry_CX_b  ← 1
 CCX0.CX10.X2
 
 
@@ -2685,14 +2685,14 @@ expand_CX02 → 1
 
 -- SWAP02.CX12.CX01.CX12.SWAP02.CX21
 !apply elim_SWAP02 ← 3
-symmetry_CX_b ← 4
+!apply symmetry_CX_b  ← 4
 
 -- SWAP02.CX12.CX01.SWAP02.CX10.CX21
 !apply elim_SWAP02 ← 2
 !apply symmetry_CX_i ← 3
 
 -- SWAP02.CX12.SWAP02.CX21.CX10.CX21
-symmetry_CX_b ← 0
+!apply symmetry_CX_b  ← 0
 CX10.CX21.CX10.CX21
 
 

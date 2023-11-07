@@ -60,6 +60,13 @@ SWAP12.X1.SWAP12
 -- Alternative Symmetries for CX Gates
 -- *******************************************************************
 
+@name symmetry_CX_b
+CX10
+!apply elim_SWAP02 ← 1
+!apply elim_SWAP02 ← 0
+!apply symmetry_CX_f ← 1
+SWAP02.CX12.SWAP02
+
 @name symmetry_CX_d
 CX12
 !apply elim_SWAP12 ← 0
