@@ -22,6 +22,9 @@ expand_M M = X0.Z0.X0.Z0
 expand_CZ01 CZ01 = K12.CX01.K12
 expand_X1   X1   = CX01.X0.CX01.X0
 
+-- Depends on CZ01
+expand_Z0 Z0 = CZ01.CX01.CZ01.CX01
+
 -- Depends on X1.
 expand_CX20 CX20 = X1.CCX0.X1.CCX0
 
@@ -45,7 +48,6 @@ expand_K01 K01 = SWAP02.K12.SWAP02
 
 -- Depends on K01.
 expand_CX10 CX10 = K01.CX01.K01
-expand_Z0   Z0   = K01.X0.K01
 
 -- Depends on CX10.
 expand_SWAP01 SWAP01 = CX01.CX10.CX01
@@ -123,6 +125,8 @@ bifunct_Z_CX_b Z0.CX12 = CX12.Z0
 
 r1 CCX0.CX10 = CX10.CCX0
 
+r2 K01.Z0 = X0.K01
+
 r13 X0.CCX0 = CCX0.X0
 
 r36 X0.CX10.X0 = CX10
@@ -145,9 +149,6 @@ r5 X0.CCX2 = CCX2.CX12.X0
 r10_b CX12.CCX0.CX12 = CCX0.CX10
 
 r44_b CX01.CZ12 = CZ02.CZ12.CX01
-
--- Can be rewritten in terms of commutators.
-r29_d Z0.CX01 = CZ01.CX01.CZ01
 
 -- Can be rewritten in terms of commutators.
 r40_a CCX1.CCX2.CCX1 = CCX2.CCX1.CCX2

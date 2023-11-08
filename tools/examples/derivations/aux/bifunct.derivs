@@ -98,11 +98,11 @@ Z1.X0
 
 @name bifunct_X_Z_b
 X1.Z0
-expand_Z0 → 1
+!apply drel167 → 1
 !apply drel59 → 0
 !apply bifunct_X_Z_a ← 1
 !apply drel58 → 2
-expand_Z0 ← 0
+!apply drel167 ← 0
 Z0.X1
 
 @name bifunct_X_Z_c
@@ -138,11 +138,11 @@ Z2.X0
 
 @name bifunct_X_Z_f
 X2.Z0
-expand_Z0 → 1
+!apply drel167 → 1
 !apply bifunct_X_K_b → 0
 !apply bifunct_X_b ← 1
 !apply bifunct_X_K_b → 2
-expand_Z0 ← 0
+!apply drel167 ← 0
 Z0.X2
 
 
@@ -264,20 +264,20 @@ K01.X2
 
 @name bifunct_Z_a
 Z0.Z1
-expand_Z0 → 0
+!apply drel167 → 0
 !apply drel59 ← 2
 bifunct_X_a → 1
 !apply drel58 ← 0
-expand_Z0 ← 1
+!apply drel167 ← 1
 Z1.Z0
 
 @name bifunct_Z_b
 Z0.Z2
-expand_Z0 → 0
+!apply drel167 → 0
 !apply bifunct_Z_K_b ← 2
 !apply bifunct_X_Z_e → 1
 !apply bifunct_Z_K_b ← 0
-expand_Z0 ← 1
+!apply drel167 ← 1
 Z2.Z0
 
 @name bifunct_Z_c
@@ -406,11 +406,11 @@ Z2.CZ01
 
 @name bifunct_Z_K_a
 Z0.K12
-expand_Z0 → 0
+!apply drel167 → 0
 r47 → 2
 bifunct_X_K_a → 1
 r47 → 0
-expand_Z0 ← 1
+!apply drel167 ← 1
 K12.Z0
 
 @name bifunct_Z_K_b
