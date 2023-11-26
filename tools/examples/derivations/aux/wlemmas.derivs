@@ -1,0 +1,39 @@
+-- ****************************************************************************
+-- The relation W1 = CZ02.CZ01
+-- ****************************************************************************
+
+@name wrel1
+
+W1
+expand_W1 → 0
+expand_S7 → 1
+expand_S6 → 0
+
+-- CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01
+!apply drel143 → 0
+!apply drel143 → 4
+
+-- CCX1.CCX2.CCX1.CZ01.CCX1.CCX2.CCX1.CZ01.CZ01
+!apply drel152 → 3
+!apply drel151 → 5
+!apply drel152 → 7
+
+-- CCX1.CCX2.CCX1.CCX1.CZ01.CCX2.CZ02.CCX1.CZ01.CZ02.CZ01
+!apply drel71 → 8
+!apply drel37 → 6
+
+
+-- CCX1.CCX2.CCX1.CCX1.CZ01.CCX2.CCX1.CZ01.CZ01
+!apply elim_CZ01 ← 6
+!apply drel36 → 4
+
+-- CCX1.CCX2.CCX1.CCX1.CCX2.CZ01.CCX1.CZ01.CZ01
+!apply drel152 → 5
+!apply drel71 → 6
+!apply elim_CZ01 → 7
+
+-- CCX1.CCX2.CCX1.CCX1.CCX2.CCX1.CZ02.CZ01
+!apply elim_CCX1 → 2
+!apply elim_CCX2 → 1
+!apply elim_CCX1 → 0
+CZ02.CZ01

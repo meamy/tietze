@@ -3,6 +3,7 @@ generators: generators.gens
 relations: relations.rels
 derivations:
   # Structural Lemmas
+- aux/wlemmas.derivs
 - aux/lemmas.derivs
 - aux/orders.derivs
 - aux/symmetry.derivs
