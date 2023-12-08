@@ -188,11 +188,13 @@ getInvProofImpl :: EIView -> EIView -> RewriteRule -> MonWord -> MonWord
                           -> Maybe InversionProof
 getInvProofImpl eview iview rule linv rinv =
     branchJust (deriveIntro iview pos1 $ lhs rule) $ \(_, isteps) ->
-        branchJust (deriveElim eview pos2 $ rhs rule) $ \(_, esteps) ->
+        branchJust (deriveElim eview pos3 $ rhs rule) $ \(_, esteps) ->
             Just $ InversionProof linv rinv isteps swap esteps
-    where swap = Rewrite rule pos2 L2R
+    where rlen = length $ rhs rule 
+          swap = Rewrite rule pos2 L2R
           pos1 = if hasLeftInvs eview then length linv else 0
           pos2 = if hasLeftInvs eview then pos1 else length rinv
+          pos3 = if hasLeftInvs eview then pos2 - 1 else pos2 + rlen - 1
 
 -- | Takes as input a view of elimination rules (eview), a view of introduction rules
 -- (iview), and a rewrite rule. Attempts to invert the rule, according to eview and
