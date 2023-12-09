@@ -5,14 +5,16 @@ relations:
 - circuits_as_e8.rels
 - e8_as_dyadic.rels
 derivations:
-  # Structural Lemmas
+  # Dyadic Lemmas
 - aux/wlemmas.derivs
 - aux/lemmas.derivs
 - aux/orders.derivs
 - aux/symmetry.derivs
 - aux/bifunct.derivs
-- aux/spatial.derivs
 - aux/misc.derivs
+  # Spatial Lemmas
+- aux/mlemmas.derivs
+- aux/spatial.derivs
   # S1 Obligations
 - step2/s1s1.derivs
 - step2/s1s2.derivs
