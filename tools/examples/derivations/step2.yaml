@@ -6,15 +6,16 @@ relations:
 - e8_as_dyadic.rels
 derivations:
   # Dyadic Lemmas
-- aux/wlemmas.derivs
-- aux/lemmas.derivs
-- aux/orders.derivs
-- aux/symmetry.derivs
 - aux/bifunct.derivs
+- aux/symmetry.derivs
+- aux/orders.derivs
+- aux/commutators.derivs
 - aux/misc.derivs
   # Spatial Lemmas
 - aux/mlemmas.derivs
 - aux/spatial.derivs
+  # Coxeter Lemmas
+- aux/wlemmas.derivs
   # S1 Obligations
 - step2/s1s1.derivs
 - step2/s1s2.derivs
