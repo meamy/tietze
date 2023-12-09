@@ -1,0 +1,32 @@
+-- Note that if Wn depends on Wm, then m < n. This means that all Wn
+-- generators can be eliminated without changing the presentation.
+
+-- *******************************************************************
+-- Sign Changes as Coxeter Words 
+-- *******************************************************************
+
+expand_W1 W1 = S6.S7
+expand_W2 W2 = S6.S5.W1.S5.S6
+expand_W3 W3 = S5.S4.W2.S4.S5
+expand_W4 W4 = S4.S3.W3.S3.S4
+expand_W5 W5 = S3.S2.W4.S2.S3
+expand_W6 W6 = S2.S1.W5.S1.S2
+expand_W9 W9 = S6.W7.W1.W7.S6
+
+-- *******************************************************************
+-- Auxilliary Coxeter Constructions 
+-- *******************************************************************
+
+-- Controlled X Decompositions
+expand_W7 W7   = S7.S8.S6.W6.W4.W2.S8.W6.W4.W2.S6.S8.S7
+expand_W8 W8   = S1.S3.S5.W7
+expand_W10 W10 = S1.S3
+
+-- *******************************************************************
+-- Auxilliary Coxeter Constructions 
+-- *******************************************************************
+
+-- Swap Decompositions
+expand_W11 W11 = W10.S4.W10.W8.W10.S4.W10.W8
+expand_W12 W12 = S2.S6
+expand_W13 W13 = W11.W12.W11

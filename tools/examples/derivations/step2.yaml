@@ -1,0 +1,60 @@
+# Derives the e8 relations.
+generators: generators.gens
+relations:
+- dyadic.rels
+- circuits_as_e8.rels
+- e8_as_dyadic.rels
+derivations:
+  # Structural Lemmas
+- aux/wlemmas.derivs
+- aux/lemmas.derivs
+- aux/orders.derivs
+- aux/symmetry.derivs
+- aux/bifunct.derivs
+- aux/spatial.derivs
+- aux/misc.derivs
+  # S1 Obligations
+- step2/s1s1.derivs
+- step2/s1s2.derivs
+- step2/s1s3.derivs
+- step2/s1s4.derivs
+- step2/s1s5.derivs
+- step2/s1s6.derivs
+- step2/s1s7.derivs
+- step2/s1s8.derivs
+  # S2 Obligations
+- step2/s2s2.derivs
+- step2/s2s3.derivs
+- step2/s2s4.derivs
+- step2/s2s5.derivs
+- step2/s2s6.derivs
+- step2/s2s7.derivs
+- step2/s2s8.derivs
+  # S3 Obligations
+- step2/s3s3.derivs
+- step2/s3s4.derivs
+- step2/s3s5.derivs
+- step2/s3s6.derivs
+- step2/s3s7.derivs
+- step2/s3s8.derivs
+  # S4 Obligations
+- step2/s4s4.derivs
+- step2/s4s5.derivs
+- step2/s4s6.derivs
+- step2/s4s7.derivs
+- step2/s4s8.derivs
+  # S5 Obligations
+- step2/s5s5.derivs
+- step2/s5s6.derivs
+- step2/s5s7.derivs
+- step2/s5s8.derivs
+  # S6 Obligations
+- step2/s6s6.derivs
+- step2/s6s7.derivs
+- step2/s6s8.derivs
+  # S7 Obligations
+- step2/s7s7.derivs
+- step2/s7s8.derivs
+  # S8 Obligations
+- step2/s8s8.derivs
+obligations: []

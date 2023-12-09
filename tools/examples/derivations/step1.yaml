@@ -1,0 +1,9 @@
+# Derives the dyadic_as_e8 relations.
+generators: generators.gens
+relations:
+- circuits_as_e8.rels
+- dyadic.rels
+- e8_as_dyadic.rels
+- e8.rels
+derivations: []
+obligations: []

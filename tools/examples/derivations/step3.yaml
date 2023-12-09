@@ -1,0 +1,13 @@
+# Validates that all lemmas follow from dyadic.rels.
+generators: generators.gens
+relations:
+- dyadic.rels
+derivations:
+  # Structural Lemmas
+- aux/lemmas.derivs
+- aux/orders.derivs
+- aux/symmetry.derivs
+- aux/bifunct.derivs
+- aux/spatial.derivs
+- aux/misc.derivs
+obligations: []
