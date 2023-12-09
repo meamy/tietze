@@ -2,6 +2,7 @@
 
 module LafontExe.QueryEIRules where
 
+import           Data.List.NonEmpty
 import qualified Data.Set             as Set
 import           Lafont.Common
 import           Lafont.Named
@@ -47,7 +48,7 @@ handleDerivedRels rules named (EIQuery symset isLeftInv ty) =
         EQueryFailure sym          -> reportMissingERule sym
         IQueryFailure sym          -> reportMissingIRule sym
         EIQuerySuccess eview iview -> logQueryResults symset eview iview
-    where drules = addDRules rules $ map value named
+    where drules = addDRules rules $ Prelude.map value named
 
 -- | Consumes a handle, a list of derivation files (DerivFnames), a dictionary of rewrite
 -- rules (rules), a list of generators (gens). and the configurations for an EI view
@@ -66,11 +67,11 @@ processDerivationFiles hdl fnames rules gens query = do
 
 -- | See queryEIRules. Requires that both files exist, whereas queryEIRules does not
 -- impose this assumption.
-queryEIRulesImpl :: Handle -> String -> String  -> [String] -> EIQuery -> IO ()
-queryEIRulesImpl hdl genFname relFname derivFnames query = do
-    genFile <- readNamedFile genFname
-    relFile <- readNamedFile relFname
-    case readGeneratorsAndRules genFile relFile of
+queryEIRulesImpl :: Handle -> String -> [String] -> [String] -> EIQuery -> IO ()
+queryEIRulesImpl hdl genFname relFnames derivFnames query = do
+    genFile  <- readNamedFile genFname
+    relFiles <- readNamedFiles relFnames
+    case readGeneratorsAndRules genFile relFiles of
         UnknownSem             -> hPutStr hdl "Impl Error: Unknown semantic model."
         BadGenFile fn ln err   -> hPutStr hdl $ logEitherMsg fn ln err
         BadRelFile fn ln err   -> hPutStr hdl $ logEitherMsg fn ln err
@@ -84,9 +85,11 @@ queryEIRulesImpl hdl genFname relFname derivFnames query = do
 -- generated and printed to the handle (or a reason is given as to why no such view
 -- exists). Otherwise, a parsing error is printed to the handle with file name and line
 -- number.
-queryEIRules :: Handle -> String -> String -> [String] -> EIQuery -> IO ()
-queryEIRules hdl genFname relFname derivFnames query = do
-    res <- doFilesExist $ genFname:relFname:derivFnames
+queryEIRules :: Handle -> String -> NonEmpty String -> [String] -> EIQuery -> IO ()
+queryEIRules hdl genFname relFnames derivFnames query = do
+    res <- doFilesExist $ genFnames' ++ relFnames' ++ derivFnames
     case res of
         Just name -> hPutStr hdl $ "File does not exist: " ++ name ++ "\n"
-        Nothing   -> queryEIRulesImpl hdl genFname relFname derivFnames query
+        Nothing   -> queryEIRulesImpl hdl genFname relFnames' derivFnames query
+    where relFnames' = toList relFnames
+          genFnames' = [genFname]

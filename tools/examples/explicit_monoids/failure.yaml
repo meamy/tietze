@@ -1,6 +1,7 @@
 # An invalid derivation
 generators: generators.gens
-relations: relations.rels
+relations:
+- relations.rels
 derivations:
 - error.derivs
 obligations: []

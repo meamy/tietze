@@ -1,6 +1,7 @@
 # Group derivations.
 generators: generators.gens
-relations: relations.rels
+relations:
+- relations.rels
 derivations:
 - confluence.derivs
 obligations: []

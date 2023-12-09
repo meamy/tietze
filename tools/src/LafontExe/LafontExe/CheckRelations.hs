@@ -2,6 +2,7 @@
 
 module LafontExe.CheckRelations where
 
+import           Data.List.NonEmpty
 import           LafontExe.IO.Files
 import           LafontExe.Logging.ErrorFormat
 import           LafontExe.Logging.LineBased
@@ -14,11 +15,11 @@ import           System.IO
 
 -- | See checkRelations. Requires that both files exist, whereas checkRelations does not
 -- impose this assumption.
-checkRelationsImpl :: Handle -> String -> String -> IO ()
-checkRelationsImpl hdl genFname relFname = do
-    genFile <- readNamedFile genFname
-    relFile <- readNamedFile relFname
-    case readGeneratorsAndRules genFile relFile of
+checkRelationsImpl :: Handle -> String -> [String] -> IO ()
+checkRelationsImpl hdl genFname relFnames = do
+    genFile  <- readNamedFile genFname
+    relFiles <- readNamedFiles relFnames
+    case readGeneratorsAndRules genFile relFiles of
         UnknownSem           -> hPutStr hdl "Impl Error: Unknown semantic model."
         BadGenFile fn ln err -> hPutStr hdl $ logEitherMsg fn ln err
         BadRelFile fn ln err -> hPutStr hdl $ logEitherMsg fn ln err
@@ -30,9 +31,11 @@ checkRelationsImpl hdl genFname relFname = do
 -- relation file (relFname). If the generator and relation files parse correctly, then an
 -- internal representation of the generators is printed to handle. Otherwise, a parsing
 -- error is printed to handle with the file name and line number.
-checkRelations :: Handle -> String -> String -> IO ()
-checkRelations hdl genFname relFname = do
-    res <- doFilesExist [genFname, relFname]
+checkRelations :: Handle -> String -> NonEmpty String -> IO ()
+checkRelations hdl genFname relFnames = do
+    res <- doFilesExist $ genFnames' ++ relFnames'
     case res of
         Just name -> putStrLn ("File does not exist: " ++ name)
-        Nothing   -> checkRelationsImpl hdl genFname relFname
+        Nothing   -> checkRelationsImpl hdl genFname relFnames'
+    where relFnames' = toList relFnames
+          genFnames' = [genFname]

@@ -2,6 +2,7 @@
 
 module LafontExe.ValidateDerivations where
 
+import           Data.List.NonEmpty
 import           Lafont.Either
 import           Lafont.Named
 import           Lafont.Parse.DerivationFile
@@ -57,7 +58,7 @@ verifyDerivations named =
         Nothing            -> case concretize (dmap, emap) named of
             Left (fname, num, pos) -> describeFailedApply fname num pos
             Right derivs           -> verifyDerivationSteps derivs
-    where absDerivations = map value named
+    where absDerivations = Prelude.map value named
           dmap           = makeDerivationMap absDerivations
           emap           = identifyEquationalRules dmap
 
@@ -78,11 +79,11 @@ processDerivationFiles hdl fnames rules gens = do
 
 -- | See validateDerivations. Requires that both files exist, whereas validateDerivations
 -- does not impose this assumption.
-validateDerivationsImpl :: Handle -> String -> String  -> [String] -> IO ()
-validateDerivationsImpl hdl genFname relFname derivFnames = do
-    genFile <- readNamedFile genFname
-    relFile <- readNamedFile relFname
-    case readGeneratorsAndRules genFile relFile of
+validateDerivationsImpl :: Handle -> String -> [String] -> [String] -> IO ()
+validateDerivationsImpl hdl genFname relFnames derivFnames = do
+    genFile  <- readNamedFile genFname
+    relFiles <- readNamedFiles relFnames
+    case readGeneratorsAndRules genFile relFiles of
         UnknownSem             -> hPutStr hdl "Impl Error: Unknown semantic model."
         BadGenFile fn ln err   -> hPutStr hdl $ logEitherMsg fn ln err
         BadRelFile fn ln err   -> hPutStr hdl $ logEitherMsg fn ln err
@@ -95,9 +96,11 @@ validateDerivationsImpl hdl genFname relFname derivFnames = do
 -- correctly, then the derivations are validated and any invalid derivations are printed
 -- to the handle. Otherwise, a parsing error is printed to the handle with file name and
 -- line number.
-validateDerivations :: Handle -> String -> String -> [String] -> IO ()
-validateDerivations hdl genFname relFname derivFnames = do
-    res <- doFilesExist $ genFname:relFname:derivFnames
+validateDerivations :: Handle -> String -> NonEmpty String -> [String] -> IO ()
+validateDerivations hdl genFname relFnames derivFnames = do
+    res <- doFilesExist $ genFnames' ++ relFnames' ++ derivFnames
     case res of
         Just name -> hPutStr hdl $ "File does not exist: " ++ name ++ "\n"
-        Nothing   -> validateDerivationsImpl hdl genFname relFname derivFnames
+        Nothing   -> validateDerivationsImpl hdl genFname relFnames' derivFnames
+    where relFnames' = toList relFnames
+          genFnames' = [genFname]

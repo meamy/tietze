@@ -26,27 +26,31 @@ data GenRuleReadResult = UnknownSem
                        | MissingGen String
                        | GenRulePair [String] RuleDict
 
--- | Consumes a relation file and a dictionary of generators. If the relation file is
--- parsed successfully, relative to the generators, then a GenRulePair status is returned.
--- Otherwise, and error is propogated via the return status BadRelFile.
+-- | Recursive implementation of readRules over the entries of the file list.
+readRulesImpl :: [String] -> [FileData] -> RuleDict -> GenRuleReadResult
+readRulesImpl language []                            rules = GenRulePair language rules
+readRulesImpl language ((FileData name lines):files) rules =
+    case parseRelFile rules language lines 1 of
+        Left (errLn, err) -> BadRelFile name errLn err
+        Right rules'      -> readRulesImpl language files rules'
+
+-- | Consumes a list of relation files and a dictionary of generators. If all relation
+-- files are parsed successfully, relative to the generators, then a GenRulePair status
+-- is returned. Otherwise, and error is propogated via the return status BadRelFile.
 --
 -- Note: This method is said to be unchecked, as semantic validity is ignored.
-readRulesUnchecked :: FileData -> GenDict a -> GenRuleReadResult
-readRulesUnchecked (FileData relFname relLines) gens =
-    case parseRelFile language relLines 1 of
-        Left (errLn, err) -> BadRelFile relFname errLn err
-        Right rules       -> GenRulePair language rules
+readRules :: GenDict a -> [FileData] -> GenRuleReadResult
+readRules gens files = readRulesImpl language files Lafont.Rewrite.Lookup.empty
     where language = toAlphabet gens
 
 -- | Consumes a relation file and a dictionary of generators whose semantics are given by
--- elements of a monoid. This function adheres to readRulesUnchecked, except that the
--- semantics validity of each rules is also checked. The following two cases are
--- introduced. If a rule is semantically invalid, then the InvalidRule status is
--- returned. If the semantics of a generator are undefined, then the MissingGen status is
--- returned.
-readAndCheckRules :: (MonoidObj a) => FileData -> GenDict a -> GenRuleReadResult
-readAndCheckRules relFile gens =
-    case readRulesUnchecked relFile gens of
+-- elements of a monoid. This function adheres to readRules, except that the semantics
+-- validity of each rules is also checked. The following two cases are introduced. If a
+-- rule is semantically invalid, then the InvalidRule status is returned. If the
+-- semantics of a generator are undefined, then the MissingGen status is returned.
+readAndCheckRules :: (MonoidObj a) => GenDict a -> [FileData] -> GenRuleReadResult
+readAndCheckRules gens files =
+    case readRules gens files of
         GenRulePair language rules -> case checkRuleSem gens rules of
             InvalidRuleSem id   -> InvalidRel id
             IncompleteGenSet id -> MissingGen id
@@ -56,13 +60,13 @@ readAndCheckRules relFile gens =
 -- | Consumes a generator file and a relation file. If the generator fail is invalid,
 -- then the BadGenFile status is returned. Otherwise, the rules are parsed relative to
 -- the generators, in adherence to readAndCheckRules.
-readGeneratorsAndRules :: FileData -> FileData -> GenRuleReadResult
-readGeneratorsAndRules (FileData genFname genLines) relFile =
+readGeneratorsAndRules :: FileData -> [FileData] -> GenRuleReadResult
+readGeneratorsAndRules (FileData genFname genLines) relFiles =
     case parseGenFileAsDict genLines 1 of
         Left (errLn, err)                    -> BadGenFile genFname errLn err
-        Right (MonoidGenSummary dict)        -> readRulesUnchecked relFile dict
-        Right (DyadicTwoSummary dict)        -> readAndCheckRules relFile dict
-        Right (DyadicThreeSummary dict)      -> readAndCheckRules relFile dict
-        Right (ModMultProductSummary dict _) -> readAndCheckRules relFile dict
-        Right (ModAddProductSummary dict _)  -> readAndCheckRules relFile dict
+        Right (MonoidGenSummary dict)        -> readRules dict relFiles
+        Right (DyadicTwoSummary dict)        -> readAndCheckRules dict relFiles
+        Right (DyadicThreeSummary dict)      -> readAndCheckRules dict relFiles
+        Right (ModMultProductSummary dict _) -> readAndCheckRules dict relFiles
+        Right (ModAddProductSummary dict _)  -> readAndCheckRules dict relFiles
         _                                    -> UnknownSem

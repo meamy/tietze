@@ -1,9 +1,11 @@
 module Main where
 
-import Data.List
-import LafontExeTest.HandleTest
-import LafontExe.CheckRelations
-import Lafont.String
+import qualified Data.List.NonEmpty as NonEmpty
+import           Data.List
+import           LafontExeTest.HandleTest
+import           LafontExe.CheckRelations
+import           Lafont.String
+import           System.IO
 
 -----------------------------------------------------------------------------------------
 -- Common files.
@@ -21,6 +23,13 @@ dyadic3Gens :: FilePath
 dyadic3Gens = "data/test/dyadics/dyadic3.good.gens"
 
 -----------------------------------------------------------------------------------------
+-- Utilities.
+
+doTest :: String -> String -> Handle -> IO ()
+doTest genFname relFname x = checkRelations x genFname relFname'
+    where relFname' = NonEmpty.fromList [relFname]
+
+-----------------------------------------------------------------------------------------
 -- Good input.
 
 check1 :: String -> Bool
@@ -34,7 +43,7 @@ check1 str =
 
 test1 = (HandleTest "Good_Relations"
                     "Ensures that checkRelations can print all relations."
-                    (\x -> checkRelations x goodGens goodRels)
+                    (doTest goodGens goodRels)
                     check1)
 
 -----------------------------------------------------------------------------------------
@@ -53,7 +62,7 @@ check2 str = (and [-- The line at which the error should occur (see bad.gens).
 
 test2 = (HandleTest "Bad_Generators"
                     "Tests that a generator file with invalid symbol is rejected."
-                    (\x -> checkRelations x badGens goodRels)
+                    (doTest badGens goodRels)
                     check2)
 
 -----------------------------------------------------------------------------------------
@@ -72,7 +81,7 @@ check3 str = (and [-- The line at which the error should occur (see bad.rels).
 
 test3 = (HandleTest "Bad_Relation"
                     "Tests that a relation file with invalid generator is rejected."
-                    (\x -> checkRelations x goodGens badRels)
+                    (doTest goodGens badRels)
                     check3)
 
 -----------------------------------------------------------------------------------------
@@ -108,12 +117,12 @@ goodDyadicRels = "data/test/dyadics/dyadic.good.rels"
 
 test4 = (HandleTest "Good_RelSem_Dyadic2"
                     "Tests that sound Dyadic(2) relations pass validation."
-                    (\x -> checkRelations x dyadic2Gens goodDyadicRels)
+                    (doTest dyadic2Gens goodDyadicRels)
                     checkGoodSem)
 
 test5 = (HandleTest "Good_RelSem_Dyadic3"
                     "Tests that sound Dyadic(3) relations pass validation."
-                    (\x -> checkRelations x dyadic3Gens goodDyadicRels)
+                    (doTest dyadic3Gens goodDyadicRels)
                     checkGoodSem)
 
 -----------------------------------------------------------------------------------------
@@ -124,12 +133,12 @@ badDyadicRels = "data/test/dyadics/dyadic.bad.rels"
 
 test6 = (HandleTest "Bad_RelSem_Dyadic2"
                     "Tests that unsound Dyadic(2) relations fail validation."
-                    (\x -> checkRelations x dyadic2Gens badDyadicRels)
+                    (doTest dyadic2Gens badDyadicRels)
                     checkBadSem)
 
 test7 = (HandleTest "Bad_RelSem_Dyadic3"
                     "Tests that unsound Dyadic(3) relations fail validation."
-                    (\x -> checkRelations x dyadic3Gens badDyadicRels)
+                    (doTest dyadic3Gens badDyadicRels)
                     checkBadSem)
 
 -----------------------------------------------------------------------------------------
@@ -140,12 +149,12 @@ missingDyadicRels = "data/test/dyadics/dyadic.missing.rels"
 
 test8 = (HandleTest "Missing_RelSem_Dyadic2"
                     "Tests that missing generators abort Dyadic(2) validation."
-                    (\x -> checkRelations x dyadic2Gens missingDyadicRels)
+                    (doTest dyadic2Gens missingDyadicRels)
                     checkMissingSem)
 
 test9 = (HandleTest "Missing_RelSem_Dyadic3"
                     "Tests that missing generators abort Dyadic(3) validation."
-                    (\x -> checkRelations x dyadic3Gens missingDyadicRels)
+                    (doTest dyadic3Gens missingDyadicRels)
                     checkMissingSem)
 
 -----------------------------------------------------------------------------------------

@@ -278,17 +278,17 @@ fileRel1 = RewriteRule fileWord1 fileWord2 True Nothing
 test36 = TestCase (assertEqual "Tests parsing of a single rule with parseRelFile."
                                (Just fileRel1 :: Maybe RewriteRule)
                                rel)
-         where rel = case (parseRelFile gens ["  abc  a.b =  b.a -- comment"] 0) of
+         where rel = case (parseRelFile empty gens ["  abc  a.b =  b.a -- comment"] 0) of
                          Left _     -> Nothing
                          Right dict -> interpretRule dict "abc"
 
 test37 = TestCase (assertEqual "Tests that parseRelFile handles single line errors (1/2)."
                                (Left (0, (Left (UnexpectedSymbol 14))))
-                               (parseRelFile gens ["   abc x  =  y   xyz -- comment"] 0))
+                               (parseRelFile empty gens ["   abc x  =  y   xyz -- comment"] 0))
 
 test45 = TestCase (assertEqual "Tests that parseRelFile handles single line errors (2/2)."
                                (Left (0, (Right (UnknownGenName "c"))))
-                               (parseRelFile gens ["  abc  a.b  =  c.b.a -- comment"] 0))
+                               (parseRelFile empty gens ["  abc  a.b  =  c.b.a -- comment"] 0))
 
 -- Multi-line tests.
 
@@ -305,34 +305,34 @@ test38 = TestCase (assertEqual "Tests parsing of a single rule with multiple lin
                                (Just fileRel1 :: Maybe RewriteRule)
                                rel)
          where input =  [" \t\t\t  \t", "  \t\t", "abc a.b = b.a", "  -- comment"]
-               rel = case (parseRelFile gens input 0) of
+               rel = case (parseRelFile empty gens input 0) of
                          Left _     -> Nothing
                          Right dict -> interpretRule dict "abc"
 
 test39 = TestCase (assertEqual "Tests parsing of multiple valid rules (1/3)."
                                (Just fileRel1 :: Maybe RewriteRule)
                                rel)
-         where rel = case (parseRelFile gens validMultiline 0) of
+         where rel = case (parseRelFile empty gens validMultiline 0) of
                          Left _     -> Nothing
                          Right dict -> interpretRule dict "abc"
 
 test40 = TestCase (assertEqual "Tests parsing of multiple valid rules (2/3)."
                                (Just fileRel2 :: Maybe RewriteRule)
                                rel)
-         where rel = case (parseRelFile gens validMultiline 0) of
+         where rel = case (parseRelFile empty gens validMultiline 0) of
                          Left _     -> Nothing
                          Right dict -> interpretRule dict "cdf"
 
 test41 = TestCase (assertEqual "Tests parsing of multiple valid rules (3/3)."
                                (Just fileRel3 :: Maybe RewriteRule)
                                rel)
-         where rel = case (parseRelFile gens validMultiline 0) of
+         where rel = case (parseRelFile empty gens validMultiline 0) of
                          Left _     -> Nothing
                          Right dict -> interpretRule dict "xyz_123"
 
 test42 = TestCase (assertEqual "Tests that parseRelFile handles errors after valid lines."
                                (Left (1, (Right (DuplicateRuleName "r2"))))
-                               (parseRelFile gens input 0))
+                               (parseRelFile empty gens input 0))
          where input = ["r1 a = a", "r2 b = b", "r3 a = a", "r2 b = b", "r4 a = a"]
 
 -- Adjusted starting line.
@@ -340,13 +340,13 @@ test42 = TestCase (assertEqual "Tests that parseRelFile handles errors after val
 test43 = TestCase (assertEqual "Tests that parseRelFile handles offsets (1/2)."
                                (Just fileRel1 :: Maybe RewriteRule)
                                rel)
-         where rel = case (parseRelFile gens ["", "", "", "abc a.b = b.a", "", ""] 5) of
+         where rel = case (parseRelFile empty gens ["", "", "", "abc a.b = b.a", "", ""] 5) of
                          Left _     -> Nothing
                          Right dict -> interpretRule dict "abc"
 
 test44 = TestCase (assertEqual "Tests that parseRelFile handles offsets (2/2)."
                                (Left (8, (Right InvalidRuleName)))
-                               (parseRelFile gens ["", "", "", "1a a = a", "", ""] 5))
+                               (parseRelFile empty gens ["", "", "", "1a a = a", "", ""] 5))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.

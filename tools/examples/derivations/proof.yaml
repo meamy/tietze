@@ -1,6 +1,7 @@
 # Configurations for E8 proof.
 generators: generators.gens
-relations: relations.rels
+relations:
+- relations.rels
 derivations:
   # Structural Lemmas
 - aux/wlemmas.derivs

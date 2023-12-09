@@ -13,11 +13,19 @@ import           Lafont.Parse.DerivationFile
 -- | Pairs together the name of a file, and its contents.
 data FileData = FileData String [String]
 
+-- | Consumes a list of files. If the files are readable, then returns its FileData.
+readNamedFiles :: [String] -> IO [FileData]
+readNamedFiles []           = return []
+readNamedFiles (name:names) = do
+    contents <- readNamedFile name
+    rstOfLst <- readNamedFiles names
+    return $ contents:rstOfLst
+
 -- | Consumes the name of a file. If the file is readable, then returns its FileData.
 readNamedFile :: String -> IO FileData
 readNamedFile name = do
     contents <- readFile name
-    return (FileData name $ lines contents)
+    return $ FileData name $ lines contents
 
 -----------------------------------------------------------------------------------------
 -- * Specialized Reading/Writing.

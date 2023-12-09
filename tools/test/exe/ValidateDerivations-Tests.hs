@@ -1,10 +1,12 @@
 module Main where
 
-import Data.List
-import LafontExeTest.HandleTest
-import LafontExe.ValidateDerivations
-import Lafont.String
-import Lafont.Rewrite.Derivations
+import qualified Data.List.NonEmpty as NonEmpty
+import           Data.List
+import           LafontExeTest.HandleTest
+import           LafontExe.ValidateDerivations
+import           Lafont.String
+import           Lafont.Rewrite.Derivations
+import           System.IO
 
 -----------------------------------------------------------------------------------------
 -- Common files.
@@ -26,6 +28,13 @@ badProofOne = "data/test/bad.1.derivs"
 
 trivialProof :: String
 trivialProof = "data/test/trivial.derivs"
+
+-----------------------------------------------------------------------------------------
+-- Utilities.
+
+doTest :: String -> String -> [String] -> Handle -> IO ()
+doTest genFname relFname derivs x = validateDerivations x genFname relFname' derivs
+    where relFname' = NonEmpty.fromList [relFname]
 
 -----------------------------------------------------------------------------------------
 -- Helper methods.
@@ -51,7 +60,7 @@ isProducing str act = or [(("Produced " ++ act) `isSubstrOf` str),
 
 test1 = (HandleTest "Good_Derivation"
                     "Ensures that validateDerivations accepts a valid derivation."
-                    (\x -> validateDerivations x goodGens goodRels [goodProofOne])
+                    (doTest goodGens goodRels [goodProofOne])
                     (\str -> str == "Success.\n"))
 
 -----------------------------------------------------------------------------------------
@@ -62,7 +71,7 @@ multipleGoodProofs = [goodProofOne, goodProofTwo]
 
 test2 = (HandleTest "Multiple_Good_Derivation"
                     "Ensures that validateDerivations accepts a valid derivation."
-                    (\x -> validateDerivations x goodGens goodRels multipleGoodProofs)
+                    (doTest goodGens goodRels multipleGoodProofs)
                     (\str -> str == "Success.\n"))
 
 -----------------------------------------------------------------------------------------
@@ -81,7 +90,7 @@ check3 str = (and [-- The line at which the error should occur (see bad.gens).
 
 test3 = (HandleTest "Bad_Generators"
                     "Ensures that validateDerivations accepts a valid derivation."
-                    (\x -> validateDerivations x badGens goodRels [goodProofOne])
+                    (doTest badGens goodRels [goodProofOne])
                     check3)
 
 -----------------------------------------------------------------------------------------
@@ -100,7 +109,7 @@ check4 str = (and [-- The line at which the error should occur (see bad.rels).
 
 test4 = (HandleTest "Bad_Relations"
                     "Ensures that validateDerivations accepts a valid derivation."
-                    (\x -> validateDerivations x goodGens badRels [goodProofOne])
+                    (doTest goodGens badRels [goodProofOne])
                     check4)
 
 -----------------------------------------------------------------------------------------
@@ -120,7 +129,7 @@ check5 str =
 
 test5 = (HandleTest "Bad_Derivation_Step"
                     "Ensures that validateDerivations rejects invalid steps."
-                    (\x -> validateDerivations x goodGens goodRels [badProofOne])
+                    (doTest goodGens goodRels [badProofOne])
                     check5)
 
 -----------------------------------------------------------------------------------------
@@ -143,7 +152,7 @@ check6 str =
 
 test6 = (HandleTest "Bad_Derivation_Output"
                     "Ensures that validateDerivations rejects unexpected results."
-                    (\x -> validateDerivations x goodGens goodRels [badProofTwo])
+                    (doTest goodGens goodRels [badProofTwo])
                     check6)
 
 -----------------------------------------------------------------------------------------
@@ -162,7 +171,7 @@ check7 str = (and [-- The line at which the error should occur (see bad.rels).
 
 test7 = (HandleTest "Bad_Derivation_Format"
                     "Ensures that validateDerivations rejects unexpected results."
-                    (\x -> validateDerivations x goodGens goodRels [badProofThree])
+                    (doTest goodGens goodRels [badProofThree])
                     check7)
 
 -----------------------------------------------------------------------------------------
@@ -173,7 +182,7 @@ mixedProofs = [goodProofOne, badProofOne, goodProofTwo]
 
 test8 = (HandleTest "Bad_Derivation_Mixed"
                     "Ensures that validateDerivations detects bad derivation in a list."
-                    (\x -> validateDerivations x goodGens goodRels mixedProofs)
+                    (doTest goodGens goodRels mixedProofs)
                     check5)
 
 -----------------------------------------------------------------------------------------
@@ -194,12 +203,12 @@ check8 str = (and [-- The line at which the error should occur (see summary.deri
 
 test9 = (HandleTest "Derived_Rules_Fail"
                     "Ensures that validateDerivations identifies derived rules (1/2)."
-                    (\x -> validateDerivations x goodGens goodRels [derivedRuleProof])
+                    (doTest goodGens goodRels [derivedRuleProof])
                     check8)
 
 test10 = (HandleTest "Derived_Rules_Pass"
                      "Ensures that validateDerivations identifies derived rules (2/2)."
-                     (\x -> validateDerivations x goodGens goodRels derivedProofDeps)
+                     (doTest goodGens goodRels derivedProofDeps)
                      (\str -> str == "Success.\n"))
 
 -----------------------------------------------------------------------------------------
@@ -221,7 +230,7 @@ check11 str = (and [-- Defaults to the first line
 
 test11 = (HandleTest "Duplicate_Rel_Name"
                      "Ensures that validateDerivations identifies name collisions."
-                     (\x -> validateDerivations x goodGens goodRels twoProofsOneName)
+                     (doTest goodGens goodRels twoProofsOneName)
                      check11)
 
 -----------------------------------------------------------------------------------------
@@ -229,7 +238,7 @@ test11 = (HandleTest "Duplicate_Rel_Name"
 
 test12 = (HandleTest "Trivial_Unnamed"
                      "Ensures that validateDerivations handles trivial unammed proofs."
-                     (\x -> validateDerivations x goodGens goodRels [trivialProof])
+                     (doTest goodGens goodRels [trivialProof])
                      (\str -> str == "Success.\n"))
 
 -----------------------------------------------------------------------------------------
@@ -271,12 +280,12 @@ check13 str = (and [-- The line at which the error should occur (see bad.rels).
 
 test13 = (HandleTest "Cyclic_Proof_Bad"
                      "Ensures that cyclic proofs are detected."
-                     (\x -> validateDerivations x goodGens goodRels cyclicReasoningBad)
+                     (doTest goodGens goodRels cyclicReasoningBad)
                      check13)
 
 test14 = (HandleTest "Cyclic_Proof_Fix"
                      "Ensures that a cyclic proof can be fixed by eliminating one link."
-                     (\x -> validateDerivations x goodGens goodRels cyclicReasoningFix)
+                     (doTest goodGens goodRels cyclicReasoningFix)
                      (\str -> str == "Success.\n"))
 
 -----------------------------------------------------------------------------------------
@@ -315,17 +324,17 @@ checkMissingSem str = (and [-- Correct error message was displayed.
 
 test15 = (HandleTest "RelSem_Valid"
                      "Ensures that derivations can pass when the semantics are valid."
-                     (\x -> validateDerivations x semGens goodSemRels [semProof])
+                     (doTest semGens goodSemRels [semProof])
                      (\str -> str == "Success.\n"))
 
 test16 = (HandleTest "RelSem_Invalid"
                      "Ensures that derivations fail when semantic checks fail (1/2)."
-                     (\x -> validateDerivations x semGens badSemRels [semProof])
+                     (doTest semGens badSemRels [semProof])
                      checkBadSem)
 
 test17 = (HandleTest "RelSem_Missing"
                      "Ensures that derivations fail when semantic checks fail (2/2)."
-                     (\x -> validateDerivations x semGens missingSemRels [semProof])
+                     (doTest semGens missingSemRels [semProof])
                      checkMissingSem)
 
 -----------------------------------------------------------------------------------------
@@ -336,7 +345,7 @@ manyInFileGood = "data/test/many.good.derivs"
 
 test18 = (HandleTest "Many_Good"
                      "Ensures that a derivation file can contain multiple proofs."
-                     (\x -> validateDerivations x goodGens goodRels [manyInFileGood])
+                     (doTest goodGens goodRels [manyInFileGood])
                      (\str -> str == "Success.\n"))
 
 -----------------------------------------------------------------------------------------
@@ -357,7 +366,7 @@ check19 str =
 
 test19 = (HandleTest "Many_Bad"
                      "Ensures that errors are located properly within multiple proofs."
-                     (\x -> validateDerivations x goodGens goodRels [manyInFileBad])
+                     (doTest goodGens goodRels [manyInFileBad])
                      check19)
 
 -----------------------------------------------------------------------------------------
@@ -368,7 +377,7 @@ eqnDerivedProofs = "data/test/equational.good.derivs"
 
 test20 = (HandleTest "Equational_Derived_Rules"
                      "Ensures that derived rules can be applied equationally (if valid)."
-                     (\x -> validateDerivations x goodGens goodRels [eqnDerivedProofs])
+                     (doTest goodGens goodRels [eqnDerivedProofs])
                      (\str -> str == "Success.\n"))
 
 -----------------------------------------------------------------------------------------
@@ -389,7 +398,7 @@ check21 str = (and [-- Correct error message was displayed.
 
 test21 = (HandleTest "Equational_Derived_Failure"
                      "Ensures that directed derived rules are not applied equationally."
-                     (\x -> validateDerivations x goodGens goodRels [neqDerivedProofs])
+                     (doTest goodGens goodRels [neqDerivedProofs])
                      check21)
 
 -----------------------------------------------------------------------------------------

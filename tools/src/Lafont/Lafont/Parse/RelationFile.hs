@@ -32,8 +32,8 @@ instance Display RelFileError where
 -- | Consumes all lines of a relation file (lines), a list of generator names (gens), and
 -- the current line number (num). If the lines are valid, then returns a dictionary of
 -- all rewrite rules. Otherwise, returns a parsing exception.
-parseRelFile :: [String] -> [String] -> Int -> Either (Int, RFPError) RuleDict
-parseRelFile _    []           _   = Right empty
-parseRelFile gens (line:lines) num =
-    branchRight (parseRelFile gens lines (num + 1))
+parseRelFile :: RuleDict -> [String] -> [String] -> Int -> Either (Int, RFPError) RuleDict
+parseRelFile last _    []           _   = Right last
+parseRelFile last gens (line:lines) num =
+    branchRight (parseRelFile last gens lines (num + 1))
                 (\dict -> parseRelLine gens dict line num)

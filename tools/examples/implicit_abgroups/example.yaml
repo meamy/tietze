@@ -1,6 +1,7 @@
 # Abelian group derivations.
 generators: generators.gens
-relations: relations.rels
+relations:
+- relations.rels
 derivations:
 - commutivity.derivs
 - lemmas.derivs

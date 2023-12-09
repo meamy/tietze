@@ -4,6 +4,7 @@
 
 module LafontExe.IO.Configs where
 
+import           Data.List.NonEmpty
 import           Data.Yaml
 import           GHC.Generics
 
@@ -12,7 +13,7 @@ import           GHC.Generics
 
 -- | Data type to store the contents of a configuration file
 data Config = Config { generators  :: String
-                     , relations   :: String
+                     , relations   :: NonEmpty String
                      , derivations :: [String]
                      , obligations :: [String]
                      } deriving (Generic,Show,Eq)

@@ -133,7 +133,7 @@ test8 = TestCase (assertEqual "deriveIntro applied with right invs."
 -----------------------------------------------------------------------------------------
 -- * deriveElim
 
-elim = [EIRewrite 3 r1, EIRewrite 2 r2]
+elim n = [EIRewrite n r1, EIRewrite (n - 1) r2]
     where r1 = getAltRule 5 True
           r2 = getAltRule 4 True
 
@@ -154,7 +154,7 @@ test11 = TestCase (assertEqual "deriveElim applied with left invs (1/2)."
           deriv = [EIRewrite 10 r1, EIRewrite 8 r2, EIRewrite 5 r3]
 
 test27 = TestCase (assertEqual "deriveElim applied with left invs (2/2)."
-                               (Just (0, elim) :: Maybe (Int, [EIRewrite]))
+                               (Just (0, elim 3) :: Maybe (Int, [EIRewrite]))
                                (deriveElim lalt_eview 3 [sym5, sym4]))
 
 test12 = TestCase (assertEqual "deriveElim applied with right invs."
@@ -286,7 +286,7 @@ test25 = TestCase (assertEqual "getInvProof handles missing symbols."
 
 -- This case was also validated by-hand.
 test26 = TestCase (assertEqual "getInvProof handles invertible relations."
-                               (Just (InversionProof linv rinv intro swap elim))
+                               (Just (InversionProof linv rinv intro swap $ elim 2))
                                (getInvProof lalt_eview ralt_iview rwrule1))
     where swap = Rewrite rwrule1 3 L2R
 
