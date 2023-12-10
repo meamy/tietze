@@ -22,7 +22,6 @@ expand_S6 → 0
 !apply drel71 → 8
 !apply drel37 → 6
 
-
 -- CCX1.CCX2.CCX1.CCX1.CZ01.CCX2.CCX1.CZ01.CZ01
 !apply elim_CZ01 ← 6
 !apply drel36 → 4
@@ -37,3 +36,77 @@ expand_S6 → 0
 !apply elim_CCX2 → 1
 !apply elim_CCX1 → 0
 CZ02.CZ01
+
+
+-- ****************************************************************************
+-- The relation W2 = X1.CZ01.X1
+-- ****************************************************************************
+
+@name wrel2
+
+W2
+expand_W2 → 0
+!apply wrel1 → 2
+expand_S5 → 1
+expand_S6 → 0
+
+-- CX21.CCX2.CX21.X1.CCX2.X1.CZ02.CZ01.S5.S6
+!apply elim_X1 ← 0
+!apply elim_CZ01 ← 1
+!apply drel119 ← 2
+
+-- X1.CZ01.X1.Z0.CZ01.CX21.CCX2.CX21.X1.CCX2.X1.CZ02.CZ01.S5.S6
+!apply drel143 → 5
+!apply drel152 → 4
+!apply drel114 → 5
+
+-- X1.CZ01.X1.Z0.CCX1.CCX2.CZ02.CCX1.X1.CCX2.X1.CZ02.CZ01.S5.S6
+!apply elim_CZ02 ← 8
+!apply drel37 → 6
+!apply bifunct_X_CZ_a ← 7
+!apply bifunct_X_CZ_a → 10
+!apply drel151 → 8
+
+-- X1.CZ01.X1.Z0.CCX1.CCX2.CCX1.X1.CCX2.CZ02.CZ01.CZ02.X1.CZ01.S5.S6
+!apply drel71 → 10
+!apply elim_CZ02 → 9
+
+-- X1.CZ01.X1.Z0.CCX1.CCX2.CCX1.X1.CCX2.CZ01.X1.CZ01.S5.S6
+!apply drel119 ← 9
+!apply elim_CZ01 → 11
+
+-- X1.CZ01.X1.Z0.CCX1.CCX2.CCX1.X1.CCX2.X1.Z0.S5.S6
+!apply drel96 → 7
+!apply elim_X1 → 9
+
+-- X1.CZ01.X1.Z0.CCX1.CCX2.CCX1.CCX2.CX02.Z0.S5.S6
+r40_a → 4
+!apply elim_CCX2 → 6
+
+-- X1.CZ01.X1.Z0.CCX2.CCX1.CX02.Z0.S5.S6
+!apply drel40 ← 4
+!apply elim_Z0 → 3
+!apply drel52 ← 5
+!apply elim_Z0 → 4
+!apply drel81 → 6
+!apply elim_Z0 → 5
+
+-- X1.CZ01.X1.CCX2.CCX1.CX02.S5.S6
+expand_S5 → 6
+
+-- X1.CZ01.X1.CCX2.CCX1.CX02.X1.CCX2.X1.S6
+!apply drel96 → 6
+!apply elim_X1 → 8
+!apply drel91 → 6
+!apply elim_CX02 → 5
+
+-- X1.CZ01.X1.CCX2.CCX1.CCX2.S6
+r40_a ← 3
+!apply drel143 ← 3
+
+-- X1.CZ01.X1.CX21.CCX2.CX21.S6
+expand_S6 → 6
+!apply elim_CX21 → 5
+!apply elim_CCX2 → 4
+!apply elim_CX21 → 3
+X1.CZ01.X1

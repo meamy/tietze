@@ -4,6 +4,17 @@ relations:
 - circuits_as_e8.rels
 - dyadic.rels
 - e8_as_dyadic.rels
-- e8.rels
-derivations: []
+derivations:
+  # Dyadic Lemmas
+- aux/bifunct.derivs
+- aux/symmetry.derivs
+- aux/orders.derivs
+- aux/commutators.derivs
+- aux/misc.derivs
+  # Spatial Lemmas
+- aux/mlemmas.derivs
+- aux/spatial.derivs
+  # Coxeter Lemmas
+- aux/wlemmas.derivs
+  # Decompositions
 obligations: []
