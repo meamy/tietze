@@ -2,7 +2,6 @@
 generators: generators.gens
 relations:
 - dyadic.rels
-- circuits_as_e8.rels
 - e8_as_dyadic.rels
 derivations:
   # Dyadic Lemmas
@@ -15,7 +14,7 @@ derivations:
 - aux/mlemmas.derivs
 - aux/spatial.derivs
   # Coxeter Lemmas
-- aux/wlemmas.derivs
+- aux/slemmas.derivs
   # S1 Obligations
 - step2/s1s1.derivs
 - step2/s1s2.derivs

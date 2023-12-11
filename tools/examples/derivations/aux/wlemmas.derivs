@@ -6,35 +6,7 @@
 
 W1
 expand_W1 → 0
-expand_S7 → 1
-expand_S6 → 0
-
--- CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01
-!apply drel143 → 0
-!apply drel143 → 4
-
--- CCX1.CCX2.CCX1.CZ01.CCX1.CCX2.CCX1.CZ01.CZ01
-!apply drel152 → 3
-!apply drel151 → 5
-!apply drel152 → 7
-
--- CCX1.CCX2.CCX1.CCX1.CZ01.CCX2.CZ02.CCX1.CZ01.CZ02.CZ01
-!apply drel71 → 8
-!apply drel37 → 6
-
--- CCX1.CCX2.CCX1.CCX1.CZ01.CCX2.CCX1.CZ01.CZ01
-!apply elim_CZ01 ← 6
-!apply drel36 → 4
-
--- CCX1.CCX2.CCX1.CCX1.CCX2.CZ01.CCX1.CZ01.CZ01
-!apply drel152 → 5
-!apply drel71 → 6
-!apply elim_CZ01 → 7
-
--- CCX1.CCX2.CCX1.CCX1.CCX2.CCX1.CZ02.CZ01
-!apply elim_CCX1 → 2
-!apply elim_CCX2 → 1
-!apply elim_CCX1 → 0
+!apply srel1 → 0
 CZ02.CZ01
 
 
@@ -105,8 +77,76 @@ r40_a ← 3
 !apply drel143 ← 3
 
 -- X1.CZ01.X1.CX21.CCX2.CX21.S6
-expand_S6 → 6
-!apply elim_CX21 → 5
-!apply elim_CCX2 → 4
-!apply elim_CX21 → 3
+expand_S6 ← 3
+elim_s6 → 3
 X1.CZ01.X1
+
+
+-- ****************************************************************************
+-- The relation X1.S4.S5 = CX20.CCX0.CCX2.CCX1.X1.CCX0
+-- ****************************************************************************
+
+@name wrel3
+
+X1.S4.S5
+!apply srel2 → 1
+
+-- X1.CX01.CCX2.CCX0.CX01
+elim_CX01 ← 3
+r8_c → 4
+!apply drel169 → 4
+
+-- X1.CX01.CCX2.CX01.CCX0.CCX1.CCX0
+!apply drel7 → 1
+!apply elim_X1 → 0
+!apply drel131 → 1
+!apply drel25 → 3
+CCX2.CCX0.CX20.CCX1.X1.CCX0
+
+
+-- ****************************************************************************
+-- The relation CCX0.X1.CCX1.CX20.CCX0.CCX2 = S5.S4.X1
+-- ****************************************************************************
+
+@name wrel4
+
+CCX0.X1.CCX1.CX20.CCX0.CCX2
+elim_s5 ← 0
+elim_s4 ← 1
+!apply elim_X1 ← 2
+!apply wrel3 → 3
+elim_CCX0 → 8
+!apply elim_X1 → 7
+!apply elim_CCX1 → 6
+!apply elim_CX20 → 5
+elim_CCX0 → 4
+!apply elim_CCX2 → 3
+S5.S4.X1
+
+
+-- ****************************************************************************
+-- The relation W3 = CCX0.X1.CCX1.CZ01.CCX1.X1.CCX0
+-- ****************************************************************************
+
+@name wrel5
+
+W3
+expand_W3 → 0
+!apply wrel2 → 2
+!apply wrel3 → 4
+!apply wrel4 ← 0
+
+-- CCX0.X1.CCX1.CX20.CCX0.CCX2.CZ01.CCX2.CCX0.CX20.CCX1.X1.CCX0
+!apply elim_CZ01 ← 8
+!apply drel36 → 6
+!apply elim_CCX2 → 5
+
+-- CCX0.X1.CCX1.CX20.CCX0.CZ01.CCX0.CX20.CCX1.X1.CCX0
+!apply drel159 → 5
+elim_CCX0 → 4
+r31_c → 4
+
+-- CCX0.X1.CCX1.CX20.CX20.CZ01.CCX1.X1.CCX0
+!apply drel138 ← 4
+!apply elim_CX20 → 3
+CCX0.X1.CCX1.CZ01.CCX1.X1.CCX0

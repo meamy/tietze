@@ -3494,3 +3494,28 @@ Z0.CX01
 expand_Z0 → 0
 elim_CX01 → 3
 CZ01.CX01.CZ01
+
+
+-- ****************************************************************************
+-- The relation CCX1.CCX0.CCX1 = CCX0.CCX1.CCX0
+-- ****************************************************************************
+
+@name drel169
+
+CCX1.CCX0.CCX1
+!apply elim_SWAP12 ← 3
+!apply symmetry_CCX_g → 1
+!apply elim_SWAP12 ← 0
+
+-- SWAP12.SWAP12.CCX1.SWAP12.CCX0.SWAP12.CCX1.SWAP12.SWAP12
+symmetry_CCX_b ← 5
+symmetry_CCX_b ← 1
+
+-- SWAP12.CCX2.CCX0.CCX2.SWAP12
+!apply drel149 → 1
+symmetry_CCX_b → 2
+
+-- SWAP12.CCX0.SWAP12.CCX1.SWAP12.CCX0.SWAP12
+!apply symmetry_CCX_g ← 4
+!apply symmetry_CCX_g ← 0
+CCX0.CCX1.CCX0

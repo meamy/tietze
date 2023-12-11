@@ -13,10 +13,8 @@
 -- ****************************************************************************
 
 S6.S7.S6.S7
-expand_W1 ← 2
-expand_W1 ← 0
-!apply wrel1 → 1
-!apply wrel1 → 0
+!apply srel1 → 2
+!apply srel1 → 0
 
 -- CZ02.CZ01.CZ02.CZ01
 !apply drel71 → 1

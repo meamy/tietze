@@ -1,0 +1,59 @@
+-- ****************************************************************************
+-- The relation S6.S7 = CZ02.CZ01
+-- ****************************************************************************
+
+@name srel1
+
+S6.S7
+expand_S7 → 1
+expand_S6 → 0
+
+-- CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01
+!apply drel143 → 0
+!apply drel143 → 4
+
+-- CCX1.CCX2.CCX1.CZ01.CCX1.CCX2.CCX1.CZ01.CZ01
+!apply drel152 → 3
+!apply drel151 → 5
+!apply drel152 → 7
+
+-- CCX1.CCX2.CCX1.CCX1.CZ01.CCX2.CZ02.CCX1.CZ01.CZ02.CZ01
+!apply drel71 → 8
+!apply drel37 → 6
+
+-- CCX1.CCX2.CCX1.CCX1.CZ01.CCX2.CCX1.CZ01.CZ01
+!apply elim_CZ01 ← 6
+!apply drel36 → 4
+
+-- CCX1.CCX2.CCX1.CCX1.CCX2.CZ01.CCX1.CZ01.CZ01
+!apply drel152 → 5
+!apply drel71 → 6
+!apply elim_CZ01 → 7
+
+-- CCX1.CCX2.CCX1.CCX1.CCX2.CCX1.CZ02.CZ01
+!apply elim_CCX1 → 2
+!apply elim_CCX2 → 1
+!apply elim_CCX1 → 0
+CZ02.CZ01
+
+
+-- ****************************************************************************
+-- The relation S4.S5 = CX01.CCX2.CCX0.CX01
+-- ****************************************************************************
+
+@name srel2
+
+S4.S5
+expand_S5 → 1
+expand_S4 → 0
+
+-- CX01.CX02.CCX0.CX02.CX01.X1.CCX2.X1
+!apply drel142 → 1
+!apply drel149 → 1
+
+-- CX01.CCX0.CCX2.CCX0.CX01.X1.CCX2.X1
+!apply drel7 ← 5
+elim_CX01 → 4
+!apply drel149 → 2
+elim_CCX0 → 1
+CX01.CCX2.CCX0.CX01
