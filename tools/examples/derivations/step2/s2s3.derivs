@@ -13,41 +13,20 @@
 -- ****************************************************************************
 
 S2.S3.S2.S3.S2.S3
-expand_S3 → 5
-expand_S2 → 4
-expand_S3 → 3
-expand_S2 → 2
-expand_S3 → 1
-expand_S2 → 0
+!apply srel4 → 2
+!apply srel4 → 0
 
--- X0.CX21.CCX2.CX21.X0.X0.CCX2.X0.X0.CX21.CCX2.CX21.X0.X0.CCX2.X0.X0.CX21.CCX2.CX21.X0.X0.CCX2.X0
-elim_X0 → 20
-elim_X0 → 15
-elim_X0 → 12
-elim_X0 → 7
-elim_X0 → 4
-
--- X0.CX21.CCX2.CX21.CCX2.CX21.CCX2.CX21.CCX2.CX21.CCX2.CX21.CCX2.X0
-!apply drel13 → 1
-!apply drel13 → 5
-!apply drel13 → 9
-
--- X0.CX12.CCX1.CX12.CCX2.CX12.CCX1.CX12.CCX2.CX12.CCX1.CX12.CCX2.X0
-!apply drel55 ← 11
-!apply drel55 ← 7
-!apply drel55 ← 3
-
--- X0.CX12.CCX1.CCX2.CX12.CX12.CCX1.CCX2.CX12.CX12.CCX1.CCX2.CX12.X0
-!apply elim_CX12 → 8
-!apply elim_CX12 → 4
-
--- X0.CX12.CCX1.CCX2.CCX1.CCX2.CCX1.CCX2.CX12.X0
+-- X0.CCX2.CCX1.X0.X0.CCX2.CCX1.X0.S2.S3
+elim_X0 → 3
 r40_a → 2
+!apply elim_CCX2 → 1
 
--- X0.CX12.CCX2.CCX1.CCX2.CCX2.CCX1.CCX2.CX12.X0
-!apply elim_CCX2 → 4
-!apply elim_CCX1 → 3
+-- X0.CCX1.CCX2.X0.S2.S3
+!apply srel4 → 4
+
+-- X0.CCX1.CCX2.X0.X0.CCX2.CCX1.X0
+elim_X0 → 3
 !apply elim_CCX2 → 2
-!apply elim_CX12 → 1
+!apply elim_CCX1 → 1
 elim_X0 → 0
 ε

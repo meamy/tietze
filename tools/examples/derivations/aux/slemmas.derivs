@@ -70,3 +70,23 @@ expand_S3 → 0
 !apply drel98 ← 1
 elim_X0 → 0
 CX12.CCX2
+
+
+-- ****************************************************************************
+-- The relation S2.S3 = X0.CCX2.CCX1.X0
+-- ****************************************************************************
+
+@name srel4
+
+S2.S3
+expand_S3 → 1
+expand_S2 → 0
+
+-- X0.CX21.CCX2.CX21.X0.X0.CCX2.X0
+elim_X0 → 4
+
+-- X0.CX21.CCX2.CX21.CCX2.X0
+!apply drel143 → 1
+r40_a → 1
+!apply elim_CCX2 → 3
+X0.CCX2.CCX1.X0
