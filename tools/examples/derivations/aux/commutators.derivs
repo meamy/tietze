@@ -3519,3 +3519,72 @@ symmetry_CCX_b → 2
 !apply symmetry_CCX_g ← 4
 !apply symmetry_CCX_g ← 0
 CCX0.CCX1.CCX0
+
+
+-- ****************************************************************************
+-- The relation CZ12.CCX2 = CCX2.CZ12.CZ01
+-- ****************************************************************************
+
+@name drel170
+
+CZ12.CCX2
+!apply symmetry_CCX_c → 1
+expand_CZ12 → 0
+!apply elim_SWAP01 → 2
+
+-- SWAP01.CZ02.CCX2.SWAP01
+!apply drel151 → 1
+
+-- SWAP01.CCX2.CZ02.CZ01.SWAP01
+!apply elim_SWAP01 ← 2
+!apply symmetry_CCX_c ← 0
+
+-- CCX2.SWAP01.CZ02.CZ01.SWAP01
+!apply elim_SWAP01 ← 3
+expand_CZ12 ← 1
+!apply symmetry_CZ_b ← 2
+CCX2.CZ12.CZ01
+
+
+-- ****************************************************************************
+-- The relation Z1.CX01 = CX01.Z0.Z1
+-- ****************************************************************************
+
+@name drel171
+
+Z1.CX01
+!apply symmetry_CX_e → 1
+symmetry_Z_d → 0
+!apply elim_SWAP01 → 2
+
+-- SWAP01.Z0.CX10.SWAP01
+!apply drel42 → 1
+
+-- SWAP01.CX10.Z1.Z0.SWAP01
+symmetry_Z_d → 2
+symmetry_Z_d ← 4
+!apply symmetry_CX_e ← 0
+CX01.Z0.Z1
+
+
+-- ****************************************************************************
+-- The relation CZ12.CX02 = CX02.CZ12.CZ01
+-- ****************************************************************************
+
+@name drel172
+
+CZ12.CX02
+symmetry_CX_m → 1
+symmetry_CZ_e → 0
+!apply elim_SWAP12 → 2
+
+-- SWAP12.CZ12.CX01.SWAP12
+!apply drel109 → 1
+
+-- SWAP12.CX01.CZ12.CZ02.SWAP12
+expand_CZ02 → 3
+!apply elim_SWAP12 → 5
+!apply elim_SWAP12 ← 2
+symmetry_CZ_e ← 3
+symmetry_CX_m ← 0
+CX02.CZ12.CZ01
