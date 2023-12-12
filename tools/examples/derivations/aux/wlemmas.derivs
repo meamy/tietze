@@ -153,7 +153,7 @@ CCX0.X1.CCX1.CZ01.CCX1.X1.CCX0
 
 
 -- ****************************************************************************
--- The relation W4 = X0.CZ01.X0
+-- The relation W4 = Z1.CZ01
 -- ****************************************************************************
 
 @name wrel6
@@ -258,3 +258,34 @@ r31_c → 6
 expand_S4 ← 1
 elim_s4 → 0
 Z1.CZ01
+
+
+-- ****************************************************************************
+-- The relation W5 = Z1.Z2.CZ01.CZ02
+-- ****************************************************************************
+
+W5
+expand_W5 → 0
+!apply srel4 → 3
+!apply wrel6 → 2
+
+-- S3.S2.W4.S2.S3
+!apply drel118 ← 3
+!apply bifunct_X_Z_a ← 2
+!apply elim_Z1 → 3
+
+-- S3.S2.X0.CZ01.CCX2.CCX1.X0
+!apply elim_CZ01 ← 5
+!apply drel36 → 3
+
+-- S3.S2.X0.CCX2.CZ01.CCX1.X0
+!apply drel152 → 4
+!apply drel123 ← 6
+!apply drel118 ← 5
+!apply bifunct_Z_CZ_c → 7
+
+-- S3.S2.X0.CCX2.CCX1.X0.Z1.Z2.CZ01.CZ02
+!apply srel4 ← 2
+elim_s2 → 1
+elim_s3 → 0
+Z1.Z2.CZ01.CZ02
