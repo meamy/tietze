@@ -90,3 +90,28 @@ elim_X0 → 4
 r40_a → 1
 !apply elim_CCX2 → 3
 X0.CCX2.CCX1.X0
+
+
+-- ****************************************************************************
+-- The relation S1.S2 = X0.CX02.CCX1.CCX2.X0
+-- ****************************************************************************
+
+@name srel5
+
+S1.S2
+expand_S1 → 0
+
+-- X0.X1.CCX2.X1.X0.S2
+!apply drel96 → 1
+!apply elim_X1 → 3
+
+-- X0.CCX2.CX02.X0.S2
+expand_S2 → 4
+elim_X0 → 3
+
+-- X0.CCX2.CX02.CX21.CCX2.CX21.X0
+!apply drel91 → 1
+!apply drel143 → 3
+r40_a → 3
+!apply elim_CCX2 → 2
+X0.CX02.CCX1.CCX2.X0
