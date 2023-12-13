@@ -3588,3 +3588,25 @@ expand_CZ02 → 3
 symmetry_CZ_e ← 3
 symmetry_CX_m ← 0
 CX02.CZ12.CZ01
+
+
+-- ****************************************************************************
+-- The relation Z0.CX02 = CZ02.CX02.CZ02
+-- ****************************************************************************
+
+@name drel173
+
+Z0.CX02
+symmetry_CX_m → 1
+!apply bifunct_Z_SWAP_a → 0
+
+-- SWAP12.Z0.CX01.SWAP12
+!apply drel168 → 1
+
+-- SWAP12.CZ01.CX01.CZ01.SWAP12
+!apply elim_SWAP12 ← 3
+expand_CZ02 ← 4
+!apply elim_SWAP12 ← 2
+symmetry_CX_m ← 3
+expand_CZ02 ← 0
+CZ02.CX02.CZ02
