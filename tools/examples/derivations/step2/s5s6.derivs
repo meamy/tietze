@@ -15,31 +15,15 @@
 @name s5s6s5s6s5s6
 
 S5.S6.S5.S6.S5.S6
-expand_S6 → 5
-expand_S5 → 4
-expand_S6 → 3
-expand_S5 → 2
-expand_S6 → 1
-expand_S5 → 0
+!apply srel6 → 4
+!apply srel6 → 2
+elim_X0 → 5
 
--- X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21
-elim_X0 ← 18
-elim_X0 ← 15
-elim_X0 ← 12
-elim_X0 ← 9
-elim_X0 ← 6
-elim_X0 ← 3
-elim_X0 ← 0
+-- S5.S6.X0.S1.S2.S1.S2.X0
+!apply srel6 → 0
+elim_X0 → 3
 
--- X0.X0.X1.CCX2.X1.X0.X0.CX21.CCX2.CX21.X0.X0.X1.CCX2.X1.X0.X0.CX21.CCX2.CX21.X0.X0.X1.CCX2.X1.X0.X0.CX21.CCX2.CX21.X0.X0
-expand_S1 ← 1
-expand_S2 ← 2
-expand_S1 ← 3
-expand_S2 ← 4
-expand_S1 ← 5
-expand_S2 ← 6
+-- X0.S1.S2.S1.S2.S1.S2.X0
 !apply s1s2s1s2s1s2 → 1
-
--- X0.X0
 elim_X0 → 0
 ε
