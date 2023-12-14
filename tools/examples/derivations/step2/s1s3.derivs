@@ -13,27 +13,21 @@
 -- ****************************************************************************
 
 S3.S1.S3.S1
-expand_S1 → 3
-expand_S3 → 2
-expand_S1 → 1
-expand_S3 → 0
+!apply srel7 → 3
+!apply srel7 → 1
 
--- X0.CCX2.X0.X0.X1.CCX2.X1.X0.X0.CCX2.X0.X0.X1.CCX2.X1.X0
-elim_X0 → 10
-elim_X0 → 7
-elim_X0 → 2
+-- S3.X1.S3.X1.S3.X1.S3.X1
+!apply srel8 → 5
+!apply elim_X1 → 8
+!apply s3s3 → 4
 
--- X0.CCX2.X1.CCX2.X1.CCX2.X1.CCX2.X1.X0
-!apply drel96  → 6
-!apply drel96  → 2
-
--- X0.CCX2.CCX2.CX02.X1.X1.CCX2.CCX2.CX02.X1.X1.X0
-!apply elim_X1 → 9
-!apply elim_CCX2 → 6
+-- S3.X1.S3.X1.X2.CX02
+!apply srel8 → 1
 !apply elim_X1 → 4
-!apply elim_CCX2 → 1
+!apply drel61 → 3
 
--- X0.CX02.CX02.X0
-!apply elim_CX02 → 1
-elim_X0 → 0
+-- S3.S3.X2.X2
+!apply elim_CX02 → 4
+!apply elim_X2 → 2
+!apply s3s3 → 0
 ε
