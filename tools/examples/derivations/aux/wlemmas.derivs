@@ -344,3 +344,72 @@ elim_X0 ← 6
 elim_s1 → 1
 elim_s2 → 0
 X0.CZ01.Z0.X0
+
+
+-- ****************************************************************************
+-- The relation W6.W4.W2 = CZ01.M
+-- ****************************************************************************
+
+@name wrel9
+
+W6.W4.W2
+!apply wrel2 → 2
+!apply wrel6 → 1
+
+-- W6.Z1.CZ01.X1.CZ01.X1
+!apply drel119 ← 2
+!apply elim_CZ01 → 4
+
+-- W6.Z1.X1.Z0.X1
+!apply bifunct_X_Z_b → 2
+!apply elim_X1 → 3
+
+-- W6.Z1.Z0
+!apply wrel8 → 0
+!apply drel160 → 0
+!apply bifunct_Z_a ← 5
+
+-- CZ01.Z1.X0.Z0.X0.Z0.Z1
+expand_M ← 2
+!apply spatial_Z1 → 2
+!apply elim_Z1 → 1
+CZ01.M
+
+
+-- ****************************************************************************
+-- The relation CZ02.S6 = S6.CZ01
+-- ****************************************************************************
+
+@name wrel10
+
+CZ02.S6
+elim_s6 ← 0
+!apply elim_CZ01 ← 1
+!apply srel10 → 2
+!apply elim_CZ02 → 3
+elim_s6 → 2
+S6.CZ01
+
+
+-- ****************************************************************************
+-- The relation W7 = CCX2
+-- ****************************************************************************
+
+W7
+expand_W7 → 0
+!apply wrel9 → 7
+!apply wrel9 → 3
+
+-- S7.S8.S6.CZ01.M.S8.CZ01.M.S6.S8.S7
+!apply spatial_CZ01 ← 6
+!apply srel9 → 4
+!apply elim_M → 5
+
+-- S7.S8.S6.CZ01.S8.CZ01.S6.S8.S7
+!apply srel10 → 5
+!apply wrel10 ← 2
+
+-- S7.S8.CZ02.S6.S8.S6.CZ02.S8.S7
+elim_s8 ← 6
+r_s6s8 → 3
+S7.S8.CZ02.S8.CZ02.S8.S7

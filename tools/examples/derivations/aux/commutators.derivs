@@ -1107,7 +1107,7 @@ Z2.CZ12
 
 
 -- ****************************************************************************
--- The relation CX02.X2 = CX02.X2
+-- The relation CX02.X2 = X2.CX02
 -- ****************************************************************************
 
 @name drel61
@@ -3610,3 +3610,45 @@ expand_CZ02 ← 4
 symmetry_CX_m ← 3
 expand_CZ02 ← 0
 CZ02.CX02.CZ02
+
+
+-- ****************************************************************************
+-- The relation CZ01.CX21 = CX21.CZ01.CZ02
+-- ****************************************************************************
+
+@name drel175
+
+CZ01.CX21
+!apply symmetry_CX_g → 1
+!apply elim_SWAP12 ← 0
+expand_CZ02 ← 1
+
+-- SWAP12.CZ02.CX12.SWAP12
+!apply drel108 → 1
+
+-- SWAP12.CX12.CZ02.CZ01.SWAP12
+expand_CZ02 → 2
+expand_CZ02 ← 4
+!apply symmetry_CX_g ← 0
+CX21.CZ01.CZ02
+
+
+-- ****************************************************************************
+-- The relation CX21.CZ02 = CZ02.CX21
+-- ****************************************************************************
+
+@name drel176
+
+CX21.CZ02
+expand_CZ02 → 1
+!apply symmetry_CX_g → 0
+!apply elim_SWAP12 → 2
+
+-- SWAP12.CX12.CZ01.SWAP12
+!apply drel165 → 1
+
+-- SWAP12.CZ01.CX12.SWAP12
+!apply elim_SWAP12 ← 2
+!apply symmetry_CX_g ← 3
+expand_CZ02 ← 0
+CZ02.CX21

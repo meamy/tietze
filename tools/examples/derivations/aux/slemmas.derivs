@@ -173,3 +173,49 @@ bifunct_X_a ← 3
 -- X0.CCX2.X0.X2.CX02.X1
 expand_S3 ← 0
 S3.X2.CX02.X1
+
+
+-- ****************************************************************************
+-- The relation M.S8 = S8.M
+-- ****************************************************************************
+
+@name srel9
+
+M.S8
+expand_S8 → 1
+
+-- M.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
+!apply spatial_K12 → 0
+!apply spatial_X0 → 1
+!apply spatial_X1 → 2
+!apply spatial_X2 → 3
+!apply spatial_CZ02 → 4
+!apply spatial_CCX0 → 5
+!apply spatial_CZ02 → 6
+!apply spatial_X2 → 7
+!apply spatial_X1 → 8
+!apply spatial_X0 → 9
+!apply spatial_K12 → 10
+
+-- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.M
+expand_S8 ← 0
+S8.M
+
+
+-- ****************************************************************************
+-- The relation CZ01.S6 = S6.CZ02
+-- ****************************************************************************
+
+@name srel10
+
+CZ01.S6
+expand_S6 → 1
+
+-- CZ01.CX21.CCX2.CX21
+!apply drel175 → 0
+!apply drel114 → 1
+!apply drel176 ← 2
+
+-- CX21.CCX2.CX21.CZ02
+expand_S6 ← 0
+S6.CZ02
