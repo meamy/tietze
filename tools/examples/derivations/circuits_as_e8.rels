@@ -18,8 +18,8 @@ expand_W9 W9 = S6.W7.W1.W7.S6
 -- *******************************************************************
 
 -- Controlled X Decompositions
-expand_W7 W7   = S7.S8.S6.W6.W4.W2.S8.W6.W4.W2.S6.S8.S7
-expand_W8 W8   = S1.S3.S5.W7
+expand_W7  W7  = S7.S8.S6.W6.W4.W2.S8.W6.W4.W2.S6.S8.S7
+expand_W8  W8  = S1.S3.S5.W7
 expand_W10 W10 = S1.S3
 
 -- *******************************************************************
@@ -27,6 +27,6 @@ expand_W10 W10 = S1.S3
 -- *******************************************************************
 
 -- Swap Decompositions
-expand_W11 W11 = W10.S4.W10.W8.W10.S4.W10.W8
+expand_W11 W11 = W10.S4.W8.S4.W10.W8
 expand_W12 W12 = S2.S6
 expand_W13 W13 = W11.W12.W11

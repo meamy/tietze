@@ -18,4 +18,7 @@ derivations:
 - aux/wlemmas.derivs
 - aux/slemmas.derivs
   # Decompositions
+- step1/ccx0.derivs
+- step1/x0.derivs
+- step1/cx01.derivs
 obligations: []
