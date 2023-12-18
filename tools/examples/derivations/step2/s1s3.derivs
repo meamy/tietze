@@ -12,22 +12,22 @@
 -- The derivation
 -- ****************************************************************************
 
-S3.S1.S3.S1
-!apply srel7 → 3
-!apply srel7 → 1
+S1.S3.S1.S3
+!apply srel7 → 2
+!apply srel7 → 0
 
--- S3.X1.S3.X1.S3.X1.S3.X1
-!apply srel8 → 5
-!apply elim_X1 → 8
-!apply s3s3 → 4
+-- X1.S3.X1.S3.X1.S3.X1.S3
+!apply srel8 → 6
+!apply s3s3 → 5
 
--- S3.X1.S3.X1.X2.CX02
-!apply srel8 → 1
-!apply elim_X1 → 4
-!apply drel61 → 3
+-- X1.S3.X1.S3.X1.X2.CX02.X1
+!apply srel8 → 2
+!apply s3s3 → 1
+!apply drel61 ← 1
 
--- S3.S3.X2.X2
-!apply elim_CX02 → 4
+-- X1.CX02.X2.X1.X1.X2.CX02.X1
+!apply elim_X1 → 3
 !apply elim_X2 → 2
-!apply s3s3 → 0
+!apply elim_CX02 → 1
+!apply elim_X1 → 0
 ε
