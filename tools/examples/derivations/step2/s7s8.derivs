@@ -5,7 +5,7 @@
 -- Recall that:
 --
 -- s7 = CZ01.CX21.CCX2.CX21.CZ01
--- s8 = K12.X0.X1.X2.CZ02.CCX0.CZ02.X0.X1.X2.K12
+-- s8 = K12.X1.X2.CZ02.CCX0.CZ02.X1.X2.K12
 
 
 -- ****************************************************************************
@@ -30,30 +30,6 @@ K12.CX21.CZ01.K12
 !apply drel49 → 1
 elim_K12 → 2
 CX12.CX01
-
-
--- ****************************************************************************
--- The lemma X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0 = X1.X2.CZ02.CCX0.CZ02.X2.X1
--- ****************************************************************************
-
-@name lemmax0x1x2cz02ccx0cz02x2x1x0
-X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0
-bifunct_X_a → 0
-bifunct_X_a ← 7
-!apply bifunct_X_b → 1
-!apply bifunct_X_b ← 6
-
--- X1.X2.X0.CZ02.CCX0.CZ02.X0.X2.X1
-!apply drel123 ← 5
-!apply drel156 → 2
-
--- X1.X2.CZ02.Z2.X0.CCX0.X0.Z2.CZ02.X2.X1
-r13 → 4
-elim_X0 → 5
-
--- X1.X2.CZ02.Z2.CCX0.Z2.CZ02.X2.X1
-!apply drel54 → 3
-X1.X2.CZ02.CCX0.CZ02.X2.X1
 
 
 -- ****************************************************************************
@@ -104,19 +80,14 @@ expand_S8 → 2
 expand_S7 → 1
 expand_S8 → 0
 
--- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.CZ01.CX21.CCX2.CX21.CZ01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.CZ01.CX21.CCX2.CX21.CZ01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.CZ01.CX21.CCX2.CX21.CZ01
-!apply lemmak12cz01cx21ccx2 → 10
-!apply lemmak12cz01cx21ccx2 → 26
-!apply lemmak12cz01cx21ccx2 → 42
+-- K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12.CZ01.CX21.CCX2.CX21.CZ01.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12.CZ01.CX21.CCX2.CX21.CZ01.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12.CZ01.CX21.CCX2.CX21.CZ01
+!apply lemmak12cz01cx21ccx2 → 8
+!apply lemmak12cz01cx21ccx2 → 22
+!apply lemmak12cz01cx21ccx2 → 36
 
---K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX01.CX12.CCX1.K12.CX21.CZ01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX01.CX12.CCX1.K12.CX21.CZ01.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX01.CX12.CCX1.K12.CX21.CZ01
-!apply lemmak12cx21cz01k12 → 13
-!apply lemmak12cx21cz01k12 → 27
-
--- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX01.CX12.CCX1.CX12.CX01.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX01.CX12.CCX1.CX12.CX01.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CX01.CX12.CCX1.K12.CX21.CZ01
-!apply lemmax0x1x2cz02ccx0cz02x2x1x0 → 29
-!apply lemmax0x1x2cz02ccx0cz02x2x1x0 → 15
-!apply lemmax0x1x2cz02ccx0cz02x2x1x0 → 1
+--K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.CX01.CX12.CCX1.K12.CX21.CZ01.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.CX01.CX12.CCX1.K12.CX21.CZ01.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.CX01.CX12.CCX1.K12.CX21.CZ01
+!apply lemmak12cx21cz01k12 → 11
+!apply lemmak12cx21cz01k12 → 23
 
 -- K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.CX01.CX12.CCX1.CX12.CX01.X1.X2.CZ02.CCX0.CZ02.X2.X1.CX01.CX12.CCX1.CX12.CX01.X1.X2.CZ02.CCX0.CZ02.X2.X1.CX01.CX12.CCX1.K12.CX21.CZ01
 !apply lemmax2x1cx01cx12ccx1 → 30

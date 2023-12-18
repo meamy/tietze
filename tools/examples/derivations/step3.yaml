@@ -8,7 +8,6 @@ derivations:
 - aux/symmetry.derivs
 - aux/orders.derivs
 - aux/commutators.derivs
-- aux/misc.derivs
   # Spatial Lemmas
 - aux/mlemmas.derivs
 - aux/spatial.derivs

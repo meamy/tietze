@@ -4,27 +4,27 @@
 
 -- Recall that:
 --
--- s8 = K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
+-- s8 = K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12
 
 
 -- ****************************************************************************
 -- The derivation
 -- ****************************************************************************
 
+@name s8s8
+
 S8.S8
 expand_S8 → 1
 expand_S8 → 0
 
--- K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
-elim_K12 → 10
-elim_X0 → 9
-!apply elim_X1 → 8
-!apply elim_X2 → 7
-!apply elim_CZ02 → 6
-elim_CCX0 → 5
-!apply elim_CZ02 → 4
-!apply elim_X2 → 3
-!apply elim_X1 → 2
-elim_X0 → 1
+-- K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12
+elim_K12 → 8
+!apply elim_X1 → 7
+!apply elim_X2 → 6
+!apply elim_CZ02 → 5
+elim_CCX0 → 4
+!apply elim_CZ02 → 3
+!apply elim_X2 → 2
+!apply elim_X1 → 1
 elim_K12 → 0
 ε

@@ -5,7 +5,7 @@
 -- Recall that:
 --
 -- s5 = X1.CCX2.X1
--- s8 = K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
+-- s8 = K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12
 
 
 -- ****************************************************************************
@@ -13,135 +13,15 @@
 -- ****************************************************************************
 
 S5.S8.S5.S8
-expand_S8 → 3
-expand_S5 → 2
-expand_S8 → 1
-expand_S5 → 0
+!apply srel14 → 2
+!apply srel14 → 0
 
--- X1.CCX2.X1.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12.X1.CCX2.X1.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
-!apply drel65 → 13
-!apply drel137 → 16
-!apply drel128 → 14
-elim_K12 → 15
+-- X0.S1.X0.S8.X0.S1.X0.S8
+!apply srel11 → 6
+!apply srel11 → 2
+elim_X0 → 3
 
--- X1.CCX2.X1.K12.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.Z1.CCX1.Z1.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
-!apply drel137 → 2
-!apply drel29 → 1
-!apply drel137 → 0
-
--- K12.Z1.CCX1.Z1.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.Z1.CCX1.Z1.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
-!apply drel21 → 13
-!apply elim_Z1 → 15
-!apply drel21 → 1
-!apply elim_Z1 → 3
-
--- K12.CCX1.CZ02.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.CCX1.CZ02.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
-!apply drel146 → 5
-!apply bifunct_X_CZ_a → 4
-!apply drel156 → 3
-!apply elim_CZ02 → 2
-
--- K12.CCX1.Z2.X0.X1.Z0.X2.CCX0.CZ02.X2.X1.X0.CCX1.CZ02.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
-!apply drel120 ← 8
-!apply bifunct_X_Z_f ← 5
-!apply bifunct_X_Z_f → 8
-!apply drel23 → 6
-!apply elim_Z0 → 8
-
--- K12.CCX1.Z2.X0.X1.X2.CCX0.CZ12.X2.CZ02.X1.X0.CCX1.CZ02.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
-!apply bifunct_X_CZ_a ← 9
-!apply drel123 ← 10
-!apply drel37 → 12
-
--- K12.CCX1.Z2.X0.X1.X2.CCX0.CZ12.X2.X1.X0.Z2.CCX1.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
-bifunct_X_a → 3
-bifunct_X_a ← 9
-!apply bifunct_X_b → 4
-!apply bifunct_X_b ← 8
-!apply bifunct_X_CZ_b ← 7
-r13 → 5
-elim_X0 → 6
-
--- K12.CCX1.Z2.X1.X2.CCX0.CZ12.X2.X1.Z2.CCX1.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
-!apply bifunct_X_Z_d → 8
-!apply bifunct_X_Z_d ← 2
-!apply drel35 → 3
-!apply spatial_Z2 ← 4
-!apply spatial_X2 ← 3
-!apply drel33 → 8
-!apply spatial_Z2 → 8
-!apply spatial_X2 → 9
-!apply drel60 → 7
-!apply drel54 → 5
-
--- K12.CCX1.X1.M.X2.CCX0.CZ12.X2.M.X1.CCX1.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
-!apply spatial_X2 → 3
-!apply spatial_X2 ← 7
-!apply spatial_CCX0 → 4
-!apply spatial_CZ12 → 5
-!apply elim_M → 6
-
--- K12.CCX1.X1.X2.CCX0.CZ12.X2.X1.CCX1.X0.X1.X2.CZ02.CCX0.CZ02.X2.X1.X0.K12
-!apply drel57 → 13
-!apply drel164 → 12
-!apply elim_CZ02 → 13
-
--- K12.CCX1.X1.X2.CCX0.CZ12.X2.X1.CCX1.X0.X1.X2.CZ12.CCX0.X2.X1.X0.K12
-bifunct_X_a → 9
-bifunct_X_a ← 15
-!apply bifunct_X_b → 10
-!apply bifunct_X_b ← 14
-!apply bifunct_X_CZ_b → 11
-r13 → 12
-elim_X0 → 13
-
--- K12.CCX1.X1.X2.CCX0.CZ12.X2.X1.CCX1.X1.X2.CZ12.CCX0.X2.X1.K12
-!apply drel148 → 10
-!apply drel147 → 9
-!apply drel116 ← 8
-!apply drel164 → 8
-!apply drel147 → 7
-!apply drel148 → 6
-!apply elim_CZ12 → 5
-
--- K12.CCX1.X1.X2.CCX0.Z1.X2.Z2.X1.CZ02.CCX1.Z2.X1.Z1.X2.CCX0.X2.X1.K12
-!apply bifunct_X_Z_d ← 7
-!apply drel62 ← 8
-!apply drel39 → 9
-
--- K12.CCX1.X1.X2.CCX0.Z1.X2.X1.CZ02.CCX1.X1.Z1.X2.CCX0.X2.X1.K12
-!apply bifunct_X_Z_c ← 5
-!apply drel34 → 6
-!apply spatial_CZ02 → 8
-!apply spatial_CCX1 → 9
-!apply drel31 → 11
-!apply elim_M → 10
-
--- K12.CCX1.X1.X2.CCX0.X2.X1.Z1.CZ02.CCX1.Z1.X1.X2.CCX0.X2.X1.K12
-!apply drel22 → 9
-!apply bifunct_Z_CZ_a → 8
-!apply elim_Z1 → 7
-!apply elim_CZ02 → 7
-
--- K12.CCX1.X1.X2.CCX0.X2.X1.CCX1.X1.X2.CCX0.X2.X1.K12
-!apply drel25 → 6
-!apply elim_X1 → 7
-!apply drel25 ← 1
-
--- K12.X1.CCX1.X2.CCX0.X2.CCX1.X2.CCX0.X2.X1.K12
-!apply drel130 → 3
-!apply elim_X2 → 5
-
--- K12.X1.CCX1.CCX0.CX10.CCX1.X2.CCX0.X2.X1.K12
-!apply drel130 → 6
-!apply elim_X2 → 8
-!apply drel56 → 6
-!apply drel97 → 4
-
--- K12.X1.CCX1.CCX0.CCX0.CCX1.CCX0.CCX0.X1.K12
-elim_CCX0 → 6
-elim_CCX0 → 3
-!apply elim_CCX1 → 2
-!apply elim_X1 → 1
-elim_K12 → 0
+-- X0.S1.S8.S1.S8.X0
+!apply s1s8s1s8 → 1
+elim_X0 → 0
 ε
