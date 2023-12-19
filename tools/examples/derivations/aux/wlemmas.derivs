@@ -698,3 +698,51 @@ expand_W13 → 0
 !apply wrel17 → 0
 !apply symmetry_SWAP02 ← 0
 SWAP02
+
+
+-- ****************************************************************************
+-- The relation W5.W3.W2 = Z1.Z2.CZ01.CZ12
+-- ****************************************************************************
+
+@name wrel20
+
+W5.W3.W2
+!apply wrel2 → 2
+
+-- W5.W3.X1.CZ01.X1
+!apply drel145 → 2
+!apply elim_X1 → 4
+
+-- W5.W3.CZ01.Z0
+!apply wrel5 → 1
+
+-- W5.CCX0.X1.CCX1.CZ01.CCX1.X1.CCX0.CZ01.Z0
+!apply drel152 → 4
+!apply elim_CCX1 → 3
+
+-- W5.CCX0.X1.CZ01.CZ02.X1.CCX0.CZ01.Z0
+!apply bifunct_X_CZ_a ← 4
+!apply drel119 ← 3
+!apply elim_X1 → 2
+
+-- W5.CCX0.Z0.CZ01.CZ02.CCX0.CZ01.Z0
+!apply drel71 → 3
+!apply drel159 → 4
+r31_c ← 6
+!apply elim_CZ01 → 5
+
+-- W5.CCX0.Z0.CZ02.CCX0.CZ12.Z0
+!apply drel150 → 3
+!apply elim_CZ12 → 5
+
+-- W5.CCX0.Z0.CCX0.CZ02.Z0
+!apply drel23 → 2
+elim_CCX0 → 1
+!apply drel44 ← 2
+!apply elim_Z0 → 3
+
+-- W5.CZ12.CZ02
+!apply wrel7 → 0
+!apply drel164 → 3
+!apply elim_CZ02 → 4
+Z1.Z2.CZ01.CZ12

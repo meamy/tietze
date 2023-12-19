@@ -2,7 +2,7 @@
 -- Dyadic Gates as Coxeter Words 
 -- *******************************************************************
 
-coxeter_K12  K12  = S2.S6.W5.W3.S8.W2.W9.S8.W5.W3.W2.W9
+coxeter_K12  K12  = S2.S6.W5.W3.W2.S8.W9.S8.W5.W3.W2.W9
 coxeter_CCX0 CCX0 = W13.W7.W13
 coxeter_X0   X0   = W13.W8.W13
 coxeter_CX10 CX01 = W12.X0.W10.X0.W12
