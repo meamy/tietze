@@ -2,6 +2,16 @@
 -- Alternative Symmetries Definitions
 -- *******************************************************************
 
+@name symmetry_SWAP01
+SWAP01
+expand_SWAP01 → 0
+!apply drel161 → 0
+!apply symmetry_CX_b → 2
+!apply symmetry_CX_b → 0
+!apply symmetry_CX_i ← 2
+expand_SWAP12 ← 1
+SWAP02.SWAP12.SWAP02
+
 @name symmetry_SWAP02
 SWAP02
 expand_SWAP02 → 0
@@ -133,9 +143,9 @@ CX20
 !apply symmetry_CX_g → 1
 !apply symmetry_CX_f → 2
 !apply elim_SWAP02 ← 6
-symmetry_SWAP01 ← 4
+!apply symmetry_SWAP01 ← 4
 !apply elim_SWAP02 ← 1
-symmetry_SWAP01 ← 2
+!apply symmetry_SWAP01 ← 2
 !apply symmetry_SWAP02 → 5
 !apply elim_SWAP01 → 7
 !apply elim_SWAP01 → 4
@@ -156,8 +166,8 @@ expand_CCX1 → 1
 !apply elim_SWAP02 ← 3
 !apply elim_SWAP02 ← 2
 symmetry_CCX_a ← 3
-symmetry_SWAP01 → 5
-symmetry_SWAP01 → 1
+!apply symmetry_SWAP01 → 5
+!apply symmetry_SWAP01 → 1
 !apply elim_SWAP02 → 6
 !apply elim_SWAP02 → 3
 !apply symmetry_SWAP01_alt ← 4
