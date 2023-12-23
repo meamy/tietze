@@ -259,7 +259,7 @@ CZ02
 !apply elim_SWAP01 ← 1
 !apply elim_SWAP01 ← 0
 expand_CZ12 ← 1
-symmetry_CZ_e → 1
+!apply symmetry_CZ_e → 1
 expand_CZ12 → 2
 !apply symmetry_SWAP02 ← 4
 !apply symmetry_SWAP02 ← 0
@@ -291,6 +291,13 @@ expand_CZ02 → 1
 !apply symmetry_SWAP02 ← 4
 !apply symmetry_SWAP02 ← 0
 SWAP02.CZ01.SWAP02
+
+@name symmetry_CZ_e
+CZ12
+!apply elim_SWAP12 ← 0
+symmetry_SWAP12 → 1
+!apply drel180 → 2
+SWAP12.CZ12.SWAP12
 
 
 -- *******************************************************************
