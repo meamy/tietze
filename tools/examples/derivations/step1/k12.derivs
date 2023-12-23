@@ -1,0 +1,42 @@
+-- ****************************************************************************
+-- S2.S6.W3.W5.S8.W2.W9.S8.W3.W5.W2.W9 = CCX0
+-- ****************************************************************************
+
+S2.S6.W3.W5.S8.W2.W9.S8.W3.W5.W2.W9
+expand_W12 ← 0
+!apply wrel23 → 3
+!apply wrel20 → 1
+
+-- W12.CZ12.Z0.Z1.Z2.K12.X1.X2.CZ12.Z0.X2.X1.K12.W3.W5.W2.W9
+!apply drel66 ← 4
+!apply bifunct_X_c ← 5
+!apply elim_X2 → 6
+
+-- W12.CZ12.Z0.Z1.K12.X1.CZ12.Z0.X2.X1.K12.W3.W5.W2.W9
+!apply drel65 ← 3
+!apply elim_X1 → 4
+
+-- W12.CZ12.K12.Z0.CZ12.Z0.X2.X1.K12.W3.W5.W2.W9
+!apply bifunct_Z_K_a → 2
+!apply bifunct_Z_CZ_b ← 3
+!apply elim_Z0 → 4
+
+-- W12.CZ12.K12.CZ12.X2.X1.K12.W3.W5.W2.W9
+!apply wrel22 → 7
+!apply drel137 → 5
+!apply drel179 → 6
+!apply elim_Z1 → 7
+
+-- W12.CZ12.K12.CZ12.X2.K12.CZ12.Z2
+!apply drel64 → 4
+!apply drel60 ← 5
+!apply elim_Z2 → 6
+
+-- W12.CZ12.K12.CZ12.K12.CZ12
+!apply wrel18 → 0
+elim_K12 ← 6
+symmetry_SWAP12 ← 1
+
+-- SWAP12.SWAP12.K12
+!apply elim_SWAP12 → 0
+K12

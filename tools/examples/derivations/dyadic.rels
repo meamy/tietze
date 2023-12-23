@@ -86,16 +86,17 @@ bifunct_Z_CX_b Z0.CX12 = CX12.Z0
 -- Symmetric Generators
 -- *******************************************************************
 
-symmetry_X_a    X1   = SWAP01.X0.SWAP01
-symmetry_CX_a   CX20 = SWAP02.CX02.SWAP02
-symmetry_CX_c   CX12 = SWAP01.CX02.SWAP01
-symmetry_CX_l   CX21 = SWAP01.CX20.SWAP01
-symmetry_CX_m   CX02 = SWAP12.CX01.SWAP12
-symmetry_CCX_a  CCX2 = SWAP02.CCX0.SWAP02
-symmetry_CCX_b  CCX2 = SWAP12.CCX1.SWAP12
-symmetry_Z_d    Z1   = SWAP01.Z0.SWAP01
-symmetry_CZ_e   CZ12 = SWAP12.CZ12.SWAP12
-symmetry_K_b    K01  = SWAP01.K01.SWAP01
+symmetry_SWAP12 SWAP12 = CZ12.K12.CZ12.K12.CZ12.K12
+symmetry_X_a    X1     = SWAP01.X0.SWAP01
+symmetry_CX_a   CX20   = SWAP02.CX02.SWAP02
+symmetry_CX_c   CX12   = SWAP01.CX02.SWAP01
+symmetry_CX_l   CX21   = SWAP01.CX20.SWAP01
+symmetry_CX_m   CX02   = SWAP12.CX01.SWAP12
+symmetry_CCX_a  CCX2   = SWAP02.CCX0.SWAP02
+symmetry_CCX_b  CCX2   = SWAP12.CCX1.SWAP12
+symmetry_Z_d    Z1     = SWAP01.Z0.SWAP01
+symmetry_CZ_e   CZ12   = SWAP12.CZ12.SWAP12
+symmetry_K_b    K01    = SWAP01.K01.SWAP01
 
 
 -- *******************************************************************
