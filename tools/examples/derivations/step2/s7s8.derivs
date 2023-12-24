@@ -151,7 +151,7 @@ expand_S8 → 0
 
 -- K12.X1.X2.Z0.CZ12.CZ01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CZ01.CCX0.Z0.CX01.CX12.CCX1.X1.K12.CX21.CZ01
 !apply drel78 ← 20
-bifunct_Z_CX_b → 21
+!apply bifunct_Z_CX_b → 21
 !apply elim_Z0 ← 24
 !apply drel52 → 22
 
@@ -176,7 +176,7 @@ r31_c → 21
 
 -- K12.X1.X2.Z0.CZ12.CZ01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.CX12.CCX1.CX12.CX01.CCX0.CX01.Z0.CZ12.CX12.CCX1.CZ02.Z0.X1.K12.CX21.CZ01
 !apply bifunct_Z_CZ_b ← 20
-bifunct_Z_CX_b → 21
+!apply bifunct_Z_CX_b → 21
 !apply drel44 → 24
 !apply drel52 → 22
 

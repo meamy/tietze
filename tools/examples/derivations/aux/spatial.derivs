@@ -78,9 +78,9 @@ CX10.M
 @name spatial_CX12
 M.CX12
 expand_M → 0
-bifunct_Z_CX_b → 3
+!apply bifunct_Z_CX_b → 3
 bifunct_X_CX_a ← 2
-bifunct_Z_CX_b → 1
+!apply bifunct_Z_CX_b → 1
 bifunct_X_CX_a ← 0
 expand_M ← 1
 CX12.M

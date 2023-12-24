@@ -32,9 +32,9 @@ SWAP02.X1
 @name bifunct_Z_SWAP_a
 Z0.SWAP12
 expand_SWAP12 → 1
-bifunct_Z_CX_b → 0
+!apply bifunct_Z_CX_b → 0
 !apply bifunct_Z_CX_d → 1
-bifunct_Z_CX_b → 2
+!apply bifunct_Z_CX_b → 2
 expand_SWAP12 ← 0
 SWAP12.Z0
 
@@ -307,12 +307,25 @@ symmetry_Z_d ← 3
 !apply symmetry_CX_h ← 0
 CX20.Z1
 
+@name bifunct_Z_CX_b
+Z0.CX12
+expand_Z0 → 0
+!apply drel181 ← 3
+!apply drel165 ← 2
+!apply drel181 ← 1
+!apply drel165 ← 0
+!apply drel163 → 3
+!apply drel9 ← 4
+!apply elim_CX02 → 5
+expand_Z0 ← 1
+CX12.Z0
+
 @name bifunct_Z_CX_c
 Z1.CX02
 symmetry_Z_d → 0
 !apply elim_SWAP01 ← 4
 symmetry_CX_c ← 2
-bifunct_Z_CX_b → 1
+!apply bifunct_Z_CX_b → 1
 symmetry_CX_c → 1
 symmetry_Z_d ← 3
 !apply elim_SWAP01 → 0
@@ -323,7 +336,7 @@ Z0.CX21
 elim_K12 ← 1
 !apply drel46 → 2
 !apply bifunct_Z_K_a → 0
-bifunct_Z_CX_b → 1
+!apply bifunct_Z_CX_b → 1
 !apply bifunct_Z_K_a → 2
 !apply drel46 ← 1
 elim_K12 → 0
@@ -338,7 +351,7 @@ expand_CX10 ← 2
 expand_Z2 → 1
 !apply elim_SWAP02 ← 5
 !apply symmetry_CX_f ← 3
-bifunct_Z_CX_b → 2
+!apply bifunct_Z_CX_b → 2
 !apply symmetry_CX_f → 2
 !apply elim_SWAP02 → 1
 expand_Z2 ← 2

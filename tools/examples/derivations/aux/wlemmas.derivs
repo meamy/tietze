@@ -188,7 +188,7 @@ elim_CCX0 → 2
 !apply srel3 → 1
 
 -- S4.CX12.CCX2.CZ01.CZ12.CZ02.Z0.CX12.CCX2.S4
-bifunct_Z_CX_b → 6
+!apply bifunct_Z_CX_b → 6
 !apply drel108 → 5
 r31_c → 3
 !apply drel165 ← 4
