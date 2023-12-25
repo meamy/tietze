@@ -43,7 +43,11 @@ expand_S6 ← 1
 expand_S3 ← 2
 expand_S6 ← 3
 expand_S3 ← 4
-!apply s6s3s6s3 → 1
+
+-- CZ01.S6.S3.S6.S3.CZ01
+!apply srel31 → 2
+!apply s3s3 → 3
+!apply s6s6 → 1
 
 -- CZ01.CZ01
 !apply elim_CZ01 → 0
