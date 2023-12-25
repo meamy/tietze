@@ -56,7 +56,7 @@ inversion drules rule (InvQuery relname isLeftInv ty) =
         IQueryFailure sym          -> reportMissingIRule sym
         EIQuerySuccess eview iview -> case getInvProof eview iview rule of
             Just proof -> logProof relname proof
-            Nothing    -> "failure (2)\n"
+            Nothing    -> "Failed to perform inversion for unknown reason.\n"
     where isyms = Set.fromList $ lhs rule
           esyms = Set.fromList $ rhs rule
 
@@ -68,7 +68,7 @@ handleDerivedRels :: RuleDict -> [Named AbsDerivation] -> InvQuery -> String
 handleDerivedRels rules named query@(InvQuery relname isLeftInv ty) =
     case interpretRule drules relname of
         Just rule -> inversion drules rule query
-        Nothing   -> "failure (1)\n"
+        Nothing   -> "Relation does not exist.\n"
     where drules = addDRules rules $ Prelude.map value named
 
 -- | Consumes a handle, a list of derivation files (DerivFnames), a dictionary of rewrite

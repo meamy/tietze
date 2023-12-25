@@ -7,6 +7,7 @@ module LafontExe.IO.CmdLnFlags
   , def
   , eiPolicyFlags
   , leftInvFlags
+  , relnameFlags
   , symbolFlags
   ) where
 
@@ -39,6 +40,11 @@ configFlags pos = def &= typ "YamlConf" &= argPos pos
 
 -------------------------------------------------------------------------------
 -- * Generator/Relation Specification Flags.
+
+-- | Returns the annotations for a relation selection in the specified argument
+-- position.
+relnameFlags :: Int -> String
+relnameFlags pos = def &= typ "Relation" &= argPos pos
 
 -- | Returns the annotations for a generation selection in the specified
 -- argument position.

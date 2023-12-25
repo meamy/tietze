@@ -125,6 +125,11 @@ executable validate_derivations
   main-is:             ValidateDerivations/Main.hs
   other-modules:       ValidateDerivations.CmdLn
 
+executable invert_rule
+  import:              exe-with-file-io-props
+  main-is:             InvertRule/Main.hs
+  other-modules:       InvertRule.CmdLn
+
 executable yaml_test
   import:              exe-with-file-io-props
   main-is:             YamlTest/Main.hs
