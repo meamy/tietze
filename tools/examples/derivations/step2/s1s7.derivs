@@ -9,110 +9,25 @@
 
 
 -- ****************************************************************************
--- The lemma CZ01.X0.X1 = X0.X1.Z0.Z1.CZ01.M
--- ****************************************************************************
-
-@name lemmacz01x0x1
-
-CZ01.X0.X1
-!apply drel118 ← 0
-!apply drel119 ← 2
-!apply drel34 → 1
-!apply spatial_Z0 → 3
-!apply spatial_CZ01 → 4
-!apply bifunct_Z_a ← 2
-X0.X1.Z0.Z1.CZ01.M
-
-
--- ****************************************************************************
--- The lemma X1.X0.CZ01 = M.CZ01.Z1.Z0.X1.X0
--- ****************************************************************************
-
-@name lemmax1x0cz01
-
-X1.X0.CZ01
-!apply drel160 → 1
-!apply drel145 → 0
-!apply drel31 → 2
-!apply spatial_Z0 ← 1
-!apply spatial_CZ01 ← 0
-!apply bifunct_Z_a → 2
-M.CZ01.Z1.Z0.X1.X0
-
-
--- ****************************************************************************
 -- The derivation
 -- ****************************************************************************
 
 S1.S7.S1.S7
-expand_S7 → 3
-expand_S1 → 2
-expand_S7 → 1
-expand_S1 → 0
+!apply srel22 → 1
 
--- X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.CZ01.X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.CZ01
-!apply drel118 ← 9
-!apply drel119 ← 11
+-- S1.S6.CZ02.CZ01.S1.S7
+!apply srel28 → 3
+!apply srel29 → 2
 
--- X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.X0.Z1.X1.Z0.CZ01.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.CZ01
-!apply drel160 → 16
-!apply drel145 → 15
+-- S1.S6.S1.CZ02.CZ01.S7
+!apply srel22 → 5
+!apply srel23 → 5
 
--- X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.X0.Z1.X1.Z0.CZ01.CCX2.CZ01.Z0.X1.Z1.X0.CX21.CCX2.CX21.CZ01
-!apply drel34 → 10
-!apply drel31 → 18
+-- S1.S6.S1.CZ02.CZ01.CZ02.CZ01.S6
+!apply drel71 → 4
+!apply elim_CZ01 → 5
+!apply elim_CZ02 → 3
 
--- X0.X1.CCX2.X1.X0.CZ01.CX21.CCX2.CX21.X0.X1.Z1.M.Z0. CZ01.CCX2.CZ01.Z0.M.Z1.X1.X0.CX21.CCX2.CX21.CZ01
-!apply drel36 → 14
-!apply drel40 → 13
-!apply spatial_CCX2 → 12
-!apply elim_M → 13
-!apply drel51 → 11
-
--- X0.X1.CCX2. X1.X0.CZ01.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
-!apply lemmax1x0cz01 → 3
-
---X0.X1.CCX2.M.CZ01.Z1.Z0.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
-!apply spatial_CCX2 ← 2
-!apply spatial_X1 ← 1
-!apply spatial_X0 ← 0
-!apply elim_CZ01 ← 3
-!apply drel36 → 4
-
--- M.X0.X1.CZ01.CCX2.Z1.Z0.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
-!apply elim_Z1 ← 4
-!apply drel51 → 5
-!apply elim_Z0 ← 5
-!apply drel40 → 6
-
--- M.X0.X1.CZ01.Z1.Z0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
-bifunct_X_a → 1
-!apply lemmax1x0cz01 → 1
-!apply elim_M → 0
-
--- CZ01.Z1.Z0.X1.X0.Z1.Z0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
-!apply bifunct_Z_a ← 1
-!apply drel34 → 2
-!apply bifunct_X_Z_a → 5
-!apply spatial_Z1 → 4
-!apply elim_Z1 → 3
-
--- CZ01.Z0.X1.M.X0.Z0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
-!apply drel32 → 4
-!apply elim_M → 3
-
--- CZ01.Z0.X1.Z0.X0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
-!apply bifunct_X_Z_b→ 2
-!apply elim_Z0 → 1
-
--- CZ01.X1.X0.CCX2.X1.X0.CX21.CCX2.CX21.X0.X1.CCX2.X1.X0.CX21.CCX2.CX21.CZ01
-bifunct_X_a ← 1
-expand_S1 ← 1
-expand_S6 ← 2
-expand_S1 ← 3
-expand_S6 ← 4
-!apply s1s6s1s6 → 1
-
--- CZ01.CZ01
-!apply elim_CZ01 → 0
+-- S1.S6.S1.S6
+!apply s1s6s1s6 → 0
 ε
