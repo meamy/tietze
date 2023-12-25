@@ -38,15 +38,6 @@ expand_SWAP12 → 1
 expand_SWAP12 ← 0
 SWAP12.Z0
 
-@name bifunct_Z_SWAP_b
-Z1.SWAP02
-expand_SWAP02 → 1
-!apply bifunct_Z_CX_c → 0
-!apply bifunct_Z_CX_a → 1
-!apply bifunct_Z_CX_c → 2
-expand_SWAP02 ← 0
-SWAP02.Z1
-
 @name bifunct_Z_SWAP_c
 Z2.SWAP01
 expand_SWAP01 → 1
@@ -113,17 +104,6 @@ symmetry_Z_d → 1
 !apply bifunct_X_SWAP_b → 2
 symmetry_Z_d ← 0
 Z1.X2
-
-@name bifunct_X_Z_d
-X1.Z2
-elim_K12 ← 0
-!apply drel65 → 1
-!apply drel64 ← 2
-!apply bifunct_X_Z_c ← 1
-!apply drel66 → 0
-!apply drel137 ← 1
-elim_K12 → 2
-Z2.X1
 
 @name bifunct_X_Z_e
 X0.Z2

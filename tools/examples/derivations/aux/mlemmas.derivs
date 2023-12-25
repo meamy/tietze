@@ -69,23 +69,3 @@ Z1.X1
 !apply elim_X1 → 1
 !apply elim_Z1 → 0
 X1.Z1.M
-
-
--- ****************************************************************************
--- The relation Z2.X2 = X2.Z2.M
--- ****************************************************************************
-
-@name drel35
-
-Z2.X2
-!apply elim_M ← 2
-!apply elim_Z2 ← 3
-!apply elim_X2 ← 4
-
--- Z2.X2.M.Z2.X2.X2.Z2.M
-!apply drel33 ← 2
-
--- Z2.X2.X2.Z2.X2.Z2.M
-!apply elim_X2 → 1
-!apply elim_Z2 → 0
-X2.Z2.M

@@ -75,16 +75,6 @@ r36 → 0
 expand_M ← 1
 CX10.M
 
-@name spatial_CX12
-M.CX12
-expand_M → 0
-!apply bifunct_Z_CX_b → 3
-bifunct_X_CX_a ← 2
-!apply bifunct_Z_CX_b → 1
-bifunct_X_CX_a ← 0
-expand_M ← 1
-CX12.M
-
 @name spatial_CX20
 M.CX20
 !apply expand_M_alt1 → 0
@@ -112,19 +102,6 @@ r13 → 2
 r13 → 0
 expand_M ← 1
 CCX0.M
-
-@name spatial_CCX1
-M.CCX1
-!apply expand_M_alt1 → 0
-!apply drel21 → 3
-!apply drel25 → 2
-!apply drel21 → 1
-!apply bifunct_Z_CZ_a → 2
-!apply bifunct_X_CZ_a ← 3
-!apply elim_CZ02 → 4
-!apply drel25 → 0
-!apply expand_M_alt1 ← 1
-CCX1.M
 
 @name spatial_CCX2
 M.CCX2
@@ -178,16 +155,6 @@ expand_M → 0
 expand_M ← 1
 Z1.M
 
-@name spatial_Z2
-M.Z2
-expand_M → 0
-!apply bifunct_Z_b → 3
-!apply bifunct_X_Z_e → 2
-!apply bifunct_Z_b → 1
-!apply bifunct_X_Z_e → 0
-expand_M ← 1
-Z2.M
-
 
 -- *******************************************************************
 -- Commutation with CZ
@@ -212,16 +179,6 @@ M.CZ02
 !apply bifunct_X_CZ_a → 0
 !apply expand_M_alt1 ← 1
 CZ02.M
-
-@name spatial_CZ12
-M.CZ12
-expand_M → 0
-!apply bifunct_Z_CZ_b ← 3
-!apply bifunct_X_CZ_b → 2
-!apply bifunct_Z_CZ_b ← 1
-!apply bifunct_X_CZ_b → 0
-expand_M ← 1
-CZ12.M
 
 
 -- *******************************************************************
