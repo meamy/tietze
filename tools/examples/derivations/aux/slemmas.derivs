@@ -1131,3 +1131,54 @@ expand_S5 ← 0
 !apply drel6 → 1
 expand_S3 ← 1
 S5.S3
+
+
+-- ****************************************************************************
+-- The relation S7 = CZ01.S6.CZ01
+-- ****************************************************************************
+
+@name srel36
+
+S7
+expand_S7 → 0
+expand_S6 ← 1
+CZ01.S6.CZ01
+
+
+-- ****************************************************************************
+-- The relation CZ01.S4 = S4.CZ01
+-- ****************************************************************************
+
+@name srel37
+
+CZ01.S4
+expand_S4 → 1
+
+-- CZ01.CX01.CX02.CCX0.CX02.CX01
+!apply elim_CZ01 ← 2
+!apply drel104 → 0
+
+-- CX01.Z0.CZ01.CX02.CCX0.CX02.CX01
+!apply drel163 ← 2
+!apply drel81 ← 1
+
+-- CX01.CX02.Z0.CZ01.CCX0.CX02.CX01
+!apply drel159 → 3
+!apply drel23 → 2
+!apply bifunct_Z_CZ_b → 3
+r31_c → 5
+!apply elim_CZ12 → 4
+
+-- CX01.CX02.CCX0.Z0.CZ01.CX02.CX01
+!apply drel163 ← 4
+!apply drel81 ← 3
+!apply drel43 ← 4
+!apply drel78 ← 5
+
+-- CX01.CX02.CCX0.CX02.CZ01.CX01.Z0
+!apply drel104 ← 5
+!apply elim_CZ01 → 4
+
+-- CX01.CX02.CCX0.CX02.CX01.CZ01
+expand_S4 ← 0
+S4.CZ01
