@@ -9,72 +9,28 @@
 
 
 -- ****************************************************************************
--- The lemma CZ01.X1.CCX2.X1.CZ01 = X1.CCX2.X1
--- ****************************************************************************
-
-@name lemmacz01x1ccx2x1cz01
-
-CZ01.X1.CCX2.X1.CZ01
-!apply drel96  → 1
-!apply elim_X1 → 3
-
--- CZ01.CCX2.CX02.CZ01
-!apply drel163 → 2
-!apply drel36 → 0
-
--- CCX2.CX02
-!apply elim_X1 ← 0
-!apply drel96  → 1
-!apply bifunct_X_CX_e ← 3
-!apply elim_CX02 → 2
-X1.CCX2.X1
-
-
--- ****************************************************************************
 -- The derivation
 -- ****************************************************************************
 
 S5.S7.S5.S7.S5.S7
-expand_S7 → 5
-expand_S5 → 4
-expand_S7 → 3
-expand_S5 → 2
-expand_S7 → 1
-expand_S5 → 0
+!apply srel36 → 5
+!apply srel36 → 3
 
--- X1.CCX2.X1.CZ01.CX21.CCX2.CX21.CZ01.X1.CCX2.X1.CZ01.CX21.CCX2.CX21.CZ01.X1.CCX2.X1.CZ01.CX21.CCX2.CX21.CZ01
-!apply lemmacz01x1ccx2x1cz01 → 15
-!apply lemmacz01x1ccx2x1cz01 → 7
+-- S5.S7.S5.CZ01.S6.CZ01.S5.CZ01.S6.CZ01
+!apply srel39 → 5
+!apply elim_CZ01 → 6
 
--- X1.CCX2.X1.CZ01.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
-!apply elim_X1 ← 4
-!apply drel119 ← 3
-!apply elim_X1 → 2
+-- S5.S7.S5.CZ01.S6.S5.S6.CZ01
+!apply srel36 → 1
 
--- X1.CCX2.Z0.CZ01.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
-!apply drel43 ← 2
-!apply elim_CZ01 ← 1
-!apply drel36 → 2
+-- S5.CZ01.S6.CZ01.S5.CZ01.S6.S5.S6.CZ01
+!apply srel39 → 3
+!apply srel39 ← 0
 
--- X1.CZ01.CCX2.Z0.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
-!apply elim_X1 ← 2
-!apply drel119 ← 1
-!apply elim_X1 → 0
+-- CZ01.S5.S6.S5.CZ01.CZ01.S6.S5.S6.CZ01
+!apply elim_CZ01 → 4
 
--- Z0.CZ01.X1.CCX2.Z0.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
-!apply drel43 ← 0
-!apply bifunct_X_Z_b← 1
-!apply drel40 → 2
-
--- CZ01.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.X1.CCX2.X1.CX21.CCX2.CX21.CZ01
-expand_S5 ← 1
-expand_S6 ← 2
-expand_S5 ← 3
-expand_S6 ← 4
-expand_S5 ← 5
-expand_S6 ← 6
+-- CZ01.S5.S6.S5.S6.S5.S6.CZ01
 !apply s5s6s5s6s5s6 → 1
-
--- CZ01.CZ01
 !apply elim_CZ01 → 0
 ε
