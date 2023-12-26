@@ -9,75 +9,11 @@
 
 
 -- ****************************************************************************
--- The lemma CZ01.CX21.CCX2.CX21 = CX21.CCX2.CX21.CZ02
--- ****************************************************************************
-
-@name lemmacz01cx21ccx2cx21
-
-CZ01.CX21.CCX2.CX21
-!apply drel143 → 1
-!apply drel152 → 0
-!apply drel151 → 2
-
--- CCX1.CZ01.CCX2.CZ02.CZ01.CCX1
-!apply drel71 ← 3
-!apply drel36 → 1
-
--- CCX1.CCX2.CZ02.CCX1
-!apply elim_CZ02 ← 4
-!apply drel37 → 2
-!apply drel143 ← 0
-CX21.CCX2.CX21.CZ02
-
-
--- ****************************************************************************
 -- The derivation
 -- ****************************************************************************
 
 S2.S7.S2.S7
-expand_S7 → 3
-expand_S2 → 2
-expand_S7 → 1
-expand_S2 → 0
-
--- X0.CX21.CCX2.CX21.X0.CZ01.CX21.CCX2.CX21.CZ01.X0.CX21.CCX2.CX21.X0.CZ01.CX21.CCX2.CX21.CZ01
-!apply lemmacz01cx21ccx2cx21 → 5
-
--- X0.CX21.CCX2.CX21.X0.CX21.CCX2.CX21.CZ02.CZ01.X0.CX21.CCX2.CX21.X0.CZ01.CX21.CCX2.CX21.CZ01
-!apply bifunct_X_CX_b → 3
-!apply elim_CX21 → 4
-
--- X0.CX21.CCX2.X0.CCX2.CX21.CZ02.CZ01.X0.CX21.CCX2.CX21.X0.CZ01.CX21.CCX2.CX21.CZ01
-!apply drel98 ← 2
-!apply bifunct_X_CX_b → 1
-!apply elim_CCX2 → 4
-elim_X0 → 0
-
--- X0.CX21.CCX2.X0.CCX2.CX21.CZ02.CZ01.X0.CX21.CCX2.CX21.X0.CZ01.CX21.CCX2.CX21.CZ01
-!apply drel27 ← 0
-!apply drel28 → 1
-
--- CZ01.CZ02.CX21.CX12.CX21.X0.CX21.CCX2.CX21.X0.CZ01.CX21.CCX2.CX21.CZ01
-!apply bifunct_X_CX_b → 4
-!apply bifunct_X_CX_b → 8
-!apply elim_CX21 → 5
-
--- CZ01.CZ02.CX21.CX12.X0.CCX2.X0.CX21.CZ01.CX21.CCX2.CX21.CZ01
-!apply drel98 ← 5
-elim_X0 → 4
-!apply elim_CX12 → 3
-
--- CZ01.CZ02.CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01
-!apply lemmacz01cx21ccx2cx21 → 5
-
--- CZ01.CZ02.CX21.CCX2.CX21.CX21.CCX2.CX21.CZ02.CZ01
-!apply drel143 → 2
-!apply drel143 → 5
-
--- CZ01.CZ02.CCX1.CCX2.CCX1.CCX1.CCX2.CCX1.CZ02.CZ01
-!apply elim_CCX1 → 4
-!apply elim_CCX2 → 3
-!apply elim_CCX1 → 2
-!apply elim_CZ02 → 1
-!apply elim_CZ01 → 0
+!apply srel34 → 0
+!apply s2s2 → 1
+!apply s7s7 → 0
 ε
