@@ -1048,7 +1048,7 @@ CX21.CCX2.CX21.CZ01
 
 
 -- ****************************************************************************
--- The relation S2.S7 = S7.23
+-- The relation S2.S7 = S7.S2
 -- ****************************************************************************
 
 @name srel34
@@ -1097,3 +1097,37 @@ elim_X0 ← 2
 -- S7.X0.CX21.CCX2.CX21.X0
 expand_S2 ← 1
 S7.S2
+
+
+-- ****************************************************************************
+-- The relation S3.S5 = S5.S3
+-- ****************************************************************************
+
+@name srel35
+
+S3.S5
+expand_S3 → 0
+
+-- X0.CCX2.X0.S5
+!apply drel6 ← 0
+!apply drel90 → 0
+
+-- CCX2.CX12.S5
+expand_S5 → 2
+
+-- CCX2.CX12.X1.CCX2.X1
+!apply drel7 ← 2
+!apply drel103 ← 2
+!apply drel11 → 1
+
+-- CCX2.CX02.CX12.CCX2
+!apply drel141 ← 0
+!apply drel7 → 0
+expand_S5 ← 0
+
+-- S5.CX12.CCX2
+!apply drel55 ← 1
+!apply drel90 ← 1
+!apply drel6 → 1
+expand_S3 ← 1
+S5.S3

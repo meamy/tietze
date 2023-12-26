@@ -13,37 +13,7 @@
 -- ****************************************************************************
 
 S3.S5.S3.S5
-expand_S5 → 3
-expand_S3 → 2
-expand_S5 → 1
-expand_S3 → 0
-
--- X0.CCX2.X0.X1.CCX2.X1.X0.CCX2.X0.X1.CCX2.X1
-!apply drel96  → 9
-!apply elim_X1 → 11
-
--- X0.CCX2.X0.X1.CCX2.X1.X0.CCX2.X0.CCX2.CX02
-r5 → 8
-!apply elim_CCX2 → 7
-
--- X0.CCX2.X0.X1.CCX2.X1.X0.CX12.X0.CX02
-bifunct_X_CX_a → 7
-elim_X0 → 6
-
--- X0.CCX2.X0.X1.CCX2.X1.CX12.CX02
-!apply drel96  → 3
-!apply elim_X1 → 5
-
--- X0.CCX2.X0.CCX2.CX02.CX12.CX02
-!apply drel11 → 5
-!apply elim_CX02 → 4
-
--- X0.CCX2.X0.CCX2.CX12
-r5 → 2
-bifunct_X_CX_a → 3
-!apply elim_CX12 → 4
-
--- X0.CCX2.CCX2.X0
-!apply elim_CCX2 → 1
-elim_X0 → 0
+!apply srel35 → 0
+!apply s3s3 → 1
+!apply s5s5 → 0
 ε
