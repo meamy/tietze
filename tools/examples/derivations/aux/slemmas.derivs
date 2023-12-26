@@ -1182,3 +1182,27 @@ r31_c → 5
 -- CX01.CX02.CCX0.CX02.CX01.CZ01
 expand_S4 ← 0
 S4.CZ01
+
+
+-- ****************************************************************************
+-- The relation CZ01.S3 = S3.CZ01
+-- ****************************************************************************
+
+@name srel38
+
+CZ01.S3
+expand_S3 → 1
+
+-- CZ01.X0.CCX2.X0
+!apply drel118 ← 0
+!apply elim_CZ01 ← 4
+!apply drel36 → 2
+!apply drel118 ← 3
+
+-- X0.Z1.CCX2.X0.Z1.CZ01
+!apply bifunct_X_Z_a → 3
+!apply drel51 → 1
+
+-- X0.CCX2.X0.CZ01
+expand_S3 ← 0
+S3.CZ01
