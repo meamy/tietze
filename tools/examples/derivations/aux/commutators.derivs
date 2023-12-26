@@ -194,15 +194,12 @@ CCX1.CCX0.CCX1.CZ01
 
 
 -- ****************************************************************************
--- The relation CCX0.CCX1.CCX2.CCX1.CCX0 = CCX1.CCX2.CCX1
+-- The relation CCX0.CCX2.CCX1.CCX2.CCX0 = CCX2.CCX1.CCX2
 -- ****************************************************************************
 
 @name drel16
 
-CCX0.CCX1.CCX2.CCX1.CCX0
-r40_a → 1
-
--- CCX0.CCX2.CCX1.CCX2.CCX0
+CCX0.CCX2.CCX1.CCX2.CCX0
 !apply drel132 ← 1
 !apply elim_CX12 ← 5
 !apply elim_CX12 ← 0
@@ -217,10 +214,7 @@ r10_b → 1
 elim_CCX0 → 4
 elim_CCX0 → 1
 !apply drel132 → 0
-
--- CCX2.CCX1.CCX2
-r40_a ← 0
-CCX1.CCX2.CCX1
+CCX2.CCX1.CCX2
 
 
 -- ****************************************************************************

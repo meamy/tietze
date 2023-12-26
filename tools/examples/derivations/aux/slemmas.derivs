@@ -1230,3 +1230,43 @@ expand_S5 → 1
 -- X1.CCX2.X1.CZ01
 expand_S5 ← 0
 S5.CZ01
+
+
+-- ****************************************************************************
+-- The relation S4.S6 = S6.S4
+-- ****************************************************************************
+
+@name srel40
+
+S4.S6
+expand_S6 → 1
+expand_S4 → 0
+
+-- CX01.CX02.CCX0.CX02.CX01.CX21.CCX2.CX21
+!apply drel143 → 5
+!apply drel4 ← 4
+r40_a → 4
+!apply drel3 ← 3
+
+-- CX01.CX02.CCX0.CCX2.CCX1.CCX2.CX01.CX02
+elim_CCX0 ← 6
+!apply drel16 → 2
+
+-- CX01.CX02.CCX2.CCX1.CCX2.CCX0.CX01.CX02
+!apply drel3 ← 1
+r40_a ← 1
+!apply drel4 ← 0
+
+-- CCX1.CCX2.CCX1.CX02.CX01.CCX0.CX01.CX02
+!apply drel9 → 6
+!apply drel9 ← 3
+
+-- CCX1.CCX2.CCX1.CX01.CX02.CCX0.CX02.CX01
+expand_S4 ← 3
+
+-- CCX1.CCX2.CCX1.S4
+!apply drel143 ← 0
+
+-- CX21.CCX2.CX21.S4
+expand_S6 ← 0
+S6.S4
