@@ -1304,20 +1304,20 @@ SWAP12.S4
 expand_S4 → 1
 
 -- SWAP12.CX01.CX02.CCX0.CX02.CX01
-symmetry_CX_m → 2
-symmetry_CX_m ← 0
+expand_CX02 → 2
+expand_CX02 ← 0
 
 -- CX02.CX01.SWAP12.CCX0.CX02.CX01
 !apply symmetry_CCX_g → 3
 !apply elim_SWAP12 → 2
 
 -- CX02.CX01.CCX0.SWAP12.CX02.CX01
-symmetry_CX_m → 4
+expand_CX02 → 4
 !apply elim_SWAP12 → 3
 
 -- CX02.CX01.CCX0.CX01.SWAP12.CX01
 !apply elim_SWAP12 ← 6
-symmetry_CX_m ← 4
+expand_CX02 ← 4
 
 -- CX02.CX01.CCX0.CX01.CX02.SWAP12
 !apply drel9 → 3

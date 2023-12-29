@@ -12,7 +12,7 @@ elim_X0 → 1
 !apply wrel18 → 0
 
 -- SWAP12.CX02.SWAP12
-symmetry_CX_m → 1
+expand_CX02 → 1
 !apply elim_SWAP12 → 3
 !apply elim_SWAP12 → 0
 CX01
