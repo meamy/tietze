@@ -58,7 +58,6 @@ SWAP12.SWAP02.SWAP12
 X2
 !apply elim_SWAP12 ← 1
 expand_SWAP12 → 1
-!apply elim_X2 ← 2
 !apply drel84 → 0
 !apply drel133 → 1
 !apply drel70 ← 2

@@ -558,8 +558,7 @@ elim_K12 ← 0
 !apply drel137 ← 2
 
 -- K12.CX01.X1.K12
-!apply elim_X1 ← 1
-!apply drel82 → 2
+!apply drel82 ← 1
 
 -- K12.X1.CX01.K12
 !apply drel65 → 0
@@ -888,8 +887,7 @@ symmetry_CX_m → 0
 !apply elim_SWAP12 → 2
 
 -- SWAP12.CX01.X1.SWAP12
-!apply elim_X1 ← 1
-!apply drel82 → 2
+!apply drel82 ← 1
 
 -- SWAP12.X1.CX01.SWAP12
 !apply elim_SWAP12 ← 2
@@ -1121,8 +1119,7 @@ expand_CX10 → 0
 !apply drel59 ← 2
 
 -- K01.CX01.X1.K01
-!apply elim_X1 ← 1
-!apply drel82 → 2
+!apply drel82 ← 1
 
 -- K01.X1.CX01.K01
 !apply drel58 ← 0
@@ -1152,24 +1149,23 @@ Z0.CX01
 
 
 -- ****************************************************************************
--- The relation X1.CX21.X1 = CX21
+-- The relation X1.CX21 = CX21.X1
 -- ****************************************************************************
 
 @name drel79
 
-X1.CX21.X1
+X1.CX21
 expand_X1 → 0
 
--- CX01.X0.CX01.X0.CX21.X1
+-- CX01.X0.CX01.X0.CX21
 !apply bifunct_X_CX_b ← 3
 !apply drel41 → 2
 !apply bifunct_X_CX_b ← 1
 !apply drel41 → 0
 
--- CX21.CX01.X0.CX01.X0.X1
+-- CX21.CX01.X0.CX01.X0
 expand_X1 ← 1
-!apply elim_X1 → 1
-CX21
+CX21.X1
 
 
 -- ****************************************************************************
@@ -1184,8 +1180,7 @@ elim_K12 ← 0
 !apply drel137 ← 2
 
 -- K12.CX21.X1.K12
-!apply elim_X1 ← 1
-!apply drel79 → 2
+!apply drel79 ← 1
 
 -- K12.X1.CX21.K12
 !apply drel65 → 0
@@ -1214,47 +1209,45 @@ Z0.CX02
 
 
 -- ****************************************************************************
--- The relation X1.CX01.X1 = CX01
+-- The relation X1.CX01 = CX01.X1
 -- ****************************************************************************
 
 @name drel82
 
-X1.CX01.X1
-symmetry_X_a → 2
+X1.CX01
+!apply symmetry_CX_e → 1
 symmetry_X_a → 0
-
--- SWAP01.X1.SWAP01.CX01.SWAP01.X1.SWAP01
-!apply symmetry_CX_e → 3
-!apply elim_SWAP01 → 5
 !apply elim_SWAP01 → 2
 
--- SWAP01.X0.CX10.X0.SWAP01
+-- SWAP01.X1.CX10.SWAP01
 r36 → 1
+
+-- SWAP01.CX10.X1.SWAP01
+!apply elim_SWAP01 ← 2
+symmetry_X_a ← 3
 !apply symmetry_CX_e ← 0
-CX01
+CX01.X1
 
 
 -- ****************************************************************************
--- The relation X2.CX12.X2 = CX12
+-- The relation X2.CX12 = CX12.X2
 -- ****************************************************************************
 
 @name drel84
 
-X2.CX12.X2
-expand_X2 → 2
+X2.CX12
+!apply symmetry_CX_f → 1
 expand_X2 → 0
-
--- SWAP02.X0.SWAP02.CX12.SWAP02.X0.SWAP02
-!apply symmetry_CX_f → 3
-!apply elim_SWAP02 → 5
 !apply elim_SWAP02 → 2
 
--- SWAP02.X0.CX10.X0.SWAP02
+-- SWAP02.X0.CX10.SWAP02
 r36 → 1
 
--- SWAP02.CX10.SWAP02
+-- SWAP02.CX10.X0.SWAP02
+!apply elim_SWAP02 ← 2
+expand_X2 ← 3
 !apply symmetry_CX_f ← 0
-CX12
+CX12.X2
 
 
 -- ****************************************************************************

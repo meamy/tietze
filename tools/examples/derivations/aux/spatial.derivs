@@ -64,10 +64,8 @@ CX02.M
 M.CX10
 expand_M → 0
 !apply drel42 → 3
-elim_X0 ← 4
 r36 → 2
 !apply drel42 → 1
-elim_X0 ← 2
 r36 → 0
 !apply bifunct_Z_a ← 2
 !apply bifunct_X_Z_a ← 3
