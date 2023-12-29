@@ -135,16 +135,6 @@ CCX2.M
 -- Commutation with Z
 -- *******************************************************************
 
-@name spatial_Z0
-M.Z0
-!apply expand_M_alt1 → 0
-!apply bifunct_Z_a ← 3
-!apply bifunct_X_Z_b→ 2
-!apply bifunct_Z_a ← 1
-!apply bifunct_X_Z_b→ 0
-!apply expand_M_alt1 ← 1
-Z0.M
-
 @name spatial_Z1
 M.Z1
 expand_M → 0
