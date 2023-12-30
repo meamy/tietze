@@ -9,6 +9,30 @@
 
 
 -- ****************************************************************************
+-- The relation CZ01.S5 = S5.CZ01
+-- ****************************************************************************
+
+@name s5s7s5s7s5s7_lemma1
+
+CZ01.S5
+expand_S5 → 1
+
+-- CZ01.X1.CCX2.X1
+!apply drel119 ← 0
+!apply elim_CZ01 ← 4
+!apply drel36 → 2
+!apply drel119 ← 3
+
+-- X1.Z0.CCX2.X1.Z0.CZ01
+!apply bifunct_X_Z_b → 3
+!apply drel40 → 1
+
+-- X1.CCX2.X1.CZ01
+expand_S5 ← 0
+S5.CZ01
+
+
+-- ****************************************************************************
 -- The derivation
 -- ****************************************************************************
 
@@ -17,15 +41,15 @@ S5.S7.S5.S7.S5.S7
 !apply srel36 → 3
 
 -- S5.S7.S5.CZ01.S6.CZ01.S5.CZ01.S6.CZ01
-!apply srel39 → 5
+!apply s5s7s5s7s5s7_lemma1 → 5
 !apply elim_CZ01 → 6
 
 -- S5.S7.S5.CZ01.S6.S5.S6.CZ01
 !apply srel36 → 1
 
 -- S5.CZ01.S6.CZ01.S5.CZ01.S6.S5.S6.CZ01
-!apply srel39 → 3
-!apply srel39 ← 0
+!apply s5s7s5s7s5s7_lemma1 → 3
+!apply s5s7s5s7s5s7_lemma1 ← 0
 
 -- CZ01.S5.S6.S5.CZ01.CZ01.S6.S5.S6.CZ01
 !apply elim_CZ01 → 4

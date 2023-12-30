@@ -9,19 +9,56 @@
 
 
 -- ****************************************************************************
+-- The relation S1 = X1.S3.X1
+-- ****************************************************************************
+
+@name s1s3s1s3_lemma1
+
+S1
+expand_S1 → 0
+bifunct_X_a → 0
+bifunct_X_a ← 3
+expand_S3 ← 1
+X1.S3.X1
+
+
+-- ****************************************************************************
+-- The relation X1.S3 = S3.X2.CX02.X1
+-- ****************************************************************************
+
+@name s1s3s1s3_lemma2
+
+X1.S3
+expand_S3 → 1
+
+-- X1.X0.CCX2.X0
+bifunct_X_a ← 0
+!apply drel96 → 1
+
+-- X0.CCX2.CX02.X1.X0
+bifunct_X_a ← 3
+!apply drel106 ← 2
+!apply bifunct_X_b ← 2
+
+-- X0.CCX2.X0.X2.CX02.X1
+expand_S3 ← 0
+S3.X2.CX02.X1
+
+
+-- ****************************************************************************
 -- The derivation
 -- ****************************************************************************
 
 S1.S3.S1.S3
-!apply srel7 → 2
-!apply srel7 → 0
+!apply s1s3s1s3_lemma1 → 2
+!apply s1s3s1s3_lemma1 → 0
 
 -- X1.S3.X1.S3.X1.S3.X1.S3
-!apply srel8 → 6
+!apply s1s3s1s3_lemma2 → 6
 !apply s3s3 → 5
 
 -- X1.S3.X1.S3.X1.X2.CX02.X1
-!apply srel8 → 2
+!apply s1s3s1s3_lemma2 → 2
 !apply s3s3 → 1
 !apply drel61 ← 1
 

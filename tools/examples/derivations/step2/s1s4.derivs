@@ -9,11 +9,84 @@
 
 
 -- ****************************************************************************
+-- The relation S1.S4 = S4.S1
+-- ****************************************************************************
+
+@name s1s4s1s4_lemma1
+
+S1.S4
+expand_S4 → 1
+expand_S1 → 0
+
+-- X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.CX02.CX01
+!apply drel105 → 3
+!apply drel126 → 4
+
+-- X0.X1.CCX2.CX01.CX02.X0.X2.CCX0.CX02.CX01
+!apply drel130 → 6
+r13 → 5
+r36 → 6
+
+-- X0.X1.CCX2.CX01.CX02.CCX0.CX10.X0.X2.CX02.CX01
+!apply bifunct_X_b → 7
+!apply drel106 → 7
+!apply drel162 → 8
+
+-- X0.X1.CCX2.CX01.CX02.CCX0.CX10.CX02.CX01.X0.X1
+elim_CX01 ← 2
+!apply drel103 ← 3
+!apply elim_CX02 ← 7
+!apply drel142 → 5
+!apply elim_CCX2 → 4
+!apply drel91 → 5
+
+-- X0.X1.CX01.CX02.CCX0.CX02.CCX2.CX10.CX02.CX01.X0.X1
+bifunct_X_a → 0
+!apply drel105 → 0
+!apply drel126 → 1
+!apply drel130 → 3
+
+-- CX01.CX02.X0.CCX0.CX10.X2.CX02.CCX2.CX10.CX02.CX01.X0.X1
+!apply elim_CX10 ← 7
+!apply drel6 → 8
+
+-- CX01.CX02.X0.CCX0.CX10.X2.CX02.CX10.X0.CCX2.X0.CX02.CX01.X0.X1
+r13 → 2
+r36 → 3
+!apply bifunct_X_b → 4
+!apply drel106 → 4
+r36 → 5
+elim_X0 → 6
+
+-- CX01.CX02.CCX0.CX10.CX02.CX10.CCX2.X0.CX02.CX01.X0.X1
+!apply drel178 → 3
+!apply drel11 → 3
+elim_CX01 ← 4
+expand_S4 ← 0
+
+-- S4.CX01.CX12.CCX2.X0.CX02.CX01.X0.X1
+!apply drel98 ← 3
+bifunct_X_CX_a → 2
+!apply elim_CX12 → 3
+
+-- S4.CX01.X0.CCX2.CX02.CX01.X0.X1
+!apply drel141 ← 3
+elim_CX01 → 5
+!apply drel162 → 2
+elim_CX01 → 1
+
+-- S4.X0.X1.CCX2.X1.X0
+bifunct_X_a → 4
+expand_S1 ← 1
+S4.S1
+
+
+-- ****************************************************************************
 -- The derivation
 -- ****************************************************************************
 
 S1.S4.S1.S4
-!apply srel24 → 0
+!apply s1s4s1s4_lemma1 → 0
 
 -- S4.S1.S1.S4
 !apply s1s1 → 1

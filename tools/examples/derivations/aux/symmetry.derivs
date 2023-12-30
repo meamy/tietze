@@ -50,6 +50,19 @@ expand_SWAP02 ← 1
 SWAP12.SWAP02.SWAP12
 
 
+@name symmetry_SWAP12_alt
+K12.CZ12.K12.CZ12.K12.CZ12
+!apply elim_SWAP12 ← 0
+symmetry_SWAP12 → 1
+elim_K12 → 6
+!apply elim_CZ12 → 5
+elim_K12 → 4
+!apply elim_CZ12 → 3
+elim_K12 → 2
+!apply elim_CZ12 → 1
+SWAP12
+
+
 -- *******************************************************************
 -- Alternative Symmetries for Paul-X Gates
 -- *******************************************************************
@@ -285,7 +298,7 @@ SWAP02.CZ01.SWAP02
 CZ12
 !apply elim_SWAP12 ← 0
 symmetry_SWAP12 → 1
-!apply drel180 → 2
+!apply symmetry_SWAP12_alt → 2
 SWAP12.CZ12.SWAP12
 
 

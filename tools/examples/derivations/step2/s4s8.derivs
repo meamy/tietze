@@ -9,6 +9,194 @@
 
 
 -- ****************************************************************************
+-- The relation CX01.S8 = S8.CX01
+-- ****************************************************************************
+
+@name s4s8s4s8_lemma1
+
+CX01.S8
+expand_S8 → 1
+
+-- CX01.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12
+!apply drel49 ← 0
+!apply drel119 ← 1
+!apply bifunct_X_CZ_c ← 3
+!apply bifunct_X_Z_f ← 2
+!apply drel71 → 4
+!apply drel44 ← 3
+
+-- K12.X1.X2.CZ02.Z0.CZ01.CCX0.CZ02.X2.X1.K12
+!apply drel159 → 5
+!apply drel23 → 4
+
+-- K12.X1.X2.CZ02.CCX0.CZ12.Z0.CZ01.CZ12.CZ02.X2.X1.K12
+!apply bifunct_Z_CZ_b → 5
+r31_c ← 6
+!apply elim_CZ12 → 7
+
+-- K12.X1.X2.CZ02.CCX0.Z0.CZ01.CZ02.X2.X1.K12
+!apply drel71 → 6
+!apply drel44 ← 5
+!apply bifunct_X_CZ_c ← 7
+!apply bifunct_X_Z_f ← 6
+
+-- K12.X1.X2.CZ02.CCX0.CZ02.X2.Z0.CZ01.X1.K12
+!apply drel119 ← 8
+!apply bifunct_X_Z_b → 8
+!apply elim_Z0 → 7
+
+-- K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.CZ01.K12
+!apply drel50 → 8
+expand_S8 ← 0
+S8.CX01
+
+
+-- ****************************************************************************
+-- The relation CX02.S8 = S8.CX02
+-- ****************************************************************************
+
+@name s4s8s4s8_lemma2
+
+CX02.S8
+expand_S8 → 1
+
+-- CX02.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12
+!apply drel47 ← 0
+!apply bifunct_X_CZ_a ← 1
+!apply drel120 ← 2
+!apply drel44 ← 3
+
+-- K12.X1.X2.CZ02.Z0.CZ02.CCX0.CZ02.X2.X1.K12
+!apply drel150 → 5
+!apply drel23 → 4
+
+-- K12.X1.X2.CZ02.CCX0.CZ12.Z0.CZ02.CZ12.CZ02.X2.X1.K12
+!apply bifunct_Z_CZ_b → 5
+!apply drel164 → 7
+!apply elim_CZ12 → 6
+
+-- K12.X1.X2.CZ02.CCX0.Z0.CZ02.CZ02.X2.X1.K12
+!apply drel44 ← 5
+!apply drel120 ← 7
+!apply bifunct_X_Z_f ← 6
+!apply elim_Z0 → 7
+
+-- K12.X1.X2.CZ02.CCX0.CZ02.X2.CZ02.X1.K12
+!apply bifunct_X_CZ_a ← 7
+!apply drel48 → 8
+expand_S8 ← 0
+S8.CX02
+
+
+-- ****************************************************************************
+-- The relation K12.CX02.CCX0.CX02.K12.CCX0 = CCX0.K12.CX02.CCX0.CX02.K12
+-- ****************************************************************************
+
+@name s4s8s4s8_lemma3
+
+K12.CX02.CCX0.CX02.K12.CCX0
+!apply drel48 ← 0
+!apply drel47 ← 3
+
+-- CZ02.K12.CCX0.K12.CZ02.CCX0
+elim_K01 ← 6
+!apply drel85 → 5
+!apply drel74 ← 4
+
+-- CZ02.K12.CCX0.K12.K01.CX20.CCX1.K01
+!apply elim_CX20 ← 7
+!apply drel140 → 5
+elim_K01 ← 7
+!apply drel74 → 8
+elim_K01 → 9
+
+-- CZ02.K12.CCX0.K12.K01.CCX1.CX21.K01.CZ02
+r47 ← 3
+!apply drel29 ← 4
+!apply drel46 → 5
+r47 ← 6
+!apply drel47 → 7
+
+-- CZ02.K12.CCX0.K01.CCX2.CX12.K01.CX02.K12
+!apply drel85 → 2
+!apply drel55 → 4
+!apply elim_CX12 ← 3
+!apply drel132 → 4
+!apply elim_CCX2 → 6
+!apply drel63 ← 5
+
+-- CZ02.K12.K01.CX12.CCX2.K01.CCX0.CX02.K12
+r47 ← 1
+!apply drel30 ← 2
+!apply drel86 → 3
+r47 ← 4
+
+-- CZ02.K01.CX21.CCX1.K01.K12.CCX0.CX02.K12
+!apply drel89 ← 1
+!apply drel85 ← 2
+elim_K01 → 3
+
+-- CZ02.CZ12.CCX0.K12.CCX0.CX02.K12
+!apply drel164 → 0
+!apply drel57 ← 0
+!apply drel48 → 1
+CCX0.K12.CX02.CCX0.CX02.K12
+
+
+-- ****************************************************************************
+-- The relation CCX0.S8 = S8.CCX0
+-- ****************************************************************************
+
+@name s4s8s4s8_lemma4
+
+CCX0.S8
+expand_S8 → 1
+elim_K12 ← 0
+
+-- K12.K12.CCX0.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12
+!apply drel53 ← 2
+!apply drel65 → 5
+!apply elim_Z1 → 4
+!apply drel137 ← 1
+
+-- K12.X1.K12.CCX0.K12.X2.CZ02.CCX0.CZ02.X2.X1.K12
+!apply drel54 ← 3
+!apply drel66 → 6
+!apply elim_Z2 → 5
+!apply drel64 ← 2
+
+-- K12.X1.X2.K12.CCX0.K12.CZ02.CCX0.CZ02.X2.X1.K12
+!apply drel47 → 5
+!apply elim_CX02 ← 4
+!apply drel48 ← 3
+
+-- K12.X1.X2.CZ02.K12.CX02.CCX0.CX02.K12.CCX0.CZ02.X2.X1.K12
+!apply s4s8s4s8_lemma3 → 4
+
+-- K12.X1.X2.CZ02.CCX0.K12.CX02.CCX0.CX02.K12.CZ02.X2.X1.K12
+!apply drel47 → 9
+!apply elim_CX02 → 8
+!apply drel48 ← 5
+
+-- K12.X1.X2.CZ02.CCX0.CZ02.K12.CCX0.K12.X2.X1.K12
+!apply drel54 ← 7
+!apply drel66 ← 9
+!apply elim_X2 → 10
+!apply drel64 ← 6
+
+-- K12.X1.X2.CZ02.CCX0.CZ02.X2.K12.CCX0.K12.X1.K12
+!apply drel53 ← 8
+!apply drel65 ← 10
+!apply elim_X1 → 11
+!apply drel137 ← 7
+
+-- K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12.CCX0.K12.K12
+elim_K12 → 10
+expand_S8 ← 0
+S8.CCX0
+
+
+-- ****************************************************************************
 -- The derivation
 -- ****************************************************************************
 
@@ -17,17 +205,17 @@ expand_S4 → 2
 expand_S4 → 0
 
 -- CX01.CX02.CCX0.CX02.CX01.S8.CX01.CX02.CCX0.CX02.CX01.S8
-!apply srel18 → 10
-!apply srel18 → 4
+!apply s4s8s4s8_lemma1 → 10
+!apply s4s8s4s8_lemma1 → 4
 elim_CX01 → 5
 
 -- CX01.CX02.CCX0.CX02.S8.CX02.CCX0.CX02.S8.CX01
-!apply srel19 → 7
-!apply srel19 → 3
+!apply s4s8s4s8_lemma2 → 7
+!apply s4s8s4s8_lemma2 → 3
 !apply elim_CX02 → 4
 
 -- CX01.CX02.CCX0.S8.CCX0.S8.CX02.CX01
-!apply srel21 → 2
+!apply s4s8s4s8_lemma4 → 2
 elim_CCX0 → 3
 
 -- CX01.CX02.S8.S8.CX02.CX01

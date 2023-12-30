@@ -9,12 +9,40 @@
 
 
 -- ****************************************************************************
+-- The relation S2.S6 = S1.S5
+-- ****************************************************************************
+
+@name s2s6s2s6_lemma1
+
+S2.S6
+expand_S6 → 1
+expand_S2 → 0
+
+-- X0.CX21.CCX2.CX21.X0.CX21.CCX2.CX21
+!apply bifunct_X_CX_b ← 4
+!apply bifunct_X_CX_b ← 0
+!apply elim_CX21 → 3
+
+-- CX21.X0.CCX2.X0.CCX2.CX21
+!apply elim_X1 ← 5
+!apply elim_X1 ← 4
+expand_S5 ← 5
+
+-- CX21.X0.CCX2.X0.X1.S5.X1.CX21
+!apply elim_X1 ← 1
+bifunct_X_a → 5
+bifunct_X_a ← 2
+expand_S1 ← 2
+CX21.X1.S1.S5.X1.CX21
+
+
+-- ****************************************************************************
 -- The derivation
 -- ****************************************************************************
 
 S2.S6.S2.S6
-!apply srel26 → 2
-!apply srel26 → 0
+!apply s2s6s2s6_lemma1 → 2
+!apply s2s6s2s6_lemma1 → 0
 
 -- CX21.X1.S1.S5.X1.CX21.CX21.X1.S1.S5.X1.CX21
 !apply elim_CX21 → 5

@@ -9,11 +9,45 @@
 
 
 -- ****************************************************************************
+-- The relation S3.S5 = S5.S3
+-- ****************************************************************************
+
+@name s3s5s3s5_lemma1
+
+S3.S5
+expand_S3 → 0
+
+-- X0.CCX2.X0.S5
+!apply drel6 ← 0
+!apply drel90 → 0
+
+-- CCX2.CX12.S5
+expand_S5 → 2
+
+-- CCX2.CX12.X1.CCX2.X1
+!apply drel7 ← 2
+!apply drel103 ← 2
+!apply drel11 → 1
+
+-- CCX2.CX02.CX12.CCX2
+!apply drel141 ← 0
+!apply drel7 → 0
+expand_S5 ← 0
+
+-- S5.CX12.CCX2
+!apply drel55 ← 1
+!apply drel90 ← 1
+!apply drel6 → 1
+expand_S3 ← 1
+S5.S3
+
+
+-- ****************************************************************************
 -- The derivation
 -- ****************************************************************************
 
 S3.S5.S3.S5
-!apply srel35 → 0
+!apply s3s5s3s5_lemma1 → 0
 !apply s3s3 → 1
 !apply s5s5 → 0
 ε

@@ -9,13 +9,49 @@
 
 
 -- ****************************************************************************
+-- The relation S1.S5 = S5.S1
+-- ****************************************************************************
+
+@name s1s5s1s5_lemma1
+
+S1.S5
+expand_S5 → 1
+expand_S1 → 0
+
+-- X0.X1.CCX2.X1.X0.X1.CCX2.X1
+bifunct_X_a → 0
+bifunct_X_a ← 3
+!apply drel6 ← 1
+!apply drel90 → 1
+
+-- X1.CX10.CCX2.CX10.X1.X1.CCX2.X1
+!apply drel70 → 2
+!apply bifunct_X_c ← 2
+expand_S5 ← 0
+
+-- S5.X2.CX12.X1.CCX2.X1
+!apply drel70 → 2
+!apply elim_X2 → 1
+
+-- S5.X1.CX12.CCX2.X1
+elim_X0 ← 2
+!apply drel98 → 3
+
+-- S5.X1.X0.CCX2.X0.X1
+bifunct_X_a → 4
+bifunct_X_a ← 1
+expand_S1 ← 1
+S5.S1
+
+
+-- ****************************************************************************
 -- The derivation
 -- ****************************************************************************
 
 @name s1s5s1s5
 
 S1.S5.S1.S5
-!apply srel25 → 0
+!apply s1s5s1s5_lemma1 → 0
 !apply s1s1 → 1
 !apply s5s5 → 0
 ε

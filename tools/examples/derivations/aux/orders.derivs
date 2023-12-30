@@ -70,10 +70,22 @@ elim_CX01 → 1
 elim_K01 → 0
 ε
 
+@name elim_CX12_lemma
+K12.X0.CCX1.X0.CCX1.K12
+expand_CCX1 → 4
+expand_CCX1 → 2
+symmetry_X_a ← 4
+!apply elim_SWAP01 ← 1
+symmetry_X_a ← 2
+expand_CX20 ← 2
+symmetry_CX_l ← 1
+expand_CX12 ← 0
+CX12
+
 @name elim_CX12
 CX12.CX12
-!apply drel125 ← 1
-!apply drel125 ← 0
+!apply elim_CX12_lemma ← 1
+!apply elim_CX12_lemma ← 0
 elim_K12 → 5
 !apply drel127 → 7
 !apply elim_CCX1 → 6

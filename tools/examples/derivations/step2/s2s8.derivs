@@ -9,6 +9,67 @@
 
 
 -- ****************************************************************************
+-- The relation CX21.S8 = S8.CX21
+-- ****************************************************************************
+
+@name s2s8s2s8_lemma1
+
+CX21.S8
+!apply elim_CX21 ← 2
+expand_S8 → 1
+
+-- CX21.K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12.CX21.CX21
+!apply drel46 → 9
+!apply drel30 → 0
+
+-- K12.CX12.X1.X2.CZ02.CCX0.CZ02.X2.X1.CX12.K12.CX21
+!apply drel69 → 8
+!apply bifunct_X_c → 9
+!apply drel70 → 1
+!apply bifunct_X_c ← 1
+
+-- K12.X1.X2.CX12.X2.CZ02.CCX0.CZ02.X2.CX12.X2.X1.K12.CX21
+!apply drel146 → 4
+!apply drel120 ← 8
+!apply drel130 → 6
+!apply elim_X2 → 8
+
+-- K12.X1.X2.CX12.CZ02.Z0.CCX0.CX10.Z0.CZ02.CX12.X2.X1.K12.CX21
+!apply drel23 → 5
+!apply drel42 → 7
+!apply elim_Z0 → 9
+
+-- K12.X1.X2.CX12.CZ02.CCX0.CZ12.CX10.Z1.CZ02.CX12.X2.X1.K12.CX21
+!apply drel139 → 3
+!apply drel71 → 3
+!apply drel165 ← 4
+!apply drel159 → 5
+!apply elim_CZ12 → 7
+
+-- K12.X1.X2.CZ02.CX12.CCX0.CZ01.CX10.Z1.CZ02.CX12.X2.X1.K12.CX21
+!apply drel77 → 7
+!apply drel157 → 7
+!apply elim_CZ01 → 6
+
+-- K12.X1.X2.CZ02.CX12.CCX0.CX10.CZ01.CZ02.CX12.X2.X1.K12.CX21
+!apply drel108 → 8
+!apply drel71 ← 9
+!apply drel165 → 8
+!apply elim_CZ01 → 7
+
+-- K12.X1.X2.CZ02.CX12.CCX0.CX10.CX12.CZ02.X2.X1.K12.CX21
+!apply drel10 → 6
+!apply drel5 → 4
+!apply drel130 → 4
+
+-- K12.X1.X2.CZ02.CCX0.CX10.X2.X2.CX10.CZ02.X2.X1.K12.CX21
+!apply elim_X2 → 6
+!apply elim_CX10 → 5
+expand_S8 ← 0
+S8.CX21
+
+
+-- ****************************************************************************
 -- The derivation
 -- ****************************************************************************
 
@@ -24,8 +85,8 @@ expand_S2 → 0
 elim_X0 → 5
 
 -- X0.CX21.CCX2.CX21.S8.CX21.CCX2.CX21.S8.X0
-!apply srel17 → 7
-!apply srel17 → 3
+!apply s2s8s2s8_lemma1 → 7
+!apply s2s8s2s8_lemma1 → 3
 !apply elim_CX21 → 4
 !apply srel13 → 4
 !apply s8s8 → 3
