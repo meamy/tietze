@@ -12,7 +12,7 @@
 -- The relation CZ01.S3 = S3.CZ01
 -- ****************************************************************************
 
-@name srel38
+@name s3s7s3s7_lemma1
 
 CZ01.S3
 expand_S3 → 1
@@ -41,8 +41,8 @@ S3.S7.S3.S7
 !apply srel36 → 1
 
 -- S3.CZ01.S6.CZ01.S3.CZ01.S6.CZ01
-!apply srel38 → 3
-!apply srel38 ← 0
+!apply s3s7s3s7_lemma1 → 3
+!apply s3s7s3s7_lemma1 ← 0
 
 -- CZ01.S3.S6.S3.CZ01.CZ01.S6.CZ01
 !apply elim_CZ01 → 4

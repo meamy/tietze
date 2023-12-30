@@ -2,22 +2,12 @@
 -- Commutation with X
 -- *******************************************************************
 
-@name spatial_X0
-M.X0
-!apply expand_M_alt1 → 0
-!apply bifunct_X_Z_a ← 3
-bifunct_X_a ← 2
-!apply bifunct_X_Z_a ← 1
-bifunct_X_a ← 0
-!apply expand_M_alt1 ← 1
-X0.M
-
 @name spatial_X1
 M.X1
 expand_M → 0
-!apply bifunct_X_Z_b← 3
+!apply bifunct_X_Z_b ← 3
 bifunct_X_a → 2
-!apply bifunct_X_Z_b← 1
+!apply bifunct_X_Z_b ← 1
 bifunct_X_a → 0
 expand_M ← 1
 X1.M
@@ -44,7 +34,7 @@ expand_M → 0
 !apply drel162 → 2
 !apply drel78 ← 1
 !apply drel162 → 0
-!apply bifunct_X_Z_b→ 2
+!apply bifunct_X_Z_b → 2
 bifunct_X_a ← 3
 !apply elim_X1 → 4
 expand_M ← 1
