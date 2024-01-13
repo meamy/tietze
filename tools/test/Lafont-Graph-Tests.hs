@@ -12,17 +12,16 @@ import Lafont.Internal.Graph
 -- Tests the ability to build and inspect a graph.
 
 g0 :: Digraph Int
-g0 = nullgraph
-
-g1 = addVertex g0 1
-g2 = addVertex g1 5
-g3 = fromJust $ addEdge g2 1 5
-g4 = addVertex g3 12
-g5 = fromJust $ addEdge g4 1 12
-g6 = fromJust $ addEdge g5 12 12
-g7 = addVertex g6 7
-g8 = fromJust $ addEdge g7 7 5
-g9 = fromJust $ addEdge g8 7 12
+g0  = nullgraph
+g1  = addVertex g0 1
+g2  = addVertex g1 5
+g3  = fromJust $ addEdge g2 1 5
+g4  = addVertex g3 12
+g5  = fromJust $ addEdge g4 1 12
+g6  = fromJust $ addEdge g5 12 12
+g7  = addVertex g6 7
+g8  = fromJust $ addEdge g7 7 5
+g9  = fromJust $ addEdge g8 7 12
 g10 = addVertex g9 15
 g11 = fromJust $ addEdge g10 5 15
 g12 = addVertex g11 (-2)
@@ -236,6 +235,65 @@ test102 = TestCase (assertEqual "Ensures that paths can be folded."
     where seq = listToWalk [2, 4, 6, 8, 10, 12]
 
 -----------------------------------------------------------------------------------------
+-- Ability to lift set homs to graph homs.
+
+h0 :: Digraph String
+h0  = nullgraph
+h1  = addVertex h0 "1"
+h2  = addVertex h1 "5"
+h3  = fromJust $ addEdge h2 "1" "5"
+h4  = addVertex h3 "12"
+h5  = fromJust $ addEdge h4 "1" "12"
+h6  = fromJust $ addEdge h5 "12" "12"
+h7  = addVertex h6 "7"
+h8  = fromJust $ addEdge h7 "7" "5"
+h9  = fromJust $ addEdge h8 "7" "12"
+h10 = addVertex h9 "15"
+h11 = fromJust $ addEdge h10 "5" "15"
+h12 = addVertex h11 "-2"
+h13 = fromJust $ addEdge h12 "15" "-2"
+h14 = fromJust $ addEdge h13 "-2" "7"
+h15 = fromJust $ addEdge h14 "-2" "12"
+
+k0 :: Digraph String
+k0 = nullgraph
+k1 = addVertex k0 "1"
+k2 = fromJust $ addEdge k1 "1" "1"
+k3 = addVertex k2 "7"
+k4 = fromJust $ addEdge k3 "1" "7"
+k5 = fromJust $ addEdge k4 "7" "7"
+k6 = fromJust $ addEdge k5 "7" "1"
+k7 = addVertex k6 "15"
+k8 = fromJust $ addEdge k7 "1" "15"
+k9 = fromJust $ addEdge k8 "15" "7"
+
+graphHom :: Int -> String
+graphHom 5    = "1"
+graphHom 12   = "7"
+graphHom (-2) = "7"
+graphHom n    = show n
+
+test103 = TestCase (assertEqual "Ensures that set id maps lift to graph id maps (1/2)."
+                                g7
+                                (applyToGraph g7 id))
+
+test104 = TestCase (assertEqual "Ensures that set id maps lift to graph id maps (2/2)."
+                                g15
+                                (applyToGraph g15 id))
+
+test105 = TestCase (assertEqual "Ensures that set bijections lift to graph isos (1/2)."
+                                h7
+                                (applyToGraph g7 show))
+
+test106 = TestCase (assertEqual "Ensures that set bijections lift to graph isos (2/2)."
+                                h15
+                                (applyToGraph g15 show))
+
+test107 = TestCase (assertEqual "Ensures that non-injective set maps lift to graph homs."
+                                k9
+                                (applyToGraph g15 graphHom))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "Construction_Vertices_G0" test1,
@@ -339,6 +397,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "Construction_Vertices_G0" test1,
                                      TestLabel "CycleDetection_ListWOCycle" test99,
                                      TestLabel "CycleDetection_GraphWCycle" test100,
                                      TestLabel "CycleDetection_GraphWOCycle" test101,
-                                     TestLabel "FoldPath" test102]
+                                     TestLabel "FoldPath" test102,
+                                     TestLabel "MapGraph_Id_1" test103,
+                                     TestLabel "MapGraph_Id_2" test104,
+                                     TestLabel "MapGraph_Iso_1" test105,
+                                     TestLabel "MapGraph_Iso_2" test106,
+                                     TestLabel "MapGraph_Hom" test107]
 
 main = defaultMain tests

@@ -10,6 +10,7 @@ module Lafont.Graph (
     edgeSet,
     adjacencyList,
     -- Exports.
+    applyToGraph,
     nullgraph,
     addVertex,
     addEdge,
@@ -44,6 +45,14 @@ addEdge (Digraph g) u v
     | edgesExist = Just (Digraph (Map.adjust (Set.insert v) u g))
     | otherwise  = Nothing
     where edgesExist = u `Map.member` g && v `Map.member` g
+
+-- | Consumes a graph (g) with vertices of type A, and a map f from type A to type B.
+-- Returns the graph obtained by applying f to each vertex in g. Note that if f is
+-- bijective when restricted to the vertex set of g, then the graphs will be isomorphic.
+applyToGraph :: (Ord a, Ord b) => Digraph a -> (a -> b) -> Digraph b
+applyToGraph (Digraph g0) f = Digraph g2
+    where g1 = Map.mapKeysWith Set.union f g0
+          g2 = Map.map (Set.map f) g1
 
 -----------------------------------------------------------------------------------------
 -- * Graph Inspection.
