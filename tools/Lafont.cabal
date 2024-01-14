@@ -74,6 +74,7 @@ library
 library LafontExe
   exposed-modules:     LafontExe.CheckGenerators
                        LafontExe.CheckRelations
+                       LafontExe.GraphDeps
                        LafontExe.InvertRule
                        LafontExe.QueryEIRules
                        LafontExe.ValidateDerivations
@@ -115,6 +116,16 @@ executable check_relations
   main-is:             CheckRelations/Main.hs
   other-modules:       CheckRelations.CmdLn
 
+executable graph_deps
+  import:              exe-with-file-io-props
+  main-is:             GraphDeps/Main.hs
+  other-modules:       GraphDeps.CmdLn
+
+executable invert_rule
+  import:              exe-with-file-io-props
+  main-is:             InvertRule/Main.hs
+  other-modules:       InvertRule.CmdLn
+
 executable query_eirule
   import:              exe-with-file-io-props
   main-is:             QueryEIRules/Main.hs
@@ -126,11 +137,6 @@ executable validate_derivations
   import:              exe-with-file-io-props
   main-is:             ValidateDerivations/Main.hs
   other-modules:       ValidateDerivations.CmdLn
-
-executable invert_rule
-  import:              exe-with-file-io-props
-  main-is:             InvertRule/Main.hs
-  other-modules:       InvertRule.CmdLn
 
 executable yaml_test
   import:              exe-with-file-io-props
