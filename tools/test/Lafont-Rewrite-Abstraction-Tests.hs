@@ -3,7 +3,10 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
+import Data.Either
+import qualified Data.Set as Set
 import Lafont.Common
+import Lafont.Graph
 import Lafont.Rewrite.Abstraction
 import Lafont.Rewrite.Common
 import Lafont.Rewrite.Internal.Abstraction
@@ -275,12 +278,12 @@ absRule1 = RewriteRule [] [] True $ Just rel1
 absRule2 = RewriteRule [] [] True $ Just rel2
 absRule3 = RewriteRule [] [] True $ Just rel3
 
-rules1 = addRule empty  ("r1", rule1)
-rules2 = addRule rules1 ("r2", rule1)
-rules3 = addRule rules2 ("r3", rule1) 
-rules4 = addRule rules3 ("rel1", absRule1)
-rules5 = addRule rules4 ("rel2", absRule2)
-rules6 = addRule rules5 ("rel3", absRule3)
+rules1 = addRule Lafont.Rewrite.Lookup.empty ("r1", rule1)
+rules2 = addRule rules1                      ("r2", rule1)
+rules3 = addRule rules2                      ("r3", rule1) 
+rules4 = addRule rules3                      ("rel1", absRule1)
+rules5 = addRule rules4                      ("rel2", absRule2)
+rules6 = addRule rules5                      ("rel3", absRule3)
 
 test26 = TestCase (assertEqual "addDRules handles empty lists."
                                rules3
@@ -294,6 +297,54 @@ test28 = TestCase (assertEqual "addDRules handles mixed lists."
                                rules6
                                (addDRules rules3 proof))
     where proof = [derivation1, derivation2, derivationNode9, derivation3]
+
+-----------------------------------------------------------------------------------------
+-- derivationToGraph
+
+g = case derivationToGraph proof of
+    Left _    -> error "Failed to convert proof to graph."
+    Right res -> unwrapDepGraph res
+
+test29 = TestCase (assertEqual "derivationToGraph generates the correct vertices."
+                               nodes
+                               (vertexList g))
+    where nodes = ["", "rel1", "rel2", "rel3", "rel4", "rel5", "rel6", "rel7", "rel8"]
+
+test30 = TestCase (assertEqual "derivationToGraph generates the correct edges (1/9)."
+                               ["rel4", "rel5"]
+                               (adjacencyList g ""))
+
+test31 = TestCase (assertEqual "derivationToGraph generates the correct edges (2/9)."
+                               []
+                               (adjacencyList g "rel1"))
+
+test32 = TestCase (assertEqual "derivationToGraph generates the correct edges (3/9)."
+                               []
+                               (adjacencyList g "rel2"))
+
+test33 = TestCase (assertEqual "derivationToGraph generates the correct edges (4/9)."
+                               ["rel2"]
+                               (adjacencyList g "rel3"))
+
+test34 = TestCase (assertEqual "derivationToGraph generates the correct edges (5/9)."
+                               ["rel1"]
+                               (adjacencyList g "rel4"))
+
+test35 = TestCase (assertEqual "derivationToGraph generates the correct edges (6/9)."
+                               ["rel1"]
+                               (adjacencyList g "rel5"))
+
+test36 = TestCase (assertEqual "derivationToGraph generates the correct edges (7/9)."
+                               ["rel4", "rel5"]
+                               (adjacencyList g "rel6"))
+
+test37 = TestCase (assertEqual "derivationToGraph generates the correct edges (8/9)."
+                               ["rel5"]
+                               (adjacencyList g "rel7"))
+
+test38 = TestCase (assertEqual "derivationToGraph generates the correct edges (9/9)."
+                               ["rel2", "rel5"]
+                               (adjacencyList g "rel8"))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -325,6 +376,15 @@ tests = hUnitTestToTests $ TestList [TestLabel "makeDerivationMap_0Insert_1" tes
                                      TestLabel "identifyEquationalRules_Int_6" test25,
                                      TestLabel "addDRules_empty" test26,
                                      TestLabel "addDRules_singleton" test27,
-                                     TestLabel "addDRules_mixed" test28]
+                                     TestLabel "addDRules_mixed" test28,
+                                     TestLabel "derivationToGraph_Nodes" test29,
+                                     TestLabel "derivationToGraph_Edges_1" test30,
+                                     TestLabel "derivationToGraph_Edges_2" test31,
+                                     TestLabel "derivationToGraph_Edges_3" test32,
+                                     TestLabel "derivationToGraph_Edges_4" test33,
+                                     TestLabel "derivationToGraph_Edges_5" test34,
+                                     TestLabel "derivationToGraph_Edges_6" test35,
+                                     TestLabel "derivationToGraph_Edges_7" test36,
+                                     TestLabel "derivationToGraph_Edges_8" test37]
 
 main = defaultMain tests

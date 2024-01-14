@@ -15,10 +15,12 @@ module Lafont.Rewrite.Abstraction (
     registerDerivations,
     addDerivationToGraph,
     addDerivationsToGraph,
+    derivationToGraph,
     detectDerivationError,
     getDerivation,
     makeDerivationMap,
-    identifyEquationalRules
+    identifyEquationalRules,
+    unwrapDepGraph
 ) where
 
 import           Data.Map                            as Map
@@ -75,11 +77,22 @@ addDerivationsToGraph []                       g = Right g
 addDerivationsToGraph (derivation:derivations) g =
     branchRight (addDerivationToGraph derivation g) (addDerivationsToGraph derivations)
 
+-- | Returns the digraph underlying a DepGraph.
+unwrapDepGraph :: DepGraph -> Digraph Dependency
+unwrapDepGraph (DepGraph g) = g
+
 -----------------------------------------------------------------------------------------
 -- * Cycle Detection
 
--- | A sequence of derivations that depend on one-another
+-- | A sequence of derivations that depend on one-another.
 type DepCycle = GraphWalk Dependency
+
+-- | Consumes a list of derivations. If the list contains an unmet dependency (i.e., one
+-- derivation calls an unknown derivation), then just the name of the dependency is
+-- returned. Otherwise, the corresponding dependency graph is returned.
+derivationToGraph :: [AbsDerivation] -> Either UnmetDep DepGraph
+derivationToGraph derivations = addDerivationsToGraph derivations g
+    where g = registerDerivations derivations
 
 -- | Consumes a list of derivations. If the list contains an unmet dependency (i.e., one
 -- derivation calls an unknown derivation), then just the name of the dependency is
@@ -87,10 +100,9 @@ type DepCycle = GraphWalk Dependency
 -- Otherwise, nothing is returned.
 detectDerivationError :: [AbsDerivation] -> Maybe (Either UnmetDep DepCycle)
 detectDerivationError derivations =
-    case addDerivationsToGraph derivations g of
-        Left unmet          -> Just (Left unmet)
-        Right (DepGraph g') -> maybeApply (findCycle g') Right
-    where g = registerDerivations derivations
+    case derivationToGraph derivations of
+        Left unmet         -> Just $ Left unmet
+        Right (DepGraph g) -> maybeApply (findCycle g) Right
 
 -----------------------------------------------------------------------------------------
 -- * Utilities to Look up Derivations by Name.
