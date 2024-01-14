@@ -18,7 +18,7 @@ runTool conf args = doInversion stdout gens rels ders query
           ders  = derivations conf
           query = InvQuery (relname args) (leftInv args) (policy args)
 
--- | Parses and validates arguments before calling queryEIRules.
+-- | Parses and validates arguments before calling doInversion.
 main = do
     args <- getCmdArgs
     res  <- parseConfigYamlImpl $ configs args
