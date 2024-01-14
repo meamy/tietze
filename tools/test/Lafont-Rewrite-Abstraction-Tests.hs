@@ -308,11 +308,11 @@ g = case derivationToGraph proof of
 test29 = TestCase (assertEqual "derivationToGraph generates the correct vertices."
                                nodes
                                (vertexList g))
-    where nodes = ["", "rel1", "rel2", "rel3", "rel4", "rel5", "rel6", "rel7", "rel8"]
+    where nodes = ["0", "rel1", "rel2", "rel3", "rel4", "rel5", "rel6", "rel7", "rel8"]
 
 test30 = TestCase (assertEqual "derivationToGraph generates the correct edges (1/9)."
                                ["rel4", "rel5"]
-                               (adjacencyList g ""))
+                               (adjacencyList g "0"))
 
 test31 = TestCase (assertEqual "derivationToGraph generates the correct edges (2/9)."
                                []

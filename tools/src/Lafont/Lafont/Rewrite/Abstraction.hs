@@ -49,9 +49,9 @@ _getSummary (AbsDerivation summary _) = summary
 -- * Derivation to Graph Conversion
 
 -- | Consumes a list of derivations (list). Returns a dependency graph with a vertex for
--- each derivation in list. A special vertex is added for unnamed derivations ("").
+-- each derivation in list. A special vertex is added for unnamed derivations ("0").
 registerDerivations :: [AbsDerivation] -> DepGraph
-registerDerivations []           = DepGraph (addVertex nullgraph "")
+registerDerivations []           = DepGraph (addVertex nullgraph "0")
 registerDerivations (deriv:list) =
     case propName $ meta $ _getSummary deriv of
         Just name -> DepGraph (addVertex g name)
@@ -60,13 +60,13 @@ registerDerivations (deriv:list) =
 
 -- | Consumes a derivation and a graph. If the derivation is named, then returns the
 -- result of addDepsToGraph using the name and rewrites of the derivation. Otherwise,
--- returns the results of addDepsToGraph using the name "" and the rewrites of the
+-- returns the results of addDepsToGraph using the name "0" and the rewrites of the
 -- derivation.
 addDerivationToGraph :: AbsDerivation -> DepGraph -> Either UnmetDep DepGraph
 addDerivationToGraph (AbsDerivation summary rewrites) g =
     case propName $ meta summary of
         Just src -> addDepsToGraph src rewrites g
-        Nothing  -> addDepsToGraph "" rewrites g
+        Nothing  -> addDepsToGraph "0" rewrites g
 
 -- | Consumes a list of derivations (derivations) and a graph (g). If there exists a
 -- derivation (d) in rewrites such that (addDerivationToGraph d g) returns an error, then
