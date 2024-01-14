@@ -25,6 +25,8 @@ library
                        Lafont.Edit.EIRules
                        Lafont.Edit.Internal.EIRules
                        Lafont.Edit.Invert
+                       Lafont.Format.Internal.GraphViz
+                       Lafont.Format.GraphViz
                        Lafont.Generators.Algebraic.Internal.ModP
                        Lafont.Generators.Algebraic.Internal.Product
                        Lafont.Generators.Algebraic.ModP
@@ -196,6 +198,11 @@ test-suite lafont-string-tests
 test-suite lafont-graph-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Graph-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-format-graphviz-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Format-GraphViz-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite lafont-rewrite-abstraction-tests
