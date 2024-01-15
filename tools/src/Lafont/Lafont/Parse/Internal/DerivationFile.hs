@@ -164,18 +164,26 @@ parseRewriteLine rules derived str =
 
 -- | Creates a RewritePreamble will all metadata set to N/A.
 defaultPreamble :: RewritePreamble
-defaultPreamble = RewritePreamble Nothing
+defaultPreamble = RewritePreamble Nothing Nothing
 
 -- | Consumes a derivation name (str) and a rewrite preamble. If the preamble does not
 -- have a name, then a new preamble is returned with the name field set to str and all
 -- other fields unchanged. Otherwise, nothing is returned.
 setName :: PropSetter String RewritePreamble
-setName str (RewritePreamble Nothing)  = Just (RewritePreamble (Just str))
-setName _   (RewritePreamble (Just _)) = Nothing
+setName str (RewritePreamble Nothing  x) = Just $ RewritePreamble (Just str) x
+setName _   (RewritePreamble (Just _) _) = Nothing
+
+-- Consumes a derivation tpye (str) and a rewrite preamble. If the preamble does not have
+-- a type, then a new preamble is returned with the type field set to str and all other
+-- fields unchanged. Otherwise, nothing is returned.
+setType :: PropSetter String RewritePreamble
+setType str (RewritePreamble x Nothing)  = Just $ RewritePreamble x (Just str)
+setType _   (RewritePreamble _ (Just _)) = Nothing
 
 -- | A dictionary of all preamble properties.
 rewriteProperties :: PropertyDict RewritePreamble
-rewriteProperties = noProps `addProp` makePropPair "name" parseId setName
+rewriteProperties = noProps `addProp` (makePropPair "name" parseId setName)
+                            `addProp` (makePropPair "type" parseId setType)
 
 -- | A parser for rewriteProperties.
 parseRewritePreamble :: PropParser RewritePreamble

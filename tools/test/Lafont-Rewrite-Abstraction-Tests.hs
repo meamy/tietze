@@ -27,15 +27,15 @@ rel7 = "rel7"
 rel8 = "rel8"
 relx = "relx"
 
-summary1 = DerivationSummary (RewritePreamble (Just rel1)) [] []
-summary2 = DerivationSummary (RewritePreamble (Just rel2)) [] []
-summary3 = DerivationSummary (RewritePreamble (Just rel3)) [] []
-summary4 = DerivationSummary (RewritePreamble (Just rel4)) [] []
-summary5 = DerivationSummary (RewritePreamble (Just rel5)) [] []
-summary6 = DerivationSummary (RewritePreamble (Just rel6)) [] []
-summary7 = DerivationSummary (RewritePreamble (Just rel7)) [] []
-summary8 = DerivationSummary (RewritePreamble (Just rel8)) [] []
-nameless = DerivationSummary (RewritePreamble Nothing) [] []
+summary1 = DerivationSummary (RewritePreamble (Just rel1) Nothing) [] []
+summary2 = DerivationSummary (RewritePreamble (Just rel2) (Just "inv")) [] []
+summary3 = DerivationSummary (RewritePreamble (Just rel3) Nothing) [] []
+summary4 = DerivationSummary (RewritePreamble (Just rel4) Nothing) [] []
+summary5 = DerivationSummary (RewritePreamble (Just rel5) (Just "sym")) [] []
+summary6 = DerivationSummary (RewritePreamble (Just rel6) Nothing) [] []
+summary7 = DerivationSummary (RewritePreamble (Just rel7) Nothing) [] []
+summary8 = DerivationSummary (RewritePreamble (Just rel8) Nothing) [] []
+nameless = DerivationSummary (RewritePreamble Nothing Nothing) [] []
 
 symb1 = Symbol "S" []
 symb2 = Symbol "T" []

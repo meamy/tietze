@@ -219,7 +219,7 @@ goodBody = ["  a.b.c",
             ""]
 
 expectedPreamble :: RewritePreamble
-expectedPreamble = RewritePreamble (Just "tmp")
+expectedPreamble = RewritePreamble (Just "tmp") Nothing
 
 badPreambleOne :: [String]
 badPreambleOne = ["@name tmp", "@name tmp"]
@@ -443,6 +443,26 @@ test68 = TestCase (assertEqual "parseDerivationFile supports multiple derivation
     where input = goodPreamble ++ goodBody ++ goodFinal2 ++ goodBody ++ goodFinal1
 
 -----------------------------------------------------------------------------------------
+-- Preamble parsing for types.
+
+goodType :: [String]
+goodType = ["@name tmp", "@type sym"]
+
+typedPreamble :: RewritePreamble
+typedPreamble = RewritePreamble (Just "tmp") (Just "sym")
+
+badType :: [String]
+badType = ["@name tmp", "@type 0"]
+
+test69 = TestCase (assertEqual "Preamble supports derivation type."
+                               (Right (goodBody, 2, typedPreamble))
+                               (parseRewritePreamble (goodType ++ goodBody) 0))
+
+test70 = TestCase (assertEqual "Preamble rejects bad type name."
+                               (Left (1, UnexpectedSymbol 6))
+                               (parseRewritePreamble badType 0))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" test1,
@@ -512,6 +532,8 @@ tests = hUnitTestToTests $ TestList [TestLabel "parseRewritePos_EmptyStringOne" 
                                      TestLabel "parseDerivationFile_BadPreamble" test65,
                                      TestLabel "parseDerivationFile_BadWord" test66,
                                      TestLabel "parseDerivationFile_BadBody" test67,
-                                     TestLabel "parseDerivationFile_Many" test68]
+                                     TestLabel "parseDerivationFile_Many" test68,
+                                     TestLabel "Prop_type_Valid" test69,
+                                     TestLabel "Prop_type_Invalid" test70]
 
 main = defaultMain tests

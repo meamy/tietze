@@ -36,6 +36,7 @@ import           Lafont.Rewrite.Rules
 
 -- | Maintains metadata about a derivation.
 data RewritePreamble = RewritePreamble { propName :: Maybe String
+                                       , propType :: Maybe String
                                        } deriving (Show,Eq)
 
 -- | A description of a derivation that abstracts away all proof details (rewrites).

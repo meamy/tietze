@@ -25,12 +25,12 @@ rel3 = "rel3"
 rel4 = "rel4"
 rel5 = "rel5"
 
-summaryo = DerivationSummary (RewritePreamble Nothing) [] []
-summary1 = DerivationSummary (RewritePreamble (Just rel1)) [] []
-summary2 = DerivationSummary (RewritePreamble (Just rel2)) [] []
-summary3 = DerivationSummary (RewritePreamble (Just rel3)) [] []
-summary4 = DerivationSummary (RewritePreamble (Just rel4)) [] []
-summary5 = DerivationSummary (RewritePreamble (Just rel5)) [] []
+summaryo = DerivationSummary (RewritePreamble Nothing Nothing) [] []
+summary1 = DerivationSummary (RewritePreamble (Just rel1) Nothing) [] []
+summary2 = DerivationSummary (RewritePreamble (Just rel2) Nothing) [] []
+summary3 = DerivationSummary (RewritePreamble (Just rel3) Nothing) [] []
+summary4 = DerivationSummary (RewritePreamble (Just rel4) Nothing) [] []
+summary5 = DerivationSummary (RewritePreamble (Just rel5) Nothing) [] []
 
 rwto :: AbsRewrite
 rwto = Left (Rewrite (RewriteRule [] [] True Nothing) 0 L2R)
@@ -69,7 +69,7 @@ list5 = derivation1:list4
 -----------------------------------------------------------------------------------------
 -- registerDerivations
 
-reg0 = addVertex nullgraph ""
+reg0 = addVertex nullgraph "0"
 reg1 = addVertex reg0 rel1
 reg2 = addVertex reg1 rel2
 reg3 = addVertex (addVertex (addVertex reg2 rel3) rel4) rel5
@@ -151,7 +151,7 @@ test15 = TestCase (assertEqual "addDerivationToGraph supports unnamed derivation
                                (addDerivationToGraph derivationo (DepGraph reg3)))
 
 test16 = TestCase (assertEqual "addDerivationToGraph rejects invalid unnamed derivations."
-                               (Left (UnmetDep "" relx))
+                               (Left (UnmetDep "0" relx))
                                (addDerivationToGraph derivationx (DepGraph reg3)))
 
 test17 = TestCase (assertEqual "addDerivationToGraph supports dep-free derivations."
@@ -176,8 +176,8 @@ test20 = TestCase (assertEqual "addDerivationToGraph rejects invalid derivations
 reg7 = fromJust $ addEdge reg6 rel4 rel3
 reg8 = fromJust $ addEdge reg7 rel5 rel3
 reg9 = fromJust $ addEdge reg8 rel5 rel4
-reg10 = fromJust $ addEdge reg9 "" rel1
-reg11 = fromJust $ addEdge reg10 "" rel3
+reg10 = fromJust $ addEdge reg9 "0" rel1
+reg11 = fromJust $ addEdge reg10 "0" rel3
 
 test21 = TestCase (assertEqual "Can add edges for derivations in list0."
                                (Right (DepGraph reg3))
@@ -231,8 +231,8 @@ lhs2 = [sym2, sym2]
 rhs1 = [sym1]
 rhs2 = [sym2]
 
-ruleSummary1 = DerivationSummary (RewritePreamble (Just rel1)) lhs1 rhs1
-ruleSummary2 = DerivationSummary (RewritePreamble (Just rel2)) lhs2 rhs2
+ruleSummary1 = DerivationSummary (RewritePreamble (Just rel1) Nothing) lhs1 rhs1
+ruleSummary2 = DerivationSummary (RewritePreamble (Just rel2) Nothing) lhs2 rhs2
 
 eqnRule = RewriteRule lhs1 lhs1 True Nothing
 neqRule = RewriteRule lhs1 lhs1 False Nothing

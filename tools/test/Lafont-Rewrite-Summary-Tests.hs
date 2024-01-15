@@ -37,13 +37,13 @@ name3 :: String
 name3 = "bad"
 
 meta1 :: RewritePreamble
-meta1 = RewritePreamble (Just name1)
+meta1 = RewritePreamble (Just name1) Nothing
 
 meta2 :: RewritePreamble
-meta2 = RewritePreamble (Just name2)
+meta2 = RewritePreamble (Just name2) Nothing
 
 meta3 :: RewritePreamble
-meta3 = RewritePreamble Nothing
+meta3 = RewritePreamble Nothing Nothing
 
 -- Proof summaries.
 
@@ -201,6 +201,25 @@ test25 = TestCase (assertEqual "addDRule handles named equational derivations."
                                (addDRule rules3 emap1 summary4))
 
 -----------------------------------------------------------------------------------------
+-- Respects type property
+
+meta4 :: RewritePreamble
+meta4 = RewritePreamble (Just name1) (Just "inverse")
+
+meta5 :: RewritePreamble
+meta5 = RewritePreamble (Just name2) (Just "inverse")
+
+test26 = TestCase (assertEqual "The type property is ignored (1/2)."
+                               (Just set2b :: Maybe DRuleSet)
+                               (addSummaryToSymbols dict1 set1b summary))
+    where summary = DerivationSummary meta4 word1 word3
+
+test27 = TestCase (assertEqual "The type property is ignored (2/2)."
+                               Nothing
+                               (addSummaryToSymbols dict2 set1b summary))
+    where summary = DerivationSummary meta5 word1 word3
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "createSummaryRule_Basic" test1,
@@ -227,6 +246,8 @@ tests = hUnitTestToTests $ TestList [TestLabel "createSummaryRule_Basic" test1,
                                      TestLabel "addSummaryToSymbols_Duplicate" test22,
                                      TestLabel "addDRule_unnamed" test23,
                                      TestLabel "addDRule_directed" test24,
-                                     TestLabel "addDRule_equational" test25]
+                                     TestLabel "addDRule_equational" test25,
+                                     TestLabel "type_prop_1" test26,
+                                     TestLabel "type_prop_2" test27]
 
 main = defaultMain tests
