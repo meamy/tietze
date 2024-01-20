@@ -8,6 +8,7 @@ module LafontExe.IO.CmdLnFlags
   , eiPolicyFlags
   , leftInvFlags
   , relnameFlags
+  , styleFlags
   , symbolFlags
   ) where
 
@@ -36,7 +37,12 @@ import Lafont.Edit.EIRules (EIQueryType(..))
 -- | Returns the annotations for a yaml configuration argument in the specified
 -- argument position.
 configFlags :: Int -> String
-configFlags pos = def &= typ "YamlConf" &= argPos pos
+configFlags pos = def &= typ "YAML_CONF" &= argPos pos
+
+-- | Returns the annotations for a yaml style argument.  The default value is
+-- taken as an argument, since flags are impure.
+styleFlags :: Maybe String -> Maybe String
+styleFlags x = x &= typ "YAML_STYLE"
 
 -------------------------------------------------------------------------------
 -- * Generator/Relation Specification Flags.
@@ -44,16 +50,19 @@ configFlags pos = def &= typ "YamlConf" &= argPos pos
 -- | Returns the annotations for a relation selection in the specified argument
 -- position.
 relnameFlags :: Int -> String
-relnameFlags pos = def &= typ "Relation" &= argPos pos
+relnameFlags pos = def &= typ "REL" &= argPos pos
 
 -- | Returns the annotations for a generation selection in the specified
 -- argument position.
 symbolFlags :: Int -> String
-symbolFlags pos = def &= typ "Symbols" &= argPos pos
+symbolFlags pos = def &= typ "SYMBS" &= argPos pos
 
 -------------------------------------------------------------------------------
 -- * Policy Flags.
 
+-- | Returns the annotation for a flag which indicates that all inverse
+-- elements should appear on the left. The default value is taken as an
+-- argument, since flags are impure.
 leftInvFlags :: Bool -> Bool
 leftInvFlags x = x &= help helpMsg
     where line1   = "If true, then all inverses appear on the left."
@@ -64,7 +73,7 @@ leftInvFlags x = x &= help helpMsg
 -- default value is taken as an argument, since flags are impure.
 eiPolicyFlags :: EIQueryType -> EIQueryType
 eiPolicyFlags x = x &= help ("Options: " ++ names)
-                   &= typ "QUERY_TYPE"
+                    &= typ "QUERY_TYPE"
     where elist = enumFrom $ toEnum 0 :: [EIQueryType]
           slist = map show elist
           names = concat $ intersperse ", " slist

@@ -11,7 +11,11 @@ module YamlTest.CmdLn
 -------------------------------------------------------------------------------
 -- * Import Section.
 
-import LafontExe.IO.CmdLnFlags (configFlags)
+import LafontExe.IO.CmdLnFlags
+  ( configFlags
+  , def
+  , styleFlags
+  )
 import LafontExe.IO.CmdLnParser
   ( Data
   , Typeable
@@ -23,13 +27,16 @@ import LafontExe.IO.CmdLnParser
 -- * Argument Data Type.
 
 data YamlTest = YamlTest { configs :: FilePath
+                         , style   :: Maybe String
                          } deriving (Show, Eq, Data, Typeable)
 
 -------------------------------------------------------------------------------
 -- * Program Modes.
 
 yamlTest :: YamlTest
-yamlTest = YamlTest { configs = configFlags 0 }
+yamlTest = YamlTest { configs = configFlags 0
+                    , style   = styleFlags def
+                    }
 
 -------------------------------------------------------------------------------
 -- * CmdArgs Mode Declaration.

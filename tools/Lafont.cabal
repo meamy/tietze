@@ -89,10 +89,12 @@ library LafontExe
                        LafontExe.Logging.Graph
                        LafontExe.Logging.LineBased
                        LafontExe.Logging.Primitive
-  build-depends:       base,
+  build-depends:       aeson,
+                       base,
                        cmdargs,
                        containers,
                        directory,
+                       text,
                        yaml,
                        Lafont
   hs-source-dirs:      src/LafontExe
@@ -142,6 +144,7 @@ executable yaml_test
   import:              exe-with-file-io-props
   main-is:             YamlTest/Main.hs
   other-modules:       YamlTest.CmdLn
+  build-depends:       containers
 
 -----------------------------------------------------------------------------------------
 -- Unit tests.
