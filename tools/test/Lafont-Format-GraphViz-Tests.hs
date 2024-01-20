@@ -93,6 +93,27 @@ test13 = TestCase (assertEqual "Can print a Dot file without attributes."
                  "}"
 
 -----------------------------------------------------------------------------------------
+-- DotFile with Colour
+
+dot2 = setNodeColour dot1 (unsafeToNodeID "node1") (X11Color "red")
+dot3 = setNodeColour dot2 (unsafeToNodeID "v2") (X11Color "green")
+
+test14 = TestCase (assertEqual "Can print a Dot file with coloured nodes."
+                               body
+                               (printDotFile dot3))
+    where body = "strict digraph {" ++
+                 "node1 [style=filled,fillcolor=red];" ++
+                 "node2;" ++
+                 "v1;" ++
+                 "v2 [style=filled,fillcolor=green];" ++
+                 "node1 -> node1;" ++
+                 "node2 -> node1;" ++
+                 "node2 -> v2;" ++
+                 "v1 -> node1;" ++
+                 "v1 -> v2;" ++
+                 "}"
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "toTokenID_EmptyErr" test1,
@@ -107,6 +128,7 @@ tests = hUnitTestToTests $ TestList [TestLabel "toTokenID_EmptyErr" test1,
                                      TestLabel "toColour_UnderscoreErr" test10,
                                      TestLabel "toColour_Valid_1" test11,
                                      TestLabel "toColour_Valid_2" test12,
-                                     TestLabel "printDotFile_NoAttrs" test13]
+                                     TestLabel "printDotFile_NoAttrs" test13,
+                                     TestLabel "printDotFile_NodeColour" test14]
 
 main = defaultMain tests

@@ -1,9 +1,19 @@
 -- | Implementation details for GraphViz.
 
 module Lafont.Format.Internal.GraphViz (
+    DotParseError ( .. ),
     NodeID ( .. ),
     X11Color ( .. )
 ) where
+
+-----------------------------------------------------------------------------------------
+-- * Conversion Errors.
+
+-- | Errors corresponding to invalid characters in an X11Color.
+data DotParseError = UpperCase Char
+                   | UnexpectedChar Char
+                   | EmptyToken
+                   deriving (Eq,Show)
 
 -----------------------------------------------------------------------------------------
 -- * Valid Vertex Name.

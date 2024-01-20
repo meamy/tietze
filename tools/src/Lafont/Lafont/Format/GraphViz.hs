@@ -2,13 +2,15 @@
 
 module Lafont.Format.GraphViz (
     -- Re-exports from internal.
+    DotParseError,
     NodeID,
     X11Color,
     -- Exports.
     DotFile,
-    DotParseError ( .. ),
+    Display ( .. ),
     graphToDotFile,
     printDotFile,
+    setNodeColour,
     toColour,
     toNodeID,
     unsafeToNodeID
@@ -22,12 +24,6 @@ import           Lafont.Graph
 
 -----------------------------------------------------------------------------------------
 -- * Conversion Errors.
-
--- | Errors corresponding to invalid characters in an X11Color.
-data DotParseError = UpperCase Char
-                   | UnexpectedChar Char
-                   | EmptyToken
-                   deriving (Eq,Show)
 
 instance Display DotParseError where
     display (UpperCase c)      = "Unexpected uppercase character " ++ [c] ++ "."
@@ -98,7 +94,7 @@ printAttrs :: NodeAttrMap -> NodeID -> String
 printAttrs nattrs u =
     case Map.lookup u nattrs of
         Nothing            -> ""
-        Just (X11Color c)  -> " [color=" ++ c ++ "]"
+        Just (X11Color c)  -> " [style=filled,fillcolor=" ++ c ++ "]"
 
 -- | Implements printNodes for a specific vertex.
 printNode :: NodeAttrMap -> NodeID -> String
@@ -155,6 +151,12 @@ data DotFile = DotFile (Digraph NodeID) NodeAttrMap
 graphToDotFile :: (Ord a) => Digraph a -> (a -> NodeID) -> DotFile
 graphToDotFile g toNode = DotFile g' Map.empty
     where g' = applyToGraph g toNode
+
+-- | Takes as input a dot file (d), the name of a node in the graph (v), and an X11
+-- colour (c). Returns a new dot file obtained by setting to fill colour for v to c in d.
+setNodeColour :: DotFile -> NodeID -> X11Color -> DotFile
+setNodeColour (DotFile g nattrs) v c = DotFile g nattrs'
+    where nattrs' = Map.insert v c nattrs
 
 -- | Converts a DotFile to the text of the corresponding DotFile.
 printDotFile :: DotFile -> String
