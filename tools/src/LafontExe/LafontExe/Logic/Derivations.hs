@@ -11,7 +11,7 @@ import           Lafont.Rewrite.Summary
 import           LafontExe.IO.Files
 
 -----------------------------------------------------------------------------------------
--- * Type-specialized parsing of derivations..
+-- * Type-specialized parsing of derivations.
 
 -- | Outcome of parsing a list of derivations relative to a rule dictionary. The results
 -- (DupDeriv fname ln) and (BadDerivFile fname ln err) indicate errors encountered when
