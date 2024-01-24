@@ -83,6 +83,7 @@ library LafontExe
                        LafontExe.IO.Configs
                        LafontExe.IO.Files
                        LafontExe.Logic.Derivations
+                       LafontExe.Logic.GraphDeps
                        LafontExe.Logic.QueryEIRules
                        LafontExe.Logic.Relations
                        LafontExe.Logging.ErrorFormat

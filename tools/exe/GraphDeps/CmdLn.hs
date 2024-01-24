@@ -14,6 +14,7 @@ module GraphDeps.CmdLn
 import LafontExe.IO.CmdLnFlags
   ( configFlags
   , def
+  , styleFlags
   )
 import LafontExe.IO.CmdLnParser
   ( Data
@@ -26,6 +27,7 @@ import LafontExe.IO.CmdLnParser
 -- * Argument Data Type.
 
 data GraphDeps = GraphDeps { configs :: String
+                           , style   :: Maybe String
                            } deriving (Show, Eq, Data, Typeable)
 
 -------------------------------------------------------------------------------
@@ -33,6 +35,7 @@ data GraphDeps = GraphDeps { configs :: String
 
 graphDeps :: GraphDeps
 graphDeps = GraphDeps { configs = configFlags 0
+                      , style   = styleFlags def
                       }
 
 -------------------------------------------------------------------------------
