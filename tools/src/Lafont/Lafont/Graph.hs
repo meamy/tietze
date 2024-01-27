@@ -17,7 +17,8 @@ module Lafont.Graph (
     vertexList,
     foldPath,
     findCone,
-    findCycle
+    findCycle,
+    induceSubgraph
 ) where
 
 import qualified Data.Map              as Map
@@ -81,6 +82,13 @@ findCycle g = findCycleFromVertices g (vertexList g) empty
 
 -----------------------------------------------------------------------------------------
 -- * Dependency Analysis
+
+-- | Consumes a graph and a set of vertices. Returns the subgraph induced by
+-- the vertex set.
+induceSubgraph :: (Ord a) => Digraph a -> Set.Set a -> Digraph a
+induceSubgraph (Digraph adj) nodes = Digraph adj''
+    where adj'  = Map.filterWithKey (\k _ -> Set.member k nodes) adj
+          adj'' = Map.map (Set.intersection nodes) adj'
 
 -- | Consumes a vertex (node), the set of vertices reachable from node (children), and
 -- the set of elements in the cone (cone). If node is in the cone, then the children are

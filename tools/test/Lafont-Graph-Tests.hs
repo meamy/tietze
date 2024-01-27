@@ -350,11 +350,43 @@ test111 = TestCase (assertEqual "A disconnected cone in a disconnected graph."
     where sources = Set.fromList [0, 10]
           cone    = Set.fromList [0, 1, 2, 10, 11, 12]
 
-test112 = TestCase (assertEqual "Can compute cones along paths of length greater than 1."
+test112 = TestCase (assertEqual "Can compute cones in cyclic graphs."
+                                cone
+                                (findCone cyclicCone1 sources))
+    where sources = Set.fromList [0]
+          cone    = Set.fromList [0, 1, 2]
+
+test113 = TestCase (assertEqual "Can compute cones along paths of length greater than 1."
                                 cone
                                 (findCone deepCone5 sources))
     where sources = Set.fromList [0]
           cone    = Set.fromList [0, 1, 2, 3, 4, 5]
+
+-----------------------------------------------------------------------------------------
+-- Ability to compute induced subgraphs.
+
+induced0 = fromJust $ addEdge simpleCone5 1 2
+induced1 = fromJust $ addEdge induced0 2 1
+
+test114 = TestCase (assertEqual "The induced subgraph on no vertices is the nullgraph"
+                                nullgraph
+                                (induceSubgraph deepCone5 vertices))
+    where vertices = Set.fromList [8675309, 411, 2112]
+
+test115 = TestCase (assertEqual "The induced subgraph on singletons works."
+                                simpleCone1
+                                (induceSubgraph deepCone5 vertices))
+    where vertices = Set.fromList [0]
+
+test116 = TestCase (assertEqual "Non-trivial induced subgraph."
+                                induced1
+                                (induceSubgraph deepCone5 vertices))
+    where vertices = Set.fromList [0, 1, 2]
+
+test117 = TestCase (assertEqual "The induced subgraph operation is idempotent."
+                                induced1
+                                (induceSubgraph induced1 vertices))
+    where vertices = Set.fromList [0, 1, 2]
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -470,6 +502,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "Construction_Vertices_G0" test1,
                                      TestLabel "FindCone_2" test109,
                                      TestLabel "FindCone_3" test110,
                                      TestLabel "FindCone_4" test111,
-                                     TestLabel "FindCone_4" test112]
+                                     TestLabel "FindCone_5" test112,
+                                     TestLabel "FindCone_6" test113,
+                                     TestLabel "InduceSubgraph_1" test114,
+                                     TestLabel "InduceSubgraph_2" test115,
+                                     TestLabel "InduceSubgraph_3" test116,
+                                     TestLabel "InduceSubgraph_Idem" test117]
 
 main = defaultMain tests
