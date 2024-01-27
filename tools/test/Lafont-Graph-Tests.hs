@@ -5,6 +5,7 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.List
 import Data.Maybe
+import Data.Set as Set
 import Lafont.Graph
 import Lafont.Internal.Graph
 
@@ -51,8 +52,10 @@ test15 = makeVertexTest g14 [1, 5, 12, 7, 15, (-2)] "g14"
 test16 = makeVertexTest g15 [1, 5, 12, 7, 15, (-2)] "g15"
 
 makeEdgeTest :: Digraph Int -> Int -> [Int] -> String -> Test.HUnit.Test
-makeEdgeTest g v exp name = TestCase (assertEqual msg (fromList exp) (edgeSet g v))
+makeEdgeTest g v edges name = TestCase (assertEqual msg exp act)
     where msg = "The edges in " ++ name ++ " are correct from " ++ (show v) ++ "."
+          exp = Lafont.Internal.Graph.fromList edges
+          act = edgeSet g v
 
 test17 = makeEdgeTest g0 1 [] "g0"
 test18 = makeEdgeTest g1 1 [] "g1"
@@ -188,10 +191,10 @@ g19 = fromJust $ addEdge g18 100 200
 cycleFromV1 = listToWalk [5, 15, -2, 7, 5]
 
 makeVertexCycleTest :: Int -> GraphWalk Int -> Test.HUnit.Test
-makeVertexCycleTest v path = TestCase (assertEqual msg
-                                                  (Just path :: Maybe (GraphWalk Int))
-                                                  (findCycleFromVertex g19 v empty))
+makeVertexCycleTest v path = TestCase (assertEqual msg exp act)
     where msg = "Can detect path from vertex " ++ (show v ) ++ "."
+          exp = Just path :: Maybe (GraphWalk Int)
+          act = findCycleFromVertex g19 v Lafont.Internal.Graph.empty
 
 test89 = makeVertexCycleTest 12 (listToWalk [12, 12])
 test90 = makeVertexCycleTest (-2) (listToWalk [-2, 7, 5, 15, -2])
@@ -202,23 +205,28 @@ test94 = makeVertexCycleTest 1 cycleFromV1
 
 test95 = TestCase (assertEqual "findCycleFromVertex handles vertex without cycle (1/2)."
                                (Nothing :: Maybe (GraphWalk Int))
-                               (findCycleFromVertex g19 100 empty))
+                               act)
+    where act = findCycleFromVertex g19 100 Lafont.Internal.Graph.empty
 
 test96 = TestCase (assertEqual "findCycleFromVertex handles vertex without cycle (2/2)."
                                (Nothing :: Maybe (GraphWalk Int))
-                               (findCycleFromVertex g19 200 empty))
+                               act)
+    where act = findCycleFromVertex g19 200 Lafont.Internal.Graph.empty
 
 test97 = TestCase (assertEqual "findCycleFromVertex handles invalid vertex."
                                (Nothing :: Maybe (GraphWalk Int))
-                               (findCycleFromVertex g19 300 empty))
+                               act)
+    where act = findCycleFromVertex g19 300 Lafont.Internal.Graph.empty
 
 test98 = TestCase (assertEqual "findCycleFromVertices returns first cycle."
                                (Just cycleFromV1 :: Maybe (GraphWalk Int))
-                               (findCycleFromVertices g19 [100, 1, 12] empty))
+                               act)
+    where act = findCycleFromVertices g19 [100, 1, 12] Lafont.Internal.Graph.empty
 
 test99 = TestCase (assertEqual "findCycleFromVertices handles vertices without cycles."
                                (Nothing :: Maybe (GraphWalk Int))
-                               (findCycleFromVertices g19 [100, 200, 300] empty))
+                               act)
+    where act = findCycleFromVertices g19 [100, 200, 300] Lafont.Internal.Graph.empty
 
 test100 = TestCase (assertBool "Can take a graph and return a cycle."
                                (isJust $ findCycle g19))
@@ -292,6 +300,61 @@ test106 = TestCase (assertEqual "Ensures that set bijections lift to graph isos 
 test107 = TestCase (assertEqual "Ensures that non-injective set maps lift to graph homs."
                                 k9
                                 (applyToGraph g15 graphHom))
+
+-----------------------------------------------------------------------------------------
+-- Ability to compute cones.
+
+simpleCone0 :: Digraph Int
+simpleCone0 = nullgraph
+simpleCone1 = addVertex simpleCone0 0
+simpleCone2 = addVertex simpleCone1 1
+simpleCone3 = addVertex simpleCone2 2
+simpleCone4 = fromJust $ addEdge simpleCone3 0 1
+simpleCone5 = fromJust $ addEdge simpleCone4 0 2
+
+doubleCone0 = addVertex simpleCone5 10
+doubleCone1 = addVertex doubleCone0 11
+doubleCone2 = addVertex doubleCone1 12
+doubleCone3 = fromJust $ addEdge doubleCone2 10 11
+doubleCone4 = fromJust $ addEdge doubleCone3 10 12
+
+cyclicCone0 = fromJust $ addEdge doubleCone4 1 2
+cyclicCone1 = fromJust $ addEdge cyclicCone0 2 1
+
+deepCone0 = addVertex cyclicCone1 3
+deepCone1 = addVertex deepCone0 4
+deepCone2 = addVertex deepCone1 5
+deepCone3 = fromJust $ addEdge deepCone2 2 3
+deepCone4 = fromJust $ addEdge deepCone3 3 4
+deepCone5 = fromJust $ addEdge deepCone4 4 5
+
+test108 = TestCase (assertEqual "Empty cones are handled properly."
+                                Set.empty
+                                (findCone simpleCone5 sources))
+    where sources = Set.fromList [5, 6, 7]
+
+test109 = TestCase (assertEqual "Singleton cones are handled properly."
+                                sources
+                                (findCone simpleCone5 sources))
+    where sources = Set.fromList [1]
+
+test110 = TestCase (assertEqual "A simple connected cone is handled properly."
+                                cone
+                                (findCone simpleCone5 sources))
+    where sources = Set.fromList [0]
+          cone    = Set.fromList [0, 1, 2]
+
+test111 = TestCase (assertEqual "A disconnected cone in a disconnected graph."
+                                cone
+                                (findCone doubleCone4 sources))
+    where sources = Set.fromList [0, 10]
+          cone    = Set.fromList [0, 1, 2, 10, 11, 12]
+
+test112 = TestCase (assertEqual "Can compute cones along paths of length greater than 1."
+                                cone
+                                (findCone deepCone5 sources))
+    where sources = Set.fromList [0]
+          cone    = Set.fromList [0, 1, 2, 3, 4, 5]
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -402,6 +465,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "Construction_Vertices_G0" test1,
                                      TestLabel "MapGraph_Id_2" test104,
                                      TestLabel "MapGraph_Iso_1" test105,
                                      TestLabel "MapGraph_Iso_2" test106,
-                                     TestLabel "MapGraph_Hom" test107]
+                                     TestLabel "MapGraph_Hom" test107,
+                                     TestLabel "FindCone_1" test108,
+                                     TestLabel "FindCone_2" test109,
+                                     TestLabel "FindCone_3" test110,
+                                     TestLabel "FindCone_4" test111,
+                                     TestLabel "FindCone_4" test112]
 
 main = defaultMain tests

@@ -16,6 +16,7 @@ module Lafont.Graph (
     addEdge,
     vertexList,
     foldPath,
+    findCone,
     findCycle
 ) where
 
@@ -77,3 +78,28 @@ foldPath = Seq.foldrWithIndex
 -- discovered by a depth-first search.
 findCycle :: (Ord a) => Digraph a -> Maybe (GraphWalk a)
 findCycle g = findCycleFromVertices g (vertexList g) empty
+
+-----------------------------------------------------------------------------------------
+-- * Dependency Analysis
+
+-- | Consumes a vertex (node), the set of vertices reachable from node (children), and
+-- the set of elements in the cone (cone). If node is in the cone, then the children are
+-- added to the cone and the new cone is returned. Otherwise, the cone is returned
+-- unmodified.
+foldChildren :: (Ord a) => a -> Set.Set a -> Set.Set a -> Set.Set a
+foldChildren node children cone
+    | Set.member node cone = Set.union cone children
+    | otherwise            = cone
+
+-- | Implementation details for findCone. The underlying adjacency map is used,
+findConeImpl :: (Ord a) => Map.Map a (EdgeSet a) -> Set.Set a -> Set.Set a
+findConeImpl adj cone
+    | cone == cone' = cone'
+    | otherwise     = findConeImpl adj cone'
+    where cone' = Map.foldrWithKey foldChildren cone adj
+
+-- | Consumes a graph g and a set of source vertices (which may or may not appear in g).
+-- Returns the set of all vertices in g reachable from the set of source vertices.
+findCone :: (Ord a) => Digraph a -> Set.Set a -> Set.Set a
+findCone (Digraph adj) srcs = findConeImpl adj srcs'
+    where srcs' = Set.intersection srcs $ Set.fromList $ Map.keys adj
