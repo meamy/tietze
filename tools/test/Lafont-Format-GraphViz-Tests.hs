@@ -114,6 +114,19 @@ test14 = TestCase (assertEqual "Can print a Dot file with coloured nodes."
                  "}"
 
 -----------------------------------------------------------------------------------------
+-- NodeID Unwrapper
+
+test15 = TestCase (assertEqual "Can unwrap NodeID values (1/2)."
+                               str
+                               (unwrapNodeID $ unsafeToNodeID str))
+    where str = "hello_world"
+
+test16 = TestCase (assertEqual "Can unwrap NodeID values (2/2)."
+                               str
+                               (unwrapNodeID $ unsafeToNodeID str))
+    where str = "my_cool_Id_1"
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "toTokenID_EmptyErr" test1,
@@ -129,6 +142,8 @@ tests = hUnitTestToTests $ TestList [TestLabel "toTokenID_EmptyErr" test1,
                                      TestLabel "toColour_Valid_1" test11,
                                      TestLabel "toColour_Valid_2" test12,
                                      TestLabel "printDotFile_NoAttrs" test13,
-                                     TestLabel "printDotFile_NodeColour" test14]
+                                     TestLabel "printDotFile_NodeColour" test14,
+                                     TestLabel "unwrapNodeID_1" test15,
+                                     TestLabel "unwrapNodeID_2" test16]
 
 main = defaultMain tests

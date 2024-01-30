@@ -13,7 +13,8 @@ module Lafont.Format.GraphViz (
     setNodeColour,
     toColour,
     toNodeID,
-    unsafeToNodeID
+    unsafeToNodeID,
+    unwrapNodeID
 ) where
 
 import           Data.Char
@@ -57,6 +58,10 @@ unsafeToNodeID str =
     case toNodeID str of
         Left err -> error $ "Failure to lift string to NodeID: " ++ display err
         Right id -> id
+
+-- | Returns the underlying string of a NodeID.
+unwrapNodeID :: NodeID -> String
+unwrapNodeID (NodeID str) = str
 
 -----------------------------------------------------------------------------------------
 -- * Valid Colour Name.
