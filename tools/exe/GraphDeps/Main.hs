@@ -2,6 +2,7 @@
 
 module Main where
 
+import Data.List.Split
 import System.Environment
 import System.IO
 import Lafont.Common
@@ -10,11 +11,12 @@ import LafontExe.IO.Configs
 import GraphDeps.CmdLn
 
 -- | Helper method to pass configurations to graphDeps.
-runTool :: Config -> Style -> IO ()
-runTool conf sty = graphDeps stdout sty gens rels ders
+runTool :: Config -> Style -> GraphDeps -> IO ()
+runTool conf sty args = graphDeps stdout sty types gens rels ders
     where gens  = generators conf
           rels  = relations conf
           ders  = derivations conf
+          types = splitOn "," $ tsources args
 
 -- | Helper method to format ConfigErr with the offending file.
 printErr :: String -> ConfigErr -> String
@@ -47,4 +49,4 @@ main = do
         Left err   -> putStrLn err
         Right conf -> case res2 of
             Left err  -> putStrLn err
-            Right sty -> runTool conf sty
+            Right sty -> runTool conf sty args

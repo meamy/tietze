@@ -123,6 +123,7 @@ executable graph_deps
   import:              exe-with-file-io-props
   main-is:             GraphDeps/Main.hs
   other-modules:       GraphDeps.CmdLn
+  build-depends:       split
 
 executable invert_rule
   import:              exe-with-file-io-props

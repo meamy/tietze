@@ -3,8 +3,10 @@
 module LafontExe.Logic.GraphDeps where
 
 import qualified Data.Map                   as Map
+import qualified Data.Set                   as Set
 import           Lafont.Either
 import           Lafont.Format.GraphViz
+import           Lafont.Graph
 import           Lafont.Rewrite.Abstraction
 import           Lafont.Rewrite.Summary
 import           LafontExe.IO.Configs
@@ -33,17 +35,39 @@ derivationsToDotSummary (AbsDerivation sum _ : list) =
                        in NodeSummary nid ty : dotsum
     where dotsum = derivationsToDotSummary list
 
+-- | Consumes a set of derivation types and a list of node summaries. Returns a list of
+-- nodes corresponding to derivations of the given types (as indicated by the node
+-- summaries).
+populateCone :: Set.Set String -> [NodeSummary] -> Set.Set String
+populateCone _    []                          = Set.empty
+populateCone tset (NodeSummary nid ty : list)
+    | Set.member ty tset = Set.insert (unwrapNodeID nid) srcs
+    | otherwise          = srcs
+    where srcs = populateCone tset list
+
+-- | Consumes a lists of derivation types (types), a list of node summaries (sums), and a
+-- digraph (g) annotated by the node summaries. If the cone (c) induced in g from the set
+-- of nodes selects by (populateCone types sum) is non-empty, then the induced subgrapth
+-- is returned. Otherwise, the cone is ignored and g is returned.
+applyCone :: [String] -> [NodeSummary] -> Digraph String -> Digraph String
+applyCone types sum g
+    | Set.null cone = g
+    | otherwise     = induceSubgraph g cone
+    where tset = Set.fromList types
+          cone = findCone g $ populateCone tset sum
+
 -- | Takes as input a list of derivations (derivations). If derivations contains an
 -- umet dependency, then an UnmetDep error is returned. Otherwise, the derivation graph
 -- associated with derivations is generated. This graph is then converted into a DotFile
 -- with default styling. Finally, the DotFile is annotated with the NodeSummaries for all
 -- derivations in derivations (see derivationsToDotSummary).
-derivationsToDotFile :: [AbsDerivation] -> Either UnmetDep AnnotatedDotFile
-derivationsToDotFile derivations =
+derivationsToDotFile :: [String] -> [AbsDerivation] -> Either UnmetDep AnnotatedDotFile
+derivationsToDotFile types derivations =
     branchRight (derivationToGraph derivations) $ \deps ->
-        let g   = unwrapDepGraph deps
-            dot = graphToDotFile g unsafeToNodeID
-            sum = derivationsToDotSummary derivations
+        let sum = derivationsToDotSummary derivations
+            g   = unwrapDepGraph deps
+            g'  = applyCone types sum g
+            dot = graphToDotFile g' unsafeToNodeID
         in Right $ AnnotatedDotFile dot sum
 
 -- | Returns the underlying DotFile from an AnnotatedDotFile.
