@@ -3,6 +3,7 @@
 -- *******************************************************************
 
 @name elim_SWAP01
+@type order
 SWAP01.SWAP01
 expand_SWAP01 → 1
 expand_SWAP01 → 0
@@ -12,6 +13,7 @@ elim_CX01 → 0
 ε
 
 @name elim_SWAP12
+@type order
 SWAP12.SWAP12
 expand_SWAP12 → 1
 expand_SWAP12 → 0
@@ -21,6 +23,7 @@ expand_SWAP12 → 0
 ε
 
 @name elim_SWAP02
+@type order
 SWAP02.SWAP02
 expand_SWAP02 → 1
 expand_SWAP02 → 0
@@ -35,6 +38,7 @@ expand_SWAP02 → 0
 -- *******************************************************************
 
 @name elim_X1
+@type order
 X1.X1
 expand_X1 → 1
 expand_X1 → 0
@@ -48,6 +52,7 @@ elim_CX01 → 0
 ε
 
 @name elim_X2
+@type order
 X2.X2
 expand_X2 → 1
 expand_X2 → 0
@@ -62,6 +67,7 @@ elim_X0 → 1
 -- *******************************************************************
 
 @name elim_CX10
+@type order
 CX10.CX10
 expand_CX10 → 1
 expand_CX10 → 0
@@ -83,6 +89,7 @@ expand_CX12 ← 0
 CX12
 
 @name elim_CX12
+@type order
 CX12.CX12
 !apply elim_CX12_lemma ← 1
 !apply elim_CX12_lemma ← 0
@@ -98,6 +105,7 @@ elim_K12 → 0
 ε
 
 @name elim_CX21
+@type order
 CX21.CX21
 !apply drel124 → 1
 !apply drel124 → 0
@@ -107,6 +115,7 @@ elim_K12 → 0
 ε
 
 @name elim_CX02
+@type order
 CX02.CX02
 expand_CX02 → 1
 expand_CX02 → 0
@@ -116,6 +125,7 @@ elim_CX01 → 1
 ε
 
 @name elim_CX20
+@type order
 CX20.CX20
 expand_CX20 → 0
 !apply elim_X1 ← 5
@@ -131,6 +141,7 @@ elim_CCX0 → 1
 -- *******************************************************************
 
 @name elim_CCX1
+@type order
 CCX1.CCX1
 expand_CCX1 → 1
 expand_CCX1 → 0
@@ -140,6 +151,7 @@ elim_CCX0 → 1
 ε
 
 @name elim_CCX2
+@type order
 CCX2.CCX2
 symmetry_CCX_a → 1
 symmetry_CCX_a → 0
@@ -154,6 +166,7 @@ elim_CCX0 → 1
 -- *******************************************************************
 
 @name elim_Z0
+@type order
 Z0.Z0
 !apply drel167 → 1
 !apply drel167 → 0
@@ -163,6 +176,7 @@ elim_K01 → 0
 ε
 
 @name elim_Z1
+@type order
 Z1.Z1
 symmetry_Z_d → 1
 symmetry_Z_d → 0
@@ -172,6 +186,7 @@ symmetry_Z_d → 0
 ε
 
 @name elim_Z2
+@type order
 Z2.Z2
 expand_Z2 → 1
 expand_Z2 → 0
@@ -186,6 +201,7 @@ expand_Z2 → 0
 -- *******************************************************************
 
 @name elim_CZ01
+@type order
 CZ01.CZ01
 expand_CZ01 → 1
 expand_CZ01 → 0
@@ -195,6 +211,7 @@ elim_K12 → 0
 ε
 
 @name elim_CZ02
+@type order
 CZ02.CZ02
 expand_CZ02 → 1
 expand_CZ02 → 0
@@ -204,6 +221,7 @@ expand_CZ02 → 0
 ε
 
 @name elim_CZ12
+@type order
 CZ12.CZ12
 expand_CZ12 → 1
 expand_CZ12 → 0

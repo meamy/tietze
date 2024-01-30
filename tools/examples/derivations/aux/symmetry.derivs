@@ -3,6 +3,7 @@
 -- *******************************************************************
 
 @name symmetry_SWAP01
+@type symmetry
 SWAP01
 expand_SWAP01 → 0
 !apply drel161 → 0
@@ -13,6 +14,7 @@ expand_SWAP12 ← 1
 SWAP02.SWAP12.SWAP02
 
 @name symmetry_SWAP02
+@type symmetry
 SWAP02
 expand_SWAP02 → 0
 !apply elim_SWAP01 ← 3
@@ -26,6 +28,7 @@ expand_SWAP12 ← 1
 SWAP01.SWAP12.SWAP01
 
 @name symmetry_SWAP02_alt
+@type symmetry
 SWAP02
 expand_SWAP02 → 0
 expand_CX02 → 2
@@ -37,6 +40,7 @@ expand_SWAP01 ← 1
 SWAP12.SWAP01.SWAP12
 
 @name symmetry_SWAP01_alt
+@type symmetry
 SWAP01
 expand_SWAP01 → 0
 !apply elim_SWAP12 ← 3
@@ -51,6 +55,7 @@ SWAP12.SWAP02.SWAP12
 
 
 @name symmetry_SWAP12_alt
+@type symmetry
 K12.CZ12.K12.CZ12.K12.CZ12
 !apply elim_SWAP12 ← 0
 symmetry_SWAP12 → 1
@@ -68,6 +73,7 @@ SWAP12
 -- *******************************************************************
 
 @name symmetry_X_c
+@type symmetry
 X2
 !apply elim_SWAP12 ← 1
 expand_SWAP12 → 1
@@ -83,6 +89,7 @@ SWAP12.X1.SWAP12
 -- *******************************************************************
 
 @name symmetry_CX_b
+@type symmetry
 CX10
 !apply elim_SWAP02 ← 1
 !apply elim_SWAP02 ← 0
@@ -90,6 +97,7 @@ CX10
 SWAP02.CX12.SWAP02
 
 @name symmetry_CX_d
+@type symmetry
 CX12
 !apply elim_SWAP12 ← 0
 expand_SWAP12 → 1
@@ -98,6 +106,7 @@ expand_SWAP12 ← 2
 SWAP12.CX21.SWAP12
 
 @name symmetry_CX_e
+@type symmetry
 CX01
 !apply elim_SWAP01 ← 0
 expand_SWAP01 → 1
@@ -108,6 +117,7 @@ expand_SWAP01 ← 2
 SWAP01.CX10.SWAP01
 
 @name symmetry_CX_f
+@type symmetry
 CX12
 symmetry_CX_c → 0
 expand_CX02 → 1
@@ -117,6 +127,7 @@ expand_CX02 → 1
 SWAP02.CX10.SWAP02
 
 @name symmetry_CX_g
+@type symmetry
 CX21
 symmetry_CX_l → 0
 symmetry_CX_a → 1
@@ -128,6 +139,7 @@ symmetry_CX_c ← 1
 SWAP12.CX12.SWAP12
 
 @name symmetry_CX_h
+@type symmetry
 CX20
 symmetry_CX_a → 0
 !apply symmetry_SWAP02 → 2
@@ -137,6 +149,7 @@ symmetry_CX_c ← 2
 SWAP01.CX21.SWAP01
 
 @name symmetry_CX_i
+@type symmetry
 CX21
 !apply drel124 → 0
 !apply symmetry_CX_f → 1
@@ -150,6 +163,7 @@ elim_K01 → 1
 SWAP02.CX01.SWAP02
 
 @name symmetry_CX_j
+@type symmetry
 CX20
 !apply symmetry_CX_h → 0
 !apply symmetry_CX_g → 1
@@ -172,6 +186,7 @@ SWAP12.CX10.SWAP12
 -- *******************************************************************
 
 @name symmetry_CCX_c
+@type symmetry
 CCX2
 symmetry_CCX_b → 0
 expand_CCX1 → 1
@@ -187,6 +202,7 @@ symmetry_CCX_a ← 3
 SWAP01.CCX2.SWAP01
 
 @name symmetry_CCX_f
+@type symmetry
 CCX1
 !apply elim_SWAP12 ← 1
 !apply elim_SWAP12 ← 0
@@ -198,6 +214,7 @@ symmetry_CCX_b → 2
 SWAP02.CCX1.SWAP02
 
 @name symmetry_CCX_g
+@type symmetry
 CCX0
 !apply elim_SWAP01 ← 1
 !apply elim_SWAP01 ← 0
@@ -218,6 +235,7 @@ SWAP12.CCX0.SWAP12
 -- *******************************************************************
 
 @name symmetry_Z_a
+@type symmetry
 Z1
 !apply elim_SWAP02 ← 0
 expand_SWAP02 → 1
@@ -228,6 +246,7 @@ expand_SWAP02 ← 2
 SWAP02.Z1.SWAP02
 
 @name symmetry_Z_b
+@type symmetry
 Z0
 !apply elim_SWAP02 ← 1
 !apply elim_Z2 ← 2
@@ -239,6 +258,7 @@ expand_Z2 → 2
 SWAP02.Z2.SWAP02
 
 @name symmetry_Z_c
+@type symmetry
 Z2
 elim_K12 ← 0
 !apply drel64 ← 1
@@ -257,6 +277,7 @@ SWAP12.Z1.SWAP12
 -- *******************************************************************
 
 @name symmetry_CZ_a
+@type symmetry
 CZ02
 !apply elim_SWAP01 ← 1
 !apply elim_SWAP01 ← 0
@@ -268,6 +289,7 @@ expand_CZ12 → 2
 SWAP02.CZ02.SWAP02
 
 @name symmetry_CZ_b
+@type symmetry
 CZ01
 !apply elim_SWAP12 ← 1
 !apply elim_SWAP12 ← 0
@@ -279,6 +301,7 @@ expand_CZ02 → 2
 SWAP01.CZ01.SWAP01
 
 @name symmetry_CZ_c
+@type symmetry
 CZ02
 !apply elim_SWAP01 ← 1
 !apply elim_SWAP01 ← 0
@@ -286,6 +309,7 @@ expand_CZ12 ← 1
 SWAP01.CZ12.SWAP01
 
 @name symmetry_CZ_d
+@type symmetry
 CZ12
 expand_CZ12 → 0
 expand_CZ02 → 1
@@ -295,6 +319,7 @@ expand_CZ02 → 1
 SWAP02.CZ01.SWAP02
 
 @name symmetry_CZ_e
+@type symmetry
 CZ12
 !apply elim_SWAP12 ← 0
 symmetry_SWAP12 → 1
@@ -307,6 +332,7 @@ SWAP12.CZ12.SWAP12
 -- *******************************************************************
 
 @name symmetry_K_a
+@type symmetry
 K12
 !apply elim_SWAP12 ← 1
 expand_SWAP12 → 1

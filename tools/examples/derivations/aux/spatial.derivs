@@ -3,6 +3,7 @@
 -- *******************************************************************
 
 @name spatial_X1
+@type spatial
 M.X1
 expand_M → 0
 !apply bifunct_X_Z_b ← 3
@@ -13,6 +14,7 @@ expand_M ← 1
 X1.M
 
 @name spatial_X2
+@type spatial
 M.X2
 expand_M → 0
 !apply bifunct_X_Z_f ← 3
@@ -28,6 +30,7 @@ X2.M
 -- *******************************************************************
 
 @name spatial_CX01
+@type spatial
 M.CX01
 expand_M → 0
 !apply drel78 ← 3
@@ -41,6 +44,7 @@ expand_M ← 1
 CX01.M
 
 @name spatial_CX02
+@type spatial
 M.CX02
 !apply expand_M_alt1 → 0
 !apply bifunct_Z_CX_c → 3
@@ -51,6 +55,7 @@ M.CX02
 CX02.M
 
 @name spatial_CX10
+@type spatial
 M.CX10
 expand_M → 0
 !apply drel42 → 3
@@ -64,6 +69,7 @@ expand_M ← 1
 CX10.M
 
 @name spatial_CX20
+@type spatial
 M.CX20
 !apply expand_M_alt1 → 0
 !apply bifunct_Z_CX_a → 3
@@ -79,6 +85,7 @@ CX20.M
 -- *******************************************************************
 
 @name spatial_CCX0
+@type spatial
 M.CCX0
 expand_M → 0
 !apply drel23 → 3
@@ -92,6 +99,7 @@ expand_M ← 1
 CCX0.M
 
 @name spatial_CCX2
+@type spatial
 M.CCX2
 !apply expand_M_alt2 → 0
 symmetry_CCX_a → 4
@@ -124,6 +132,7 @@ CCX2.M
 -- *******************************************************************
 
 @name spatial_Z1
+@type spatial
 M.Z1
 expand_M → 0
 !apply bifunct_Z_a → 3
@@ -139,6 +148,7 @@ Z1.M
 -- *******************************************************************
 
 @name spatial_CZ01
+@type spatial
 M.CZ01
 !apply expand_M_alt2 → 0
 !apply bifunct_Z_CZ_c ← 3
@@ -149,6 +159,7 @@ M.CZ01
 CZ01.M
 
 @name spatial_CZ02
+@type spatial
 M.CZ02
 !apply expand_M_alt1 → 0
 !apply bifunct_Z_CZ_a ← 3
@@ -164,6 +175,7 @@ CZ02.M
 -- *******************************************************************
 
 @name spatial_K12
+@type spatial
 M.K12
 expand_M → 0
 !apply bifunct_Z_K_a → 3
@@ -179,6 +191,7 @@ K12.M
 -- *******************************************************************
 
 @name expand_M_alt1
+@type spatial
 M
 !apply elim_SWAP01 ← 0
 expand_SWAP01 → 1
@@ -197,6 +210,7 @@ symmetry_Z_d ← 3
 X1.Z1.X1.Z1
 
 @name expand_M_alt2
+@type spatial
 M
 !apply elim_SWAP02 ← 0
 expand_SWAP02 → 1

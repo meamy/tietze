@@ -3,6 +3,7 @@
 -- *******************************************************************
 
 @name elim_M
+@type spatial
 
 M.M
 !apply expand_M_alt1 → 1
@@ -18,6 +19,7 @@ M.M
 -- ****************************************************************************
 
 @name drel31
+@type spatial
 
 X1.Z1
 !apply elim_X1 ← 2
@@ -31,16 +33,15 @@ M.Z1.X1
 -- ****************************************************************************
 
 @name drel34
+@type spatial
 
 Z1.X1
-!apply elim_M ← 2
-!apply elim_Z1 ← 3
-!apply elim_X1 ← 4
+!apply elim_X1 ← 0
 
--- Z1.X1.M.Z1.X1.X1.Z1.M
-!apply drel31 ← 2
+-- X1.X1.Z1.X1
+!apply drel31 → 1
+!apply elim_X1 → 3
 
--- Z1.X1.X1.Z1.X1.Z1.M
-!apply elim_X1 → 1
-!apply elim_Z1 → 0
+-- X1.M.Z1
+!apply spatial_Z1 → 1
 X1.Z1.M
