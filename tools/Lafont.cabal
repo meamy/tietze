@@ -27,6 +27,7 @@ library
                        Lafont.Edit.Invert
                        Lafont.Format.Internal.GraphViz
                        Lafont.Format.GraphViz
+                       Lafont.Format.LaTeX
                        Lafont.Generators.Algebraic.Internal.ModP
                        Lafont.Generators.Algebraic.Internal.Product
                        Lafont.Generators.Algebraic.ModP
@@ -215,6 +216,11 @@ test-suite lafont-graph-tests
 test-suite lafont-format-graphviz-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Format-GraphViz-Tests.hs
+  type:                exitcode-stdio-1.0
+
+test-suite lafont-format-latex-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Format-LaTeX-Tests.hs
   type:                exitcode-stdio-1.0
 
 test-suite lafont-rewrite-abstraction-tests
