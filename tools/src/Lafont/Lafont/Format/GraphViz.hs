@@ -1,4 +1,4 @@
--- | Provides an interface to build in print GraphViz files in the DOT format.
+-- | Provides an interface to build and print GraphViz files in the DOT format.
 
 module Lafont.Format.GraphViz (
     -- Re-exports from internal.
