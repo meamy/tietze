@@ -31,14 +31,14 @@ test1 = TestCase (assertEqual "Can produce a empty GenMacroList from a GenDict."
 test2 = TestCase (assertEqual "Can produce a GenMacroList for a single generator."
                               (cmd1 ++ "\n")
                               (toLaTeX $ makeGenMacros sampleDict1))
-    where cmd1 = "\\newcommand{lft_abc_xyz}{X_{0}}"
+    where cmd1 = "% Macro for: abc_xyz" ++ "\n" ++ "\\newcommand{\\lftgen0}{X_{0}}"
 
 test3 = TestCase (assertEqual "Can produce a GenMacroList for a set of generators."
                               (cmd1 ++ "\n" ++ cmd2 ++ "\n" ++ cmd3 ++ "\n")
                               (toLaTeX $ makeGenMacros sampleDict3))
-    where cmd1 = "\\newcommand{lft_abc_xyz}{X_{2}}"
-          cmd2 = "\\newcommand{lft_gen0}{X_{1}}"
-          cmd3 = "\\newcommand{lft_gen1}{X_{0}}"
+    where cmd1 = "% Macro for: abc_xyz" ++ "\n" ++ "\\newcommand{\\lftgen2}{X_{2}}"
+          cmd2 = "% Macro for: gen0" ++ "\n" ++ "\\newcommand{\\lftgen1}{X_{1}}"
+          cmd3 = "% Macro for: gen1" ++ "\n" ++ "\\newcommand{\\lftgen0}{X_{0}}"
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.

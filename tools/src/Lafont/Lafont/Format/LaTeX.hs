@@ -6,8 +6,12 @@ module Lafont.Format.LaTeX (
     makeGenMacros
 ) where
 
-import qualified Data.Map                     as Map
-import Lafont.Generators.Semantics
+import qualified Data.Map                    as Map
+import           Lafont.Common
+import           Lafont.Generators.Semantics
+import           Lafont.Rewrite.Derivations
+import           Lafont.Rewrite.Rules
+import           Lafont.Rewrite.Summary
 
 -----------------------------------------------------------------------------------------
 -- * General Interface for Latex Components.
@@ -38,7 +42,7 @@ makeGenMacrosImpl []         = Map.empty
 makeGenMacrosImpl (gen:gens) = Map.insert gen def map
     where map = makeGenMacrosImpl gens
           idx = Map.size map
-          cmd = "lft_" ++ gen
+          cmd = "\\lftgen" ++ show idx
           sym = "X_{" ++ show idx ++ "}"
           def = GenMacroDef cmd sym
 
@@ -52,5 +56,6 @@ instance LaTeX GenMacroDef where
     toLaTeX (GenMacroDef cmd sym) = "\\newcommand{" ++ cmd ++ "}{" ++ sym ++ "}"
 
 instance LaTeX GenMacroList where
-    toLaTeX (GenMacroList map) = Map.foldr f "" map
-        where f def cmds = toLaTeX def ++ "\n" ++ cmds
+    toLaTeX (GenMacroList map) = Map.foldrWithKey f "" map
+        where f gen def res = let comment = "% Macro for: " ++ gen 
+                              in comment ++ "\n" ++ toLaTeX def ++ "\n" ++ res
