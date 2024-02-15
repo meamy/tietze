@@ -48,25 +48,25 @@ meta3 = RewritePreamble Nothing Nothing
 -- Proof summaries.
 
 rule1a :: RewriteRule
-rule1a = RewriteRule word1 word2 False (Just name1)
+rule1a = RewriteRule word1 word2 False (Derived $ Just name1)
 
 rule1b :: RewriteRule
-rule1b = RewriteRule word1 word2 False (Just name2)
+rule1b = RewriteRule word1 word2 False (Derived $ Just name2)
 
 rule1c :: RewriteRule
-rule1c = RewriteRule word1 word2 True (Just name2)
+rule1c = RewriteRule word1 word2 True (Derived $ Just name2)
 
 rule2 :: RewriteRule
-rule2 = RewriteRule word1 word3 False (Just name1)
+rule2 = RewriteRule word1 word3 False (Derived $ Just name1)
 
 rule3 :: RewriteRule
-rule3 = RewriteRule word1 word3 True Nothing
+rule3 = RewriteRule word1 word3 True (Primitive "r4")
 
 -- Creates a rule dictionary.
 
-rules1 = addRule empty  ("r1", RewriteRule [] [] False Nothing)
-rules2 = addRule rules1 ("r2", RewriteRule [] [] False Nothing)
-rules3 = addRule rules2 ("r3", RewriteRule [] [] False Nothing)
+rules1 = addRule empty  ("r1", RewriteRule [] [] False (Primitive "r1"))
+rules2 = addRule rules1 ("r2", RewriteRule [] [] False (Primitive "r2"))
+rules3 = addRule rules2 ("r3", RewriteRule [] [] False (Primitive "r3"))
 
 -----------------------------------------------------------------------------------------
 -- createSummaryRule
@@ -91,7 +91,7 @@ test1 = TestCase (assertEqual "createSummaryRule can convert a summary into a ru
                               (createSummaryRule emap0 summary1))
 
 test2 = TestCase (assertEqual "createSummaryRule respects the initial word."
-                              (RewriteRule word3 word2 False (Just name1))
+                              (RewriteRule word3 word2 False (Derived $ Just name1))
                               (createSummaryRule emap0 summary2))
 
 test3 = TestCase (assertEqual "createSummaryRule respects the final word."

@@ -45,16 +45,16 @@ test4 = TestCase (assertEqual "logRule can format a three symbol word with param
 -- logRule
 
 rule1 :: RewriteRule
-rule1 = RewriteRule word1 word2 True Nothing
+rule1 = RewriteRule word1 word2 True (Primitive "r1")
 
 rule2 :: RewriteRule
-rule2 = RewriteRule word2 word3 True Nothing
+rule2 = RewriteRule word2 word3 True (Primitive "r2")
 
 rule3 :: RewriteRule
-rule3 = RewriteRule word1 word2 False Nothing
+rule3 = RewriteRule word1 word2 False (Primitive "r3")
 
 rule4 :: RewriteRule
-rule4 = RewriteRule word1 word2 True (Just "name")
+rule4 = RewriteRule word1 word2 True (Derived $ Just "name")
 
 test5 = TestCase (assertEqual "logRule can display equational rules (1/2)."
                               "rel1: ε = xyz"

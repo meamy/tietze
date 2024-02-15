@@ -27,49 +27,49 @@ w4 = [sym4, sym2]
 nullrel = RewriteRule { lhs         = []
                       , rhs         = []
                       , equational  = True
-                      , derivedFrom = Nothing
+                      , derivedFrom = Primitive "p1"
                       }
 
 rel_lnull = RewriteRule { lhs         = []
                         , rhs         = w1
                         , equational  = False
-                        , derivedFrom = Nothing
+                        , derivedFrom = Primitive "p2"
                         }
 
 rel_rnull = RewriteRule { lhs         = w2
                         , rhs         = []
                         , equational  = False
-                        , derivedFrom = Nothing
+                        , derivedFrom = Primitive "p3"
                         }
 
 rel_nonull = RewriteRule { lhs         = w3
                          , rhs         = w4
                          , equational  = False
-                         , derivedFrom = Nothing
+                         , derivedFrom = Primitive "p4"
                          }
 
 birel_rnull = RewriteRule { lhs         = w3
                           , rhs         = []
                           , equational  = True
-                          , derivedFrom = Nothing
+                          , derivedFrom = Primitive "p5"
                           }
 
 birel_lnull = RewriteRule { lhs         = []
                           , rhs         = w4
                           , equational  = True
-                          , derivedFrom = Nothing
+                          , derivedFrom = Primitive "p6"
                           }
 
 birel_nonull = RewriteRule { lhs         = w1
                            , rhs         = w4
                            , equational  = True
-                           , derivedFrom = Nothing
+                           , derivedFrom = Primitive "p7"
                            }
 
 birel_rnull_d = RewriteRule { lhs         = w3
                             , rhs         = []
                             , equational  = True
-                            , derivedFrom = Just "src"
+                            , derivedFrom = Derived $ Just "src"
                             }
 
 -----------------------------------------------------------------------------------------
@@ -410,43 +410,43 @@ test58 = TestCase (assertEqual "toIDict handles matches (right inv, @sym4)."
 rule_selfinv_x = RewriteRule { lhs         = []
                              , rhs         = [sym1, sym1]
                              , equational  = False
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "p8"
                              }
 
 rule_invlen3_x = RewriteRule { lhs         = []
                              , rhs         = [sym2, sym3, sym4, sym1]
                              , equational  = False
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "p9"
                              }
 
 rule_selfinv_y = RewriteRule { lhs         = []
                              , rhs         = [sym2, sym2]
                              , equational  = False
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "p10"
                              }
 
 rule_invlen3_y = RewriteRule { lhs         = []
                              , rhs         = [sym3, sym4, sym1, sym2]
                              , equational  = False
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "p11"
                              }
 
 rule_invlen2_y = RewriteRule { lhs         = []
                              , rhs         = [sym3, sym4, sym1]
                              , equational  = False
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "p12"
                              }
 
 rule_selfinv_z = RewriteRule { lhs         = []
                              , rhs         = [sym3, sym3]
                              , equational  = False
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "p13"
                              }
 
 rule_invlen3_w = RewriteRule { lhs         = []
                              , rhs         = [sym1, sym2, sym3, sym4]
                              , equational  = False
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "p14"
                              }
 
 qrdict0 = empty

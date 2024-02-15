@@ -45,9 +45,9 @@ word1 = [symb1, symb1, symb1]
 word2 = [symb2, symb2, symb2]
 word3 = [symb3, symb3, symb3]
 
-rule1 = RewriteRule word1 word2 True Nothing
-rule2 = RewriteRule word1 word3 True Nothing
-rule3 = RewriteRule word2 word3 True Nothing
+rule1 = RewriteRule word1 word2 True (Primitive "r1")
+rule2 = RewriteRule word1 word3 True (Primitive "r2")
+rule3 = RewriteRule word2 word3 True (Primitive "r3")
 
 rw1 = Rewrite rule1 0 L2R
 rw2 = Rewrite rule2 0 L2R
@@ -141,8 +141,8 @@ test16 = TestCase (assertEqual "makeDerivationMap after 3 inserts (4/4)."
 -----------------------------------------------------------------------------------------
 -- identifyEquationalRules
 
-equationalRule = RewriteRule word1 word1 True Nothing
-orientatedRule = RewriteRule word2 word2 False Nothing
+equationalRule = RewriteRule word1 word1 True (Primitive "r4")
+orientatedRule = RewriteRule word2 word2 False (Primitive "r5")
 
 equationalRw = Rewrite equationalRule 0 L2R
 orientatedRw = Rewrite orientatedRule 0 L2R
@@ -274,9 +274,9 @@ test25 = TestCase (assertEqual "identifyEquationalRules internal nodes (6/6)."
 -----------------------------------------------------------------------------------------
 -- addDRules
 
-absRule1 = RewriteRule [] [] True $ Just rel1
-absRule2 = RewriteRule [] [] True $ Just rel2
-absRule3 = RewriteRule [] [] True $ Just rel3
+absRule1 = RewriteRule [] [] True (Derived $ Just rel1)
+absRule2 = RewriteRule [] [] True (Derived $ Just rel2)
+absRule3 = RewriteRule [] [] True (Derived $ Just rel3)
 
 rules1 = addRule Lafont.Rewrite.Lookup.empty ("r1", rule1)
 rules2 = addRule rules1                      ("r2", rule1)

@@ -34,12 +34,12 @@ ruleDName = "rule4"
 ruleEName = "rule5"
 ruleFName = "rule6"
 
-ruleA = RewriteRule [symB, symC] [symD] True Nothing                -- [Y] 2*3 = 6
-ruleB = RewriteRule [symA, symA, symA] [] True Nothing              -- [Y] 1*1*1 = e
-ruleC = RewriteRule [symC, symC] [symE] True Nothing                -- [Y] 3*3 = 9
-ruleD = RewriteRule [symA, symD, symA] [symD] True Nothing          -- [Y] 1*6*1 = 6
-ruleE = RewriteRule [symB, symB, symC] [symA, symD] True Nothing    -- [N] 2*2*3 = 1*6
-ruleF = RewriteRule [symA, symD, symA] [symF] True Nothing          -- [?] 1*6*1 = ??
+ruleA = RewriteRule [symB, symC] [symD] True (Primitive "r1")             -- [Y] 2*3 = 6
+ruleB = RewriteRule [symA, symA, symA] [] True (Primitive "r2")           -- [Y] 1*1*1 = e
+ruleC = RewriteRule [symC, symC] [symE] True (Primitive "r3")             -- [Y] 3*3 = 9
+ruleD = RewriteRule [symA, symD, symA] [symD] True (Primitive "r4")       -- [Y] 1*6*1 = 6
+ruleE = RewriteRule [symB, symB, symC] [symA, symD] True (Primitive "r5") -- [N] 2*2*3 = 1*6
+ruleF = RewriteRule [symA, symD, symA] [symF] True (Primitive "r6")       -- [?] 1*6*1 = ??
 
 -----------------------------------------------------------------------------------------
 -- Builds dictionaries of generators and relations for multiplicative tests.

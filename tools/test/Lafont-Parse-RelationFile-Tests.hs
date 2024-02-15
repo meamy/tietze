@@ -30,51 +30,51 @@ word2b = [(Symbol "abc" []), (Symbol "def" [1]), (Symbol "ghi" [1, 2]), (Symbol 
 
 test1 = TestCase (assertEqual "Tests that empty strings are rejected."
                               (Left (Right RuleMissingLHS))
-                              (parseRule ""))
+                              (parseRule "id" ""))
 
 test2 = TestCase (assertEqual "Tests that missing left-hand sides are rejected."
                               (Left (Right RuleMissingLHS))
-                              (parseRule "1abc"))
+                              (parseRule "id" "1abc"))
 
 test3 = TestCase (assertEqual "Tests that missing rule types are detected."
                               (Left (Right (InvalidRuleType 8)))
-                              (parseRule "a1.a2.a3"))
+                              (parseRule "id" "a1.a2.a3"))
 
 test4 = TestCase (assertEqual "Tests that bad rule types are detected."
                               (Left (Right (InvalidRuleType 8)))
-                              (parseRule "a1.a2.a3 #"))
+                              (parseRule "id" "a1.a2.a3 #"))
 
 test5 = TestCase (assertEqual "Tests that missing right-hand sides are rejected."
                               (Left (Right RuleMissingRHS))
-                              (parseRule "a1.a2.a3 ="))
+                              (parseRule "id" "a1.a2.a3 ="))
 
 test6 = TestCase (assertEqual "Tests bad right-hand sides are rejected."
                               (Left (Right RuleMissingRHS))
-                              (parseRule "a1.a2.a3 = 1abc"))
+                              (parseRule "id" "a1.a2.a3 = 1abc"))
 
 test7 = TestCase (assertEqual "Tests bad right-hand sides are rejected."
                               (Left (Left (UnexpectedSymbol 31)))
-                              (parseRule "a1.a2.a3 = abc.def[1].ghi[1][2]  bad"))
+                              (parseRule "id" "a1.a2.a3 = abc.def[1].ghi[1][2]  bad"))
 
 test8 = TestCase (assertEqual "Tests that equational rules are parsed (1/2)."
-                              (Right (RewriteRule word1a word2a True Nothing))
-                              (parseRule "a1.a2.a3 = abc.def[1].ghi[1][2] "))
+                              (Right (RewriteRule word1a word2a True (Primitive "r1")))
+                              (parseRule "r1" "a1.a2.a3 = abc.def[1].ghi[1][2] "))
 
 test9 = TestCase (assertEqual "Tests that equational rules are parsed (2/2)."
-                              (Right (RewriteRule word1b word2b True Nothing))
-                              (parseRule "a1.a2 = abc.def[1].ghi[1][2].a3 "))
+                              (Right (RewriteRule word1b word2b True (Primitive "r2")))
+                              (parseRule "r2" "a1.a2 = abc.def[1].ghi[1][2].a3 "))
 
 test10 = TestCase (assertEqual "Tests that production rules are parsed (1/2)."
-                               (Right (RewriteRule word1a word2a False Nothing))
-                               (parseRule "a1.a2.a3 → abc.def[1].ghi[1][2] "))
+                               (Right (RewriteRule word1a word2a False (Primitive "r3")))
+                               (parseRule "r3" "a1.a2.a3 → abc.def[1].ghi[1][2] "))
 
 test11 = TestCase (assertEqual "Tests that production rules are parsed (2/2)."
-                               (Right (RewriteRule word1b word2b False Nothing))
-                               (parseRule "a1.a2 → abc.def[1].ghi[1][2].a3 "))
+                               (Right (RewriteRule word1b word2b False (Primitive "r4")))
+                               (parseRule "r4" "a1.a2 → abc.def[1].ghi[1][2].a3 "))
 
 test12 = TestCase (assertEqual "Tests that rules between empty strings are parsed."
-                               (Right (RewriteRule [] [] False Nothing))
-                               (parseRule "ε → ε "))
+                               (Right (RewriteRule [] [] False (Primitive "r5")))
+                               (parseRule "r5" "ε → ε "))
 
 -----------------------------------------------------------------------------------------
 -- parseRuleDefn
@@ -96,11 +96,11 @@ test16 = TestCase (assertEqual "Tests that spaces are required after an identifi
                                (parseRuleDefn "rel1ε → ε"))
 
 test17 = TestCase (assertEqual "Tests that equational rules are parsed (1/2)."
-                               (Right ("rel1", (RewriteRule word1a word1b True Nothing)))
+                               (Right ("rel1", (RewriteRule word1a word1b True (Primitive "rel1"))))
                                (parseRuleDefn "  rel1 a1.a2.a3   =  a1.a2  "))
 
 test18 = TestCase (assertEqual "Tests that equational rules are parsed (2/2)."
-                               (Right ("rel2", (RewriteRule word1b word1a True Nothing)))
+                               (Right ("rel2", (RewriteRule word1b word1a True (Primitive "rel2"))))
                                (parseRuleDefn "  rel2   a1.a2   =  a1.a2.a3  "))
 
 -----------------------------------------------------------------------------------------
@@ -155,19 +155,19 @@ test22 = TestCase (assertEqual "findUnknownGenInMonWord accepts strings of gener
 -- findUnknownGenInRule
 
 badParamRuleLHS :: RewriteRule
-badParamRuleLHS = RewriteRule paramWord [] True Nothing
+badParamRuleLHS = RewriteRule paramWord [] True (Primitive "xyz")
 
 badNoParamRuleLHS :: RewriteRule
-badNoParamRuleLHS = RewriteRule noParamWord [] True Nothing
+badNoParamRuleLHS = RewriteRule noParamWord [] True (Primitive "x123")
 
 badParamRuleRHS :: RewriteRule
-badParamRuleRHS = RewriteRule [] paramWord True Nothing
+badParamRuleRHS = RewriteRule [] paramWord True (Primitive "r9")
 
 badNoParamRuleRHS :: RewriteRule
-badNoParamRuleRHS = RewriteRule [] noParamWord True Nothing
+badNoParamRuleRHS = RewriteRule [] noParamWord True (Primitive "r10")
 
 goodRule :: RewriteRule
-goodRule = RewriteRule noParamWord noParamWord True Nothing
+goodRule = RewriteRule noParamWord noParamWord True (Primitive "abc")
 
 test23 = TestCase (assertEqual "findUnknownGenInRule detects bad symbols on the LHS (1/2)."
                                (Just symbWP1)
@@ -215,7 +215,7 @@ symbB :: Symbol
 symbB = Symbol "b" []
 
 addedRule :: RewriteRule
-addedRule = RewriteRule [symbA, symbB] [symbB, symbA] True Nothing
+addedRule = RewriteRule [symbA, symbB] [symbB, symbA] True (Primitive "abc")
 
 test28 = TestCase (assertEqual "Tests that updateRules propogates errors (1/2)."
                                (Left (Right InvalidRuleName))
@@ -271,7 +271,7 @@ fileWord2 :: MonWord
 fileWord2 = [(Symbol "b" []), (Symbol "a" [])]
 
 fileRel1 :: RewriteRule
-fileRel1 = RewriteRule fileWord1 fileWord2 True Nothing
+fileRel1 = RewriteRule fileWord1 fileWord2 True (Primitive "abc")
 
 -- Single line tests.
 
@@ -296,10 +296,10 @@ validMultiline :: [String]
 validMultiline = ["", "abc a.b = b.a", "cdf a.b = ε ", "", "xyz_123 ε → b.a"]
 
 fileRel2 :: RewriteRule
-fileRel2 = RewriteRule fileWord1 [] True Nothing
+fileRel2 = RewriteRule fileWord1 [] True (Primitive "cdf")
 
 fileRel3 :: RewriteRule
-fileRel3 = RewriteRule [] fileWord2 False Nothing
+fileRel3 = RewriteRule [] fileWord2 False (Primitive "xyz_123")
 
 test38 = TestCase (assertEqual "Tests parsing of a single rule with multiple lines."
                                (Just fileRel1 :: Maybe RewriteRule)

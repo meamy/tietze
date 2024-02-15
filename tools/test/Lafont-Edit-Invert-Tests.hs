@@ -27,7 +27,7 @@ sym7 = Symbol "c" []
 rwrule1 = RewriteRule { lhs         = [sym1, sym2, sym3]
                       , rhs         = [sym5, sym4]
                       , equational  = False
-                      , derivedFrom = Nothing
+                      , derivedFrom = Primitive "r1"
                       }
 
 mkSelfInvEView :: IsLeftInv -> (EIView, EIView)
@@ -194,43 +194,43 @@ test18 = TestCase (assertEqual "addEIRule ensures right-handedness."
 rule_selfinv_x = RewriteRule { lhs         = []
                              , rhs         = [sym1, sym1]
                              , equational  = True
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "r2"
                              }
 
 rule_invlen3_x = RewriteRule { lhs         = []
                              , rhs         = [sym2, sym3, sym4, sym1]
                              , equational  = True
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "r3"
                              }
 
 rule_selfinv_y = RewriteRule { lhs         = []
                              , rhs         = [sym2, sym2]
                              , equational  = True
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "r4"
                              }
 
 rule_invlen3_y = RewriteRule { lhs         = []
                              , rhs         = [sym3, sym4, sym1, sym2]
                              , equational  = True
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "r5"
                              }
 
 rule_invlen2_y = RewriteRule { lhs         = []
                              , rhs         = [sym3, sym4, sym2]
                              , equational  = True
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "r6"
                              }
 
 rule_selfinv_z = RewriteRule { lhs         = []
                              , rhs         = [sym3, sym3]
                              , equational  = True
-                             , derivedFrom = Nothing
+                             , derivedFrom = Primitive "r7"
                              }
 
 rule_invlen3_w = RewriteRule { lhs         = []
                              , rhs         = [sym1, sym2, sym3, sym4]
                              , equational  = True
-                             , derivedFrom = Nothing
+                             , derivedFrom = Derived $ Just "d1"
                              }
 
 qrdict0 = empty

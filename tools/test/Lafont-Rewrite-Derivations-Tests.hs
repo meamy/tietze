@@ -33,7 +33,7 @@ summary4 = DerivationSummary (RewritePreamble (Just rel4) Nothing) [] []
 summary5 = DerivationSummary (RewritePreamble (Just rel5) Nothing) [] []
 
 rwto :: AbsRewrite
-rwto = Left (Rewrite (RewriteRule [] [] True Nothing) 0 L2R)
+rwto = Left (Rewrite (RewriteRule [] [] True (Primitive "r1")) 0 L2R)
 rwtx :: AbsRewrite
 rwtx = Right (Apply relx 0 L2R)
 rwt1 :: AbsRewrite
@@ -234,8 +234,8 @@ rhs2 = [sym2]
 ruleSummary1 = DerivationSummary (RewritePreamble (Just rel1) Nothing) lhs1 rhs1
 ruleSummary2 = DerivationSummary (RewritePreamble (Just rel2) Nothing) lhs2 rhs2
 
-eqnRule = RewriteRule lhs1 lhs1 True Nothing
-neqRule = RewriteRule lhs1 lhs1 False Nothing
+eqnRule = RewriteRule lhs1 lhs1 True (Primitive "r2")
+neqRule = RewriteRule lhs1 lhs1 False (Primitive "r3")
 
 eqnRewrite = Rewrite eqnRule 0 L2R
 neqRewrite = Rewrite neqRule 0 L2R
@@ -251,8 +251,8 @@ eqnApply = Apply rel1 3 R2L
 neqApply = Apply rel2 3 L2R
 badApply = Apply rel2 3 R2L
 
-eqnApplyAsRule = Rewrite (RewriteRule lhs1 rhs1 True (Just rel1)) 3 R2L
-neqApplyAsRule = Rewrite (RewriteRule lhs2 rhs2 False (Just rel2)) 3 L2R
+eqnApplyAsRule = Rewrite (RewriteRule lhs1 rhs1 True (Derived $ Just rel1)) 3 R2L
+neqApplyAsRule = Rewrite (RewriteRule lhs2 rhs2 False (Derived $ Just rel2)) 3 L2R
 
 test30 = TestCase (assertEqual "concretizeRewrite supports rewrites (1/2)."
                                (Just eqnRewrite :: Maybe Rewrite)

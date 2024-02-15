@@ -68,21 +68,21 @@ findUnknownGenInRule gens rule = branchNothing (findUnknownGenInMonWord gens (lh
 -----------------------------------------------------------------------------------------
 -- * Line Parsing Methods.
 
--- | Consumes a string that represents a rewrite rule (str). Attempts to parse a rule of
--- the form <MON_WORD> <OP> <MON_WORD> where <OP> is one of = or →. Requires that str
--- does not have leading whitespace. Error messages are given with respect to indices in
--- str.
-parseRule :: String -> Either RFPError RewriteRule
-parseRule str =
+-- | Consumes an identifier, and a string that represents a rewrite rule (str). Attempts
+-- to parse a rule of the form <MON_WORD> <OP> <MON_WORD> where <OP> is one of = or →.
+-- The source of the rule is set to the identifier. Requires that str does not have
+-- leading whitespace. Error messages are given with respect to indices in str.
+parseRule :: String -> String -> Either RFPError RewriteRule
+parseRule id str =
     case parseMonWord str of
         Just (lhs, opStr) -> case parseFromSeps ["→", "="] opStr of
             Just (op, rhsStr) -> case parseMonWord $ snd $ trimSpacing rhsStr of
-                Just (rhs, post) -> let lval = Left (UnexpectedSymbol (getErrPos str post))
-                                        rval = RewriteRule lhs rhs (op == "=") Nothing
+                Just (rhs, post) -> let lval = Left $ UnexpectedSymbol $ getErrPos str post
+                                        rval = RewriteRule lhs rhs (op == "=") (Primitive id)
                                     in branchOnSpacing post lval rval
-                Nothing -> Left (Right RuleMissingRHS)
-            Nothing -> Left (Right (InvalidRuleType (getErrPos str opStr)))
-        Nothing -> Left (Right RuleMissingLHS)
+                Nothing -> Left $ Right RuleMissingRHS
+            Nothing -> Left $ Right $ InvalidRuleType $ getErrPos str opStr
+        Nothing -> Left $ Right RuleMissingLHS
 
 -- | Consumes a single line of a relation file (str). Attempts to parse a named rewrite
 -- rule from str. If parsing is successful, then (id, rule) is returned where rule is a
@@ -90,12 +90,12 @@ parseRule str =
 parseRuleDefn :: String -> Either RFPError (String, RewriteRule)
 parseRuleDefn str =
     case parseId $ snd $ trimSpacing str of
-        Just (id, ruleStr) -> let (isTrimmed, trimmed) = trimSpacing ruleStr
-                              in if isTrimmed
-                                 then case parseRule trimmed of
-                                          Left err   -> Left (propRelErr str trimmed err)
-                                          Right rule -> Right (id, rule)
-                                 else Left (Left (UnexpectedSymbol (getErrPos str ruleStr)))
+        Just (id, rstr) -> let (isTrimmed, trimmed) = trimSpacing rstr
+                           in if isTrimmed
+                              then case parseRule id trimmed of
+                                    Left err   -> Left $ propRelErr str trimmed err
+                                    Right rule -> Right (id, rule)
+                              else Left $ Left $ UnexpectedSymbol $ getErrPos str rstr
         Nothing -> Left (Right InvalidRuleName)
 
 -- | Consumes a partial map of rewrite rules (dict), a list of generator names (gens),
@@ -107,12 +107,12 @@ parseRuleDefn str =
 -- are added to dict. The resulting dict is returned.
 updateRules :: RuleDict -> [String] -> String -> Either RFPError RuleDict
 updateRules dict gens str =
-    branchRight (parseRuleDefn str)
-        (\(id, rule) -> case findUnknownGenInRule gens rule of
-            Just gen -> Left (Right (UnknownGenName (display gen)))
+    branchRight (parseRuleDefn str) $ \(id, rule) ->
+        case findUnknownGenInRule gens rule of
+            Just gen -> Left $ Right $ UnknownGenName $ display gen
             Nothing  -> if dict `hasRule` id
-                        then Left (Right (DuplicateRuleName id))
-                        else Right (dict `addRule` (id, rule)))
+                        then Left $ Right $ DuplicateRuleName id
+                        else Right $ dict `addRule` (id, rule)
 
 -----------------------------------------------------------------------------------------
 -- * File Parsing Methods.
@@ -126,5 +126,5 @@ parseRelLine gens dict line num
     | trimmed == "" = Right dict
     | otherwise     = updateLeft (updateRules dict gens trimmed)
                                  (\err -> (num, propRelErr stripped trimmed err))
-    where stripped = stripComments line
+    where stripped     = stripComments line
           (_, trimmed) = trimSpacing stripped

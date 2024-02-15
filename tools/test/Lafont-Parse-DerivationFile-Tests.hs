@@ -111,13 +111,13 @@ word2 :: MonWord
 word2 = [(Symbol "c" []), (Symbol "a" []), (Symbol "b" [])]
 
 primitiveRuleL2R :: RewriteRule
-primitiveRuleL2R = RewriteRule word1 word2 False Nothing
+primitiveRuleL2R = RewriteRule word1 word2 False (Primitive "abc")
 
 primitiveRuleEqn :: RewriteRule
-primitiveRuleEqn = RewriteRule word1 word2 True Nothing
+primitiveRuleEqn = RewriteRule word1 word2 True (Primitive "xyz")
 
 derivedRule :: RewriteRule
-derivedRule = RewriteRule word1 word2 False (Just "derived")
+derivedRule = RewriteRule word1 word2 False (Derived $ Just "derived")
 
 dict0 :: RuleDict
 dict0 = empty

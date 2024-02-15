@@ -5,6 +5,7 @@
 module Lafont.Rewrite.Rules (
     RewriteRule ( .. ),
     Rewrite ( .. ),
+    RuleSource ( .. ),
     applyRewrite,
     applyRewriteRule,
     checkRewrite,
@@ -22,22 +23,31 @@ import           Lafont.Rewrite.Internal.Rules
 -----------------------------------------------------------------------------------------
 -- * RewriteRules.
 
+-- | Differentiates between primitive relations and derived relations.
+data RuleSource = Primitive String
+                | Derived (Maybe String)
+                deriving (Show, Eq)
+
 -- | A rewrite rule in a rewrite system is a tuple of the form (lhs, rhs) and is usually
 -- denoted lhs → rhs (we refer to u → v as a production rule as it produces the word xvy
 -- from the word xuy for any words x and y). A rule is said to be **equational** if it is
 -- symmetric (that is, both lhs → rhs and rhs → lhs are valid). A rule u →* u' may also
 -- be **derivedFrom** a proof of the form u → v1 → v2 → ... → vk → u', where each
--- intermediate rule is valid. In this case, the derivedFrom field is assigned the name
--- of the proof.
+-- intermediate rule is valid. In this case, the derivedFrom field is assigned to type
+-- Derived, together with the name of the proof. Otherwise, the derivedFrom field is set
+-- to Primitive.
 data RewriteRule = RewriteRule { lhs         :: MonWord
                                , rhs         :: MonWord
                                , equational  :: Bool
-                               , derivedFrom :: Maybe String
+                               , derivedFrom :: RuleSource
                                } deriving (Show, Eq)
 
 -- | Consumes a rule. Returns true if the rule is derived.
 isDerivedRule :: RewriteRule -> Bool
-isDerivedRule rule = isJust (derivedFrom rule)
+isDerivedRule rule =
+    case derivedFrom rule of
+        Primitive _ -> False
+        Derived _   -> True
 
 -- | Consumes a monoidal word, a rewrite rule, and a boolean flag indicating if the rule
 -- is to be applied from left-to-right. Returns true if rule matches a prefix of the
@@ -69,7 +79,7 @@ formatRewrite name applied dir pos = appstr ++ name ++ dirstr ++ show pos
 -- textual representation of the rewrite, as in a derivation file.
 showRewrite :: String -> Rewrite -> String
 showRewrite name (Rewrite rule pos dir) = formatRewrite name applied dir pos
-    where applied = isJust $ derivedFrom rule
+    where applied = isDerivedRule rule
 
 -- | Consumes a monoidal word and a rewrite. Returns true if rule matches at the position
 -- indicated by the rewrite.

@@ -27,6 +27,7 @@ module Lafont.Rewrite.Summary (
 import           Data.Map                        as Map
 import           Data.Set                        as Set
 import           Lafont.Common
+import           Lafont.Maybe
 import           Lafont.Rewrite.Internal.Summary
 import           Lafont.Rewrite.Lookup
 import           Lafont.Rewrite.Rules
@@ -87,7 +88,7 @@ createSummaryRule emap sum = RewriteRule lhs rhs eqn from
     where lhs  = initial sum
           rhs  = final sum
           eqn  = isSummaryEquational emap sum
-          from = propName $ meta sum
+          from = Derived $ propName $ meta sum
 
 -- | Consumes a rule dictionary, an equationality map (emap) a summary recorded in the
 -- map (sum). If the summary is named, then returns a new rule dictionary obtained by
