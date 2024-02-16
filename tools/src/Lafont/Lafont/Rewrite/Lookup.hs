@@ -6,7 +6,8 @@ module Lafont.Rewrite.Lookup (
     hasRule,
     addRule,
     foldRules,
-    interpretRule
+    interpretRule,
+    toRuleNames
 ) where
 
 import qualified Data.Map             as Map
@@ -39,3 +40,7 @@ foldRules f v (RuleDict dict) = Map.foldrWithKey adjust v dict
 -- check if a generator is recorded, then use (hasRule dict id).
 interpretRule :: RuleDict -> String -> Maybe RewriteRule
 interpretRule (RuleDict dict) id = Map.lookup id dict
+
+-- | Returns the names of all rules in a rule dictionary.
+toRuleNames :: RuleDict -> [String]
+toRuleNames (RuleDict dict) = Map.keys dict

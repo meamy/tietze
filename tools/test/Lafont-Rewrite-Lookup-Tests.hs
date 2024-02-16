@@ -169,6 +169,17 @@ test31 = TestCase (assertEqual "Folding accumulator1 on sampleDict3 is successfu
                                ["f1", "b1", "d1", ""]
                                (foldRules accumulator2 [""] sampleDict3))
 
+test32 = TestCase (assertEqual "toRuleNames supports empty rule dictionaries"
+                               []
+                               (toRuleNames sampleDict0))
+
+test33 = TestCase (assertEqual "toRuleNames supports singleton rule dictionaries"
+                               ["abc"]
+                               (toRuleNames sampleDict1))
+
+test34 = TestCase (assertEqual "toRuleNames supports composite rule dictionaries"
+                               ["ab_12_ef", "abc", "def"]
+                               (toRuleNames sampleDict3))
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -203,6 +214,9 @@ tests = hUnitTestToTests $ TestList [TestLabel "RuleDictDoesNotContain_Test0" te
                                      TestLabel "RuleFolding_Test4" test28,
                                      TestLabel "RuleFolding_Test5" test29,
                                      TestLabel "RuleFolding_Test6" test30,
-                                     TestLabel "RuleFolding_Test7" test31]
+                                     TestLabel "RuleFolding_Test7" test31,
+                                     TestLabel "ToRuleNames_Test1" test32,
+                                     TestLabel "ToRuleNames_Test2" test33,
+                                     TestLabel "ToRuleNames_Test3" test34]
 
 main = defaultMain tests
