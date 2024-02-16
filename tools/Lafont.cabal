@@ -25,6 +25,7 @@ library
                        Lafont.Edit.EIRules
                        Lafont.Edit.Internal.EIRules
                        Lafont.Edit.Invert
+                       Lafont.Format.Common
                        Lafont.Format.Internal.GraphViz
                        Lafont.Format.GraphViz
                        Lafont.Format.LaTeX
@@ -212,6 +213,11 @@ test-suite lafont-graph-tests
   main-is:             Lafont-Graph-Tests.hs
   type:                exitcode-stdio-1.0
   build-depends:       containers
+
+test-suite lafont-format-common-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Format-Common-Tests.hs
+  type:                exitcode-stdio-1.0
 
 test-suite lafont-format-graphviz-tests
   import:              basic-unit-test-props
