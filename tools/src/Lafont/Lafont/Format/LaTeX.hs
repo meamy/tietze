@@ -4,12 +4,14 @@ module Lafont.Format.LaTeX (
     MacroList,
     makeGenMacros,
     makeRelMacros,
+    printFormattedLine,
     printMacroList
 ) where
 
 import qualified Data.Map                    as Map
 import           Lafont.Common
 import           Lafont.Graph
+import           Lafont.Format.Common
 import           Lafont.Generators.Semantics
 import           Lafont.Rewrite.Derivations
 import           Lafont.Rewrite.Lookup
@@ -75,3 +77,26 @@ makeRelMacrosImpl (rel:rels) = Map.insert rel def map
 -- math mode symbols may conflict.
 makeRelMacros :: RuleDict -> MacroList
 makeRelMacros = MacroList . makeRelMacrosImpl . toRuleNames
+
+-----------------------------------------------------------------------------------------
+-- * FormattedLine Printing.
+
+-- | Returns the macro symbol associated with a generator symbol. If no generator symbol
+-- can be found, then the \lftgenerr macro is returned.
+symbolToMacro :: MacroList -> Symbol -> String
+symbolToMacro (MacroList map) sym =
+    case Map.lookup (name sym) map of
+        Just (MacroDef cmd _) -> cmd
+        Nothing               -> "\\lftgenerr"
+
+-- | Implements printFormattedLine for a specific MonWord fragment.
+printFormattedLineImpl :: MacroList -> MonWord -> String
+printFormattedLineImpl _      []         = ""
+printFormattedLineImpl macros [sym]      = symbolToMacro macros sym
+printFormattedLineImpl macros (sym:word) = symbolToMacro macros sym ++ " \\cdot " ++ rest
+    where rest = printFormattedLineImpl macros word
+
+-- | Takes as input a mapping from generastor symbols to macro symbols, together with a
+-- formatted line. Returns the corresponding LaTeX line.
+printFormattedLine :: MacroList -> FormattedLine -> String
+printFormattedLine macros (NoEditLine word) = printFormattedLineImpl macros word

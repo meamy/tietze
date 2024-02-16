@@ -4,6 +4,7 @@ import           Test.Framework
 import           Test.Framework.Providers.HUnit
 import           Test.HUnit
 import           Lafont.Common
+import           Lafont.Format.Common
 import           Lafont.Format.LaTeX
 import qualified Lafont.Generators.Semantics as Sem
 import qualified Lafont.Rewrite.Lookup as Rel
@@ -109,6 +110,21 @@ test6 = TestCase (assertEqual "Can produce a MacroList for a set of relations."
           cmd4 = "% Macro for: rel3" ++ "\n" ++ "\\newcommand{\\lftrel0}{R_{0}}"
 
 -----------------------------------------------------------------------------------------
+-- printFormattedLine
+
+gmacros :: MacroList
+gmacros = makeGenMacros sampleGDict5
+
+test7 = TestCase (assertEqual "Can print an empty FormattedLine."
+                              ""
+                              (printFormattedLine gmacros (NoEditLine [])))
+
+test8 = TestCase (assertEqual "Can print an empty FormattedLine."
+                              "\\lftgen4 \\cdot \\lftgen2 \\cdot \\lftgen3"
+                              (printFormattedLine gmacros (NoEditLine word)))
+    where word = [sym1, sym3, sym2]
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "makeGenMacros_Empty" test1,
@@ -116,6 +132,8 @@ tests = hUnitTestToTests $ TestList [TestLabel "makeGenMacros_Empty" test1,
                                      TestLabel "makeGenMacros_3Gen" test3,
                                      TestLabel "makeRelMacros_Empty" test4,
                                      TestLabel "makeRelMacros_1Rel" test5,
-                                     TestLabel "makeRelMacros_4Rel" test6]
+                                     TestLabel "makeRelMacros_4Rel" test6,
+                                     TestLabel "printFormattedLine_Empty" test7,
+                                     TestLabel "printFormattedLine_Nonempty" test8]
 
 main = defaultMain tests
