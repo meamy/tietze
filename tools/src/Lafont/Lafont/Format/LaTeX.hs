@@ -5,6 +5,7 @@ module Lafont.Format.LaTeX (
     makeGenMacros,
     makeRelMacros,
     printFormattedLine,
+    printFormattedProof,
     printFormattedStep,
     printMacroList
 ) where
@@ -124,4 +125,47 @@ printFormattedStep gmacros rmacros (FormattedStep src dir line) = stext
     where macro = relationToMacro rmacros src
           arrow = if dir == L2R then "\\xrightarrow" else "\\xleftarrow"
           ltext = printFormattedLine gmacros line
-          stext = arrow ++ "{" ++ macro ++  "}" ++ " " ++ ltext 
+          stext = arrow ++ "{" ++ macro ++  "}" ++ " " ++ ltext
+
+-----------------------------------------------------------------------------------------
+-- * FormattedProof Printing.
+
+-- | Returns true if the initial line in a FormattedProof is too long for arrows midline.
+isWordLong :: FormattedLine -> Bool
+isWordLong line = flength line >= 5
+
+-- | Implementation details for printProofStep.
+printProofStepImpl :: Bool -> MacroList -> MacroList -> FormattedStep -> String
+printProofStepImpl islong gmacros rmacros step
+    | islong    = "&\\qquad" ++ text
+    | otherwise = "&" ++ text
+    where text = printFormattedStep gmacros rmacros step
+
+-- | Handling the formatting of proof steps, including line breaks and length-based
+-- alignment decisions.
+printProofStep :: Bool -> MacroList -> MacroList -> [FormattedStep] -> String
+printProofStep _      _       _       []     = ""
+printProofStep islong gmacros rmacros [step] = text ++ "\n"
+    where text = printProofStepImpl islong gmacros rmacros step
+printProofStep islong gmacros rmacros (step:steps) = text ++ " \\\n" ++ rest
+    where text = printProofStepImpl islong gmacros rmacros step
+          rest = printProofStep islong gmacros rmacros steps
+
+-- | Handles the formatting of the initial word, including line breaks and length-based
+-- alignment decisions.
+printProofInitWord :: Bool -> MacroList -> FormattedLine -> String
+printProofInitWord islong gmacros word
+    | islong    = "&" ++ text ++ " \\"
+    | otherwise = text
+    where text = printFormattedLine gmacros word
+
+-- | Takes as input a mapping from generator symbols to macro symbols, a mapping from
+-- relation symbols to macro symbols, and a formatted derivational proof. Returns the
+-- corresponding LaTeX alignment block.
+printFormattedProof :: MacroList -> MacroList -> FormattedProof -> String
+printFormattedProof gmacros rmacros (FormattedProof initWord steps) = result
+    where islong = isWordLong initWord
+          fstart = printProofInitWord islong gmacros initWord
+          fsteps = printProofStep islong gmacros rmacros steps
+          aligns = fstart ++ "\n" ++ fsteps
+          result = "\\begin{align*}" ++ "\n" ++ aligns ++ "\\end{align*}"

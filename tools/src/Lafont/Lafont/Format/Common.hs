@@ -4,6 +4,7 @@ module Lafont.Format.Common (
     FormattedLine ( .. ),
     FormattedProof ( .. ),
     FormattedStep ( .. ),
+    flength,
     formatLine,
     formatProof
 ) where
@@ -47,6 +48,10 @@ formatLine :: MonWord -> Maybe Rewrite -> Maybe Rewrite -> FormattedLine
 formatLine word prev next = formatLineImpl word psize nsize
     where psize = extractRewriteSize extractFromPrev prev
           nsize = extractRewriteSize extractFromNext next
+
+-- | Returns the length of a formatted line.
+flength :: FormattedLine -> Int
+flength (NoEditLine word) = length word
 
 -----------------------------------------------------------------------------------------
 -- * FormattedProof Generation

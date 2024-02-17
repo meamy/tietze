@@ -146,12 +146,101 @@ test10 = TestCase (assertEqual "Can print an empty step (R2L)."
           step = FormattedStep name R2L line
 
 test11 = TestCase (assertEqual "Can print an non-empty step (L2R)."
-                              ("\\xrightarrow{\\lftrel0} " ++ mstr)
-                              (printFormattedStep gmacros rmacros step))
+                               ("\\xrightarrow{\\lftrel0} " ++ mstr)
+                               (printFormattedStep gmacros rmacros step))
     where name = Primitive "rel3"
           line = NoEditLine [sym1, sym3, sym2]
           step = FormattedStep name L2R line
           mstr = "\\lftgen4 \\cdot \\lftgen2 \\cdot \\lftgen3"
+
+-----------------------------------------------------------------------------------------
+-- printFormattedProof
+
+line0a :: FormattedLine
+line0a = NoEditLine [sym5, sym1, sym2, sym3]
+
+line1a :: FormattedLine
+line1a = NoEditLine [sym5, sym1, sym2, sym3, sym2, sym2, sym2]
+
+line2a :: FormattedLine
+line2a = NoEditLine [sym5, sym4, sym2, sym2, sym2]
+
+line3a :: FormattedLine
+line3a = NoEditLine [sym4, sym5, sym2, sym2, sym2]
+
+step1a :: FormattedStep
+step1a = FormattedStep (Primitive "rel2") L2R line1a
+
+step2a :: FormattedStep
+step2a = FormattedStep (Primitive "rel1") L2R line2a
+
+step3a :: FormattedStep
+step3a = FormattedStep (Primitive "rel3") R2L line3a
+
+test12 = TestCase (assertEqual "Can print a zero-step proof."
+                              latex
+                              (printFormattedProof gmacros rmacros proof))
+    where proof = FormattedProof line0a []
+          latex = "\\begin{align*}\n" ++
+                  "\\lftgen0 \\cdot \\lftgen4 \\cdot \\lftgen3 \\cdot \\lftgen2\n" ++
+                  "\\end{align*}"
+
+test13 = TestCase (assertEqual "Can print a one-step proof."
+                              latex
+                              (printFormattedProof gmacros rmacros proof))
+    where proof = FormattedProof line0a [step1a]
+          sl1   = "\\lftgen0 \\cdot \\lftgen4 \\cdot \\lftgen3 \\cdot \\lftgen2"
+          sl2   = "\\lftgen3 \\cdot \\lftgen3 \\cdot \\lftgen3"
+          latex =
+            "\\begin{align*}\n" ++
+            sl1 ++ "\n" ++
+            "&\\xrightarrow{\\lftrel1} " ++ sl1 ++ " \\cdot " ++ sl2 ++ "\n" ++
+            "\\end{align*}"
+
+test14 = TestCase (assertEqual "Can print a two-step proof."
+                              latex
+                              (printFormattedProof gmacros rmacros proof))
+    where proof = FormattedProof line0a [step1a, step2a]
+          sl1   = "\\lftgen0 \\cdot \\lftgen4 \\cdot \\lftgen3 \\cdot \\lftgen2"
+          sl2   = "\\lftgen3 \\cdot \\lftgen3 \\cdot \\lftgen3"
+          sl3   = "\\lftgen0 \\cdot \\lftgen1"
+          latex =
+            "\\begin{align*}\n" ++
+            sl1 ++ "\n" ++
+            "&\\xrightarrow{\\lftrel1} " ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
+            "&\\xrightarrow{\\lftrel2} " ++ sl3 ++ " \\cdot " ++ sl2 ++ "\n" ++
+            "\\end{align*}"
+
+test15 = TestCase (assertEqual "Can print a three-step proof."
+                              latex
+                              (printFormattedProof gmacros rmacros proof))
+    where proof = FormattedProof line0a [step1a, step2a, step3a]
+          sl1   = "\\lftgen0 \\cdot \\lftgen4 \\cdot \\lftgen3 \\cdot \\lftgen2"
+          sl2   = "\\lftgen3 \\cdot \\lftgen3 \\cdot \\lftgen3"
+          sl3   = "\\lftgen0 \\cdot \\lftgen1"
+          sl4   = "\\lftgen1 \\cdot \\lftgen0"
+          latex =
+            "\\begin{align*}\n" ++
+            sl1 ++ "\n" ++
+            "&\\xrightarrow{\\lftrel1} " ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
+            "&\\xrightarrow{\\lftrel2} " ++ sl3 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
+            "&\\xleftarrow{\\lftrel0} " ++ sl4 ++ " \\cdot " ++ sl2 ++ "\n" ++
+            "\\end{align*}"
+
+test16 = TestCase (assertEqual "Can print a two-step proof."
+                              latex
+                              (printFormattedProof gmacros rmacros proof))
+    where proof = FormattedProof line1a [step2a, step3a]
+          sl1   = "\\lftgen0 \\cdot \\lftgen4 \\cdot \\lftgen3 \\cdot \\lftgen2"
+          sl2   = "\\lftgen3 \\cdot \\lftgen3 \\cdot \\lftgen3"
+          sl3   = "\\lftgen0 \\cdot \\lftgen1"
+          sl4   = "\\lftgen1 \\cdot \\lftgen0"
+          latex =
+            "\\begin{align*}\n" ++
+            "&" ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
+            "&\\qquad\\xrightarrow{\\lftrel2} " ++ sl3 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
+            "&\\qquad\\xleftarrow{\\lftrel0} " ++ sl4 ++ " \\cdot " ++ sl2 ++ "\n" ++
+            "\\end{align*}"
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -166,6 +255,11 @@ tests = hUnitTestToTests $ TestList [TestLabel "makeGenMacros_Empty" test1,
                                      TestLabel "printFormattedLine_Nonempty" test8,
                                      TestLabel "printFormattedStep_Empty_L2R" test9,
                                      TestLabel "printFormattedStep_Empty_R2L" test10,
-                                     TestLabel "printFormattedStep_Nonempty" test11]
+                                     TestLabel "printFormattedStep_Nonempty" test11,
+                                     TestLabel "printFormattedProof_0Step" test12,
+                                     TestLabel "printFormattedProof_1Step" test13,
+                                     TestLabel "printFormattedProof_2Step" test14,
+                                     TestLabel "printFormattedProof_3Step" test15,
+                                     TestLabel "printFormattedProof_Long" test16]
 
 main = defaultMain tests
