@@ -7,6 +7,7 @@ import           Lafont.Common
 import           Lafont.Format.Common
 import           Lafont.Format.LaTeX
 import qualified Lafont.Generators.Semantics as Sem
+import           Lafont.Rewrite.Common
 import qualified Lafont.Rewrite.Lookup as Rel
 import           Lafont.Rewrite.Rules
 
@@ -116,13 +117,41 @@ gmacros :: MacroList
 gmacros = makeGenMacros sampleGDict5
 
 test7 = TestCase (assertEqual "Can print an empty FormattedLine."
-                              ""
+                              "\\epsilon"
                               (printFormattedLine gmacros (NoEditLine [])))
 
 test8 = TestCase (assertEqual "Can print an empty FormattedLine."
                               "\\lftgen4 \\cdot \\lftgen2 \\cdot \\lftgen3"
                               (printFormattedLine gmacros (NoEditLine word)))
     where word = [sym1, sym3, sym2]
+
+-----------------------------------------------------------------------------------------
+-- printFormattedStep
+
+rmacros :: MacroList
+rmacros = makeRelMacros sampleRDict4
+
+test9 = TestCase (assertEqual "Can print an empty step (L2R)."
+                              "\\xrightarrow{\\lftrel2} \\epsilon"
+                              (printFormattedStep gmacros rmacros step))
+    where name = Primitive "rel1"
+          line = NoEditLine []
+          step = FormattedStep name L2R line
+
+test10 = TestCase (assertEqual "Can print an empty step (R2L)."
+                               "\\xleftarrow{\\lftrel1} \\epsilon"
+                               (printFormattedStep gmacros rmacros step))
+    where name = Primitive "rel2"
+          line = NoEditLine []
+          step = FormattedStep name R2L line
+
+test11 = TestCase (assertEqual "Can print an non-empty step (L2R)."
+                              ("\\xrightarrow{\\lftrel0} " ++ mstr)
+                              (printFormattedStep gmacros rmacros step))
+    where name = Primitive "rel3"
+          line = NoEditLine [sym1, sym3, sym2]
+          step = FormattedStep name L2R line
+          mstr = "\\lftgen4 \\cdot \\lftgen2 \\cdot \\lftgen3"
 
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
@@ -134,6 +163,9 @@ tests = hUnitTestToTests $ TestList [TestLabel "makeGenMacros_Empty" test1,
                                      TestLabel "makeRelMacros_1Rel" test5,
                                      TestLabel "makeRelMacros_4Rel" test6,
                                      TestLabel "printFormattedLine_Empty" test7,
-                                     TestLabel "printFormattedLine_Nonempty" test8]
+                                     TestLabel "printFormattedLine_Nonempty" test8,
+                                     TestLabel "printFormattedStep_Empty_L2R" test9,
+                                     TestLabel "printFormattedStep_Empty_R2L" test10,
+                                     TestLabel "printFormattedStep_Nonempty" test11]
 
 main = defaultMain tests

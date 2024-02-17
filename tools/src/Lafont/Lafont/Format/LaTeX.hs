@@ -5,6 +5,7 @@ module Lafont.Format.LaTeX (
     makeGenMacros,
     makeRelMacros,
     printFormattedLine,
+    printFormattedStep,
     printMacroList
 ) where
 
@@ -13,6 +14,7 @@ import           Lafont.Common
 import           Lafont.Graph
 import           Lafont.Format.Common
 import           Lafont.Generators.Semantics
+import           Lafont.Rewrite.Common
 import           Lafont.Rewrite.Derivations
 import           Lafont.Rewrite.Lookup
 import           Lafont.Rewrite.Rules
@@ -91,12 +93,35 @@ symbolToMacro (MacroList map) sym =
 
 -- | Implements printFormattedLine for a specific MonWord fragment.
 printFormattedLineImpl :: MacroList -> MonWord -> String
-printFormattedLineImpl _      []         = ""
+printFormattedLineImpl _      []         = "\\epsilon"
 printFormattedLineImpl macros [sym]      = symbolToMacro macros sym
 printFormattedLineImpl macros (sym:word) = symbolToMacro macros sym ++ " \\cdot " ++ rest
     where rest = printFormattedLineImpl macros word
 
--- | Takes as input a mapping from generastor symbols to macro symbols, together with a
+-- | Takes as input a mapping from generator symbols to macro symbols, together with a
 -- formatted line. Returns the corresponding LaTeX line.
 printFormattedLine :: MacroList -> FormattedLine -> String
 printFormattedLine macros (NoEditLine word) = printFormattedLineImpl macros word
+
+-----------------------------------------------------------------------------------------
+-- * FormattedStep Printing.
+
+-- | Returns the macro symbol associated with a relation symbol. If no relation symbol
+-- can be found, then the \lftrelerr macro is returned.
+relationToMacro :: MacroList -> RuleSource -> String
+relationToMacro (MacroList map) (Primitive name) =
+    case Map.lookup name map of
+        Just (MacroDef cmd _) -> cmd
+        Nothing               -> "\\lftrelerr"
+relationToMacro _     (Derived Nothing)     = "\\lftrelerr"
+relationToMacro macro (Derived (Just name)) = relationToMacro macro $ Primitive name
+
+-- | Takes as input a mapping from generator symbols to macro symbols, a mapping from
+-- relation symbols to macro symbols, and a formatted step. Returns the corresponding
+-- LaTeX line.
+printFormattedStep :: MacroList -> MacroList -> FormattedStep -> String
+printFormattedStep gmacros rmacros (FormattedStep src dir line) = stext
+    where macro = relationToMacro rmacros src
+          arrow = if dir == L2R then "\\xrightarrow" else "\\xleftarrow"
+          ltext = printFormattedLine gmacros line
+          stext = arrow ++ "{" ++ macro ++  "}" ++ " " ++ ltext 
