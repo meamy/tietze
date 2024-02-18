@@ -5,6 +5,8 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Lafont.Common
 import Lafont.Rewrite.Common
+import Lafont.Rewrite.Derivations
+import Lafont.Rewrite.Summary
 import Lafont.Format.Common
 import Lafont.Rewrite.Rules
 
@@ -107,12 +109,22 @@ test5 = TestCase (assertEqual "Can handle a 4-step derivation."
                               (formatProof word_a [app1a, app2a, app3a, app4a]))
 
 -----------------------------------------------------------------------------------------
+-- formatDerivation Tests
+
+test6 = TestCase (assertEqual "Can convert derivations to proofs."
+                              (FormattedProof line0a [step1a, step2a, step3a, step4a])
+                              (formatDerivation der))
+    where sum = DerivationSummary (RewritePreamble Nothing Nothing) word_a []
+          der = Derivation sum [app1a, app2a, app3a, app4a]
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "formatProof_Empty" test1,
                                      TestLabel "formatProof_1Step" test2,
                                      TestLabel "formatProof_2Step" test3,
                                      TestLabel "formatProof_3Step" test4,
-                                     TestLabel "formatProof_4Step" test5]
+                                     TestLabel "formatProof_4Step" test5,
+                                     TestLabel "formatDerivation_Test" test6]
 
 main = defaultMain tests

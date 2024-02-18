@@ -5,6 +5,7 @@ module Lafont.Format.Common (
     FormattedProof ( .. ),
     FormattedStep ( .. ),
     flength,
+    formatDerivation,
     formatLine,
     formatProof
 ) where
@@ -12,7 +13,9 @@ module Lafont.Format.Common (
 import Data.Maybe
 import Lafont.Common
 import Lafont.Rewrite.Common
+import Lafont.Rewrite.Derivations
 import Lafont.Rewrite.Rules
+import Lafont.Rewrite.Summary
 
 -----------------------------------------------------------------------------------------
 -- * FormattedLine Generation
@@ -83,3 +86,9 @@ formatProof word [] = FormattedProof initLine []
 formatProof word (rw:rws) = FormattedProof initLine stepList
     where initLine = formatLine word Nothing $ Just rw
           stepList = formatProofImpl word rw rws
+
+-- | Formats a derivation as a proof. The initial word is taken to be the initial word of
+-- the derivation, and the list of rewrites is taken to be the rewrites making up the
+-- steps of the derivation.
+formatDerivation :: Derivation -> FormattedProof
+formatDerivation (Derivation sum rewrites) = formatProof (initial sum) rewrites
