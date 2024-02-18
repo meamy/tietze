@@ -10,6 +10,7 @@ module Lafont.Format.LaTeX (
     printMacroList
 ) where
 
+import           Data.Char
 import qualified Data.Map                    as Map
 import           Lafont.Common
 import           Lafont.Graph
@@ -46,6 +47,15 @@ printMacroList (MacroList map) = Map.foldrWithKey f "" map
     where f gen def res = let comment = "% Macro for: " ++ gen 
                           in comment ++ "\n" ++ printMacroDef def ++ "\n" ++ res
 
+-- | Converts integers to LaTeX macro friendly symbols.
+formatMacroID :: Int -> String
+formatMacroID n
+    | q > 0     = c ++ formatMacroID q
+    | otherwise = c
+    where r = n `mod` 26
+          q = n `quot` 26
+          c = [chr $ ord 'A' + r]
+
 -- | Implementation details for makeGenMacros. Consumes the alphabet corresponding to a
 -- generator dictionary. Returns the raw map encapsulated by a MacroDef.
 makeGenMacrosImpl :: [String] -> Map.Map String MacroDef
@@ -53,7 +63,7 @@ makeGenMacrosImpl []         = Map.empty
 makeGenMacrosImpl (gen:gens) = Map.insert gen def map
     where map = makeGenMacrosImpl gens
           idx = Map.size map
-          cmd = "\\lftgen" ++ show idx
+          cmd = "\\lftgen" ++ formatMacroID idx
           sym = "X_{" ++ show idx ++ "}"
           def = MacroDef cmd sym
 
@@ -70,7 +80,7 @@ makeRelMacrosImpl []         = Map.empty
 makeRelMacrosImpl (rel:rels) = Map.insert rel def map
     where map = makeRelMacrosImpl rels
           idx = Map.size map
-          cmd = "\\lftrel" ++ show idx
+          cmd = "\\lftrel" ++ formatMacroID idx
           sym = "R_{" ++ show idx ++ "}"
           def = MacroDef cmd sym
 

@@ -64,15 +64,15 @@ test2 = TestCase (assertEqual "Can produce a MacroList for a single generator."
                               (cmd1 ++ "\n")
                               (printMacroList $ makeGenMacros syms))
     where syms = Sem.toAlphabet sampleGDict1
-          cmd1 = "% Macro for: abc_xyz" ++ "\n" ++ "\\newcommand{\\lftgen0}{X_{0}}"
+          cmd1 = "% Macro for: abc_xyz" ++ "\n" ++ "\\newcommand{\\lftgenA}{X_{0}}"
 
 test3 = TestCase (assertEqual "Can produce a MacroList for a set of generators."
                               (cmd1 ++ "\n" ++ cmd2 ++ "\n" ++ cmd3 ++ "\n")
                               (printMacroList $ makeGenMacros syms))
     where syms = Sem.toAlphabet sampleGDict3
-          cmd1 = "% Macro for: abc_xyz" ++ "\n" ++ "\\newcommand{\\lftgen2}{X_{2}}"
-          cmd2 = "% Macro for: gen0" ++ "\n" ++ "\\newcommand{\\lftgen1}{X_{1}}"
-          cmd3 = "% Macro for: gen1" ++ "\n" ++ "\\newcommand{\\lftgen0}{X_{0}}"
+          cmd1 = "% Macro for: abc_xyz" ++ "\n" ++ "\\newcommand{\\lftgenC}{X_{2}}"
+          cmd2 = "% Macro for: gen0" ++ "\n" ++ "\\newcommand{\\lftgenB}{X_{1}}"
+          cmd3 = "% Macro for: gen1" ++ "\n" ++ "\\newcommand{\\lftgenA}{X_{0}}"
 
 -----------------------------------------------------------------------------------------
 -- makeRelMacros
@@ -103,15 +103,15 @@ test4 = TestCase (assertEqual "Can produce a empty MacroList from a GenDict."
 test5 = TestCase (assertEqual "Can produce a MacroList for a single relation."
                               (cmd1 ++ "\n")
                               (printMacroList $ makeRelMacros sampleRDict1))
-    where cmd1 = "% Macro for: rel1" ++ "\n" ++ "\\newcommand{\\lftrel0}{R_{0}}"
+    where cmd1 = "% Macro for: rel1" ++ "\n" ++ "\\newcommand{\\lftrelA}{R_{0}}"
 
 test6 = TestCase (assertEqual "Can produce a MacroList for a set of relations."
                               cmds
                               (printMacroList $ makeRelMacros sampleRDict4))
-    where cmd1 = "% Macro for: drel1" ++ "\n" ++ "\\newcommand{\\lftrel3}{R_{3}}"
-          cmd2 = "% Macro for: rel1" ++ "\n" ++ "\\newcommand{\\lftrel2}{R_{2}}"
-          cmd3 = "% Macro for: rel2" ++ "\n" ++ "\\newcommand{\\lftrel1}{R_{1}}"
-          cmd4 = "% Macro for: rel3" ++ "\n" ++ "\\newcommand{\\lftrel0}{R_{0}}"
+    where cmd1 = "% Macro for: drel1" ++ "\n" ++ "\\newcommand{\\lftrelD}{R_{3}}"
+          cmd2 = "% Macro for: rel1" ++ "\n" ++ "\\newcommand{\\lftrelC}{R_{2}}"
+          cmd3 = "% Macro for: rel2" ++ "\n" ++ "\\newcommand{\\lftrelB}{R_{1}}"
+          cmd4 = "% Macro for: rel3" ++ "\n" ++ "\\newcommand{\\lftrelA}{R_{0}}"
           cmds = cmd1 ++ "\n" ++ cmd2 ++ "\n" ++ cmd3 ++ "\n" ++ cmd4 ++ "\n"
 
 -----------------------------------------------------------------------------------------
@@ -125,7 +125,7 @@ test7 = TestCase (assertEqual "Can print an empty FormattedLine."
                               (printFormattedLine gmacros (NoEditLine [])))
 
 test8 = TestCase (assertEqual "Can print an empty FormattedLine."
-                              "\\lftgen4 \\cdot \\lftgen2 \\cdot \\lftgen3"
+                              "\\lftgenE \\cdot \\lftgenC \\cdot \\lftgenD"
                               (printFormattedLine gmacros (NoEditLine word)))
     where word = [sym1, sym3, sym2]
 
@@ -136,26 +136,26 @@ rmacros :: MacroList
 rmacros = makeRelMacros sampleRDict4
 
 test9 = TestCase (assertEqual "Can print an empty step (L2R)."
-                              "\\xrightarrow{\\lftrel2} \\epsilon"
+                              "\\xrightarrow{\\lftrelC} \\epsilon"
                               (printFormattedStep gmacros rmacros step))
     where name = Primitive "rel1"
           line = NoEditLine []
           step = FormattedStep name L2R line
 
 test10 = TestCase (assertEqual "Can print an empty step (R2L)."
-                               "\\xleftarrow{\\lftrel1} \\epsilon"
+                               "\\xleftarrow{\\lftrelB} \\epsilon"
                                (printFormattedStep gmacros rmacros step))
     where name = Primitive "rel2"
           line = NoEditLine []
           step = FormattedStep name R2L line
 
 test11 = TestCase (assertEqual "Can print an non-empty step (L2R)."
-                               ("\\xrightarrow{\\lftrel0} " ++ mstr)
+                               ("\\xrightarrow{\\lftrelA} " ++ mstr)
                                (printFormattedStep gmacros rmacros step))
     where name = Primitive "rel3"
           line = NoEditLine [sym1, sym3, sym2]
           step = FormattedStep name L2R line
-          mstr = "\\lftgen4 \\cdot \\lftgen2 \\cdot \\lftgen3"
+          mstr = "\\lftgenE \\cdot \\lftgenC \\cdot \\lftgenD"
 
 -----------------------------------------------------------------------------------------
 -- printFormattedProof
@@ -186,64 +186,64 @@ test12 = TestCase (assertEqual "Can print a zero-step proof."
                               (printFormattedProof gmacros rmacros proof))
     where proof = FormattedProof line0a []
           latex = "\\begin{align*}\n" ++
-                  "\\lftgen0 \\cdot \\lftgen4 \\cdot \\lftgen3 \\cdot \\lftgen2\n" ++
+                  "\\lftgenA \\cdot \\lftgenE \\cdot \\lftgenD \\cdot \\lftgenC\n" ++
                   "\\end{align*}"
 
 test13 = TestCase (assertEqual "Can print a one-step proof."
                               latex
                               (printFormattedProof gmacros rmacros proof))
     where proof = FormattedProof line0a [step1a]
-          sl1   = "\\lftgen0 \\cdot \\lftgen4 \\cdot \\lftgen3 \\cdot \\lftgen2"
-          sl2   = "\\lftgen3 \\cdot \\lftgen3 \\cdot \\lftgen3"
+          sl1   = "\\lftgenA \\cdot \\lftgenE \\cdot \\lftgenD \\cdot \\lftgenC"
+          sl2   = "\\lftgenD \\cdot \\lftgenD \\cdot \\lftgenD"
           latex =
             "\\begin{align*}\n" ++
             sl1 ++ "\n" ++
-            "&\\xrightarrow{\\lftrel1} " ++ sl1 ++ " \\cdot " ++ sl2 ++ "\n" ++
+            "&\\xrightarrow{\\lftrelB} " ++ sl1 ++ " \\cdot " ++ sl2 ++ "\n" ++
             "\\end{align*}"
 
 test14 = TestCase (assertEqual "Can print a two-step proof."
                               latex
                               (printFormattedProof gmacros rmacros proof))
     where proof = FormattedProof line0a [step1a, step2a]
-          sl1   = "\\lftgen0 \\cdot \\lftgen4 \\cdot \\lftgen3 \\cdot \\lftgen2"
-          sl2   = "\\lftgen3 \\cdot \\lftgen3 \\cdot \\lftgen3"
-          sl3   = "\\lftgen0 \\cdot \\lftgen1"
+          sl1   = "\\lftgenA \\cdot \\lftgenE \\cdot \\lftgenD \\cdot \\lftgenC"
+          sl2   = "\\lftgenD \\cdot \\lftgenD \\cdot \\lftgenD"
+          sl3   = "\\lftgenA \\cdot \\lftgenB"
           latex =
             "\\begin{align*}\n" ++
             sl1 ++ "\n" ++
-            "&\\xrightarrow{\\lftrel1} " ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
-            "&\\xrightarrow{\\lftrel2} " ++ sl3 ++ " \\cdot " ++ sl2 ++ "\n" ++
+            "&\\xrightarrow{\\lftrelB} " ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
+            "&\\xrightarrow{\\lftrelC} " ++ sl3 ++ " \\cdot " ++ sl2 ++ "\n" ++
             "\\end{align*}"
 
 test15 = TestCase (assertEqual "Can print a three-step proof."
                               latex
                               (printFormattedProof gmacros rmacros proof))
     where proof = FormattedProof line0a [step1a, step2a, step3a]
-          sl1   = "\\lftgen0 \\cdot \\lftgen4 \\cdot \\lftgen3 \\cdot \\lftgen2"
-          sl2   = "\\lftgen3 \\cdot \\lftgen3 \\cdot \\lftgen3"
-          sl3   = "\\lftgen0 \\cdot \\lftgen1"
-          sl4   = "\\lftgen1 \\cdot \\lftgen0"
+          sl1   = "\\lftgenA \\cdot \\lftgenE \\cdot \\lftgenD \\cdot \\lftgenC"
+          sl2   = "\\lftgenD \\cdot \\lftgenD \\cdot \\lftgenD"
+          sl3   = "\\lftgenA \\cdot \\lftgenB"
+          sl4   = "\\lftgenB \\cdot \\lftgenA"
           latex =
             "\\begin{align*}\n" ++
             sl1 ++ "\n" ++
-            "&\\xrightarrow{\\lftrel1} " ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
-            "&\\xrightarrow{\\lftrel2} " ++ sl3 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
-            "&\\xleftarrow{\\lftrel0} " ++ sl4 ++ " \\cdot " ++ sl2 ++ "\n" ++
+            "&\\xrightarrow{\\lftrelB} " ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
+            "&\\xrightarrow{\\lftrelC} " ++ sl3 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
+            "&\\xleftarrow{\\lftrelA} " ++ sl4 ++ " \\cdot " ++ sl2 ++ "\n" ++
             "\\end{align*}"
 
 test16 = TestCase (assertEqual "Can print a two-step proof."
                               latex
                               (printFormattedProof gmacros rmacros proof))
     where proof = FormattedProof line1a [step2a, step3a]
-          sl1   = "\\lftgen0 \\cdot \\lftgen4 \\cdot \\lftgen3 \\cdot \\lftgen2"
-          sl2   = "\\lftgen3 \\cdot \\lftgen3 \\cdot \\lftgen3"
-          sl3   = "\\lftgen0 \\cdot \\lftgen1"
-          sl4   = "\\lftgen1 \\cdot \\lftgen0"
+          sl1   = "\\lftgenA \\cdot \\lftgenE \\cdot \\lftgenD \\cdot \\lftgenC"
+          sl2   = "\\lftgenD \\cdot \\lftgenD \\cdot \\lftgenD"
+          sl3   = "\\lftgenA \\cdot \\lftgenB"
+          sl4   = "\\lftgenB \\cdot \\lftgenA"
           latex =
             "\\begin{align*}\n" ++
             "&" ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
-            "&\\qquad\\xrightarrow{\\lftrel2} " ++ sl3 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
-            "&\\qquad\\xleftarrow{\\lftrel0} " ++ sl4 ++ " \\cdot " ++ sl2 ++ "\n" ++
+            "&\\qquad\\xrightarrow{\\lftrelC} " ++ sl3 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
+            "&\\qquad\\xleftarrow{\\lftrelA} " ++ sl4 ++ " \\cdot " ++ sl2 ++ "\n" ++
             "\\end{align*}"
 
 -----------------------------------------------------------------------------------------
