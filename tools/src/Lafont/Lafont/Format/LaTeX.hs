@@ -60,8 +60,8 @@ makeGenMacrosImpl (gen:gens) = Map.insert gen def map
 -- | Constructs the MacroList corresponding to a generator dictionary. Note that for each
 -- LaTeX document, only one MacroList should be generated. Otherwise, the macro names or
 -- corresponding math mode symbols may conflict.
-makeGenMacros :: GenDict a -> MacroList
-makeGenMacros = MacroList . makeGenMacrosImpl . toAlphabet
+makeGenMacros :: [String] -> MacroList
+makeGenMacros = MacroList . makeGenMacrosImpl
 
 -- | Implementation details for makeRelMacros. Consumes the list of rule names
 -- corresponding to a rule dictionary. Returns the raw map encapsulated by a MacroDef.

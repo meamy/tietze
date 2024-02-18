@@ -57,17 +57,20 @@ sampleGDict5 = Sem.addGen sampleGDict4 gen5
 
 test1 = TestCase (assertEqual "Can produce a empty MacroList from a GenDict."
                               ""
-                              (printMacroList $ makeGenMacros sampleGDict0))
+                              (printMacroList $ makeGenMacros syms))
+      where syms = Sem.toAlphabet sampleGDict0
 
 test2 = TestCase (assertEqual "Can produce a MacroList for a single generator."
                               (cmd1 ++ "\n")
-                              (printMacroList $ makeGenMacros sampleGDict1))
-    where cmd1 = "% Macro for: abc_xyz" ++ "\n" ++ "\\newcommand{\\lftgen0}{X_{0}}"
+                              (printMacroList $ makeGenMacros syms))
+    where syms = Sem.toAlphabet sampleGDict1
+          cmd1 = "% Macro for: abc_xyz" ++ "\n" ++ "\\newcommand{\\lftgen0}{X_{0}}"
 
 test3 = TestCase (assertEqual "Can produce a MacroList for a set of generators."
                               (cmd1 ++ "\n" ++ cmd2 ++ "\n" ++ cmd3 ++ "\n")
-                              (printMacroList $ makeGenMacros sampleGDict3))
-    where cmd1 = "% Macro for: abc_xyz" ++ "\n" ++ "\\newcommand{\\lftgen2}{X_{2}}"
+                              (printMacroList $ makeGenMacros syms))
+    where syms = Sem.toAlphabet sampleGDict3
+          cmd1 = "% Macro for: abc_xyz" ++ "\n" ++ "\\newcommand{\\lftgen2}{X_{2}}"
           cmd2 = "% Macro for: gen0" ++ "\n" ++ "\\newcommand{\\lftgen1}{X_{1}}"
           cmd3 = "% Macro for: gen1" ++ "\n" ++ "\\newcommand{\\lftgen0}{X_{0}}"
 
@@ -103,18 +106,19 @@ test5 = TestCase (assertEqual "Can produce a MacroList for a single relation."
     where cmd1 = "% Macro for: rel1" ++ "\n" ++ "\\newcommand{\\lftrel0}{R_{0}}"
 
 test6 = TestCase (assertEqual "Can produce a MacroList for a set of relations."
-                              (cmd1 ++ "\n" ++ cmd2 ++ "\n" ++ cmd3 ++ "\n" ++ cmd4 ++ "\n")
+                              cmds
                               (printMacroList $ makeRelMacros sampleRDict4))
     where cmd1 = "% Macro for: drel1" ++ "\n" ++ "\\newcommand{\\lftrel3}{R_{3}}"
           cmd2 = "% Macro for: rel1" ++ "\n" ++ "\\newcommand{\\lftrel2}{R_{2}}"
           cmd3 = "% Macro for: rel2" ++ "\n" ++ "\\newcommand{\\lftrel1}{R_{1}}"
           cmd4 = "% Macro for: rel3" ++ "\n" ++ "\\newcommand{\\lftrel0}{R_{0}}"
+          cmds = cmd1 ++ "\n" ++ cmd2 ++ "\n" ++ cmd3 ++ "\n" ++ cmd4 ++ "\n"
 
 -----------------------------------------------------------------------------------------
 -- printFormattedLine
 
 gmacros :: MacroList
-gmacros = makeGenMacros sampleGDict5
+gmacros = makeGenMacros $ Sem.toAlphabet sampleGDict5
 
 test7 = TestCase (assertEqual "Can print an empty FormattedLine."
                               "\\epsilon"
