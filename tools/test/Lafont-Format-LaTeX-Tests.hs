@@ -211,7 +211,7 @@ test14 = TestCase (assertEqual "Can print a two-step proof."
           latex =
             "\\begin{align*}\n" ++
             sl1 ++ "\n" ++
-            "&\\xrightarrow{\\lftrelB} " ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
+            "&\\xrightarrow{\\lftrelB} " ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\\\n" ++
             "&\\xrightarrow{\\lftrelC} " ++ sl3 ++ " \\cdot " ++ sl2 ++ "\n" ++
             "\\end{align*}"
 
@@ -226,8 +226,8 @@ test15 = TestCase (assertEqual "Can print a three-step proof."
           latex =
             "\\begin{align*}\n" ++
             sl1 ++ "\n" ++
-            "&\\xrightarrow{\\lftrelB} " ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
-            "&\\xrightarrow{\\lftrelC} " ++ sl3 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
+            "&\\xrightarrow{\\lftrelB} " ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\\\n" ++
+            "&\\xrightarrow{\\lftrelC} " ++ sl3 ++ " \\cdot " ++ sl2 ++ " \\\\\n" ++
             "&\\xleftarrow{\\lftrelA} " ++ sl4 ++ " \\cdot " ++ sl2 ++ "\n" ++
             "\\end{align*}"
 
@@ -241,8 +241,8 @@ test16 = TestCase (assertEqual "Can print a two-step proof."
           sl4   = "\\lftgenB \\cdot \\lftgenA"
           latex =
             "\\begin{align*}\n" ++
-            "&" ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
-            "&\\qquad\\xrightarrow{\\lftrelC} " ++ sl3 ++ " \\cdot " ++ sl2 ++ " \\\n" ++
+            "&" ++ sl1 ++ " \\cdot " ++ sl2 ++ " \\\\\n" ++
+            "&\\qquad\\xrightarrow{\\lftrelC} " ++ sl3 ++ " \\cdot " ++ sl2 ++ " \\\\\n" ++
             "&\\qquad\\xleftarrow{\\lftrelA} " ++ sl4 ++ " \\cdot " ++ sl2 ++ "\n" ++
             "\\end{align*}"
 

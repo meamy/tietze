@@ -157,7 +157,7 @@ printProofStep :: Bool -> MacroList -> MacroList -> [FormattedStep] -> String
 printProofStep _      _       _       []     = ""
 printProofStep islong gmacros rmacros [step] = text ++ "\n"
     where text = printProofStepImpl islong gmacros rmacros step
-printProofStep islong gmacros rmacros (step:steps) = text ++ " \\\n" ++ rest
+printProofStep islong gmacros rmacros (step:steps) = text ++ " \\\\" ++ "\n" ++ rest
     where text = printProofStepImpl islong gmacros rmacros step
           rest = printProofStep islong gmacros rmacros steps
 
@@ -165,7 +165,7 @@ printProofStep islong gmacros rmacros (step:steps) = text ++ " \\\n" ++ rest
 -- alignment decisions.
 printProofInitWord :: Bool -> MacroList -> FormattedLine -> String
 printProofInitWord islong gmacros word
-    | islong    = "&" ++ text ++ " \\"
+    | islong    = "&" ++ text ++ " \\\\"
     | otherwise = text
     where text = printFormattedLine gmacros word
 
