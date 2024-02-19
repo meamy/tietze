@@ -13,7 +13,6 @@ import           Lafont.Rewrite.Simplification
 import           Lafont.Rewrite.Summary
 import           LafontExe.IO.Files
 import           LafontExe.Logging.ErrorFormat
-import           LafontExe.Logging.Graph
 import           LafontExe.Logging.LineBased
 import           LafontExe.Logic.Derivations
 import           LafontExe.Logic.Relations
@@ -21,15 +20,6 @@ import           System.IO
 
 -----------------------------------------------------------------------------------------
 -- * Logic.
-
--- | Folds concretization across all named derivations.
-concretize :: DerivationMetadata -> [Named AbsDerivation] -> ParseFilesRV Int Derivation
-concretize _    []                                 = Right []
-concretize meta ((Named src idx derv):derivations) =
-    case concretizeDerivation meta derv of
-        Left pos    -> Left (src, idx, pos)
-        Right deriv -> updateRight (concretize meta derivations) $ \rest ->
-            Named src idx deriv : rest
 
 -- | Consumes a list of pairs, where each tuple contains the name of a derivation file
 -- and the Derivation it describes. If a derivation is invalid, then a summary of the
@@ -52,15 +42,9 @@ verifyDerivationSteps ((Named src idx deriv):derivations) =
 -- message is printed.
 verifyDerivations :: [Named AbsDerivation] -> String
 verifyDerivations named =
-    case detectDerivationError absDerivations of
-        Just (Left unmet)  -> "Unmet dependency: " ++ printUnmetDep unmet ++ "\n"
-        Just (Right cycle) -> "Dependency cycle detected: " ++ printCycle cycle ++ "\n"
-        Nothing            -> case concretize (dmap, emap) named of
-            Left (fname, num, pos) -> describeFailedApply fname num pos
-            Right derivs           -> verifyDerivationSteps derivs
-    where absDerivations = Prelude.map value named
-          dmap           = makeDerivationMap absDerivations
-          emap           = identifyEquationalRules dmap
+    case concretize named of
+        Left errmsg  -> errmsg
+        Right derivs -> verifyDerivationSteps derivs
 
 -- | Consumes a handle, a list of derivation files (DerivFnames), a dictionary of rewrite
 -- rules (rules), and a list of generators (gens). If all derivations parse correctly,

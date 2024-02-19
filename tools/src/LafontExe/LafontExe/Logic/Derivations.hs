@@ -6,9 +6,12 @@ import           Lafont.Either
 import           Lafont.Named
 import           Lafont.Parse.DerivationFile
 import           Lafont.Rewrite.Abstraction
+import           Lafont.Rewrite.Derivations
 import           Lafont.Rewrite.Lookup
 import           Lafont.Rewrite.Summary
 import           LafontExe.IO.Files
+import           LafontExe.Logging.ErrorFormat
+import           LafontExe.Logging.Graph
 
 -----------------------------------------------------------------------------------------
 -- * Type-specialized parsing of derivations.
@@ -60,3 +63,30 @@ processPreDerivations prederivs rules gens =
         Right derived    -> case parseRewriteSections rules derived prederivs of
             Left (fname, ln, err) -> BadDeriv fname ln err
             Right derivations     -> NamedDerivs derivations
+
+-- | Implmentation details for concretize.
+cimpl :: DerivationMetadata -> [Named AbsDerivation] -> ParseFilesRV Int Derivation
+cimpl _    []                                 = Right []
+cimpl meta ((Named src idx derv):derivations) =
+    case concretizeDerivation meta derv of
+        Left pos    -> Left (src, idx, pos)
+        Right deriv -> updateRight (cimpl meta derivations) $ \rest ->
+            Named src idx deriv : rest
+
+-- | Takes as input a list of named derivations. If the derivations are not free from
+-- errors, then a textual representation of the first encountered error is returned (see
+-- detectDerivationError). Otherwise, if a derivation fails to be concretized, then a
+-- textual representation of why this derivation cannot be concretized is returned.
+-- Otherwise, all derivations are concretized and the corresponding concrete derivations
+-- are returned, with the same named metadata.
+concretize :: [Named AbsDerivation] -> Either String [Named Derivation]
+concretize named =
+    case detectDerivationError absDerivations of
+        Just (Left dep) -> Left $ "Unmet dependency: " ++ printUnmetDep dep ++ "\n"
+        Just (Right c)  -> Left $ "Dependency cycle detected: " ++ printCycle c ++ "\n"
+        Nothing         -> case cimpl (dmap, emap) named of
+            Left (fname, num, pos) -> Left $ describeFailedApply fname num pos
+            Right derivs           -> Right derivs
+    where absDerivations = Prelude.map value named
+          dmap           = makeDerivationMap absDerivations
+          emap           = identifyEquationalRules dmap
