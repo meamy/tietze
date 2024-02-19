@@ -84,7 +84,7 @@ test2 = TestCase (assertEqual "Can handle a 1-step derivation."
 -- Test 3
 
 line1c :: FormattedLine
-line1c = NoEditLine [sym1, sym2, sym4, sym5, sym5, sym4, sym2, sym2, sym2]
+line1c = ElimOverAddLine [] [sym1, sym2] [sym4] [sym5] [sym5, sym4, sym2, sym2, sym2]
 
 line2c :: FormattedLine
 line2c = AddLine [] [sym3] [sym5, sym4, sym2, sym2, sym2]
@@ -177,6 +177,57 @@ test7 = TestCase (assertEqual "Can handle ElimAddSplitLine format."
                               (FormattedProof line0f [step5f, step6f])
                               (formatProof word_c [app5, app6]))
 
+-- AddThenElimLine
+
+word_d :: MonWord
+word_d = [sym1, sym1, sym3, sym3]
+
+app7 = Rewrite rule2 2 R2L
+app8 = Rewrite rule2 2 L2R
+
+line0g :: FormattedLine
+line0g = NoEditLine [sym1, sym1, sym3, sym3]
+
+line7g :: FormattedLine
+line7g = AddThenElimLine [sym1, sym1] [sym2, sym2, sym2] [sym3, sym3]
+
+step7g :: FormattedStep
+step7g = FormattedStep (Primitive "rel2") R2L line7g
+
+step8g :: FormattedStep
+step8g = FormattedStep (Primitive "rel2") L2R line0g
+
+test8 = TestCase (assertEqual "Can handle AddThenElimLine format."
+                              (FormattedProof line0g [step7g, step8g])
+                              (formatProof word_d [app7, app8]))
+
+-- AddOverElimLine
+
+word_e :: MonWord
+word_e = [sym1, sym1, sym4, sym5, sym2, sym2]
+
+app9  = Rewrite rule3 2 L2R
+app10 = Rewrite rule1 3 R2L
+
+line0h :: FormattedLine
+line0h = ElimLine [sym1, sym1] [sym4, sym5] [sym2, sym2]
+
+line9h :: FormattedLine
+line9h = AddOverElimLine [sym1, sym1] [sym5] [sym4] [] [sym2, sym2]
+
+line10h :: FormattedLine
+line10h = AddLine [sym1, sym1, sym5] [sym1, sym2, sym3] [sym2, sym2]
+
+step9h :: FormattedStep
+step9h = FormattedStep (Primitive "rel3") L2R line9h
+
+step10h :: FormattedStep
+step10h = FormattedStep (Primitive "rel1") R2L line10h
+
+test9 = TestCase (assertEqual "Can handle AddThenElimLine format."
+                              (FormattedProof line0h [step9h, step10h])
+                              (formatProof word_e [app9, app10]))
+
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
@@ -186,6 +237,8 @@ tests = hUnitTestToTests $ TestList [TestLabel "formatProof_Empty" test1,
                                      TestLabel "formatProof_3Step" test4,
                                      TestLabel "formatProof_4Step" test5,
                                      TestLabel "formatDerivation_Test" test6,
-                                     TestLabel "ElimAddSplitLine" test7]
+                                     TestLabel "ElimAddSplitLine" test7,
+                                     TestLabel "AddThenElimLine" test8,
+                                     TestLabel "AddOverElimLine" test9]
 
 main = defaultMain tests

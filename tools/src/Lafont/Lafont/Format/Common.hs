@@ -24,10 +24,13 @@ import Lafont.Rewrite.Summary
 -- | Decomposes a word into the unchanged symbols, the newly introduced symbols, and the
 -- symbols that are to be removed.
 data FormattedLine = NoEditLine MonWord
+                   | AddThenElimLine MonWord MonWord MonWord
                    | ElimLine MonWord MonWord MonWord
                    | AddLine MonWord MonWord MonWord
                    | AddElimSplitLine MonWord MonWord MonWord MonWord MonWord
                    | ElimAddSplitLine MonWord MonWord MonWord MonWord MonWord
+                   | ElimOverAddLine MonWord MonWord MonWord MonWord MonWord
+                   | AddOverElimLine MonWord MonWord MonWord MonWord MonWord
                    deriving (Eq, Show)
 
 -- |
@@ -43,19 +46,35 @@ splitDisjointEdit word sz@(pos1, len1) (pos2, len2) = (w1, w2, w3, w4, w5)
     where (w1, w2, tmp) = splitSingleEdit word sz
           (w3, w4, w5)  = splitSingleEdit tmp (pos2 - pos1 - len1, len2)
 
+-- |
+nestedEdit :: MonWord -> (Int, Int) -> (Int, Int)
+                      -> (MonWord, MonWord, MonWord, MonWord, MonWord)
+nestedEdit word sz@(opos, olen) (ipos, ilen) = (w1, w2, w3, w4, w5)
+    where (w1, tmp)    = splitAt opos word
+          (inner, w5)  = splitAt olen tmp
+          (w2, w3, w4) = splitSingleEdit inner (ipos - opos, ilen)
+
 -- | Case distinctions for formatLine.
 formatLineImpl :: MonWord -> (Int, Int) -> (Int, Int) -> FormattedLine
 formatLineImpl word asz@(apos, alen) esz@(epos, elen)
-    | alen == 0 && elen == 0 = NoEditLine word
-    | alen == 0              = let (w1, w2, w3) = splitSingleEdit word esz
-                               in ElimLine w1 w2 w3
-    | elen == 0              = let (w1, w2, w3) = splitSingleEdit word asz
-                               in AddLine w1 w2 w3
-    | apos + alen <= epos    = let (w1, w2, w3, w4, w5) = splitDisjointEdit word asz esz
-                               in AddElimSplitLine w1 w2 w3 w4 w5
-    | epos + elen <= apos    = let (w1, w2, w3, w4, w5) = splitDisjointEdit word esz asz
-                               in ElimAddSplitLine w1 w2 w3 w4 w5
-    | otherwise              = NoEditLine word -- Add missing cases.
+    | alen == 0 && elen == 0       = NoEditLine word
+    | asz == esz                   = let (x, y, z) = splitSingleEdit word asz
+                                     in AddThenElimLine x y z
+    | alen == 0                    = let (x, y, z) = splitSingleEdit word esz
+                                     in ElimLine x y z
+    | elen == 0                    = let (x, y, z) = splitSingleEdit word asz
+                                     in AddLine x y z
+    | abnd <= epos                 = let (u, v, w, x, y) = splitDisjointEdit word asz esz
+                                     in AddElimSplitLine u v w x y
+    | ebnd <= apos                 = let (u, v, w, x, y) = splitDisjointEdit word esz asz
+                                     in ElimAddSplitLine u v w x y
+    | epos <= apos && abnd <= ebnd = let (u, v, w, x, y) = nestedEdit word esz asz
+                                     in ElimOverAddLine u v w x y
+    | apos <= epos && ebnd <= abnd = let (u, v, w, x, y) = nestedEdit word asz esz
+                                     in AddOverElimLine u v w x y
+    | otherwise                    = NoEditLine word -- Add missing cases.
+    where abnd = apos + alen
+          ebnd = epos + elen
 
 -- | Helper method to determine the position and length associated to a rewrite rule.
 extractRewriteSize :: (Rewrite -> MonWord) -> Maybe Rewrite -> (Int, Int)
