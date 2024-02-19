@@ -349,6 +349,103 @@ test30 = TestCase (assertEqual "Can support ElimAddSplitLine (4/4)."
             text = "\\lftgenE \\cdot \\underline{\\lftgenD \\cdot \\lftgenD} \\cdot " ++
                    "\\lftgenC \\cdot \\overline{\\lftgenB \\cdot \\lftgenB}"
 
+test31 = TestCase (assertEqual "Can support AddThenElimLine (1/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddThenElimLine [sym1] [sym2, sym3, sym4] [sym5]
+            text = "\\lftgenE \\cdot \\underline{\\overline{\\lftgenD \\cdot " ++
+                   "\\lftgenC \\cdot \\lftgenB}} \\cdot \\lftgenA"
+
+test32 = TestCase (assertEqual "Can support AddThenElimLine (2/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddThenElimLine [] [sym2, sym3, sym4] [sym5]
+            text = "\\underline{\\overline{\\lftgenD \\cdot \\lftgenC \\cdot " ++
+                   "\\lftgenB}} \\cdot \\lftgenA"
+
+test33 = TestCase (assertEqual "Can support AddThenElimLine (3/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddThenElimLine [sym1] [sym2, sym3, sym4] []
+            text = "\\lftgenE \\cdot \\underline{\\overline{\\lftgenD \\cdot " ++
+                   "\\lftgenC \\cdot \\lftgenB}}"
+
+test34 = TestCase (assertEqual "Can support ElimOverAddLine (1/5)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimOverAddLine [sym1] [sym2, sym2] [sym3, sym3] [sym4, sym4] [sym5]
+            text = "\\lftgenE \\cdot \\underline{\\lftgenD \\cdot \\lftgenD \\cdot " ++
+                   "\\overline{\\lftgenC \\cdot \\lftgenC} \\cdot \\lftgenB \\cdot " ++
+                   "\\lftgenB} \\cdot \\lftgenA"
+
+test35 = TestCase (assertEqual "Can support ElimOverAddLine (2/5)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimOverAddLine [] [sym2, sym2] [sym3, sym3] [sym4, sym4] [sym5]
+            text = "\\underline{\\lftgenD \\cdot \\lftgenD \\cdot " ++
+                   "\\overline{\\lftgenC \\cdot \\lftgenC} \\cdot \\lftgenB \\cdot " ++
+                   "\\lftgenB} \\cdot \\lftgenA"
+
+test36 = TestCase (assertEqual "Can support ElimOverAddLine (3/5)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimOverAddLine [sym1] [] [sym3, sym3] [sym4, sym4] [sym5]
+            text = "\\lftgenE \\cdot \\underline{\\overline{\\lftgenC \\cdot " ++
+                   "\\lftgenC} \\cdot \\lftgenB \\cdot \\lftgenB} \\cdot \\lftgenA"
+
+test37 = TestCase (assertEqual "Can support ElimOverAddLine (4/5)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimOverAddLine [sym1] [sym2, sym2] [sym3, sym3] [] [sym5]
+            text = "\\lftgenE \\cdot \\underline{\\lftgenD \\cdot \\lftgenD \\cdot " ++
+                   "\\overline{\\lftgenC \\cdot \\lftgenC}} \\cdot \\lftgenA"
+
+test38 = TestCase (assertEqual "Can support ElimOverAddLine (5/5)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimOverAddLine [sym1] [sym2, sym2] [sym3, sym3] [sym4, sym4] []
+            text = "\\lftgenE \\cdot \\underline{\\lftgenD \\cdot \\lftgenD \\cdot " ++
+                   "\\overline{\\lftgenC \\cdot \\lftgenC} \\cdot \\lftgenB \\cdot " ++
+                   "\\lftgenB}"
+
+test39 = TestCase (assertEqual "Can support AddOverElimLine (1/5)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddOverElimLine [sym1] [sym2, sym2] [sym3, sym3] [sym4, sym4] [sym5]
+            text = "\\lftgenE \\cdot \\overline{\\lftgenD \\cdot \\lftgenD \\cdot " ++
+                   "\\underline{\\lftgenC \\cdot \\lftgenC} \\cdot \\lftgenB \\cdot " ++
+                   "\\lftgenB} \\cdot \\lftgenA"
+
+test40 = TestCase (assertEqual "Can support AddOverElimLine (2/5)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddOverElimLine [] [sym2, sym2] [sym3, sym3] [sym4, sym4] [sym5]
+            text = "\\overline{\\lftgenD \\cdot \\lftgenD \\cdot " ++
+                   "\\underline{\\lftgenC \\cdot \\lftgenC} \\cdot \\lftgenB \\cdot " ++
+                   "\\lftgenB} \\cdot \\lftgenA"
+
+test41 = TestCase (assertEqual "Can support AddOverElimLine (3/5)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddOverElimLine [sym1] [] [sym3, sym3] [sym4, sym4] [sym5]
+            text = "\\lftgenE \\cdot \\overline{\\underline{\\lftgenC \\cdot " ++
+                   "\\lftgenC} \\cdot \\lftgenB \\cdot \\lftgenB} \\cdot \\lftgenA"
+
+test42 = TestCase (assertEqual "Can support AddOverElimLine (4/5)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddOverElimLine [sym1] [sym2, sym2] [sym3, sym3] [] [sym5]
+            text = "\\lftgenE \\cdot \\overline{\\lftgenD \\cdot \\lftgenD \\cdot " ++
+                   "\\underline{\\lftgenC \\cdot \\lftgenC}} \\cdot \\lftgenA"
+
+test43 = TestCase (assertEqual "Can support AddOverElimLine (5/5)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddOverElimLine [sym1] [sym2, sym2] [sym3, sym3] [sym4, sym4] []
+            text = "\\lftgenE \\cdot \\overline{\\lftgenD \\cdot \\lftgenD \\cdot " ++
+                   "\\underline{\\lftgenC \\cdot \\lftgenC} \\cdot \\lftgenB \\cdot " ++
+                   "\\lftgenB}"
+
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
@@ -381,6 +478,19 @@ tests = hUnitTestToTests $ TestList [TestLabel "makeGenMacros_Empty" test1,
                                      TestLabel "ElimAddSplitLine_1" test27,
                                      TestLabel "ELimAddSplitLine_2" test28,
                                      TestLabel "ElimAddSplitLine_3" test29,
-                                     TestLabel "ElimAddSplitLine_4" test30]
+                                     TestLabel "ElimAddSplitLine_4" test30,
+                                     TestLabel "AddThenElimLine_1" test31,
+                                     TestLabel "AddThenElimLine_2" test32,
+                                     TestLabel "AddThenElimLine_3" test33,
+                                     TestLabel "ElimOverAddLine_1" test34,
+                                     TestLabel "ElimOverAddLine_2" test35,
+                                     TestLabel "ElimOverAddLine_3" test36,
+                                     TestLabel "ElimOverAddLine_4" test37,
+                                     TestLabel "ElimOverAddLine_5" test38,
+                                     TestLabel "AddOverElimLine_1" test39,
+                                     TestLabel "AddOverElimLine_2" test40,
+                                     TestLabel "AddOverElimLine_3" test41,
+                                     TestLabel "AddOverElimLine_4" test42,
+                                     TestLabel "AddOverElimLine_5" test43]
 
 main = defaultMain tests
