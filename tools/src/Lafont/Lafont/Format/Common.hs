@@ -10,6 +10,7 @@ module Lafont.Format.Common (
     formatProof
 ) where
 
+import Data.List
 import Data.Maybe
 import Lafont.Common
 import Lafont.Rewrite.Common
@@ -22,11 +23,39 @@ import Lafont.Rewrite.Summary
 
 -- | Decomposes a word into the unchanged symbols, the newly introduced symbols, and the
 -- symbols that are to be removed.
-data FormattedLine = NoEditLine MonWord deriving (Eq, Show)
+data FormattedLine = NoEditLine MonWord
+                   | ElimLine MonWord MonWord MonWord
+                   | AddLine MonWord MonWord MonWord
+                   | AddElimSplitLine MonWord MonWord MonWord MonWord MonWord
+                   | ElimAddSplitLine MonWord MonWord MonWord MonWord MonWord
+                   deriving (Eq, Show)
+
+-- |
+splitSingleEdit :: MonWord -> (Int, Int) -> (MonWord, MonWord, MonWord)
+splitSingleEdit word (pos, len) = (w1, w2, w3)
+    where (w1, tmp) = splitAt pos word
+          (w2, w3)  = splitAt len tmp
+
+-- |
+splitDisjointEdit :: MonWord -> (Int, Int) -> (Int, Int)
+                             -> (MonWord, MonWord, MonWord, MonWord, MonWord)
+splitDisjointEdit word sz@(pos1, len1) (pos2, len2) = (w1, w2, w3, w4, w5)
+    where (w1, w2, tmp) = splitSingleEdit word sz
+          (w3, w4, w5)  = splitSingleEdit tmp (pos2 - pos1 - len1, len2)
 
 -- | Case distinctions for formatLine.
 formatLineImpl :: MonWord -> (Int, Int) -> (Int, Int) -> FormattedLine
-formatLineImpl word _ _ = NoEditLine word
+formatLineImpl word asz@(apos, alen) esz@(epos, elen)
+    | alen == 0 && elen == 0 = NoEditLine word
+    | alen == 0              = let (w1, w2, w3) = splitSingleEdit word esz
+                               in ElimLine w1 w2 w3
+    | elen == 0              = let (w1, w2, w3) = splitSingleEdit word asz
+                               in AddLine w1 w2 w3
+    | apos + alen <= epos    = let (w1, w2, w3, w4, w5) = splitDisjointEdit word asz esz
+                               in AddElimSplitLine w1 w2 w3 w4 w5
+    | epos + elen <= apos    = let (w1, w2, w3, w4, w5) = splitDisjointEdit word esz asz
+                               in ElimAddSplitLine w1 w2 w3 w4 w5
+    | otherwise              = NoEditLine word -- Add missing cases.
 
 -- | Helper method to determine the position and length associated to a rewrite rule.
 extractRewriteSize :: (Rewrite -> MonWord) -> Maybe Rewrite -> (Int, Int)
@@ -52,9 +81,17 @@ formatLine word prev next = formatLineImpl word psize nsize
     where psize = extractRewriteSize extractFromPrev prev
           nsize = extractRewriteSize extractFromNext next
 
+-- | Returns the combined length of all MonWords in a list.
+sumlength :: [MonWord] -> Int
+sumlength = foldr (+) 0 . map length
+
 -- | Returns the length of a formatted line.
 flength :: FormattedLine -> Int
-flength (NoEditLine word) = length word
+flength (NoEditLine w)                    = length w
+flength (ElimLine w1 w2 w3)               = sumlength [w1, w2, w3]
+flength (AddLine w1 w2 w3)                = sumlength [w1, w2, w3]
+flength (ElimAddSplitLine w1 w2 w3 w4 w5) = sumlength [w1, w2, w3, w4, w5]
+flength (AddElimSplitLine w1 w2 w3 w4 w5) = sumlength [w1, w2, w3, w4, w5]
 
 -----------------------------------------------------------------------------------------
 -- * FormattedProof Generation
