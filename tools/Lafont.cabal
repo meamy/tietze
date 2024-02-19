@@ -78,6 +78,7 @@ library LafontExe
                        LafontExe.CheckRelations
                        LafontExe.GraphDeps
                        LafontExe.InvertRule
+                       LafontExe.ToLatex
                        LafontExe.QueryEIRules
                        LafontExe.ValidateDerivations
                        LafontExe.IO.CmdLnFlags
@@ -138,6 +139,11 @@ executable query_eirule
   other-modules:       QueryEIRules.CmdLn
   build-depends:       containers,
                        split
+
+executable to_latex
+  import:              exe-with-file-io-props
+  main-is:             ToLatex/Main.hs
+  other-modules:       ToLatex.CmdLn
 
 executable validate_derivations
   import:              exe-with-file-io-props
