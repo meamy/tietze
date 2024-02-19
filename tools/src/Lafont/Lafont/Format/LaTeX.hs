@@ -112,7 +112,21 @@ printFormattedLineImpl macros (sym:word) = symbolToMacro macros sym ++ " \\cdot 
 -- | Takes as input a mapping from generator symbols to macro symbols, together with a
 -- formatted line. Returns the corresponding LaTeX line.
 printFormattedLine :: MacroList -> FormattedLine -> String
-printFormattedLine macros (NoEditLine word) = printFormattedLineImpl macros word
+printFormattedLine macros (NoEditLine word)   = printFormattedLineImpl macros word
+printFormattedLine macros (ElimLine w1 w2 w3) = l1 ++ elim ++ l3
+    where elim = "\\underline{" ++ printFormattedLineImpl macros w2 ++ "}"
+          l1   = if null w1 then "" else printFormattedLineImpl macros w1 ++ " \\cdot "
+          l3   = if null w3 then "" else " \\cdot " ++ printFormattedLineImpl macros w3
+printFormattedLine macros (AddLine w1 w2 w3) = l1 ++ add ++ l3
+    where add = "\\overline{" ++ printFormattedLineImpl macros w2 ++ "}"
+          l1  = if null w1 then "" else printFormattedLineImpl macros w1 ++ " \\cdot "
+          l3  = if null w3 then "" else " \\cdot " ++ printFormattedLineImpl macros w3
+printFormattedLine macros (AddElimSplitLine w1 w2 w3 w4 w5) = add ++ " \\cdot " ++ elim
+    where add  = printFormattedLine macros (AddLine w1 w2 w3)
+          elim = printFormattedLine macros (ElimLine [] w4 w5)
+printFormattedLine macros (ElimAddSplitLine w1 w2 w3 w4 w5) = elim ++ " \\cdot " ++ add
+    where elim = printFormattedLine macros (ElimLine w1 w2 w3)
+          add  = printFormattedLine macros (AddLine [] w4 w5)
 
 -----------------------------------------------------------------------------------------
 -- * FormattedStep Printing.

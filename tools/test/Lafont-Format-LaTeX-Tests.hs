@@ -247,6 +247,109 @@ test16 = TestCase (assertEqual "Can print a two-step proof."
             "\\end{align*}"
 
 -----------------------------------------------------------------------------------------
+-- printFormattedLine
+
+test17 = TestCase (assertEqual "Can support ElimLine (1/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimLine [sym1] [sym2, sym3] [sym5]
+            text = "\\lftgenE \\cdot \\underline{\\lftgenD \\cdot \\lftgenC} " ++
+                   "\\cdot \\lftgenA"
+
+test18 = TestCase (assertEqual "Can support ElimLine (2/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimLine [] [sym2, sym3] [sym5]
+            text = "\\underline{\\lftgenD \\cdot \\lftgenC} \\cdot \\lftgenA"
+
+test19 = TestCase (assertEqual "Can support ElimLine (3/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimLine [sym1] [sym2, sym3] []
+            text = "\\lftgenE \\cdot \\underline{\\lftgenD \\cdot \\lftgenC}"
+
+test20 = TestCase (assertEqual "Can support AddLine (1/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddLine [sym1] [sym2, sym3] [sym5]
+            text = "\\lftgenE \\cdot \\overline{\\lftgenD \\cdot \\lftgenC} " ++
+                   "\\cdot \\lftgenA"
+
+test21 = TestCase (assertEqual "Can support AddLine (2/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddLine [] [sym2, sym3] [sym5]
+            text = "\\overline{\\lftgenD \\cdot \\lftgenC} \\cdot \\lftgenA"
+
+test22 = TestCase (assertEqual "Can support AddLine (3/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddLine [sym1] [sym2, sym3] []
+            text = "\\lftgenE \\cdot \\overline{\\lftgenD \\cdot \\lftgenC}"
+
+test23 = TestCase (assertEqual "Can support AddElimSplitLine (1/4)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddElimSplitLine [sym1] [sym2, sym2] [sym3] [sym4, sym4] [sym5]
+            text = "\\lftgenE \\cdot \\overline{\\lftgenD \\cdot \\lftgenD} \\cdot " ++
+                   "\\lftgenC \\cdot \\underline{\\lftgenB \\cdot \\lftgenB} \\cdot " ++
+                   "\\lftgenA"
+
+test24 = TestCase (assertEqual "Can support AddElimSplitLine (2/4)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddElimSplitLine [] [sym2, sym2] [sym3] [sym4, sym4] [sym5]
+            text = "\\overline{\\lftgenD \\cdot \\lftgenD} \\cdot " ++
+                   "\\lftgenC \\cdot \\underline{\\lftgenB \\cdot \\lftgenB} \\cdot " ++
+                   "\\lftgenA"
+
+test25 = TestCase (assertEqual "Can support AddElimSplitLine (3/4)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddElimSplitLine [sym1] [sym2, sym2] [] [sym4, sym4] [sym5]
+            text = "\\lftgenE \\cdot \\overline{\\lftgenD \\cdot \\lftgenD} \\cdot " ++
+                   "\\underline{\\lftgenB \\cdot \\lftgenB} \\cdot " ++
+                   "\\lftgenA"
+
+test26 = TestCase (assertEqual "Can support AddElimSplitLine (4/4)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddElimSplitLine [sym1] [sym2, sym2] [sym3] [sym4, sym4] []
+            text = "\\lftgenE \\cdot \\overline{\\lftgenD \\cdot \\lftgenD} \\cdot " ++
+                   "\\lftgenC \\cdot \\underline{\\lftgenB \\cdot \\lftgenB}"
+
+test27 = TestCase (assertEqual "Can support ElimAddSplitLine (1/4)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimAddSplitLine [sym1] [sym2, sym2] [sym3] [sym4, sym4] [sym5]
+            text = "\\lftgenE \\cdot \\underline{\\lftgenD \\cdot \\lftgenD} \\cdot " ++
+                   "\\lftgenC \\cdot \\overline{\\lftgenB \\cdot \\lftgenB} \\cdot " ++
+                   "\\lftgenA"
+
+test28 = TestCase (assertEqual "Can support ElimAddSplitLine (2/4)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimAddSplitLine [] [sym2, sym2] [sym3] [sym4, sym4] [sym5]
+            text = "\\underline{\\lftgenD \\cdot \\lftgenD} \\cdot " ++
+                   "\\lftgenC \\cdot \\overline{\\lftgenB \\cdot \\lftgenB} \\cdot " ++
+                   "\\lftgenA"
+
+test29 = TestCase (assertEqual "Can support ElimAddSplitLine (3/4)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimAddSplitLine [sym1] [sym2, sym2] [] [sym4, sym4] [sym5]
+            text = "\\lftgenE \\cdot \\underline{\\lftgenD \\cdot \\lftgenD} \\cdot " ++
+                   "\\overline{\\lftgenB \\cdot \\lftgenB} \\cdot " ++
+                   "\\lftgenA"
+
+test30 = TestCase (assertEqual "Can support ElimAddSplitLine (4/4)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimAddSplitLine [sym1] [sym2, sym2] [sym3] [sym4, sym4] []
+            text = "\\lftgenE \\cdot \\underline{\\lftgenD \\cdot \\lftgenD} \\cdot " ++
+                   "\\lftgenC \\cdot \\overline{\\lftgenB \\cdot \\lftgenB}"
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "makeGenMacros_Empty" test1,
@@ -264,6 +367,20 @@ tests = hUnitTestToTests $ TestList [TestLabel "makeGenMacros_Empty" test1,
                                      TestLabel "printFormattedProof_1Step" test13,
                                      TestLabel "printFormattedProof_2Step" test14,
                                      TestLabel "printFormattedProof_3Step" test15,
-                                     TestLabel "printFormattedProof_Long" test16]
+                                     TestLabel "printFormattedProof_Long" test16,
+                                     TestLabel "ElimLine_1" test17,
+                                     TestLabel "ElimLine_2" test18,
+                                     TestLabel "ElimLine_3" test19,
+                                     TestLabel "AddLine_1" test20,
+                                     TestLabel "AddLine_2" test21,
+                                     TestLabel "AddLine_3" test22,
+                                     TestLabel "AddElimSplitLine_1" test23,
+                                     TestLabel "AddElimSplitLine_2" test24,
+                                     TestLabel "AddElimSplitLine_3" test25,
+                                     TestLabel "AddElimSplitLine_4" test26,
+                                     TestLabel "ElimAddSplitLine_1" test27,
+                                     TestLabel "ELimAddSplitLine_2" test28,
+                                     TestLabel "ElimAddSplitLine_3" test29,
+                                     TestLabel "ElimAddSplitLine_4" test30]
 
 main = defaultMain tests
