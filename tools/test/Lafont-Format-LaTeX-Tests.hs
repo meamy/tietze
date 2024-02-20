@@ -446,6 +446,50 @@ test43 = TestCase (assertEqual "Can support AddOverElimLine (5/5)."
                    "\\underline{\\lftgenC \\cdot \\lftgenC} \\cdot \\lftgenB \\cdot " ++
                    "\\lftgenB}"
 
+test44 = TestCase (assertEqual "Can support ElimAddOverlapLine (1/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimAddOverlapLine [sym1] [sym2, sym2] [sym3] [sym4, sym4] [sym5]
+            text = "\\lftgenE \\cdot \\UOLunderline{\\lftgenD \\cdot \\lftgenD " ++
+                   "\\cdot}[\\lftgenC]\\UOLoverline{\\cdot \\lftgenB \\cdot " ++
+                   "\\lftgenB} \\cdot \\lftgenA"
+
+test45 = TestCase (assertEqual "Can support ElimAddOverlapLine (2/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimAddOverlapLine [] [sym2, sym2] [sym3] [sym4, sym4] [sym5]
+            text = "\\UOLunderline{\\lftgenD \\cdot \\lftgenD \\cdot}[\\lftgenC]" ++
+                   "\\UOLoverline{\\cdot \\lftgenB \\cdot \\lftgenB} \\cdot \\lftgenA"
+
+test46 = TestCase (assertEqual "Can support ElimAddOverlapLine (3/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = ElimAddOverlapLine [sym1] [sym2, sym2] [sym3] [sym4, sym4] []
+            text = "\\lftgenE \\cdot \\UOLunderline{\\lftgenD \\cdot \\lftgenD " ++
+                   "\\cdot}[\\lftgenC]\\UOLoverline{\\cdot \\lftgenB \\cdot \\lftgenB}"
+
+test47 = TestCase (assertEqual "Can support AddElimOverlapLine (1/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddElimOverlapLine [sym1] [sym2, sym2] [sym3] [sym4, sym4] [sym5]
+            text = "\\lftgenE \\cdot \\UOLoverline{\\lftgenD \\cdot \\lftgenD " ++
+                   "\\cdot}[\\lftgenC]\\UOLunderline{\\cdot \\lftgenB \\cdot " ++
+                   "\\lftgenB} \\cdot \\lftgenA"
+
+test48 = TestCase (assertEqual "Can support AddElimOverlapLine (2/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddElimOverlapLine [] [sym2, sym2] [sym3] [sym4, sym4] [sym5]
+            text = "\\UOLoverline{\\lftgenD \\cdot \\lftgenD \\cdot}[\\lftgenC]" ++
+                   "\\UOLunderline{\\cdot \\lftgenB \\cdot \\lftgenB} \\cdot \\lftgenA"
+
+test49 = TestCase (assertEqual "Can support AddElimOverlapLine (3/3)."
+                               text
+                               (printFormattedLine gmacros line))
+      where line = AddElimOverlapLine [sym1] [sym2, sym2] [sym3] [sym4, sym4] []
+            text = "\\lftgenE \\cdot \\UOLoverline{\\lftgenD \\cdot \\lftgenD " ++
+                   "\\cdot}[\\lftgenC]\\UOLunderline{\\cdot \\lftgenB \\cdot \\lftgenB}"
+
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
@@ -491,6 +535,12 @@ tests = hUnitTestToTests $ TestList [TestLabel "makeGenMacros_Empty" test1,
                                      TestLabel "AddOverElimLine_2" test40,
                                      TestLabel "AddOverElimLine_3" test41,
                                      TestLabel "AddOverElimLine_4" test42,
-                                     TestLabel "AddOverElimLine_5" test43]
+                                     TestLabel "AddOverElimLine_5" test43,
+                                     TestLabel "ElimAddOverlapLine_1" test44,
+                                     TestLabel "ElimAddOverlapLine_2" test45,
+                                     TestLabel "ElimAddOverlapLine_3" test46,
+                                     TestLabel "AddElimOverlapLine_1" test47,
+                                     TestLabel "AddElimOverlapLine_2" test48,
+                                     TestLabel "AddElimOverlapLine_3" test49]
 
 main = defaultMain tests

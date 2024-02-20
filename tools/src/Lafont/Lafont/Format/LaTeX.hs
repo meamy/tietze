@@ -142,6 +142,20 @@ printFormattedLine macros (AddOverElimLine w1 w2 w3 w4 w5) = l1 ++ outer ++ l5
           outer = "\\overline{" ++ inner ++ "}"
           l1    = if null w1 then "" else printFormattedLineImpl macros w1 ++ " \\cdot "
           l5    = if null w5 then "" else " \\cdot " ++ printFormattedLineImpl macros w5
+printFormattedLine macros (ElimAddOverlapLine w1 w2 w3 w4 w5) = l1 ++ olap ++ l5
+    where elim = "\\UOLunderline{" ++ printFormattedLineImpl macros w2 ++ " \\cdot}"
+          mid  = "[" ++ printFormattedLineImpl macros w3 ++ "]"
+          add  = "\\UOLoverline{\\cdot " ++ printFormattedLineImpl macros w4 ++ "}"
+          olap = elim ++ mid ++ add
+          l1   = if null w1 then "" else printFormattedLineImpl macros w1 ++ " \\cdot "
+          l5   = if null w5 then "" else " \\cdot " ++ printFormattedLineImpl macros w5
+printFormattedLine macros (AddElimOverlapLine w1 w2 w3 w4 w5) = l1 ++ olap ++ l5
+    where add  = "\\UOLoverline{" ++ printFormattedLineImpl macros w2 ++ " \\cdot}"
+          mid  = "[" ++ printFormattedLineImpl macros w3 ++ "]"
+          elim = "\\UOLunderline{\\cdot " ++ printFormattedLineImpl macros w4 ++ "}"
+          olap = add ++ mid ++ elim
+          l1   = if null w1 then "" else printFormattedLineImpl macros w1 ++ " \\cdot "
+          l5   = if null w5 then "" else " \\cdot " ++ printFormattedLineImpl macros w5
 
 -----------------------------------------------------------------------------------------
 -- * FormattedStep Printing.
