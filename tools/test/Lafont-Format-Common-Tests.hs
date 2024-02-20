@@ -228,6 +228,54 @@ test9 = TestCase (assertEqual "Can handle AddThenElimLine format."
                               (FormattedProof line0h [step9h, step10h])
                               (formatProof word_e [app9, app10]))
 
+-- AddElimOverlapLine
+
+word_f :: MonWord
+word_f = [sym2, sym2, sym2, sym2]
+
+app11 = Rewrite rule2 1 R2L
+app12 = Rewrite rule2 3 L2R
+
+line0i :: FormattedLine
+line0i = NoEditLine [sym2, sym2, sym2, sym2]
+
+line11i :: FormattedLine
+line11i = AddElimOverlapLine [sym2] [sym2, sym2] [sym2] [sym2, sym2] [sym2]
+
+line12i :: FormattedLine
+line12i = NoEditLine [sym2, sym2, sym2, sym2]
+
+step11i :: FormattedStep
+step11i = FormattedStep (Primitive "rel2") R2L line11i
+
+step12i :: FormattedStep
+step12i = FormattedStep (Primitive "rel2") L2R line12i
+
+test10 = TestCase (assertEqual "Can handle AddElimOverlapLine format."
+                               (FormattedProof line0i [step11i, step12i])
+                               (formatProof word_f [app11, app12]))
+
+-- AddElimOverlapLine
+
+app13 = Rewrite rule2 3 R2L
+app14 = Rewrite rule2 1 L2R
+
+line13j :: FormattedLine
+line13j = ElimAddOverlapLine [sym2] [sym2, sym2] [sym2] [sym2, sym2] [sym2]
+
+line14j :: FormattedLine
+line14j = NoEditLine [sym2, sym2, sym2, sym2]
+
+step13j :: FormattedStep
+step13j = FormattedStep (Primitive "rel2") R2L line13j
+
+step14j :: FormattedStep
+step14j = FormattedStep (Primitive "rel2") L2R line14j
+
+test11 = TestCase (assertEqual "Can handle ElimAddOverlapLine format."
+                               (FormattedProof line0i [step13j, step14j])
+                               (formatProof word_f [app13, app14]))
+
 -----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
@@ -239,6 +287,8 @@ tests = hUnitTestToTests $ TestList [TestLabel "formatProof_Empty" test1,
                                      TestLabel "formatDerivation_Test" test6,
                                      TestLabel "ElimAddSplitLine" test7,
                                      TestLabel "AddThenElimLine" test8,
-                                     TestLabel "AddOverElimLine" test9]
+                                     TestLabel "AddOverElimLine" test9,
+                                     TestLabel "AddElimOverlapLine" test10,
+                                     TestLabel "ElimAddOverlapLine" test11]
 
 main = defaultMain tests

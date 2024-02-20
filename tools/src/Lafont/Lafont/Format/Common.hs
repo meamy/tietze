@@ -31,6 +31,8 @@ data FormattedLine = NoEditLine MonWord
                    | ElimAddSplitLine MonWord MonWord MonWord MonWord MonWord
                    | ElimOverAddLine MonWord MonWord MonWord MonWord MonWord
                    | AddOverElimLine MonWord MonWord MonWord MonWord MonWord
+                   | ElimAddOverlapLine MonWord MonWord MonWord MonWord MonWord
+                   | AddElimOverlapLine MonWord MonWord MonWord MonWord MonWord
                    deriving (Eq, Show)
 
 -- |
@@ -54,6 +56,16 @@ nestedEdit word sz@(opos, olen) (ipos, ilen) = (w1, w2, w3, w4, w5)
           (inner, w5)  = splitAt olen tmp
           (w2, w3, w4) = splitSingleEdit inner (ipos - opos, ilen)
 
+-- |
+overlapEdit :: MonWord -> (Int, Int) -> (Int, Int)
+                       -> (MonWord, MonWord, MonWord, MonWord, MonWord)
+overlapEdit word (pos1, len1) (pos2, len2) = (w1, w2, w3, w4, w5)
+    where difference = pos2 - pos1
+          (w1, tmp1) = splitAt pos1 word
+          (w2, tmp2) = splitAt difference tmp1
+          (w3, tmp3) = splitAt (len1 - difference) tmp2
+          (w4, w5)   = splitAt (len2 + difference - len1) tmp3
+
 -- | Case distinctions for formatLine.
 formatLineImpl :: MonWord -> (Int, Int) -> (Int, Int) -> FormattedLine
 formatLineImpl word asz@(apos, alen) esz@(epos, elen)
@@ -72,7 +84,11 @@ formatLineImpl word asz@(apos, alen) esz@(epos, elen)
                                      in ElimOverAddLine u v w x y
     | apos <= epos && ebnd <= abnd = let (u, v, w, x, y) = nestedEdit word asz esz
                                      in AddOverElimLine u v w x y
-    | otherwise                    = NoEditLine word -- Add missing cases.
+    | epos < apos && ebnd < abnd   = let (u, v, w, x, y) = overlapEdit word esz asz
+                                     in ElimAddOverlapLine u v w x y
+    | apos < epos && abnd < ebnd   = let (u, v, w, x, y) = overlapEdit word asz esz
+                                     in AddElimOverlapLine u v w x y
+    | otherwise                    = error "Unhandled line format."
     where abnd = apos + alen
           ebnd = epos + elen
 
