@@ -17,6 +17,7 @@ expand_X1   X1   = CX01.X0.CX01.X0
 expand_Z0 Z0 = CZ01.CX01.CZ01.CX01
 
 -- Depends on X1.
+expand_Z1   Z1   = K12.X1.K12
 expand_CX20 CX20 = X1.CCX0.X1.CCX0
 
 -- Depends on CX20.
@@ -31,7 +32,7 @@ expand_SWAP12 SWAP12 = CX12.CX21.CX12
 -- Depends on SWAP12.
 expand_CX02 CX02 = SWAP12.CX01.SWAP12
 
--- Depends on CX02.
+-- Depends on CX02 and CX20.
 expand_SWAP02 SWAP02 = CX02.CX20.CX02
 
 -- Depends on SWAP02.
@@ -46,20 +47,20 @@ expand_SWAP01 SWAP01 = CX01.CX10.CX01
 -- Depends on SWAP01.
 expand_CCX1 CCX1 = SWAP01.CCX0.SWAP01
 
--- Depends on SWAP01 and SWAP02.
+-- Depends on SWAP02.
 expand_X2 X2 = SWAP02.X0.SWAP02
 
--- Depends on Z0, SWAP01 and SWAP02.
-expand_Z1 Z1 = K12.X1.K12
+-- Depends on Z0 and SWAP02.
 expand_Z2 Z2 = SWAP02.Z0.SWAP02
 
--- Depends on SWAP01 and SWAP02.
+-- Depends on CCX1.
 expand_CCX2 CCX2 = K12.CCX1.K12
 
--- Depends on CZ01, SWAP01, and SWAP02.
+-- Depends on CZ01, and SWAP12.
 expand_CZ02 CZ02 = SWAP12.CZ01.SWAP12
-expand_CZ12 CZ12 = SWAP01.CZ02.SWAP01
 
+-- Depends on CZ02 and SWAP01.
+expand_CZ12 CZ12 = SWAP01.CZ02.SWAP01
 
 -- *******************************************************************
 -- Order Relations
