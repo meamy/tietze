@@ -15,7 +15,7 @@
 @name s2s7s2s7_lemma1
 
 CZ01.CX21.CCX2.CX21
-!apply drel143 → 1
+!apply cadd4 → 1
 !apply drel152 → 0
 !apply drel151 → 2
 
@@ -26,7 +26,7 @@ CZ01.CX21.CCX2.CX21
 -- CCX1.CCX2.CZ02.CCX1
 !apply elim_CZ02 ← 4
 !apply drel37 → 2
-!apply drel143 ← 0
+!apply cadd4 ← 0
 CX21.CCX2.CX21.CZ02
 
 
@@ -61,7 +61,7 @@ expand_S2 → 0
 -- X0.CX21.CCX2.CX21.X0.S7
 !apply bifunct_X_CX_b → 3
 !apply bifunct_X_CX_b ← 0
-!apply drel6 ← 1
+!apply cadd1 ← 1
 !apply drel90 → 1
 
 -- CX21.CCX2.CX12.CX21.S7

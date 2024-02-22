@@ -14,6 +14,9 @@ derivations:
   # Spatial Lemmas
 - aux/mlemmas.derivs
 - aux/spatial.derivs
+  # Control Lemmas
+- aux/cadd.derivs
+- aux/cflip.derivs
   # Coxeter Lemmas
 - aux/wlemmas.derivs
 - aux/slemmas.derivs

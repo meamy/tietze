@@ -18,7 +18,7 @@ S3.S4
 expand_S3 → 0
 
 -- X0.CCX2.X0.S4
-!apply drel6 ← 0
+!apply cadd1 ← 0
 !apply drel90 → 0
 
 -- CCX2.CX12.S4
@@ -38,7 +38,7 @@ elim_CX01 ← 0
 -- CX01.CX02.CX12.CCX2.CCX0.CX02.CX01
 !apply drel11 ← 1
 !apply drel91 ← 2
-!apply drel142 → 3
+!apply cadd0 → 3
 
 -- CX01.CX12.CCX2.CCX2.CCX0.CCX2.CX01
 !apply elim_CCX2 → 2 
@@ -60,7 +60,7 @@ r10_b → 3
 !apply drel56 → 3
 
 -- S3.S4.CX01.CX10.CCX0.CCX2.CCX0.CCX2.CX01
-!apply drel149 → 5
+!apply cflip1 → 5
 elim_CCX0 → 4
 
 -- S3.S4.CX01.CX10.CCX2.CCX0.CX01

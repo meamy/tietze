@@ -21,7 +21,7 @@ expand_S1 → 0
 -- X0.X1.CCX2.X1.X0.X1.CCX2.X1
 bifunct_X_a → 0
 bifunct_X_a ← 3
-!apply drel6 ← 1
+!apply cadd1 ← 1
 !apply drel90 → 1
 
 -- X1.CX10.CCX2.CX10.X1.X1.CCX2.X1

@@ -9,8 +9,8 @@ expand_S7 → 1
 expand_S6 → 0
 
 -- CX21.CCX2.CX21.CZ01.CX21.CCX2.CX21.CZ01
-!apply drel143 → 0
-!apply drel143 → 4
+!apply cadd4 → 0
+!apply cadd4 → 4
 
 -- CCX1.CCX2.CCX1.CZ01.CCX1.CCX2.CCX1.CZ01.CZ01
 !apply drel152 → 3
@@ -48,13 +48,13 @@ expand_S5 → 1
 expand_S4 → 0
 
 -- CX01.CX02.CCX0.CX02.CX01.X1.CCX2.X1
-!apply drel142 → 1
-!apply drel149 → 1
+!apply cadd0 → 1
+!apply cflip1 → 1
 
 -- CX01.CCX0.CCX2.CCX0.CX01.X1.CCX2.X1
-!apply drel7 ← 5
+!apply cadd2 ← 5
 elim_CX01 → 4
-!apply drel149 → 2
+!apply cflip1 → 2
 elim_CCX0 → 1
 CX01.CCX2.CCX0.CX01
 
@@ -73,7 +73,7 @@ expand_S2 → 0
 elim_X0 → 4
 
 -- X0.CX21.CCX2.CX21.CCX2.X0
-!apply drel143 → 1
+!apply cadd4 → 1
 r40_a → 1
 !apply elim_CCX2 → 3
 X0.CCX2.CCX1.X0
@@ -98,7 +98,7 @@ elim_X0 → 3
 
 -- X0.CCX2.CX02.CX21.CCX2.CX21.X0
 !apply drel91 → 1
-!apply drel143 → 3
+!apply cadd4 → 3
 r40_a → 3
 !apply elim_CCX2 → 2
 X0.CX02.CCX1.CCX2.X0
@@ -288,7 +288,7 @@ elim_X0 → 4
 !apply elim_CX21 ← 0
 
 -- CX21.CX21.CCX2.CX21.CX21.CX12.CX02.X2.CX21.CCX2.CX21
-!apply drel143 → 1
+!apply cadd4 → 1
 r40_a → 1
 !apply elim_CX21 ← 2
 
@@ -297,13 +297,13 @@ expand_S6 ← 0
 
 -- S6.CX21.CCX1.CCX2.CX21.CX12.CX02.X2.CX21.CCX2.CX21
 !apply drel93 ← 1
-!apply drel143 → 2
+!apply cadd4 → 2
 !apply elim_CCX1 → 1
 
 -- S6.CCX2.CCX1.CX12.CX02.X2.CX21.CCX2.CX21
 !apply drel11 → 3
 !apply drel84 ← 4
-!apply drel13 → 6
+!apply cflip0 → 6
 !apply elim_CX12 → 5
 
 -- S6.CCX2.CCX1.CX02.X2.CCX1.CX12
@@ -352,7 +352,7 @@ CZ01.S6.CZ01
 @name drel16
 
 CCX0.CCX2.CCX1.CCX2.CCX0
-!apply drel132 ← 1
+!apply cadd5 ← 1
 !apply elim_CX12 ← 5
 !apply elim_CX12 ← 0
 
@@ -362,200 +362,8 @@ r10_b → 5
 r10_b → 1
 
 -- CX12.CCX0.CX10.CCX1.CX10.CCX0.CX12
-!apply drel97 → 2
+!apply cadd6 → 2
 elim_CCX0 → 4
 elim_CCX0 → 1
-!apply drel132 → 0
+!apply cadd5 → 0
 CCX2.CCX1.CCX2
-
-
--- ****************************************************************************
--- The relation CX01.CCX2.CX01 = X1.CCX2.X1
--- ****************************************************************************
-
-@name drel7
-
-CX01.CCX2.CX01
-!apply drel141 → 0
-!apply elim_X1 ← 0
-!apply drel96  → 1
-
--- X1.CCX2.CX02.X1.CX02
-!apply bifunct_X_CX_e → 2
-!apply elim_CX02 → 3
-X1.CCX2.X1
-
-
--- ****************************************************************************
--- The relation CX21.CCX2.CX21 = CX12.CCX1.CX12
--- ****************************************************************************
-
-@name drel13
-
-CX21.CCX2.CX21
-!apply drel143 → 0
-r40_a → 0
-!apply drel132 ← 0
-CX12.CCX1.CX12
-
-
--- ****************************************************************************
--- The relation CCX1.CCX0.CCX1 = CCX0.CCX1.CCX0
--- ****************************************************************************
-
-@name drel169
-
-CCX1.CCX0.CCX1
-!apply elim_SWAP12 ← 3
-!apply symmetry_CCX_g → 1
-!apply elim_SWAP12 ← 0
-
--- SWAP12.SWAP12.CCX1.SWAP12.CCX0.SWAP12.CCX1.SWAP12.SWAP12
-symmetry_CCX_b ← 5
-symmetry_CCX_b ← 1
-
--- SWAP12.CCX2.CCX0.CCX2.SWAP12
-!apply drel149 → 1
-symmetry_CCX_b → 2
-
--- SWAP12.CCX0.SWAP12.CCX1.SWAP12.CCX0.SWAP12
-!apply symmetry_CCX_g ← 4
-!apply symmetry_CCX_g ← 0
-CCX0.CCX1.CCX0
-
-
--- ****************************************************************************
--- The relation CCX2.CCX0.CCX2 = CCX0.CCX2.CCX0
--- ****************************************************************************
-
-@name drel149
-
-CCX2.CCX0.CCX2
-!apply symmetry_CCX_c → 2
-!apply symmetry_CCX_c → 0
-
--- SWAP01.CCX2.SWAP01.CCX0.SWAP01.CCX2.SWAP01
-expand_CCX1 ← 2
-
--- SWAP01.CCX2.CCX1.CCX2.SWAP01
-r40_a ← 1
-
--- SWAP01.CCX1.CCX2.CCX1.SWAP01
-expand_CCX1 → 3
-expand_CCX1 → 1
-
--- SWAP01.SWAP01.CCX0.SWAP01.CCX2.SWAP01.CCX0.SWAP01.SWAP01
-!apply symmetry_CCX_c ← 3
-
--- SWAP01.SWAP01.CCX0.CCX2.CCX0.SWAP01.SWAP01
-!apply elim_SWAP01 → 5
-!apply elim_SWAP01 → 0
-CCX0.CCX2.CCX0
-
-
--- ****************************************************************************
--- The relation CX12.CCX1.CX12 = CCX2.CCX1.CCX2
--- ****************************************************************************
-
-@name drel132
-
-CX12.CCX1.CX12
-expand_CX12 → 2
-expand_CX12 → 0
-
--- K12.CX21.K12.CCX1.K12.CX21.K12
-expand_CCX2 ← 2
-
--- K12.CX21.CCX2.CX21.K12
-!apply drel143 → 1
-
--- K12.CCX1.CCX2.CCX1.K12
-expand_CCX2 → 2
-
--- K12.CCX1.K12.CCX1.K12.CCX1.K12
-expand_CCX2 ← 4
-expand_CCX2 ← 0
-CCX2.CCX1.CCX2
-
-
--- ****************************************************************************
--- The relation CX21.CCX2.CX21 = CCX1.CCX2.CCX1
--- ****************************************************************************
-
-@name drel143
-
-CX21.CCX2.CX21
-symmetry_CX_l → 2
-symmetry_CX_l → 0
-
--- SWAP01.CX20.SWAP01.CCX2.SWAP01.CX20.SWAP01
-!apply symmetry_CCX_c ← 2
-
--- SWAP01.CX20.CCX2.CX20.SWAP01
-!apply drel144 → 1
-
--- SWAP01.CCX0.CCX2.CCX0.SWAP01
-!apply symmetry_CCX_c → 2
-
--- SWAP01.CCX0.SWAP01.CCX2.SWAP01.CCX0.SWAP01
-expand_CCX1 ← 4
-expand_CCX1 ← 0
-CCX1.CCX2.CCX1
-
-
--- ****************************************************************************
--- The relation CX02.CCX0.CX02 = CCX2.CCX0.CCX2
--- ****************************************************************************
-
-@name drel142
-
-CX02.CCX0.CX02
-expand_CX02 → 2
-expand_CX02 → 0
-
--- SWAP12.CX01.SWAP12.CCX0.SWAP12.CX01.SWAP12
-!apply symmetry_CCX_g ← 2
-
--- SWAP12.CX01.CCX0.CX01.SWAP12
-r8_c → 1
-
--- SWAP12.CCX1.CCX0.CCX1.SWAP12
-!apply symmetry_CCX_g → 2
-
--- SWAP12.CCX1.SWAP12.CCX0.SWAP12.CCX1.SWAP12
-symmetry_CCX_b ← 4
-symmetry_CCX_b ← 0
-CCX2.CCX0.CCX2
-
-
--- ****************************************************************************
--- The relation CX20.CCX2.CX20 = CCX0.CCX2.CCX0
--- ****************************************************************************
-
-@name drel144
-
-CX20.CCX2.CX20
-symmetry_CX_a → 2
-symmetry_CX_a → 0
-
--- SWAP02.CX02.SWAP02.CCX2.SWAP02.CX02.SWAP02
-symmetry_CCX_a → 3
-
--- SWAP02.CX02.SWAP02.SWAP02.CCX0.SWAP02.SWAP02.CX02.SWAP02
-!apply elim_SWAP02 → 5
-!apply elim_SWAP02 → 2
-
--- SWAP02.CX02.CCX0.CX02.SWAP02
-!apply drel142 → 1
-
--- SWAP02.CCX2.CCX0.CCX2.SWAP02
-symmetry_CCX_a → 3
-symmetry_CCX_a → 1
-
--- SWAP02.SWAP02.CCX0.SWAP02.CCX0.SWAP02.CCX0.SWAP02.SWAP02
-!apply elim_SWAP02 → 7
-!apply elim_SWAP02 → 0
-
--- CCX0.SWAP02.CCX0.SWAP02.CCX0
-symmetry_CCX_a ← 1
-CCX0.CCX2.CCX0

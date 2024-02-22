@@ -1,0 +1,65 @@
+-- ****************************************************************************
+-- The relation CX21.CCX2.CX21 = CX12.CCX1.CX12
+-- ****************************************************************************
+
+@name cflip0
+
+CX21.CCX2.CX21
+!apply cadd4 → 0
+r40_a → 0
+!apply cadd5 ← 0
+CX12.CCX1.CX12
+
+
+-- ****************************************************************************
+-- The relation CCX2.CCX0.CCX2 = CCX0.CCX2.CCX0
+-- ****************************************************************************
+
+@name cflip1
+
+CCX2.CCX0.CCX2
+!apply symmetry_CCX_c → 2
+!apply symmetry_CCX_c → 0
+
+-- SWAP01.CCX2.SWAP01.CCX0.SWAP01.CCX2.SWAP01
+expand_CCX1 ← 2
+
+-- SWAP01.CCX2.CCX1.CCX2.SWAP01
+r40_a ← 1
+
+-- SWAP01.CCX1.CCX2.CCX1.SWAP01
+expand_CCX1 → 3
+expand_CCX1 → 1
+
+-- SWAP01.SWAP01.CCX0.SWAP01.CCX2.SWAP01.CCX0.SWAP01.SWAP01
+!apply symmetry_CCX_c ← 3
+
+-- SWAP01.SWAP01.CCX0.CCX2.CCX0.SWAP01.SWAP01
+!apply elim_SWAP01 → 5
+!apply elim_SWAP01 → 0
+CCX0.CCX2.CCX0
+
+
+-- ****************************************************************************
+-- The relation CCX1.CCX0.CCX1 = CCX0.CCX1.CCX0
+-- ****************************************************************************
+
+@name cflip2
+
+CCX1.CCX0.CCX1
+!apply elim_SWAP12 ← 3
+!apply symmetry_CCX_g → 1
+!apply elim_SWAP12 ← 0
+
+-- SWAP12.SWAP12.CCX1.SWAP12.CCX0.SWAP12.CCX1.SWAP12.SWAP12
+symmetry_CCX_b ← 5
+symmetry_CCX_b ← 1
+
+-- SWAP12.CCX2.CCX0.CCX2.SWAP12
+!apply cflip1 → 1
+symmetry_CCX_b → 2
+
+-- SWAP12.CCX0.SWAP12.CCX1.SWAP12.CCX0.SWAP12
+!apply symmetry_CCX_g ← 4
+!apply symmetry_CCX_g ← 0
+CCX0.CCX1.CCX0

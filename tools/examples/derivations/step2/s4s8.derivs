@@ -121,7 +121,7 @@ r47 ← 6
 !apply drel85 → 2
 !apply drel55 → 4
 !apply elim_CX12 ← 3
-!apply drel132 → 4
+!apply cadd5 → 4
 !apply elim_CCX2 → 6
 !apply drel63 ← 5
 

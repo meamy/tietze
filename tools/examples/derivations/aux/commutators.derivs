@@ -1,21 +1,4 @@
 -- ****************************************************************************
--- The relation CX10.CCX2.CX10 = X0.CCX2.X0
--- ****************************************************************************
-
-@name drel6
-
-CX10.CCX2.CX10
-!apply drel90 → 0
-elim_X0 ← 0
-r5 → 1
-
--- X0.CCX2.CX12.X0.CX12
-bifunct_X_CX_a → 2
-!apply elim_CX12 → 3
-X0.CCX2.X0
-
-
--- ****************************************************************************
 -- The relation CX01.CX02 = CX02.CX01
 -- ****************************************************************************
 
@@ -1341,36 +1324,6 @@ symmetry_CX_a → 2
 symmetry_CCX_a ← 0
 CCX2.CX02.X1
 
-
--- ****************************************************************************
--- The relation CX10.CCX1.CX10 = CCX0.CCX1.CCX0
--- ****************************************************************************
-
-@name drel97
-
-CX10.CCX1.CX10
-!apply elim_SWAP01 ← 3
-expand_CCX1 → 1
-!apply elim_SWAP01 ← 0
-
--- SWAP01.SWAP01.CX10.SWAP01.CCX0.SWAP01.CX10.SWAP01.SWAP01
-!apply symmetry_CX_e ← 5
-!apply symmetry_CX_e ← 1
-
--- SWAP01.CX01.CCX0.CX01.SWAP01
-r8_c → 1
-
--- SWAP01.CCX1.CCX0.CCX1.SWAP01
-expand_CCX1 → 3
-expand_CCX1 → 1
-
--- SWAP01.SWAP01.CCX0.SWAP01.CCX0.SWAP01.CCX0.SWAP01.SWAP01
-!apply elim_SWAP01 → 7
-!apply elim_SWAP01 → 0
-
--- CCX0.SWAP01.CCX0.SWAP01.CCX0
-expand_CCX1  ← 1
-CCX0.CCX1.CCX0
 
 -- ****************************************************************************
 -- The relation CCX2.X0 = X0.CX12.CCX2
