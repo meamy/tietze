@@ -2397,11 +2397,7 @@ r47 → 3
 !apply elim_CX10 ← 4
 
 -- K12.K01.CX10.CCX2.CX10.CX10.K12.K01
-!apply drel6 → 2
-
--- K12.K01.X0.CCX2.X0.CX10.K12.K01
-r5 → 2
-elim_X0 → 4
+!apply drel90 → 2
 
 -- K12.K01.CCX2.CX12.CX10.K12.K01
 r47 ← 5
