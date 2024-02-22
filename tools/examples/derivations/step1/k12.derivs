@@ -200,7 +200,7 @@ expand_W12 ← 0
 -- W12.CZ12.K12.CZ12.K12.CZ12
 !apply wrel18 → 0
 elim_K12 ← 6
-symmetry_SWAP12 ← 1
+expand_SWAP12_alt ← 1
 
 -- SWAP12.SWAP12.K12
 !apply elim_SWAP12 → 0

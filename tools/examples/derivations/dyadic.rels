@@ -62,6 +62,14 @@ expand_CZ02 CZ02 = SWAP12.CZ01.SWAP12
 -- Depends on CZ02 and SWAP01.
 expand_CZ12 CZ12 = SWAP01.CZ02.SWAP01
 
+
+-- *******************************************************************
+-- Alternate Generator Definitions
+-- *******************************************************************
+
+expand_SWAP12_alt SWAP12 = CZ12.K12.CZ12.K12.CZ12.K12
+
+
 -- *******************************************************************
 -- Order Relations
 -- *******************************************************************
@@ -86,7 +94,6 @@ bifunct_X_K_a  X0.K12  = K12.X0
 -- Symmetric Generators
 -- *******************************************************************
 
-symmetry_SWAP12 SWAP12 = CZ12.K12.CZ12.K12.CZ12.K12
 symmetry_X_a    X1     = SWAP01.X0.SWAP01
 symmetry_CX_a   CX20   = SWAP02.CX02.SWAP02
 symmetry_CX_c   CX12   = SWAP01.CX02.SWAP01
@@ -98,7 +105,7 @@ symmetry_K_b    K01    = SWAP01.K01.SWAP01
 
 
 -- *******************************************************************
--- Commutivity
+-- Commutativity
 -- *******************************************************************
 
 -- [r8_c] Can be rewritten in terms of commutation: CXC.CXN = CXN.CXC
