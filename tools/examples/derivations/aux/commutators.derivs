@@ -19,8 +19,13 @@ CX02.CX01
 @name drel10
 
 CX10.CX12
-!apply drel111 ← 0
-!apply elim_CX12 → 3
+!apply elim_CX20 ← 2
+!apply elim_CX12 ← 3
+!apply elim_CX20 ← 4
+!apply drel135 ← 1
+!apply elim_CX10 → 0
+
+-- CX20.CX12.CX20
 !apply elim_CX12 ← 0
 !apply drel135 ← 1
 CX12.CX10
@@ -1468,22 +1473,6 @@ elim_CX01 ← 0
 !apply elim_CX21 → 2
 !apply elim_CX02 → 1
 CX01
-
-
--- ****************************************************************************
--- The relation CX10 = CX20.CX12.CX20.CX12
--- ****************************************************************************
-
-@name drel111
-
-CX20.CX12.CX20.CX12
-!apply elim_CX10 ← 0
-!apply drel135 → 1
-!apply elim_CX20 → 4
-!apply elim_CX12 → 3
-!apply elim_CX20 → 2
-!apply elim_CX12 → 1
-CX10
 
 
 -- ****************************************************************************
