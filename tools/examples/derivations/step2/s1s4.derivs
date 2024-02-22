@@ -9,10 +9,31 @@
 
 
 -- ****************************************************************************
--- The relation S1.S4 = S4.S1
+-- The relation CX12 = CX10.CX02.CX10.CX02
 -- ****************************************************************************
 
 @name s1s4s1s4_lemma1
+
+CX12
+!apply symmetry_CX_d → 0
+expand_CX21 → 1
+
+-- SWAP12.CX20.CX01.CX20.CX01.SWAP12
+!apply symmetry_CX_j → 3
+expand_CX02 ← 5
+
+-- SWAP12.CX20.CX01.SWAP12.CX01.CX02
+!apply symmetry_CX_j → 1
+!apply elim_SWAP12 → 0
+expand_CX02 ← 1
+CX10.CX02.CX10.CX02
+
+
+-- ****************************************************************************
+-- The relation S1.S4 = S4.S1
+-- ****************************************************************************
+
+@name s1s4s1s4_lemma2
 
 S1.S4
 expand_S4 → 1
@@ -59,7 +80,8 @@ r36 → 5
 elim_X0 → 6
 
 -- CX01.CX02.CCX0.CX10.CX02.CX10.CCX2.X0.CX02.CX01.X0.X1
-!apply drel178 → 3
+!apply elim_CX02 ← 6
+!apply s1s4s1s4_lemma1 ← 3
 !apply drel11 → 3
 elim_CX01 ← 4
 expand_S4 ← 0
@@ -86,7 +108,7 @@ S4.S1
 -- ****************************************************************************
 
 S1.S4.S1.S4
-!apply s1s4s1s4_lemma1 → 0
+!apply s1s4s1s4_lemma2 → 0
 
 -- S4.S1.S1.S4
 !apply s1s1 → 1
