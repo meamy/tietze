@@ -698,7 +698,8 @@ symmetry_K_b → 3
 !apply elim_SWAP01 → 2
 
 -- SWAP01.Z0.K01.SWAP01
-!apply drel167 → 1
+elim_K01 ← 1
+r2 → 2
 elim_K01 → 3
 
 -- SWAP01.K01.X0.SWAP01

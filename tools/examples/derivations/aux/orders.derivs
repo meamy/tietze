@@ -168,9 +168,9 @@ elim_CCX0 → 1
 @name elim_Z0
 @type order
 Z0.Z0
-!apply drel167 → 1
-!apply drel167 → 0
-elim_K01 → 2
+elim_K01 ← 0
+r2 → 1
+r2 → 2
 elim_X0 → 1
 elim_K01 → 0
 ε
