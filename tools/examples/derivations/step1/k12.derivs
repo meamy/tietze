@@ -52,6 +52,7 @@ W3.W5
 -- CCX0.X1.CCX1.CZ01.CCX1.X1.CCX0.W5
 !apply drel117 ← 2
 !apply elim_CCX1 → 4
+!apply drel71 → 2
 
 -- CCX0.X1.CZ02.CZ01.X1.CCX0.W5
 !apply bifunct_X_CZ_a → 1
@@ -61,7 +62,8 @@ W3.W5
 -- CCX0.CZ02.CZ01.Z0.CCX0.W5
 !apply drel23 → 3
 !apply drel159 → 2
-!apply elim_CZ12 → 4
+r31_c → 4
+!apply elim_CZ12 → 3
 
 -- CCX0.CZ02.CCX0.CZ01.Z0.W5
 !apply drel150 → 1

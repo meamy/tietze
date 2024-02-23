@@ -28,7 +28,6 @@ expand_S4 → 1
 !apply drel159 → 3
 !apply drel23 → 2
 !apply bifunct_Z_CZ_b → 3
-r31_c → 5
 !apply elim_CZ12 → 4
 
 -- CX01.CX02.CCX0.Z0.CZ01.CX02.CX01

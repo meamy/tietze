@@ -43,7 +43,8 @@ expand_S8 → 1
 !apply drel139 → 3
 !apply drel165 ← 4
 !apply drel159 → 5
-!apply elim_CZ12 → 7
+r31_c → 7
+!apply elim_CZ12 → 6
 
 -- K12.X1.X2.CZ02.CX12.CCX0.CZ01.CX10.Z1.CZ02.CX12.X2.X1.K12.CX21
 !apply drel77 → 7

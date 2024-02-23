@@ -29,10 +29,9 @@ expand_S8 → 1
 !apply drel159 → 5
 !apply drel23 → 4
 
--- K12.X1.X2.CZ02.CCX0.CZ12.Z0.CZ01.CZ12.CZ02.X2.X1.K12
+-- K12.X1.X2.CZ02.CCX0.CZ12.Z0.CZ12.CZ01.CZ02.X2.X1.K12
 !apply bifunct_Z_CZ_b → 5
-r31_c ← 6
-!apply elim_CZ12 → 7
+!apply elim_CZ12 → 6
 
 -- K12.X1.X2.CZ02.CCX0.Z0.CZ01.CZ02.X2.X1.K12
 !apply drel71 → 6

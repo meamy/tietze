@@ -1520,28 +1520,29 @@ CCX2.CZ02
 
 
 -- ****************************************************************************
--- The relation CCX0.CZ01 = CZ12.CZ01.CCX0
+-- The relation CZ01.CZ12.CCX0 = CCX0.CZ01
 -- ****************************************************************************
 
 @name drel115
 
-CZ12.CZ01.CCX0
+CZ01.CZ12.CCX0
 !apply elim_CZ01 ← 3
 elim_CCX0 ← 4
 !apply drel159 → 3
 elim_CCX0 → 2
-!apply elim_CZ01 → 1
-!apply elim_CZ12 → 0
+!apply elim_CZ12 → 1
+!apply elim_CZ01 → 0
 CCX0.CZ01
 
 
 -- ****************************************************************************
--- The relation CCX1.CZ01 = CZ02.CZ01.CCX1
+-- The relation CZ01.CZ02.CCX1 = CCX1.CZ01
 -- ****************************************************************************
 
 @name drel117
 
-CZ02.CZ01.CCX1
+CZ01.CZ02.CCX1
+!apply drel71 → 0
 !apply elim_CZ01 ← 3
 !apply elim_CCX1 ← 4
 !apply drel152 → 3
@@ -2048,17 +2049,12 @@ expand_CZ02 → 0
 -- SWAP12.CZ01.CCX0.SWAP12
 !apply drel159 → 1
 
--- SWAP12.CCX0.CZ01.CZ12.SWAP12
-!apply symmetry_CCX_g → 1
-!apply elim_SWAP12 → 0
+-- SWAP12.CCX0.CZ12.CZ01.SWAP12
+!apply symmetry_CZ_e → 2
 
--- CCX0.SWAP12.CZ01.CZ12.SWAP12
-!apply symmetry_CZ_e → 3
-!apply elim_SWAP12 → 5
-
--- CCX0.SWAP12.CZ01.SWAP12.CZ12
-expand_CZ02 ← 1
-!apply drel164 → 1
+-- SWAP12.CCX0.SWAP12.CZ12.SWAP12.CZ01.SWAP12
+expand_CZ02 ← 4
+!apply symmetry_CCX_g ← 0
 CCX0.CZ12.CZ02
 
 
@@ -2107,12 +2103,15 @@ expand_CCX1 → 1
 -- SWAP01.CZ01.CCX0.SWAP01
 !apply drel159 → 1
 
--- SWAP01.CCX0.CZ01.CZ12.SWAP01
-!apply symmetry_CZ_b → 2
+-- SWAP01.CCX0.CZ12.CZ01.SWAP01
+expand_CZ12 → 2
 
--- SWAP01.CCX0.SWAP01.CZ01.SWAP01.CZ12.SWAP01
-!apply symmetry_CZ_c ← 4
-expand_CCX1 ← 0 
+-- SWAP01.CCX0.SWAP01.CZ02.SWAP01.CZ01.SWAP01
+!apply symmetry_CZ_b ← 4
+expand_CCX1 ← 0
+
+-- CCX1.CZ02.CZ01
+!apply drel71 ← 1
 CCX1.CZ01.CZ02
 
 
@@ -2245,7 +2244,7 @@ CX12.CZ12
 
 
 -- ****************************************************************************
--- The relation CZ01.CCX0 = CCX0.CZ01.CZ12
+-- The relation CZ01.CCX0 = CCX0.CZ12.CZ01
 -- ****************************************************************************
 
 @name drel159
@@ -2297,10 +2296,7 @@ elim_K12 → 3
 -- CCX0.K01.CX21.K01.CZ01
 !apply drel89 ← 1
 elim_K01 → 2
-
--- CCX0.CZ12.CZ01
-r31_c ← 1
-CCX0.CZ01.CZ12
+CCX0.CZ12.CZ01
 
 
 -- ****************************************************************************
