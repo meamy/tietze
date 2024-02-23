@@ -19,7 +19,6 @@ expand_S3 → 1
 
 -- CZ01.X0.CCX2.X0
 !apply drel118 ← 0
-!apply elim_CZ01 ← 4
 !apply drel36 → 2
 !apply drel118 ← 3
 

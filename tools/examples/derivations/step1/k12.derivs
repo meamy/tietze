@@ -14,6 +14,7 @@ expand_W9 → 0
 !apply drel114 ← 1
 !apply drel71 → 1
 !apply drel36 → 2
+!apply elim_CZ01 → 3
 !apply elim_CCX2 → 2
 
 -- S6.CZ02.S6

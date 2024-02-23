@@ -20,7 +20,6 @@ expand_S1 → 1
 -- CZ01.X0.X1.CCX2.X1.X0
 !apply drel118 ← 0
 !apply drel119 ← 2
-!apply elim_CZ01 ← 6
 !apply drel36 → 4
 !apply drel119 ← 5
 !apply drel118 ← 7

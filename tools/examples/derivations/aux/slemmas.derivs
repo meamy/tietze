@@ -22,7 +22,6 @@ expand_S6 → 0
 !apply drel37 → 6
 
 -- CCX1.CCX2.CCX1.CCX1.CZ01.CCX2.CCX1.CZ01.CZ01
-!apply elim_CZ01 ← 6
 !apply drel36 → 4
 
 -- CCX1.CCX2.CCX1.CCX1.CCX2.CZ01.CCX1.CZ01.CZ01
@@ -250,7 +249,6 @@ expand_S6 → 0
 !apply drel71 ← 3
 !apply drel175 ← 2
 !apply drel36 ← 1
-!apply elim_CZ01 → 3
 
 -- CX21.CZ01.CCX2.CX21
 !apply elim_CZ02 ← 2
