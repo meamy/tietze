@@ -146,7 +146,8 @@ expand_W3 → 0
 elim_CCX0 → 4
 r31_c → 4
 
--- CCX0.X1.CCX1.CX20.CX20.CZ01.CCX1.X1.CCX0
+-- CCX0.X1.CCX1.CX20.CZ12.CZ01.CX20.CCX1.X1.CCX0
+r31_c ← 4
 !apply drel138 ← 4
 !apply elim_CX20 → 3
 CCX0.X1.CCX1.CZ01.CCX1.X1.CCX0
@@ -203,6 +204,7 @@ elim_CCX0 → 2
 -- S4.CX12.CCX2.CZ01.CZ12.CZ02.Z0.CX12.CCX2.S4
 !apply bifunct_Z_CX_b → 6
 !apply drel108 → 5
+!apply drel71 → 6
 r31_c → 3
 !apply drel165 ← 4
 !apply drel71 → 5

@@ -105,24 +105,19 @@ symmetry_K_b    K01    = SWAP01.K01.SWAP01
 
 
 -- *******************************************************************
--- Commutativity
+-- Commutator Realtions
 -- *******************************************************************
 
--- [r8_c] Can be rewritten in terms of commutation: CXC.CXN = CXN.CXC
 r1    CCX0.CX10      = CX10.CCX0
 r13   X0.CCX0        = CCX0.X0
 r36   X0.CX10        = CX10.X0
 r47   K01.K12        = K12.K01
 r31_c CZ01.CZ12      = CZ12.CZ01
-r8_c  CX01.CCX0.CX01 = CCX1.CCX0.CCX1
-
-
--- *******************************************************************
--- Commutators ("Pushing Through")
--- *******************************************************************
-
 r2    K01.Z0         = X0.K01
 r5    X0.CCX2        = CCX2.CX12.X0
+r44_b CX01.CZ12      = CZ12.CZ02.CX01
+
+-- Can be rewritten in terms of commutation.
+r8_c  CX01.CCX0.CX01 = CCX1.CCX0.CCX1
 r10_b CX12.CCX0.CX12 = CCX0.CX10
-r44_b CX01.CZ12      = CZ02.CZ12.CX01
 r40_a CCX1.CCX2.CCX1 = CCX2.CCX1.CCX2
