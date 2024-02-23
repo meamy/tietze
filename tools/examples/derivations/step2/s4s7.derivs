@@ -18,8 +18,7 @@ CZ01.S4
 expand_S4 → 1
 
 -- CZ01.CX01.CX02.CCX0.CX02.CX01
-!apply elim_CZ01 ← 2
-!apply drel104 → 0
+!apply drel104 ← 0
 
 -- CX01.Z0.CZ01.CX02.CCX0.CX02.CX01
 !apply drel163 ← 2
@@ -39,8 +38,9 @@ r31_c → 5
 !apply drel78 ← 5
 
 -- CX01.CX02.CCX0.CX02.CZ01.CX01.Z0
-!apply drel104 ← 5
-!apply elim_CZ01 → 4
+!apply drel104 ← 4
+!apply drel43 ← 5
+!apply elim_Z0 → 6
 
 -- CX01.CX02.CCX0.CX02.CX01.CZ01
 expand_S4 ← 0

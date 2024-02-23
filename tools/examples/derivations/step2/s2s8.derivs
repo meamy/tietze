@@ -47,8 +47,7 @@ expand_S8 → 1
 
 -- K12.X1.X2.CZ02.CX12.CCX0.CZ01.CX10.Z1.CZ02.CX12.X2.X1.K12.CX21
 !apply drel77 → 7
-!apply drel157 → 7
-!apply elim_CZ01 → 6
+!apply drel157 → 6
 
 -- K12.X1.X2.CZ02.CX12.CCX0.CX10.CZ01.CZ02.CX12.X2.X1.K12.CX21
 !apply drel108 → 8
