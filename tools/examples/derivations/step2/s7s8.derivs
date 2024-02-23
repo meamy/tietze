@@ -42,7 +42,6 @@ CX01.CX02.CZ02.CCX0.CZ02.X2.X1.K12
 @name s7s8s7s8s7s8_lemma2
 
 CX01.CCX2.CZ12.CCX0.CCX2.CX01.CCX0
-!apply elim_CZ12 ← 4
 !apply drel38 → 2
 
 -- CX01.CCX2.CCX0.CZ12.CCX2.CX01.CCX0
@@ -59,7 +58,6 @@ CX01.CCX2.CZ12.CCX0.CCX2.CX01.CCX0
 -- CX01.CCX2.CCX0.CCX2.CX01.CZ02.Z0.CCX0.CZ01
 !apply drel23 → 6
 !apply drel38 ← 6
-!apply elim_CZ12 → 8
 !apply drel164 → 5
 !apply drel57 ← 5
 
@@ -84,7 +82,8 @@ elim_CCX0 → 7
 elim_CCX0 → 2
 
 -- CCX0.CCX1.CCX2.CX02.CCX1.CZ02.Z0.CZ01 
-!apply drel37 ← 1
+!apply elim_CZ02 ← 1
+!apply drel37 → 2
 !apply drel151 → 3
 !apply drel163 ← 5
 !apply drel152 → 6
@@ -180,6 +179,7 @@ expand_S8 → 0
 -- CZ01.CZ02.K12.X1.X2.CZ02.CX01.CCX2.CZ12.CCX0.CCX2.CX01.CCX0.CZ02.X2.X1.K12
 !apply s7s8s7s8s7s8_lemma2 → 6
 !apply drel37 → 11
+!apply elim_CZ02 → 12
 !apply s7s8s7s8s7s8_lemma3 → 8
 
 -- CZ01.CZ02.K12.X1.X2.CZ02.CCX0.CZ02.X1.X2.CCX1.CX02.CCX2.CCX1.K12
@@ -193,7 +193,6 @@ expand_S8 → 0
 expand_S8 ← 2
 
 -- CZ01.CZ02.S8.CCX2.CZ02.CCX1.CCX2
-!apply elim_CZ02 ← 6
 !apply drel37 → 4
 !apply drel151 → 5
 !apply drel71 ← 6

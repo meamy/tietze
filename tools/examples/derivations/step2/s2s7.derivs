@@ -25,7 +25,6 @@ CZ01.CX21.CCX2.CX21
 !apply elim_CZ01 → 2
 
 -- CCX1.CCX2.CZ02.CCX1
-!apply elim_CZ02 ← 4
 !apply drel37 → 2
 !apply cadd4 ← 0
 CX21.CCX2.CX21.CZ02

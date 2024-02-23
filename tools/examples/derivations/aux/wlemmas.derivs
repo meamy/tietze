@@ -33,7 +33,6 @@ expand_S6 → 0
 !apply drel114 → 5
 
 -- X1.CZ01.X1.Z0.CCX1.CCX2.CZ02.CCX1.X1.CCX2.X1.CZ02.CZ01.S5.S6
-!apply elim_CZ02 ← 8
 !apply drel37 → 6
 !apply bifunct_X_CZ_a ← 7
 !apply bifunct_X_CZ_a → 10
@@ -254,6 +253,7 @@ expand_S4 → 5
 !apply drel159 → 5
 r31_c → 6
 !apply drel38 → 4
+!apply elim_CZ12 → 5
 
 -- S4.CX01.CX02.Z1.CCX0.CZ01.CX02.CX01
 !apply elim_Z1 ← 5
@@ -335,7 +335,6 @@ expand_W6 → 0
 !apply drel163 ← 3
 
 -- S2.S1.X0.CX02.CZ01.Z0.CZ02.CCX1.CCX2.X0
-!apply elim_CZ02 ← 8
 !apply drel37 → 6
 !apply elim_Z0 ← 7
 !apply drel52 → 5
