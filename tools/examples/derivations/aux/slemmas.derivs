@@ -196,7 +196,7 @@ expand_S8 → 1
 
 -- K12.X1.X2.CZ02.CX01.CCX1.CCX0.CZ02.X2.X1.K12
 !apply elim_CCX1 ← 7
-r8_c ← 5
+!apply cadd7 ← 5
 elim_CX01 → 4
 
 -- K12.X1.X2.CZ02.CCX0.CX01.CCX1.CZ02.X2.X1.K12

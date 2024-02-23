@@ -69,7 +69,7 @@ elim_CX01 ← 2
 !apply drel141 → 3
 
 -- CX01.CCX0.CX01.CCX2.CX02.CX01.CCX0.CX01.CCX0.CZ02.Z0.CZ01
-r8_c → 5
+!apply cadd7 → 5
 !apply cflip2 → 5
 elim_CCX0 → 7
 
@@ -79,7 +79,7 @@ elim_CCX0 → 7
 !apply elim_CCX2 → 3
 
 -- CX01.CCX0.CX01.CCX0.CCX2.CX02.CCX1.CZ02.Z0.CZ01
-r8_c → 0
+!apply cadd7 → 0
 !apply cflip2 → 0
 elim_CCX0 → 2
 

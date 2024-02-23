@@ -12,7 +12,7 @@ expand_CX02 → 0
 !apply symmetry_CCX_g ← 2
 
 -- SWAP12.CX01.CCX0.CX01.SWAP12
-r8_c → 1
+!apply cadd7 → 1
 
 -- SWAP12.CCX1.CCX0.CCX1.SWAP12
 !apply symmetry_CCX_g → 2
@@ -158,7 +158,7 @@ expand_CCX1 → 1
 !apply symmetry_CX_e ← 1
 
 -- SWAP01.CX01.CCX0.CX01.SWAP01
-r8_c → 1
+!apply cadd7 → 1
 
 -- SWAP01.CCX1.CCX0.CCX1.SWAP01
 expand_CCX1 → 3
@@ -171,3 +171,15 @@ expand_CCX1 → 1
 -- CCX0.SWAP01.CCX0.SWAP01.CCX0
 expand_CCX1  ← 1
 CCX0.CCX1.CCX0
+
+
+-- ****************************************************************************
+-- The relation CX01.CCX0.CX01 = CCX1.CCX0.CCX1
+-- ****************************************************************************
+
+@name cadd7
+
+CX01.CCX0.CX01
+r8_c → 1
+elim_CX01 → 0
+CCX1.CCX0.CCX1
