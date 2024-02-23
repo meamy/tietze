@@ -11,6 +11,7 @@ module LafontExe.Logging.ErrorFormat (
     reportUnknownGen
 ) where
 
+import           Data.Maybe
 import           Lafont.Common
 import           LafontExe.Logging.Primitive
 
@@ -32,40 +33,44 @@ reportUnknownGen rname = "Rule contains an unknown generator: " ++ rname ++ "\n"
 
 -- | Consumes the name of a derivation file (fname) and the index of a derivation (num).
 -- Returns the first line of a derivation validation error.
-prefaceDerivationError :: String -> Int -> String
-prefaceDerivationError fname num = "Failed to validate " ++ der ++ " in " ++ fname ++ "."
-    where index = show num
-          der = "derivation(" ++ index ++ ")"
+prefaceDerivationError :: String -> Int -> Maybe String -> String
+prefaceDerivationError fname num dname = line
+    where index = "derivation(" ++ show num ++ ")"
+          der   = fromMaybe index dname
+          line  = "Failed to validate " ++ der ++ " in " ++ fname ++ "."
 
 -- | Consumes the name of a derivation file (fname), the index of a derivation (num), the
 -- word obtained from a derivation (act), and the expected word from the end of the file
 -- (exp). Returns a string describing the error.
-describeIncorrectResult :: String -> Int -> MonWord -> MonWord -> String
-describeIncorrectResult fname num exp act = fstLine ++ "\n" ++ sndLine ++ "\n"
+describeIncorrectResult :: String -> Int -> Maybe String -> MonWord -> MonWord -> String
+describeIncorrectResult fname num dname exp act = lines
     where expStr = logWord exp
           actStr = logWord act
-          fstLine = prefaceDerivationError fname num
+          fstLine = prefaceDerivationError fname num dname
           sndLine = "Expected " ++ expStr ++ " but produced " ++ actStr ++ "."
+          lines   = fstLine ++ "\n" ++ sndLine ++ "\n"
 
 -- | Consumes the name of a derivation file (fname), the index of a derivation (num), the
 -- word obtain when a rewrite rule failed to apply (act), and the step number associated
 -- with this rewrite (step). Returns a string describing the error.
-describeIncorrectStep :: String -> Int -> MonWord -> Int -> String
-describeIncorrectStep fname num act step = fstLine ++ "\n" ++ sndLine ++ "\n"
+describeIncorrectStep :: String -> Int -> Maybe String -> MonWord -> Int -> String
+describeIncorrectStep fname num dname act step = lines
     where actStr = logWord act
           stepStr = show step
-          fstLine = prefaceDerivationError fname num
+          fstLine = prefaceDerivationError fname num dname
           sndLine = "Obtained " ++ actStr ++ " at step " ++ stepStr ++ "."
+          lines   = fstLine ++ "\n" ++ sndLine ++ "\n"
 
 -- | Consumes the name of a derivation file (fname), the index of a derivation (num), and
 -- the proof step at which an apply was not concretizable. Returns a string describing
 -- the error.
-describeFailedApply :: String -> Int -> Int -> String
-describeFailedApply fname num pos = fstLine ++ "\n" ++ sndLine ++ "\n" ++ thdLine ++ "\n"
+describeFailedApply :: String -> Int -> Maybe String -> Int -> String
+describeFailedApply fname num dname pos = lines
     where step = show pos
-          fstLine = prefaceDerivationError fname num
+          fstLine = prefaceDerivationError fname num dname
           sndLine = "The derivation applied at step " ++ step ++ " is not equational."
           thdLine = "However, the rule is applied right-to-left."
+          lines   = fstLine ++ "\n" ++ sndLine ++ "\n" ++ thdLine ++ "\n"
 
 -- | Consumes the index of a derivation (num). Returns a message stating that this
 -- derivation has a duplication name.

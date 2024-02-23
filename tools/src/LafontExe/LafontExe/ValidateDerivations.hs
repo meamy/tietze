@@ -30,10 +30,11 @@ verifyDerivationSteps ((Named src idx deriv):derivations) =
     if success res
     then if output res == final summary
          then verifyDerivationSteps derivations
-         else describeIncorrectResult src idx (final summary) (output res)
-    else describeIncorrectStep src idx (output res) (step res)
+         else describeIncorrectResult src idx dname (final summary) (output res)
+    else describeIncorrectStep src idx dname (output res) (step res)
     where Derivation summary rewrites = deriv
           res                         = simplify (initial summary) rewrites
+          dname                       = propName $ meta summary
 
 -- | Consumes a list of pairs, where each tuple contains the name of a derivation file
 -- and the Derivation it describes. If the dependency graph induced by the list of

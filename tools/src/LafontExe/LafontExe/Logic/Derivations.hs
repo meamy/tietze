@@ -85,7 +85,7 @@ concretize named =
         Just (Left dep) -> Left $ "Unmet dependency: " ++ printUnmetDep dep ++ "\n"
         Just (Right c)  -> Left $ "Dependency cycle detected: " ++ printCycle c ++ "\n"
         Nothing         -> case cimpl (dmap, emap) named of
-            Left (fname, num, pos) -> Left $ describeFailedApply fname num pos
+            Left (fname, num, pos) -> Left $ describeFailedApply fname num Nothing pos
             Right derivs           -> Right derivs
     where absDerivations = Prelude.map value named
           dmap           = makeDerivationMap absDerivations
