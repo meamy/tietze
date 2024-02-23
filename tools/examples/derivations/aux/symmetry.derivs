@@ -5,8 +5,8 @@
 @name symmetry_SWAP01
 @type symmetry
 SWAP01
-expand_SWAP01 → 0
-!apply drel161 → 0
+!apply elim_CX10 ← 0
+!apply drel161 ← 1
 !apply symmetry_CX_b → 2
 !apply symmetry_CX_b → 0
 !apply symmetry_CX_i ← 2
@@ -99,21 +99,19 @@ SWAP02.CX12.SWAP02
 @name symmetry_CX_d
 @type symmetry
 CX12
-!apply elim_SWAP12 ← 0
-expand_SWAP12 → 1
+!apply elim_CX21 ← 1
+!apply elim_CX12 ← 2
+expand_SWAP12 ← 0
 !apply drel154 → 1
-expand_SWAP12 ← 2
 SWAP12.CX21.SWAP12
 
 @name symmetry_CX_e
 @type symmetry
 CX01
-!apply elim_SWAP01 ← 0
-expand_SWAP01 → 1
-elim_CX01 → 3
 !apply elim_CX10 ← 1
-!apply drel161 ← 2
-expand_SWAP01 ← 2
+elim_CX01 ← 2
+expand_SWAP01 ← 0
+!apply drel161 → 1
 SWAP01.CX10.SWAP01
 
 @name symmetry_CX_f
@@ -339,6 +337,6 @@ expand_SWAP12 → 1
 !apply drel30 ← 0
 !apply drel46 → 1
 !apply drel30 ← 2
-!apply drel154 ← 0
-expand_SWAP12 ← 0
+!apply drel154 → 1
+!apply elim_CX21 → 0
 SWAP12.K12.SWAP12

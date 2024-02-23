@@ -2134,50 +2134,25 @@ CCX1.CZ01.CZ02
 
 
 -- ****************************************************************************
--- The relation CX12.CX21.CX12 = CX21.CX12.CX21
+-- The relation CX12.CX21 = CX21.SWAP12
 -- ****************************************************************************
 
 @name drel154
 
-CX12.CX21.CX12
-symmetry_CX_c → 2
-symmetry_CX_l → 1
-symmetry_CX_c → 0
+CX12.CX21
+!apply symmetry_CX_g → 1
 
--- SWAP01.CX02.SWAP01.SWAP01.CX20.SWAP01.SWAP01.CX02.SWAP01
-!apply elim_SWAP01 → 5
-!apply elim_SWAP01 → 2
+-- CX12.SWAP12.CX12.SWAP12
+expand_SWAP12 → 3
 
--- SWAP01.CX02.CX20.CX02.SWAP01
-expand_CX02 → 3
-!apply symmetry_CX_j → 2
-expand_CX02 → 1
+-- CX12.SWAP12.CX12.CX12.CX21.CX12
+!apply elim_CX12 → 2
+expand_SWAP12 → 1
+!apply elim_CX12 → 0
 
--- SWAP01.SWAP12.CX01.SWAP12.SWAP12.CX10.SWAP12.SWAP12.CX01.SWAP12.SWAP01
-!apply elim_SWAP12 → 6
-!apply elim_SWAP12 → 3
-
--- SWAP01.SWAP12.CX01.CX10.CX01.SWAP12.SWAP01
-!apply drel161 → 2
-
--- SWAP01.SWAP12.CX10.CX01.CX10.SWAP12.SWAP01
-!apply elim_SWAP12 ← 4
-!apply elim_SWAP12 ← 3
-
--- SWAP01.SWAP12.CX10.SWAP12.SWAP12.CX01.SWAP12.SWAP12.CX10.SWAP12.SWAP01
-!apply symmetry_CX_j ← 7
-expand_CX02 ← 4
-!apply symmetry_CX_j ← 1
-
--- SWAP01.CX20.CX02.CX20.SWAP01
-!apply elim_SWAP01 ← 3
-!apply elim_SWAP01 ← 2
-
--- SWAP01.CX20.SWAP01.SWAP01.CX02.SWAP01.SWAP01.CX20.SWAP01
-symmetry_CX_l ← 6
-symmetry_CX_c ← 3
-symmetry_CX_l ← 0
-CX21.CX12.CX21
+-- CX21.CX12.CX21.CX12
+expand_SWAP12 ← 1
+CX21.SWAP12
 
 
 -- ****************************************************************************
@@ -2381,29 +2356,29 @@ CZ01.Z1.X0
 
 
 -- ****************************************************************************
--- The relation CX01.CX10.CX01 = CX10.CX01.CX10
+-- The relation CX01.CX10 = CX10.SWAP01
 -- ****************************************************************************
 
 @name drel161
 
-CX01.CX10.CX01
-elim_K01 ← 3
-expand_SWAP01 ← 0
+CX01.CX10
+!apply elim_CX10 ← 0
 
--- SWAP01.K01.K01
+-- CX10.CX10.CX01.CX10
+expand_CX10 → 3
+expand_CX10 → 1
+expand_CX10 ← 3
+
+-- CX10.K01.CX01.CX10.CX01.K01
+expand_SWAP01 ← 2
+
+-- CX10.K01.SWAP01.K01
 symmetry_K_b → 1
-!apply elim_SWAP01 → 0
 
--- K01.SWAP01.K01
-expand_SWAP01 → 1
-
--- K01.CX01.CX10.CX01.K01
-expand_CX10 → 2
-
--- K01.CX01.K01.CX01.K01.CX01.K01
-expand_CX10 ← 4
-expand_CX10 ← 0
-CX10.CX01.CX10
+-- CX10.SWAP01.K01.SWAP01.SWAP01.K01
+!apply elim_SWAP01 → 3
+elim_K01 → 2
+CX10.SWAP01
 
 
 -- ****************************************************************************

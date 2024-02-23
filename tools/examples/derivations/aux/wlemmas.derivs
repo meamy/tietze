@@ -698,8 +698,8 @@ bifunct_X_CX_a ← 1
 elim_X0 → 2
 
 -- CX21.CX12.CX21
-!apply drel154 ← 0
-expand_SWAP12 ← 0
+!apply drel154 → 1
+!apply elim_CX21 → 0
 SWAP12
 
 

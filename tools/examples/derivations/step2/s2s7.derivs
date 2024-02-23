@@ -66,11 +66,9 @@ expand_S2 → 0
 !apply elim_CX10 → 3
 
 -- CX21.CCX2.CX12.CX21.S7
-!apply elim_CX21 ← 2
-!apply drel154 ← 3
-expand_SWAP12 ← 3
+!apply drel154 → 2
 
--- CX21.CCX2.CX21.SWAP12.CZ01.CX21.CCX2.CX21.CZ01
+-- CX21.CCX2.CX21.SWAP12.S7
 expand_S7 → 4
 
 -- CX21.CCX2.CX21.SWAP12.CZ01.CX21.CCX2.CX21.CZ01
@@ -85,8 +83,8 @@ expand_CZ02 → 5
 expand_S7 ← 0
 
 -- S7.SWAP12.CX21.CCX2.CX21
-expand_SWAP12 → 1
-!apply drel154 → 1
+!apply elim_CX21 ← 1
+!apply drel154 ← 2
 !apply elim_CX21 → 3
 
 -- S7.CX21.CX12.CCX2.CX21
