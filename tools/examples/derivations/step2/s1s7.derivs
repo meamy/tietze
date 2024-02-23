@@ -27,6 +27,7 @@ expand_S1 → 1
 -- X0.Z1.X1.Z0.CCX2.X1.Z0.X0.Z1.CZ01
 !apply bifunct_X_Z_b → 5
 !apply drel40 → 3
+!apply elim_Z0 → 4
 
 -- X0.Z1.X1.CCX2.X1.X0.Z1.CZ01
 !apply drel34 → 1
@@ -37,6 +38,7 @@ expand_S1 → 1
 
 -- X0.X1.Z1.CCX2.Z1.X1.X0.CZ01
 !apply drel51 → 2
+!apply elim_Z1 → 3
 
 -- X0.X1.CCX2.X1.X0.CZ01
 expand_S1 ← 0
