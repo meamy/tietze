@@ -104,7 +104,6 @@ elim_K01 ← 6
 !apply drel74 ← 4
 
 -- CZ02.K12.CCX0.K12.K01.CX20.CCX1.K01
-!apply elim_CX20 ← 7
 !apply drel140 → 5
 elim_K01 ← 7
 !apply drel74 → 8

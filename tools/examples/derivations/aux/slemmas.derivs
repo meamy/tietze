@@ -307,29 +307,34 @@ expand_S6 ← 0
 !apply elim_CX12 → 5
 
 -- S6.CCX2.CCX1.CX02.X2.CCX1.CX12
-!apply elim_CX02 ← 2
+!apply drel129 → 4
 !apply drel95 → 3
-!apply drel129 ← 3
-!apply elim_CCX1 → 4
+!apply drel9 → 4
+
+-- S6.CCX2.CCX1.CCX1.CX02.CX01.CX01.X2.CX12
+elim_CX01 → 5
+!apply elim_CCX1 → 2
 
 -- S6.CCX2.CX02.X2.CX12
 elim_X0 ← 1
 !apply elim_X1 ← 2
+
+-- S6.X0.X1.X1.X0.CCX2.CX02.X2.CX12
 r5 → 4
 bifunct_X_CX_a → 5
+!apply drel11 → 6
+!apply drel84 → 8
+!apply elim_CX12 → 7
 
--- S6.X0.X1.X1.CCX2.X0.CX12.CX02.X2.CX12
+-- S6.X0.X1.X1.CCX2.X0.CX02.X2
 !apply drel96 → 3
 !apply bifunct_X_CX_e → 4
-!apply drel61 → 8
-!apply drel84 ← 7
+!apply drel61 → 7
 !apply drel126 ← 5
 
--- S6.X0.X1.CCX2.X1.X0.CX02.CX12.CX02.CX12
+-- S6.X0.X1.CCX2.X1.X0.CX02.CX02
 expand_S1 ← 1
-!apply drel11 ← 2
-!apply elim_CX02 → 3
-!apply elim_CX12 → 2
+!apply elim_CX02 → 2
 S6.S1
 
 
@@ -353,13 +358,15 @@ CZ01.S6.CZ01
 
 CCX0.CCX2.CCX1.CCX2.CCX0
 !apply cadd5 ← 1
-!apply elim_CX12 ← 5
-!apply elim_CX12 ← 0
 
--- CX12.CX12.CCX0.CX12.CCX1.CX12.CCX0.CX12.CX12
-r10_b → 5
-!apply drel56 → 5
-r10_b → 1
+-- CCX0.CX12.CCX1.CX12.CCX0
+r10_b → 3
+r1 → 3
+
+-- CCX0.CX12.CCX1.CX10.CCX0.CX12
+!apply elim_CX10 ← 1
+!apply drel10 → 2
+r10_b ← 0
 
 -- CX12.CCX0.CX10.CCX1.CX10.CCX0.CX12
 !apply cadd6 → 2

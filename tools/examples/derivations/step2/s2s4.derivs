@@ -71,6 +71,7 @@ expand_S2 → 0
 -- CX21.X0.CCX2.X0.CX21
 !apply cadd1 ← 1
 !apply drel90 → 1
+!apply elim_CX10 → 3
 
 -- CX21.CCX2.CX12.CX21
 !apply elim_CX12 ← 4
@@ -129,7 +130,6 @@ expand_S4 → 3
 !apply elim_CX21 → 2
 
 -- CX21.CCX2.CX02.CX21.CCX0.CX02.CX01
-!apply elim_CX21 ← 5
 !apply drel155 → 3
 
 -- CX21.CCX2.CX02.CCX0.CX20.CX21.CX02.CX01
@@ -145,10 +145,9 @@ expand_S4 → 3
 !apply elim_CX02 ← 4
 !apply cadd0 → 5
 
--- CX21.CCX2.CX02.CX20.CX02.CCX2.CCX0.CCX2.CX12
-!apply elim_CX20 ← 7
-!apply drel155 ← 6
-!apply drel183 → 8
+-- CX21.CCX2.CX02.CX20.CX02.CCX2.CCX0.CCX2.CX21
+!apply elim_CX21 ← 6
+!apply drel155 → 7
 
 -- CX21.CCX2.CX02.CX20.CX02.CCX2.CX21.CCX0.CX20.CX21.CCX2.CX21
 elim_CX01 ← 0
@@ -168,24 +167,32 @@ elim_CX01 ← 0
 !apply cadd0 → 6
 !apply elim_CCX2 → 5
 
--- CX01.CX02.CX21.CCX2.CX20.CCX0.CCX2.CX02.CX21.CX21.CCX2.CX21
-!apply drel184 ← 7
-!apply drel9 → 8
-
--- CX01.CX02.CX21.CCX2.CX20.CCX0.CCX2.CX21.CX02.CX01.CX21.CCX2.CX21
-!apply drel94 ← 4
-!apply drel155 ← 4
-
--- CX01.CX02.CX21.CCX2.CX21.CCX0.CX21.CCX2.CX21.CX02.CX01.CX21.CCX2.CX21
-!apply cadd4 → 6
+-- CX01.CX02.CX21.CCX2.CX20.CCX0.CCX2.CX02.CCX2.CX21
+!apply elim_CX21 ← 4
 !apply cadd4 → 2
 
--- CX01.CX02.CCX1.CCX2.CCX1.CCX0.CCX1.CCX2.CCX1.CX02.CX01.CX21.CCX2.CX21
+-- CX01.CX02.CCX1.CCX2.CCX1.CX21.CX20.CCX0.CCX2.CX02.CCX2.CX21
+!apply drel94 ← 6
+!apply drel155 → 5
+!apply drel183 → 7
+!apply elim_CX20 → 6
+
+-- CX01.CX02.CCX1.CCX2.CCX1.CCX0.CX21.CCX2.CX02.CCX2.CX21
+!apply elim_CX21 ← 8
+!apply cadd4 → 6
+
+-- CX01.CX02.CCX1.CCX2.CCX1.CCX0.CCX1.CCX2.CCX1.CX21.CX02.CCX2.CX21
 !apply s2s4s2s4_lemma1 → 3
 !apply elim_CCX1 → 5
 !apply elim_CCX1 → 2
 
--- CX01.CX02.CCX0.CX02.CX01.CX21.CCX2.CX21
+-- CX01.CX02.CCX0.CX21.CX02.CCX2.CX21
+!apply elim_CX21 ← 5
+!apply elim_CX02 ← 6
+!apply drel110 → 3
+
+-- CX01.CX02.CCX0.CX01.CX02.CX21.CCX2.CX21
+!apply drel9 → 3
 expand_S4 ← 0
 S4.CX21.CCX2.CX21
 

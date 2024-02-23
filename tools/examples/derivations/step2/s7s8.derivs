@@ -65,9 +65,8 @@ CX01.CCX2.CZ12.CCX0.CCX2.CX01.CCX0
 
 -- CX01.CCX2.CCX0.CCX2.CX01.CCX0.CZ02.Z0.CZ01
 !apply cflip1 → 1
-!apply elim_CX02 ← 3
-!apply drel141 ← 2
-!apply drel9 → 4
+elim_CX01 ← 2
+!apply drel141 → 3
 
 -- CX01.CCX0.CX01.CCX2.CX02.CX01.CCX0.CX01.CCX0.CZ02.Z0.CZ01
 r8_c → 5
@@ -113,9 +112,7 @@ CCX0.CZ02.CCX1.CCX2.CX02.CZ02.CCX1
 CCX1.CCX2.CX02.CCX1.X2.X1
 !apply bifunct_X_c ← 4
 !apply drel25 ← 3
-!apply drel141 ← 1
-!apply cadd2 → 1
-!apply elim_X1 → 3
+!apply drel96 ← 1
 
 -- CCX1.X1.CCX2.CCX1.X2
 !apply drel25 ← 0
@@ -125,9 +122,11 @@ CCX1.CCX2.CX02.CCX1.X2.X1
 !apply drel26 ← 2
 !apply drel101 ← 1
 
--- X1.X2.CX01.CCX1.CCX2.CX01.CCX1
+-- X1.X2.CCX1.CX01.CCX2.CX01.CCX1
 !apply drel92 ← 2
-!apply drel103 ← 3
+!apply drel141 → 3
+elim_CX01 → 5
+!apply drel91 → 3
 X1.X2.CCX1.CX02.CCX2.CCX1
 
 

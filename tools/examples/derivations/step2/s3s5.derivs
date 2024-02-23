@@ -20,22 +20,26 @@ expand_S3 → 0
 -- X0.CCX2.X0.S5
 !apply cadd1 ← 0
 !apply drel90 → 0
+!apply elim_CX10 → 2
 
 -- CCX2.CX12.S5
 expand_S5 → 2
 
 -- CCX2.CX12.X1.CCX2.X1
 !apply cadd2 ← 2
-!apply drel103 ← 2
+!apply drel103 → 3
+elim_CX01 → 2
 !apply drel11 → 1
 
 -- CCX2.CX02.CX12.CCX2
+elim_CX01 ← 2
 !apply drel141 ← 0
 !apply cadd2 → 0
 expand_S5 ← 0
 
 -- S5.CX12.CCX2
 !apply drel55 ← 1
+!apply elim_CX10 ← 3
 !apply drel90 ← 1
 !apply cadd1 → 1
 expand_S3 ← 1

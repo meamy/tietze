@@ -20,8 +20,11 @@ S1.S2.S1.S2.S1.S2
 
 -- S1.S2.X0.CX02.CCX1.CCX2.X0.X0.CX02.CCX1.CCX2.X0
 elim_X0 → 6
+
+-- S1.S2.X0.CX02.CCX1.CCX2.CX02.CCX1.CCX2.X0
 !apply drel91 → 5
 !apply drel95 → 3
+!apply elim_CX02 → 5
 
 -- S1.S2.X0.CCX1.CX01.CCX2.CCX1.CCX2.X0
 !apply drel92 → 3
@@ -33,14 +36,14 @@ r40_a → 4
 elim_X0 → 4
 
 -- X0.CX02.CCX1.CCX2.CX01.CCX2.CCX1.X0
-elim_CX01 ← 6
-!apply drel103 ← 4
-!apply drel91 → 3
-!apply elim_CCX2 → 4
+!apply drel103 → 3
+!apply elim_CCX2 → 5
 
--- X0.CX02.CCX1.CX02.CX01.CCX1.X0
-!apply drel95 → 1
-elim_CX01 → 2
-!apply elim_CCX1 → 1
+-- X0.CX02.CCX1.CX01.CX02.CCX1.X0
+!apply drel95 ← 2
+
+-- X0.CX02.CX02.CCX1.CCX1.X0
+!apply elim_CCX1 → 3
+!apply elim_CX02 → 1
 elim_X0 → 0
 ε

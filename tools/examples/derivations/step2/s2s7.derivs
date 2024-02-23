@@ -63,6 +63,7 @@ expand_S2 → 0
 !apply bifunct_X_CX_b ← 0
 !apply cadd1 ← 1
 !apply drel90 → 1
+!apply elim_CX10 → 3
 
 -- CX21.CCX2.CX12.CX21.S7
 !apply elim_CX21 ← 2

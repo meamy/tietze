@@ -23,8 +23,9 @@ bifunct_X_a → 0
 bifunct_X_a ← 3
 !apply cadd1 ← 1
 !apply drel90 → 1
+!apply elim_CX10 → 3
 
--- X1.CX10.CCX2.CX10.X1.X1.CCX2.X1
+-- X1.CCX2.CX12.X1.X1.CCX2.X1
 !apply drel70 → 2
 !apply bifunct_X_c ← 2
 expand_S5 ← 0

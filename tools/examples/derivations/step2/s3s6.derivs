@@ -21,6 +21,7 @@ expand_S3 → 0
 -- X0.CCX2.X0.CX21.CCX2.CX21
 !apply cadd1 ← 0
 !apply drel90 → 0
+!apply elim_CX10 → 2
 
 -- CCX2.CX12.CX21.CCX2.CX21
 !apply cflip0 → 2
@@ -32,6 +33,7 @@ r40_a ← 0
 !apply cadd4 ← 0
 
 -- CX21.CCX2.CX21.CCX2.CX12
+!apply elim_CX10 ← 5
 !apply drel90 ← 3
 !apply cadd1 → 3
 expand_S6 ← 0
