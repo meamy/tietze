@@ -67,17 +67,16 @@ W3.W5
 !apply drel150 → 1
 elim_CCX0 → 0
 
--- CZ02.CZ12.CZ01.Z0.W5
+-- CZ12.CZ02.CZ01.Z0.W5
 !apply wrel7 → 4
 
--- CZ02.CZ12.CZ01.Z0.Z1.Z2.CZ01.CZ02
+-- CZ12.CZ02.CZ01.Z0.Z1.Z2.CZ01.CZ02
 !apply drel43 → 2
 !apply drel45 → 3
 !apply bifunct_Z_CZ_c → 4
 !apply elim_CZ01 → 5
 
--- CZ02.CZ12.Z0.Z1.Z2.CZ02
-!apply drel164 → 0
+-- CZ12.CZ02.Z0.Z1.Z2.CZ02
 !apply drel44 → 1
 !apply bifunct_Z_CZ_a → 2
 !apply drel62 → 3

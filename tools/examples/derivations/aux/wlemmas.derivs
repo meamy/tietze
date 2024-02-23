@@ -186,7 +186,8 @@ expand_W4 → 0
 -- S4.S3.CCX0.CZ01.CZ02.Z0.CCX0.S3.S4
 !apply drel23 → 5
 !apply drel150 → 4
-!apply elim_CZ12 → 6
+!apply drel164 → 6
+!apply elim_CZ12 → 5
 
 -- S4.S3.CCX0.CZ01.CCX0.CZ02.Z0.S3.S4
 !apply drel159 → 3

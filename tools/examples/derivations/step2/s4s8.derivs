@@ -70,20 +70,21 @@ expand_S8 → 1
 !apply drel150 → 5
 !apply drel23 → 4
 
--- K12.X1.X2.CZ02.CCX0.CZ12.Z0.CZ02.CZ12.CZ02.X2.X1.K12
+-- K12.X1.X2.CZ02.CCX0.CZ12.Z0.CZ12.CZ02.CZ02.X2.X1.K12
 !apply bifunct_Z_CZ_b → 5
-!apply drel164 → 7
 !apply elim_CZ12 → 6
-
--- K12.X1.X2.CZ02.CCX0.Z0.CZ02.CZ02.X2.X1.K12
 !apply drel44 ← 5
+
+-- K12.X1.X2.CZ02.CCX0.CZ02.Z0.CZ02.X2.X1.K12
 !apply drel120 ← 7
-!apply bifunct_X_Z_f ← 6
-!apply elim_Z0 → 7
+!apply bifunct_X_Z_f → 7
+!apply elim_Z0 → 6
 
 -- K12.X1.X2.CZ02.CCX0.CZ02.X2.CZ02.X1.K12
 !apply bifunct_X_CZ_a ← 7
 !apply drel48 → 8
+
+-- K12.X1.X2.CZ02.CCX0.CZ02.X2.X1.K12.CX02
 expand_S8 ← 0
 S8.CX02
 
@@ -136,7 +137,6 @@ r47 ← 4
 elim_K01 → 3
 
 -- CZ02.CZ12.CCX0.K12.CCX0.CX02.K12
-!apply drel164 → 0
 !apply drel57 ← 0
 !apply drel48 → 1
 CCX0.K12.CX02.CCX0.CX02.K12
