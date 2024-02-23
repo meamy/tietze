@@ -585,35 +585,34 @@ CCX0.Z1
 
 
 -- ****************************************************************************
--- The relation Z2.CCX0.Z2 = CCX0
+-- The relation Z2.CCX0 = CCX0.Z2
 -- ****************************************************************************
 
 @name drel54
 
-Z2.CCX0.Z2
+Z2.CCX0
 elim_K01 ← 0
 !apply bifunct_Z_K_b ← 1
 !apply drel63 → 2
-!apply bifunct_Z_K_b ← 3
 
--- K01.Z2.CCX1.Z2.K01
+-- K01.Z2.CCX1.K01
 elim_K12 ← 1
 !apply drel64 ← 2
 !apply drel29 ← 3
-!apply drel64 ← 4
 
--- K01.K12.X2.CCX2.X2.K12.K01
+-- K01.K12.X2.CCX2.K12.K01
 !apply drel26 → 2
-!apply elim_X2 → 3
 
--- K01.K12.CCX2.K12.K01
+-- K01.K12.CCX2.X2.K12.K01
+!apply drel64 → 3
 !apply drel29 → 2
 elim_K12 → 1
 
--- K01.CCX1.K01
+-- K01.CCX1.Z2.K01
+!apply bifunct_Z_K_b → 2
 !apply drel63 ← 1
 elim_K01 → 0
-CCX0
+CCX0.Z2
 
 
 -- ****************************************************************************

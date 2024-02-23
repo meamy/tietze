@@ -126,6 +126,7 @@ r13 → 5
 -- K12.X1.X2.CZ02.Z2.CCX0.CZ02.Z2.X0.X2.X1.K12
 !apply drel62 → 6
 !apply drel54 → 4
+!apply elim_Z2 → 5
 
 -- K12.X1.X2.CZ02.CCX0.CZ02.X0.X2.X1.K12
 !apply bifunct_X_b → 6
