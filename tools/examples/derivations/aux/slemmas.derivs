@@ -160,7 +160,6 @@ expand_S8 → 1
 -- K12.X1.Z1.X2.CZ02.CCX0.CZ02.X2.M.X1.K12
 !apply bifunct_X_Z_c ← 2
 !apply bifunct_Z_CZ_a ← 3
-!apply elim_Z1 ← 6
 !apply drel53 → 4
 !apply bifunct_Z_CZ_a ← 5
 !apply bifunct_X_Z_c ← 6

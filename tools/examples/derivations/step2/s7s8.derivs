@@ -99,6 +99,7 @@ elim_CCX0 → 2
 !apply drel81 ← 4
 !apply drel44 ← 5
 !apply drel52 → 6
+!apply elim_Z0 → 7
 CCX0.CZ02.CCX1.CCX2.CX02.CZ02.CCX1
 
 

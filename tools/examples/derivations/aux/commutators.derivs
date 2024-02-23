@@ -541,48 +541,47 @@ CCX2.Z1
 
 
 -- ****************************************************************************
--- The relation Z0.CCX1.Z0 = CCX1
+-- The relation Z0.CCX1 = CCX1.Z0
 -- ****************************************************************************
 
 @name drel52
 
-Z0.CCX1.Z0
-!apply drel167 → 2
-!apply drel167 → 0
+Z0.CCX1
+elim_K01 ← 0
+r2 → 1
+!apply drel85 ← 2
 
--- K01.X0.K01.CCX1.K01.X0.K01
-!apply drel63 ← 3
-elim_K01 → 2
-
---K01.X0.CCX0.X0.K01
+-- K01.X0.CCX0.K01
 r13 → 1
-elim_X0 → 2
 
--- K01.CCX0.K01
-!apply drel63 → 0
-elim_K01 → 1
-CCX1
+-- K01.CCX0.X0.K01
+r2 ← 2
+!apply drel85 → 1
+elim_K01 → 0
+CCX1.Z0
 
 
 -- ****************************************************************************
--- The relation Z1.CCX0.Z1 = CCX0
+-- The relation Z1.CCX0 = CCX0.Z1
 -- ****************************************************************************
 
 @name drel53
 
-Z1.CCX0.Z1
-symmetry_Z_d → 2
+Z1.CCX0
+!apply elim_SWAP01 ← 2
 symmetry_Z_d → 0
 
--- SWAP01.Z0.SWAP01.CCX0.SWAP01.Z0.SWAP01
+-- SWAP01.Z0.SWAP01.CCX0.SWAP01.SWAP01
 expand_CCX1 ← 2
+
+-- SWAP01.Z0.CCX1.SWAP01
 !apply drel52 → 1
 
--- SWAP01.CCX1.SWAP01
+-- SWAP01.CCX1.Z0.SWAP01
 expand_CCX1 → 1
-!apply elim_SWAP01 → 3
+symmetry_Z_d ← 3
 !apply elim_SWAP01 → 0
-CCX0
+CCX0.Z1
 
 
 -- ****************************************************************************
