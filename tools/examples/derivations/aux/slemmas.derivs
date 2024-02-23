@@ -74,7 +74,7 @@ elim_X0 → 4
 
 -- X0.CX21.CCX2.CX21.CCX2.X0
 !apply cadd4 → 1
-r40_a → 1
+!apply cflip3 → 1
 !apply elim_CCX2 → 3
 X0.CCX2.CCX1.X0
 
@@ -99,7 +99,7 @@ elim_X0 → 3
 -- X0.CCX2.CX02.CX21.CCX2.CX21.X0
 !apply drel91 → 1
 !apply cadd4 → 3
-r40_a → 3
+!apply cflip3 → 3
 !apply elim_CCX2 → 2
 X0.CX02.CCX1.CCX2.X0
 
@@ -289,7 +289,7 @@ elim_X0 → 4
 
 -- CX21.CX21.CCX2.CX21.CX21.CX12.CX02.X2.CX21.CCX2.CX21
 !apply cadd4 → 1
-r40_a → 1
+!apply cflip3 → 1
 !apply elim_CX21 ← 2
 
 -- CX21.CCX2.CX21.CX21.CCX1.CCX2.CX21.CX12.CX02.X2.CX21.CCX2.CX21

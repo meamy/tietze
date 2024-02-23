@@ -52,7 +52,7 @@ expand_S6 → 0
 !apply elim_X1 → 9
 
 -- X1.CZ01.X1.Z0.CCX1.CCX2.CCX1.CCX2.CX02.Z0.S5.S6
-r40_a → 4
+!apply cflip3 → 4
 !apply elim_CCX2 → 6
 
 -- X1.CZ01.X1.Z0.CCX2.CCX1.CX02.Z0.S5.S6
@@ -73,7 +73,7 @@ expand_S5 → 6
 !apply elim_CX02 → 5
 
 -- X1.CZ01.X1.CCX2.CCX1.CCX2.S6
-r40_a ← 3
+!apply cflip3 ← 3
 !apply cadd4 ← 3
 
 -- X1.CZ01.X1.CX21.CCX2.CX21.S6
@@ -568,7 +568,7 @@ expand_S7 → 4
 !apply cadd4 → 3
 
 -- CZ01.CCX1.CCX2.CCX1.CCX2.CCX1.CZ01
-r40_a → 1
+!apply cflip3 → 1
 !apply elim_CCX2 → 3
 !apply elim_CCX1 → 2
 !apply drel36 → 0

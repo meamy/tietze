@@ -108,16 +108,14 @@ symmetry_K_b    K01    = SWAP01.K01.SWAP01
 -- Commutator Realtions
 -- *******************************************************************
 
-r1    CCX0.CX10      = CX10.CCX0
-r13   X0.CCX0        = CCX0.X0
-r36   X0.CX10        = CX10.X0
-r47   K01.K12        = K12.K01
-r31_c CZ01.CZ12      = CZ12.CZ01
-r2    K01.Z0         = X0.K01
-r5    X0.CCX2        = CCX2.CX12.X0
-r44_b CX01.CZ12      = CZ12.CZ02.CX01
-r10_b CX12.CCX0      = CCX0.CX10.CX12
-r8_c  CCX0.CX01      = CX01.CCX1.CCX0.CCX1
-
--- Can be rewritten in terms of commutation.
-r40_a CCX1.CCX2.CCX1 = CCX2.CCX1.CCX2
+r1    CCX0.CX10 = CX10.CCX0
+r13   X0.CCX0   = CCX0.X0
+r36   X0.CX10   = CX10.X0
+r47   K01.K12   = K12.K01
+r31_c CZ01.CZ12 = CZ12.CZ01
+r2    K01.Z0    = X0.K01
+r5    X0.CCX2   = CCX2.CX12.X0
+r44_b CX01.CZ12 = CZ12.CZ02.CX01
+r10_b CX12.CCX0 = CCX0.CX10.CX12
+r8_c  CCX0.CX01 = CX01.CCX1.CCX0.CCX1
+r40_a CCX2.CCX1 = CCX1.CCX2.CCX1.CCX2

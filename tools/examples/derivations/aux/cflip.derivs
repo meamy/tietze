@@ -6,7 +6,7 @@
 
 CX21.CCX2.CX21
 !apply cadd4 → 0
-r40_a → 0
+!apply cflip3 → 0
 !apply cadd5 ← 0
 CX12.CCX1.CX12
 
@@ -25,7 +25,7 @@ CCX2.CCX0.CCX2
 expand_CCX1 ← 2
 
 -- SWAP01.CCX2.CCX1.CCX2.SWAP01
-r40_a ← 1
+!apply cflip3 ← 1
 
 -- SWAP01.CCX1.CCX2.CCX1.SWAP01
 expand_CCX1 → 3
@@ -63,3 +63,15 @@ symmetry_CCX_b → 2
 !apply symmetry_CCX_g ← 4
 !apply symmetry_CCX_g ← 0
 CCX0.CCX1.CCX0
+
+
+-- ****************************************************************************
+-- The relation CCX1.CCX2.CCX1 = CCX2.CCX1.CCX2
+-- ****************************************************************************
+
+@name cflip3
+
+CCX1.CCX2.CCX1
+r40_a → 1
+!apply elim_CCX1 → 0
+CCX2.CCX1.CCX2

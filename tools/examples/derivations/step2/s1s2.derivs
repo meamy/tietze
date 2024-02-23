@@ -28,7 +28,7 @@ elim_X0 → 6
 
 -- S1.S2.X0.CCX1.CX01.CCX2.CCX1.CCX2.X0
 !apply drel92 → 3
-r40_a → 4
+!apply cflip3 → 4
 !apply elim_CCX2 → 6
 
 -- S1.S2.X0.CX01.CCX2.CCX1.X0

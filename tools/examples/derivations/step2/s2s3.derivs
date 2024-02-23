@@ -18,7 +18,7 @@ S2.S3.S2.S3.S2.S3
 
 -- X0.CCX2.CCX1.X0.X0.CCX2.CCX1.X0.S2.S3
 elim_X0 → 3
-r40_a → 2
+!apply cflip3 → 2
 !apply elim_CCX2 → 1
 
 -- X0.CCX1.CCX2.X0.S2.S3
