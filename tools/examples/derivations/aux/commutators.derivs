@@ -442,8 +442,8 @@ Z1.CZ01
 @name drel46
 
 K12.CX21
-!apply drel124 → 1
-elim_K12 → 0
+elim_K12 ← 2
+expand_CX12 ← 0
 CX12.K12
 
 
@@ -625,18 +625,16 @@ CCX2.CX12
 elim_K12 ← 0
 
 -- K12.K12.CCX2.CX12
-!apply drel128 → 1
-elim_K12 ← 4
-!apply drel124 ← 2
+!apply drel86 → 1
+!apply drel30 ← 2
 
 -- K12.CCX1.CX21.K12
 !apply drel93 → 1
-!apply drel128 ← 2
-!apply drel124 → 1
+!apply drel46 → 0
+!apply drel29 ← 1
 
--- K12.K12.CX12.K12.K12.CCX2
-elim_K12 → 3
-elim_K12 → 0
+-- CX12.CCX2.K12.K12
+elim_K12 → 2
 CX12.CCX2
 
 
@@ -1618,19 +1616,6 @@ CZ02.X0
 
 
 -- ****************************************************************************
--- The relation CX21 = K12.CX12.K12
--- ****************************************************************************
-
-@name drel124
-
-CX21
-elim_K12 ← 1
-elim_K12 ← 0
-expand_CX12 ← 1
-K12.CX12.K12
-
-
--- ****************************************************************************
 -- The relation X0.CX02 = CX02.X0.X2
 -- ****************************************************************************
 
@@ -2306,7 +2291,10 @@ r47 → 4
 !apply drel85 ← 0
 
 -- CCX0.K01.K12.CX12.K12.K01.CZ01
-!apply drel124 ← 2
+!apply drel30 ← 2
+elim_K12 → 3
+
+-- CCX0.K01.CX21.K01.CZ01
 !apply drel89 ← 1
 elim_K01 → 2
 

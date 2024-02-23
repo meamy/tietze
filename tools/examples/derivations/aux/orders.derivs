@@ -107,9 +107,9 @@ elim_K12 → 0
 @name elim_CX21
 @type order
 CX21.CX21
-!apply drel124 → 1
-!apply drel124 → 0
-elim_K12 → 2
+elim_K12 ← 0
+!apply drel46 → 1
+!apply drel46 → 2
 !apply elim_CX12 → 1
 elim_K12 → 0
 ε
