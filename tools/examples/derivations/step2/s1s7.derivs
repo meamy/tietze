@@ -58,7 +58,6 @@ expand_S1 → 1
 !apply drel123 ← 0
 !apply bifunct_X_CZ_a ← 2
 !apply drel151 → 3
-!apply drel71 ← 4
 !apply bifunct_X_CZ_a ← 5
 !apply drel123 ← 6
 

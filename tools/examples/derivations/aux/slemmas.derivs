@@ -15,6 +15,7 @@ expand_S6 → 0
 -- CCX1.CCX2.CCX1.CZ01.CCX1.CCX2.CCX1.CZ01.CZ01
 !apply drel152 → 3
 !apply drel151 → 5
+!apply drel71 → 6
 !apply drel152 → 7
 
 -- CCX1.CCX2.CCX1.CCX1.CZ01.CCX2.CZ02.CCX1.CZ01.CZ02.CZ01
@@ -227,6 +228,7 @@ expand_S7 → 0
 
 -- CZ01.CX21.CCX2.CX21.CZ01
 !apply drel175 → 0
+!apply drel71 → 1
 !apply drel114 → 1
 !apply drel176 ← 2
 

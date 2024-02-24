@@ -1504,18 +1504,18 @@ CX02
 
 
 -- ****************************************************************************
--- The relation CCX2.CZ02 = CZ01.CZ02.CCX2
+-- The relation CZ02.CZ01.CCX2 = CCX2.CZ02
 -- ****************************************************************************
 
 @name drel114
 
-CZ01.CZ02.CCX2
+CZ02.CZ01.CCX2
 !apply elim_CZ02 ← 3
 !apply elim_CCX2 ← 4
 !apply drel151 → 3
 !apply elim_CCX2 → 2
-!apply elim_CZ02 → 1
-!apply elim_CZ01 → 0
+!apply elim_CZ01 → 1
+!apply elim_CZ02 → 0
 CCX2.CZ02
 
 
@@ -2059,7 +2059,7 @@ CCX0.CZ12.CZ02
 
 
 -- ****************************************************************************
--- The relation CZ02.CCX2 = CCX2.CZ02.CZ01
+-- The relation CZ02.CCX2 = CCX2.CZ01.CZ02
 -- ****************************************************************************
 
 @name drel151
@@ -2084,7 +2084,8 @@ expand_CZ02 → 3
 -- SWAP12.CCX1.SWAP12.SWAP12.CZ01.SWAP12.CZ01
 expand_CZ02 ← 3
 symmetry_CCX_b ← 0
-CCX2.CZ02.CZ01
+!apply drel71 ← 1
+CCX2.CZ01.CZ02
 
 
 -- ****************************************************************************
@@ -2494,7 +2495,7 @@ CZ01.Z0.CX01
 
 
 -- ****************************************************************************
--- The relation CZ12.CCX2 = CCX2.CZ12.CZ01
+-- The relation CZ12.CCX2 = CCX2.CZ01.CZ12
 -- ****************************************************************************
 
 @name drel170
@@ -2507,15 +2508,13 @@ expand_CZ12 → 0
 -- SWAP01.CZ02.CCX2.SWAP01
 !apply drel151 → 1
 
--- SWAP01.CCX2.CZ02.CZ01.SWAP01
-!apply elim_SWAP01 ← 2
-!apply symmetry_CCX_c ← 0
+-- SWAP01.CCX2.CZ01.CZ02.SWAP01
+!apply symmetry_CZ_b → 2
 
--- CCX2.SWAP01.CZ02.CZ01.SWAP01
-!apply elim_SWAP01 ← 3
-expand_CZ12 ← 1
-!apply symmetry_CZ_b ← 2
-CCX2.CZ12.CZ01
+-- SWAP01.CCX2.SWAP01.CZ01.SWAP01.CZ02.SWAP01
+expand_CZ12 ← 4
+!apply symmetry_CCX_c ← 0
+CCX2.CZ01.CZ12
 
 
 -- ****************************************************************************
@@ -2741,16 +2740,16 @@ CX02.CZ12
 
 
 -- ****************************************************************************
--- The relation CZ01.CZ12.CCX2 = CCX2.CZ12
+-- The relation CZ12.CZ01.CCX2 = CCX2.CZ12
 -- ****************************************************************************
 
 @name drel187
 
-CZ01.CZ12.CCX2
+CZ12.CZ01.CCX2
 !apply elim_CCX2 ← 0
 !apply elim_CZ12 ← 1
 !apply drel170 → 2
-!apply elim_CZ01 → 4
-!apply elim_CZ12 → 3
+!apply elim_CZ12 → 4
+!apply elim_CZ01 → 3
 !apply elim_CCX2 → 2
 CCX2.CZ12
