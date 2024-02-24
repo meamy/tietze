@@ -125,20 +125,14 @@ CX21.CCX2.CX21.S4
 expand_S4 → 3
 
 -- CX21.CCX2.CX21.CX01.CX02.CCX0.CX02.CX01
-!apply drel110 ← 3
-!apply elim_CX02 → 6
-!apply elim_CX21 → 2
+!apply drel9 → 3
+!apply drel134 ← 2
 
 -- CX21.CCX2.CX02.CX21.CCX0.CX02.CX01
 !apply drel155 → 3
 
 -- CX21.CCX2.CX02.CCX0.CX20.CX21.CX02.CX01
-!apply drel9 ← 6
-!apply drel110 ← 6
-
--- CX21.CCX2.CX02.CCX0.CX20.CX21.CX21.CX02.CX21.CX02.CX02
-!apply elim_CX02 → 9
-!apply elim_CX21 → 5
+!apply drel134 ← 5
 
 -- CX21.CCX2.CX02.CCX0.CX20.CX02.CX21
 !apply drel94 → 3
@@ -187,9 +181,9 @@ elim_CX01 ← 0
 !apply elim_CCX1 → 2
 
 -- CX01.CX02.CCX0.CX21.CX02.CCX2.CX21
-!apply elim_CX21 ← 5
-!apply elim_CX02 ← 6
 !apply drel110 → 3
+!apply drel41 ← 4
+!apply drel9 ← 3
 
 -- CX01.CX02.CCX0.CX01.CX02.CX21.CCX2.CX21
 !apply drel9 → 3

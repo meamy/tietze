@@ -338,9 +338,9 @@ CX20.Z1
 @type bifunct
 Z0.CX12
 expand_Z0 → 0
-!apply drel181 ← 3
+!apply drel112 → 3
 !apply drel165 ← 2
-!apply drel181 ← 1
+!apply drel112 → 1
 !apply drel165 ← 0
 !apply drel163 → 3
 !apply drel9 ← 4

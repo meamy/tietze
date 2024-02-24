@@ -26,9 +26,7 @@ expand_S3 → 0
 expand_S4 → 2
 
 -- CCX2.CX12.CX01.CX02.CCX0.CX02.CX01
-!apply drel112 ← 3
-elim_CX01 → 2
-!apply elim_CX12 → 1
+!apply drel112 ← 1
 
 -- CCX2.CX01.CX12.CCX0.CX02.CX01
 !apply drel103 → 0
