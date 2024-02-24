@@ -617,6 +617,7 @@ expand_S5 → 1
 
 -- X0.CX02.X0.CX02
 !apply drel126 → 2
+!apply bifunct_X_b ← 3
 !apply elim_CX02 → 1
 elim_X0 → 0
 X2
@@ -649,8 +650,7 @@ elim_CCX0 → 3
 -- W10.CX01.CX02.CX10.X2.CX02.CX01.W10.W8
 !apply wrel14 → 0
 !apply drel106 ← 1
-!apply bifunct_X_b → 0
-elim_X0 → 1
+elim_X0 → 0
 
 -- X2.CX02.CX01.CX02.CX10.X2.CX02.CX01.W10.W8
 !apply drel9 → 2
@@ -668,7 +668,6 @@ expand_SWAP01 ← 0
 -- SWAP01.CX02.W10.W8
 !apply wrel14 → 2
 !apply drel126 → 2
-!apply bifunct_X_b → 3
 elim_X0 → 4
 
 -- SWAP01.CX02.CX02.X2.W8

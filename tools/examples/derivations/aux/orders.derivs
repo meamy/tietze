@@ -43,9 +43,9 @@ X1.X1
 expand_X1 → 1
 expand_X1 → 0
 !apply drel162 → 5
-bifunct_X_a → 6
 elim_X0 → 7
 elim_CX01 → 4
+bifunct_X_a → 3
 !apply drel162 ← 2
 elim_X0 → 1
 elim_CX01 → 0

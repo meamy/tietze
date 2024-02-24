@@ -79,6 +79,7 @@ elim_K12 ← 0
 
 -- K12.X2.CX21.K12
 !apply drel133 → 1
+!apply bifunct_X_c → 2
 
 -- K12.CX21.X2.X1.K12
 !apply drel46 → 0
@@ -859,7 +860,7 @@ Z2.K12
 
 
 -- ****************************************************************************
--- The relation X1.CX10 = CX10.X1.X0
+-- The relation X1.CX10 = CX10.X0.X1
 -- ****************************************************************************
 
 @name drel67
@@ -872,17 +873,21 @@ symmetry_X_a → 0
 -- SWAP01.X0.CX01.SWAP01
 !apply drel162 → 1
 
--- SWAP01.CX01.X0.X1.SWAP01
+-- SWAP01.CX01.X1.X0.SWAP01
+symmetry_X_a → 2
+
+-- SWAP01.CX01.SWAP01.X0.SWAP01.X0.SWAP01
+symmetry_X_a ← 4
 !apply symmetry_CX_e → 1
+
+-- SWAP01.SWAP01.CX10.SWAP01.SWAP01.X0.X1
+!apply elim_SWAP01 → 3
 !apply elim_SWAP01 → 0
-symmetry_X_a → 3
-!apply elim_SWAP01 → 5
-symmetry_X_a ← 1
-CX10.X1.X0
+CX10.X0.X1
 
 
 -- ****************************************************************************
--- The relation X1.CX12 = CX12.X1.X2
+-- The relation X1.CX12 = CX12.X2.X1
 -- ****************************************************************************
 
 @name drel69
@@ -894,34 +899,34 @@ X1.CX12
 -- SWAP02.X1.CX10.SWAP02
 !apply drel67 → 1
 
--- SWAP02.CX10.X1.X0.SWAP02
-!apply elim_SWAP02 ← 3
-expand_X2 ← 4
+-- SWAP02.CX10.X0.X1.SWAP02
+!apply bifunct_X_SWAP_c → 3
+!apply elim_SWAP02 ← 2
 
--- SWAP02.CX10.X1.SWAP02.X2
-!apply bifunct_X_SWAP_c → 2
+-- SWAP02.CX10.SWAP02.SWAP02.X0.SWAP02.X1
+expand_X2 ← 3
 !apply symmetry_CX_f ← 0
-CX12.X1.X2
+CX12.X2.X1
 
 
 -- ****************************************************************************
--- The relation CX12.X1 = X2.X1.CX12
+-- The relation CX12.X1 = X1.X2.CX12
 -- ****************************************************************************
 
 @name drel70
 
 CX12.X1
 !apply elim_CX12 ← 2
-!apply elim_X1 ← 3
-!apply elim_X2 ← 4
+!apply elim_X2 ← 3
+!apply elim_X1 ← 4
 
--- CX12.X1.CX12.X1.X2.X2.X1.CX12
+-- CX12.X1.CX12.X2.X1.X1.X2.CX12
 !apply drel69 ← 2
 
--- CX12.X1.X1.CX12.X2.X1.CX12
+-- CX12.X1.X1.CX12.X1.X2.CX12
 !apply elim_X1 → 1
 !apply elim_CX12 → 0
-X2.X1.CX12
+X1.X2.CX12
 
 
 -- ****************************************************************************
@@ -1385,7 +1390,7 @@ CZ01.CX01
 
 
 -- ****************************************************************************
--- The relation CX01.X0 = X0.X1.CX01
+-- The relation X0.X1.CX01 = CX01.X0
 -- ****************************************************************************
 
 @name drel105
@@ -1395,6 +1400,7 @@ bifunct_X_a → 0
 elim_CX01 ← 0
 elim_X0 ← 1
 !apply drel162 → 2
+bifunct_X_a ← 3
 !apply elim_X1 → 4
 elim_X0 → 3
 elim_CX01 → 2
@@ -1402,17 +1408,17 @@ CX01.X0
 
 
 -- ****************************************************************************
--- The relation CX02.X0 = X2.X0.CX02
+-- The relation X0.X2.CX02 = CX02.X0
 -- ****************************************************************************
 
 @name drel106
 
-X2.X0.CX02
+X0.X2.CX02
 !apply elim_CX02 ← 0
 elim_X0 ← 1
 !apply drel126 → 2
-!apply elim_X2 → 4
-elim_X0 → 3
+elim_X0 → 4
+!apply elim_X2 → 3
 !apply elim_CX02 → 2
 CX02.X0
 
@@ -1630,14 +1636,14 @@ expand_CX02 → 1
 !apply bifunct_X_SWAP_a → 0
 !apply drel162 → 1
 
--- SWAP12.CX01.X0.X1.SWAP12
+-- SWAP12.CX01.X1.X0.SWAP12
+!apply bifunct_X_SWAP_a → 3
 !apply elim_SWAP12 ← 2
 
--- SWAP12.CX01.SWAP12.SWAP12.X0.X1.SWAP12
+-- SWAP12.CX01.SWAP12.SWAP12.X1.SWAP12.X0
+!apply symmetry_X_c ← 3
 expand_CX02 ← 0
-!apply bifunct_X_SWAP_a ← 1
-!apply symmetry_X_c ← 2
-CX02.X0.X2
+CX02.X2.X0
 
 
 -- ****************************************************************************
@@ -1765,7 +1771,7 @@ CCX0.CX20.X1
 
 
 -- ****************************************************************************
--- The relation X2.CX21 = CX21.X2.X1
+-- The relation X2.CX21 = CX21.X1.X2
 -- ****************************************************************************
 
 @name drel133
@@ -1780,14 +1786,14 @@ expand_X2 → 0
 -- SWAP02.X0.CX01.SWAP02
 !apply drel162 → 1
 
--- SWAP02.CX01.X0.X1.SWAP02
-!apply bifunct_X_SWAP_c → 3
-!apply elim_SWAP02 ← 2
+-- SWAP02.CX01.X1.X0.SWAP02
+!apply elim_SWAP02 ← 3
+expand_X2 ← 4
 
--- SWAP02.CX01.SWAP02.SWAP02.X0.SWAP02.X1
-expand_X2 ← 3
+-- SWAP02.CX01.X1.SWAP02.X2
+!apply bifunct_X_SWAP_c → 2
 !apply symmetry_CX_i ← 0
-CX21.X2.X1
+CX21.X1.X2
 
 
 -- ****************************************************************************
@@ -2316,6 +2322,7 @@ bifunct_X_K_a → 0
 
 -- K12.X0.CX01.K12
 !apply drel162 → 1
+bifunct_X_a ← 2
 
 --  K12.CX01.X0.X1.K12
 bifunct_X_a → 2
@@ -2357,7 +2364,7 @@ CX10.SWAP01
 
 
 -- ****************************************************************************
--- The relation X0.CX01 = CX01.X0.X1
+-- The relation X0.CX01 = CX01.X1.X0
 -- ****************************************************************************
 
 @name drel162
@@ -2368,10 +2375,7 @@ elim_CX01 ← 0
 
 -- CX01.CX01.X0.CX01.X0.X0
 expand_X1 ← 1
-
--- CX01.X1.X0
-bifunct_X_a ← 1
-CX01.X0.X1
+CX01.X1.X0
 
 
 -- ****************************************************************************

@@ -24,9 +24,7 @@ expand_S8 → 1
 
 -- K12.CX12.X1.X2.CZ02.CCX0.CZ02.X2.X1.CX12.K12.CX21
 !apply drel69 → 8
-!apply bifunct_X_c → 9
 !apply drel70 → 1
-!apply bifunct_X_c ← 1
 
 -- K12.X1.X2.CX12.X2.CZ02.CCX0.CZ02.X2.CX12.X2.X1.K12.CX21
 !apply drel146 → 4

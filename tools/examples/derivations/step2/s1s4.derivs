@@ -43,6 +43,7 @@ expand_S1 → 0
 bifunct_X_a ← 3
 !apply drel105 → 3
 !apply drel126 → 4
+!apply bifunct_X_b ← 5
 
 -- X0.X1.CCX2.CX01.CX02.X0.X2.CCX0.CX02.CX01
 !apply drel130 → 6
@@ -50,7 +51,6 @@ r13 → 5
 r36 → 6
 
 -- X0.X1.CCX2.CX01.CX02.CCX0.CX10.X0.X2.CX02.CX01
-!apply bifunct_X_b → 7
 !apply drel106 → 7
 !apply drel162 → 8
 
@@ -64,6 +64,7 @@ r36 → 6
 -- X0.X1.CX01.CX02.CCX0.CX02.CCX2.CX10.CX02.CX01.X0.X1
 !apply drel105 → 0
 !apply drel126 → 1
+!apply bifunct_X_b ← 2
 !apply drel130 → 3
 
 -- CX01.CX02.X0.CCX0.CX10.X2.CX02.CCX2.CX10.CX02.CX01.X0.X1
@@ -73,7 +74,6 @@ r36 → 6
 -- CX01.CX02.X0.CCX0.CX10.X2.CX02.CX10.X0.CCX2.X0.CX02.CX01.X0.X1
 r13 → 2
 r36 → 3
-!apply bifunct_X_b → 4
 !apply drel106 → 4
 r36 → 5
 elim_X0 → 6
@@ -94,7 +94,7 @@ bifunct_X_CX_a → 2
 !apply drel141 ← 3
 !apply drel162 → 2
 elim_CX01 → 1
-bifunct_X_a → 4
+bifunct_X_a ← 1
 
 -- S4.X0.X1.CCX2.X1.X0
 expand_S1 ← 1

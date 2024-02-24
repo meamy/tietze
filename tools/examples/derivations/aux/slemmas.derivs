@@ -278,8 +278,7 @@ expand_S1 → 0
 r5 → 0
 !apply drel126 → 2
 
--- CCX2.CX12.CX02.X0.X2.X0.CX21.CCX2.CX21
-!apply bifunct_X_b → 3
+-- CCX2.CX12.CX02.X2.X0.X0.CX21.CCX2.CX21
 elim_X0 → 4
 
 -- CCX2.CX12.CX02.X2.CX21.CCX2.CX21
@@ -329,6 +328,7 @@ bifunct_X_CX_a → 5
 !apply drel96 → 3
 !apply bifunct_X_CX_e → 4
 !apply drel61 → 7
+!apply bifunct_X_b → 6
 !apply drel126 ← 5
 
 -- S6.X0.X1.CCX2.X1.X0.CX02.CX02

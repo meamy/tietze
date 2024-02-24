@@ -27,11 +27,11 @@ bifunct_X_a ← 3
 
 -- X1.CCX2.CX12.X1.X1.CCX2.X1
 !apply drel70 → 2
-!apply bifunct_X_c ← 2
 expand_S5 ← 0
 
 -- S5.X2.CX12.X1.CCX2.X1
 !apply drel70 → 2
+!apply bifunct_X_c → 2
 !apply elim_X2 → 1
 
 -- S5.X1.CX12.CCX2.X1

@@ -38,7 +38,6 @@ bifunct_X_a ← 0
 -- X0.CCX2.CX02.X1.X0
 bifunct_X_a ← 3
 !apply drel106 ← 2
-!apply bifunct_X_b ← 2
 
 -- X0.CCX2.X0.X2.CX02.X1
 expand_S3 ← 0
