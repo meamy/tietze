@@ -40,6 +40,7 @@ expand_S4 → 1
 expand_S1 → 0
 
 -- X0.X1.CCX2.X1.X0.CX01.CX02.CCX0.CX02.CX01
+bifunct_X_a ← 3
 !apply drel105 → 3
 !apply drel126 → 4
 
@@ -61,7 +62,6 @@ r36 → 6
 !apply drel91 → 5
 
 -- X0.X1.CX01.CX02.CCX0.CX02.CCX2.CX10.CX02.CX01.X0.X1
-bifunct_X_a → 0
 !apply drel105 → 0
 !apply drel126 → 1
 !apply drel130 → 3
