@@ -5,7 +5,7 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import qualified Data.Sequence as Seq
 import Lafont.Rewrite.Abstraction
-import LafontExe.Logging.Graph
+import TietzeExe.Logging.Graph
 
 -----------------------------------------------------------------------------------------
 -- printCycle

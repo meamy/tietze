@@ -1,6 +1,6 @@
 -- | Utilities to generate dependency graphs.
 
-module LafontExe.Logic.GraphDeps where
+module TietzeExe.Logic.GraphDeps where
 
 import qualified Data.Map                   as Map
 import qualified Data.Set                   as Set
@@ -9,7 +9,7 @@ import           Lafont.Format.GraphViz
 import           Lafont.Graph
 import           Lafont.Rewrite.Abstraction
 import           Lafont.Rewrite.Summary
-import           LafontExe.IO.Configs
+import           TietzeExe.IO.Configs
 
 -----------------------------------------------------------------------------------------
 -- * Annotated DotFile Generation.

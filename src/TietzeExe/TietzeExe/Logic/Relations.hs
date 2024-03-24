@@ -1,6 +1,6 @@
 -- | Utilities to parse and validate relations.
 
-module LafontExe.Logic.Relations where
+module TietzeExe.Logic.Relations where
 
 import           Lafont.Generators.Categories
 import           Lafont.Generators.RuleSem
@@ -8,7 +8,7 @@ import           Lafont.Generators.Semantics
 import           Lafont.Parse.GeneratorFile
 import           Lafont.Parse.RelationFile
 import           Lafont.Rewrite.Lookup
-import           LafontExe.IO.Files
+import           TietzeExe.IO.Files
 
 -----------------------------------------------------------------------------------------
 -- * Type-specialized parsing and validation of generators and relations.

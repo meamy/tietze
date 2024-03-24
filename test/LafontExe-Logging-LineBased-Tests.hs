@@ -4,7 +4,7 @@ import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Lafont.Common
-import LafontExe.Logging.LineBased
+import TietzeExe.Logging.LineBased
 
 -----------------------------------------------------------------------------------------
 -- fileLogPrefix

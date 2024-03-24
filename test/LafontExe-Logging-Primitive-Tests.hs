@@ -7,7 +7,7 @@ import Lafont.Common
 import Lafont.Edit.Internal.EIRules
 import Lafont.Edit.Invert
 import Lafont.Rewrite.Rules
-import LafontExe.Logging.Primitive
+import TietzeExe.Logging.Primitive
 
 -----------------------------------------------------------------------------------------
 -- logWord

@@ -1,9 +1,18 @@
 -- | Functions to log graph data (cycles, etc).
 
-module LafontExe.Logging.Graph where
+module TietzeExe.Logging.Graph
+  ( printCycle
+  , printUnmetDep
+  ) where
 
-import           Lafont.Graph
-import           Lafont.Rewrite.Abstraction
+-------------------------------------------------------------------------------
+-- * Import Section.
+
+import Lafont.Graph (foldPath)
+import Lafont.Rewrite.Abstraction
+  ( DepCycle (..)
+  , UnmetDep (..)
+  )
 
 -----------------------------------------------------------------------------------------
 -- * Logging Cycles/Dependencies.

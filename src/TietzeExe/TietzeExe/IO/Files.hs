@@ -1,17 +1,36 @@
 -- | Helper functions to interace with files.
 
-module LafontExe.IO.Files where
+module TietzeExe.IO.Files
+  ( FileData (..)
+  , ParseFilesRV (..)
+  , readNamedFile
+  , readNamedFiles
+  , readDerivationFiles
+  , doFilesExist
+  ) where
 
-import           System.Directory
-import           Lafont.Either
-import           Lafont.Named
-import           Lafont.Parse.DerivationFile
+-------------------------------------------------------------------------------
+-- * Import Section.
+
+import System.Directory (doesFileExist)
+import Lafont.Either (updateRight)
+import Lafont.Named
+  ( Named (..)
+  , addToNamedList
+  )
+import Lafont.Parse.DerivationFile (preparseDerivationFile)
 
 -----------------------------------------------------------------------------------------
 -- * General-Purpose Reading/Writing.
 
 -- | Pairs together the name of a file, and its contents.
 data FileData = FileData String [String]
+
+-- | Consumes the name of a file. If the file is readable, then returns its FileData.
+readNamedFile :: String -> IO FileData
+readNamedFile name = do
+    contents <- readFile name
+    return $ FileData name $ lines contents
 
 -- | Consumes a list of files. If the files are readable, then returns its FileData.
 readNamedFiles :: [String] -> IO [FileData]
@@ -20,12 +39,6 @@ readNamedFiles (name:names) = do
     contents <- readNamedFile name
     rstOfLst <- readNamedFiles names
     return $ contents:rstOfLst
-
--- | Consumes the name of a file. If the file is readable, then returns its FileData.
-readNamedFile :: String -> IO FileData
-readNamedFile name = do
-    contents <- readFile name
-    return $ FileData name $ lines contents
 
 -----------------------------------------------------------------------------------------
 -- * Specialized Reading/Writing.
@@ -52,7 +65,7 @@ readStructuredFiles f (fname:fnames) = do
             return $ updateRight parsed $ \res -> addToNamedList fname res pcontent 1
 
 -- | Specializations.
-readDerivationFiles gens = readStructuredFiles (preparseDerivationFile gens)
+readDerivationFiles gens = readStructuredFiles $ preparseDerivationFile gens
 
 -----------------------------------------------------------------------------------------
 -- * Existence Checking.
@@ -65,4 +78,4 @@ doFilesExist (filename:filenames) = do
     exists <- doesFileExist filename
     if exists
     then doFilesExist filenames
-    else return (Just filename)
+    else return $ Just filename

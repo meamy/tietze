@@ -1,13 +1,13 @@
 -- | Implementation of check_relations.
 
-module LafontExe.CheckRelations where
+module TietzeExe.CheckRelations where
 
 import           Data.List.NonEmpty
-import           LafontExe.IO.Files
-import           LafontExe.Logging.ErrorFormat
-import           LafontExe.Logging.LineBased
-import           LafontExe.Logging.Primitive
-import           LafontExe.Logic.Relations
+import           TietzeExe.IO.Files
+import           TietzeExe.Logging.ErrorFormat
+import           TietzeExe.Logging.LineBased
+import           TietzeExe.Logging.Primitive
+import           TietzeExe.Logic.Relations
 import           System.IO
 
 -----------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 -- | Utilities to parse and validate derivations (syntactically).
 
-module LafontExe.Logic.Derivations where
+module TietzeExe.Logic.Derivations where
 
 import           Lafont.Either
 import           Lafont.Named
@@ -9,9 +9,9 @@ import           Lafont.Rewrite.Abstraction
 import           Lafont.Rewrite.Derivations
 import           Lafont.Rewrite.Lookup
 import           Lafont.Rewrite.Summary
-import           LafontExe.IO.Files
-import           LafontExe.Logging.ErrorFormat
-import           LafontExe.Logging.Graph
+import           TietzeExe.IO.Files
+import           TietzeExe.Logging.ErrorFormat
+import           TietzeExe.Logging.Graph
 
 -----------------------------------------------------------------------------------------
 -- * Type-specialized parsing of derivations.

@@ -11,12 +11,12 @@ module YamlTest.CmdLn
 -------------------------------------------------------------------------------
 -- * Import Section.
 
-import LafontExe.IO.CmdLnFlags
+import TietzeExe.IO.CmdLnFlags
   ( configFlags
   , def
   , styleFlags
   )
-import LafontExe.IO.CmdLnParser
+import TietzeExe.IO.CmdLnParser
   ( Data
   , Typeable
   , addModeAnnotations

@@ -11,14 +11,14 @@ module InvertRule.CmdLn
 -------------------------------------------------------------------------------
 -- * Import Section.
 
-import LafontExe.IO.CmdLnFlags
+import TietzeExe.IO.CmdLnFlags
   ( configFlags
   , def
   , eiPolicyFlags
   , leftInvFlags
   , relnameFlags
   )
-import LafontExe.IO.CmdLnParser
+import TietzeExe.IO.CmdLnParser
   ( Data
   , Typeable
   , addModeAnnotations

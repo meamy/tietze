@@ -6,8 +6,8 @@ import System.Environment
 import System.IO
 import Lafont.Common
 import Lafont.Edit.Invert
-import LafontExe.IO.Configs
-import LafontExe.InvertRule
+import TietzeExe.IO.Configs
+import TietzeExe.InvertRule
 import InvertRule.CmdLn
 
 -- | Helper method to pass configurations to doInversion.
@@ -21,7 +21,7 @@ runTool conf args = doInversion stdout gens rels ders query
 -- | Parses and validates arguments before calling doInversion.
 main = do
     args <- getCmdArgs
-    res  <- parseConfigYamlImpl $ configs args
+    res  <- parseConfigYaml $ configs args
     case res of
         Left err   -> putStrLn $ printConfigErr err
         Right conf -> runTool conf args

@@ -6,8 +6,8 @@ import Data.List.Split
 import System.Environment
 import System.IO
 import Lafont.Common
-import LafontExe.GraphDeps
-import LafontExe.IO.Configs
+import TietzeExe.GraphDeps
+import TietzeExe.IO.Configs
 import GraphDeps.CmdLn
 
 -- | Helper method to pass configurations to graphDeps.
@@ -26,7 +26,7 @@ printErr file err = tag ++ printConfigErr err
 -- | Helper method to parse a configuration file, with error handling.
 parseConf :: String -> IO (Either String Config)
 parseConf file = do
-    res <- parseConfigYamlImpl file
+    res <- parseConfigYaml file
     case res of
         Left err   -> return $ Left $ printErr file err
         Right conf -> return $ Right conf
@@ -35,7 +35,7 @@ parseConf file = do
 parseStyle :: Maybe String -> IO (Either String Style)
 parseStyle Nothing     = return $ Right defaultStyle
 parseStyle (Just file) = do
-    res <- parseStyleYamlImpl file
+    res <- parseStyleYaml file
     case res of
         Left err  -> return $ Left $ printErr file err
         Right sty -> return $ Right sty

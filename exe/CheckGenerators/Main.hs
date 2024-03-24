@@ -6,13 +6,13 @@ module Main where
 import CheckGenerators.CmdLn
 import System.Environment
 import System.IO
-import LafontExe.CheckGenerators
-import LafontExe.IO.Configs
+import TietzeExe.CheckGenerators
+import TietzeExe.IO.Configs
 
 -- | Parses and validates arguments before calling checkGenerators.
 main = do
     args <- getCmdArgs
-    res  <- parseConfigYamlImpl $ configs args
+    res  <- parseConfigYaml $ configs args
     case res of 
         Left err   -> putStrLn $ printConfigErr err
         Right conf -> checkGenerators stdout $ generators conf

@@ -11,13 +11,13 @@ module GraphDeps.CmdLn
 -------------------------------------------------------------------------------
 -- * Import Section.
 
-import LafontExe.IO.CmdLnFlags
+import TietzeExe.IO.CmdLnFlags
   ( configFlags
   , def
   , styleFlags
   , tsourcesFlags
   )
-import LafontExe.IO.CmdLnParser
+import TietzeExe.IO.CmdLnParser
   ( Data
   , Typeable
   , addModeAnnotations

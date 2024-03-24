@@ -4,8 +4,8 @@ module Main where
 
 import System.Environment
 import System.IO
-import LafontExe.ToLatex
-import LafontExe.IO.Configs
+import TietzeExe.ToLatex
+import TietzeExe.IO.Configs
 import ToLatex.CmdLn
 
 -- | Helper method to pass configurations to doInversion.
@@ -18,7 +18,7 @@ runTool conf args = toLatex stdout gens rels ders
 -- | Parses and validates arguments before calling doInversion.
 main = do
     args <- getCmdArgs
-    res  <- parseConfigYamlImpl $ configs args
+    res  <- parseConfigYaml $ configs args
     case res of
         Left err   -> putStrLn $ printConfigErr err
         Right conf -> runTool conf args

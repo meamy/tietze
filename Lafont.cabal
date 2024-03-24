@@ -73,26 +73,26 @@ library
 -----------------------------------------------------------------------------------------
 -- Executable library and executables.
 
-library LafontExe
-  exposed-modules:     LafontExe.CheckGenerators
-                       LafontExe.CheckRelations
-                       LafontExe.GraphDeps
-                       LafontExe.InvertRule
-                       LafontExe.ToLatex
-                       LafontExe.QueryEIRules
-                       LafontExe.ValidateDerivations
-                       LafontExe.IO.CmdLnFlags
-                       LafontExe.IO.CmdLnParser
-                       LafontExe.IO.Configs
-                       LafontExe.IO.Files
-                       LafontExe.Logic.Derivations
-                       LafontExe.Logic.GraphDeps
-                       LafontExe.Logic.QueryEIRules
-                       LafontExe.Logic.Relations
-                       LafontExe.Logging.ErrorFormat
-                       LafontExe.Logging.Graph
-                       LafontExe.Logging.LineBased
-                       LafontExe.Logging.Primitive
+library TietzeExe
+  exposed-modules:     TietzeExe.CheckGenerators
+                       TietzeExe.CheckRelations
+                       TietzeExe.GraphDeps
+                       TietzeExe.InvertRule
+                       TietzeExe.ToLatex
+                       TietzeExe.QueryEIRules
+                       TietzeExe.ValidateDerivations
+                       TietzeExe.IO.CmdLnFlags
+                       TietzeExe.IO.CmdLnParser
+                       TietzeExe.IO.Configs
+                       TietzeExe.IO.Files
+                       TietzeExe.Logic.Derivations
+                       TietzeExe.Logic.GraphDeps
+                       TietzeExe.Logic.QueryEIRules
+                       TietzeExe.Logic.Relations
+                       TietzeExe.Logging.ErrorFormat
+                       TietzeExe.Logging.Graph
+                       TietzeExe.Logging.LineBased
+                       TietzeExe.Logging.Primitive
   build-depends:       aeson,
                        base,
                        cmdargs,
@@ -101,7 +101,7 @@ library LafontExe
                        text,
                        yaml,
                        Lafont
-  hs-source-dirs:      src/LafontExe
+  hs-source-dirs:      src/TietzeExe
   default-language:    Haskell2010
 
 common exe-with-file-io-props
@@ -110,7 +110,7 @@ common exe-with-file-io-props
   build-depends:       base, 
                        directory,
                        Lafont,
-                       LafontExe
+                       TietzeExe
 
 executable check_generators
   import:              exe-with-file-io-props
@@ -170,7 +170,7 @@ common basic-unit-test-props
 
 common io-unit-test-props
   import:              basic-unit-test-props
-  build-depends:       LafontExe
+  build-depends:       TietzeExe
 
 test-suite lafont-common-tests
   import:              basic-unit-test-props
@@ -376,7 +376,7 @@ common exe-test-props
   default-language:    Haskell2010
   build-depends:       base,
                        Lafont,
-                       LafontExe,
+                       TietzeExe,
                        TietzeExeTest
 
 test-suite checkgenerators-tests

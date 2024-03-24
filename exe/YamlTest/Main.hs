@@ -8,13 +8,13 @@ import           System.Environment
 import           System.Exit
 import           System.IO
 import           Lafont.Format.GraphViz
-import           LafontExe.IO.Configs
+import           TietzeExe.IO.Configs
 import           YamlTest.CmdLn
 
--- |
+-- | Validates, and then prints, the contents of a configuration file.
 checkConfigs :: String -> IO ()
 checkConfigs fn = do
-    res <- parseConfigYamlImpl fn
+    res <- parseConfigYaml fn
     case res of
         Left err -> do
             putStrLn $ "[Configuration Error] " ++ printConfigErr err
@@ -26,10 +26,10 @@ checkConfigs fn = do
             putStrLn $ "  Derivation Files: " ++ (show . derivations) conf
             putStrLn $ "  Obligations:      " ++ (show . obligations) conf
 
--- |
+-- | Validates, and then prints, the contents of a style file.
 checkStyle :: String -> IO ()
 checkStyle fn = do
-    res <- parseStyleYamlImpl fn
+    res <- parseStyleYaml fn
     case res of
         Left err -> do
             putStrLn $ "[Style Error] " ++ printConfigErr err
@@ -38,7 +38,7 @@ checkStyle fn = do
             putStrLn "Style File Summary"
             putStrLn $ "  Color: " ++ (show . color) sty
 
--- | Parses and validates arguments before calling parseConfigYamlImpl.
+-- | Parses and validates arguments before calling parseConfigYaml.
 main = do
     args <- getCmdArgs
     -- Prints configurations by default.

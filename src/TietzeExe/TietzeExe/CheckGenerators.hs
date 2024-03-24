@@ -1,13 +1,13 @@
 -- | Implementation of check_generators.
 
-module LafontExe.CheckGenerators where
+module TietzeExe.CheckGenerators where
 
 import           Lafont.Common
 import           Lafont.Generators.Display
 import           Lafont.Generators.Semantics
 import           Lafont.Parse.GeneratorFile
-import           LafontExe.IO.Files
-import           LafontExe.Logging.LineBased
+import           TietzeExe.IO.Files
+import           TietzeExe.Logging.LineBased
 import           System.Directory
 import           System.IO
 

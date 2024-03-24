@@ -2,7 +2,7 @@
 
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module LafontExe.IO.CmdLnFlags
+module TietzeExe.IO.CmdLnFlags
   ( configFlags
   , def
   , eiPolicyFlags

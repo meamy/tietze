@@ -2,15 +2,40 @@
 
 -- | Helper functions to interace with yaml configurations.
 
-module LafontExe.IO.Configs where
+module TietzeExe.IO.Configs
+  ( Config (..)
+  , ConfigErr
+  , ColorMap (..)
+  , Style (..)
+  , defaultStyle
+  , printConfigErr
+  , parseConfigYaml
+  , parseStyleYaml
+  ) where
 
-import           Data.Aeson.Types
-import           Data.List.NonEmpty
-import qualified Data.Map           as Map
-import           Data.Text
-import           Data.Yaml
-import           GHC.Generics
-import           Lafont.Format.GraphViz
+-------------------------------------------------------------------------------
+-- * Import Section.
+
+import Data.Aeson.Types
+  ( Value (String)
+  , prependFailure
+  , typeMismatch
+  )
+import Data.List.NonEmpty (NonEmpty)
+import qualified Data.Map as Map
+import Data.Text (unpack)
+import Data.Yaml
+  ( FromJSON (..)
+  , ParseException
+  , decodeFileEither
+  , prettyPrintParseException
+  )
+import GHC.Generics (Generic (..))
+import Lafont.Format.GraphViz
+  ( Display (..)
+  , X11Color (..)
+  , toColour
+  )
 
 -----------------------------------------------------------------------------------------
 -- * Representation of Proof Configurations.
@@ -64,7 +89,7 @@ printConfigErr (YamlErr err) = prettyPrintParseException err
 -- is validated against the JSON structure of a. If the file is valid, then returns the
 -- corresponding JSON object as an instance of type a. Otherwise, a parsing error is
 -- returned.
-parseYamlAsJSON :: (FromJSON a) => String -> IO (Either ConfigErr a)
+parseYamlAsJSON :: FromJSON a => String -> IO (Either ConfigErr a)
 parseYamlAsJSON fname = do
     res <- decodeFileEither fname
     case res of
@@ -73,10 +98,10 @@ parseYamlAsJSON fname = do
 
 -- | Takes as input the name of a configuration file. If the file is valid, then returns
 -- a summary of the configurations. Otherwise, a parsing error is returned.
-parseConfigYamlImpl :: String -> IO (Either ConfigErr Config)
-parseConfigYamlImpl = parseYamlAsJSON
+parseConfigYaml :: String -> IO (Either ConfigErr Config)
+parseConfigYaml = parseYamlAsJSON
 
 -- | Takes as input the name of a style file. If the file is valid, then returns a
 -- summary of the styling choices. Otyherwise, a parsing error is returned.
-parseStyleYamlImpl :: String -> IO (Either ConfigErr Style)
-parseStyleYamlImpl = parseYamlAsJSON
+parseStyleYaml :: String -> IO (Either ConfigErr Style)
+parseStyleYaml = parseYamlAsJSON

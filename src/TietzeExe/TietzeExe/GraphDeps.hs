@@ -1,6 +1,6 @@
 -- | Implementation of check_relations.
 
-module LafontExe.GraphDeps where
+module TietzeExe.GraphDeps where
 
 import           Data.List.NonEmpty
 import           Lafont.Named
@@ -8,14 +8,14 @@ import           Lafont.Format.GraphViz
 import           Lafont.Parse.DerivationFile
 import           Lafont.Rewrite.Abstraction
 import           Lafont.Rewrite.Lookup
-import           LafontExe.IO.Files
-import           LafontExe.IO.Configs
-import           LafontExe.Logging.ErrorFormat
-import           LafontExe.Logging.Graph
-import           LafontExe.Logging.LineBased
-import           LafontExe.Logic.Derivations
-import           LafontExe.Logic.GraphDeps
-import           LafontExe.Logic.Relations
+import           TietzeExe.IO.Files
+import           TietzeExe.IO.Configs
+import           TietzeExe.Logging.ErrorFormat
+import           TietzeExe.Logging.Graph
+import           TietzeExe.Logging.LineBased
+import           TietzeExe.Logic.Derivations
+import           TietzeExe.Logic.GraphDeps
+import           TietzeExe.Logic.Relations
 import           System.IO
 
 -----------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
  -- | Implementation of invert_rule.
 
-module LafontExe.InvertRule where
+module TietzeExe.InvertRule where
 
 import           Data.List.NonEmpty
 import qualified Data.Set             as Set
@@ -15,14 +15,14 @@ import           Lafont.Rewrite.Lookup
 import           Lafont.Rewrite.Rules
 import           Lafont.Rewrite.Simplification
 import           Lafont.Rewrite.Summary
-import           LafontExe.IO.Files
-import           LafontExe.Logging.ErrorFormat
-import           LafontExe.Logging.Graph
-import           LafontExe.Logging.LineBased
-import           LafontExe.Logging.Primitive
-import           LafontExe.Logic.Derivations
-import           LafontExe.Logic.QueryEIRules
-import           LafontExe.Logic.Relations
+import           TietzeExe.IO.Files
+import           TietzeExe.Logging.ErrorFormat
+import           TietzeExe.Logging.Graph
+import           TietzeExe.Logging.LineBased
+import           TietzeExe.Logging.Primitive
+import           TietzeExe.Logic.Derivations
+import           TietzeExe.Logic.QueryEIRules
+import           TietzeExe.Logic.Relations
 import           System.IO
 
 -----------------------------------------------------------------------------------------

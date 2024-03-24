@@ -1,67 +1,55 @@
--- | Implementation of to_latex.
+-- | Implementation of validate_derivation.
 
-module LafontExe.ToLatex where
+module TietzeExe.ValidateDerivations where
 
 import           Data.List.NonEmpty
 import           Lafont.Either
 import           Lafont.Named
-import           Lafont.Format.Common
-import           Lafont.Format.LaTeX
 import           Lafont.Parse.DerivationFile
 import           Lafont.Rewrite.Abstraction
 import           Lafont.Rewrite.Derivations
 import           Lafont.Rewrite.Lookup
+import           Lafont.Rewrite.Simplification
 import           Lafont.Rewrite.Summary
-import           LafontExe.IO.Files
-import           LafontExe.Logging.ErrorFormat
-import           LafontExe.Logging.LineBased
-import           LafontExe.Logic.Derivations
-import           LafontExe.Logic.Relations
+import           TietzeExe.IO.Files
+import           TietzeExe.Logging.ErrorFormat
+import           TietzeExe.Logging.LineBased
+import           TietzeExe.Logic.Derivations
+import           TietzeExe.Logic.Relations
 import           System.IO
 
 -----------------------------------------------------------------------------------------
 -- * Logic.
 
--- | Generates a label for each derivation.
-derivationToLabel :: Named Derivation -> String
-derivationToLabel (Named src idx (Derivation sum _)) =
-    case propName $ meta sum of
-        Just name -> "% Derivation: " ++ name
-        Nothing   -> "% From File: " ++ src ++ "(" ++ show idx ++ ")"
-
--- | Converts all derivations to LaTeX environments.
-handleDerivations :: MacroList -> MacroList -> [Named Derivation] -> String
-handleDerivations _       _       []        = ""
-handleDerivations gmacros rmacros (d:dlist) = label ++ "\n" ++ latex ++ "\n\n" ++ rtext
-    where label = derivationToLabel d
-          proof = formatDerivation $ value d
-          latex = printFormattedProof gmacros rmacros proof
-          rtext = handleDerivations gmacros rmacros dlist
-
--- | Implementation details for generateLatex. Assumes that all derivations can be
--- concretized, and are taken as an argument.
-generateLatexImpl :: RuleDict -> [String] -> [Named Derivation] -> String
-generateLatexImpl rules gens named = glatex ++ "\n\n" ++ rlatex ++ "\n\n" ++ dlatex
-    where gmacros = makeGenMacros gens
-          rmacros = makeRelMacros rules
-          glatex  = printMacroList gmacros
-          rlatex  = printMacroList rmacros
-          dlatex  = handleDerivations gmacros rmacros named
+-- | Consumes a list of pairs, where each tuple contains the name of a derivation file
+-- and the Derivation it describes. If a derivation is invalid, then a summary of the
+-- failure is printed. Otherwise, a success message is printed.
+verifyDerivationSteps :: [Named Derivation] -> String
+verifyDerivationSteps []                                  = "Success.\n"
+verifyDerivationSteps ((Named src idx deriv):derivations) =
+    if success res
+    then if output res == final summary
+         then verifyDerivationSteps derivations
+         else describeIncorrectResult src idx dname (final summary) (output res)
+    else describeIncorrectStep src idx dname (output res) (step res)
+    where Derivation summary rewrites = deriv
+          res                         = simplify (initial summary) rewrites
+          dname                       = propName $ meta summary
 
 -- | Consumes a list of pairs, where each tuple contains the name of a derivation file
 -- and the Derivation it describes. If the dependency graph induced by the list of
--- derivations is invalid, then the error is printed. Otherwise, the derivations are
--- converted to a LaTeX representation and printed to the handle.
-generateLatex :: RuleDict -> [String] -> [Named AbsDerivation] -> String
-generateLatex rules gens named =
+-- derivations is invalid, then the error is printed. Otherwise, if a step in a
+-- derivation is invalid, then a summary of the failure is printed. Otherwise, a success
+-- message is printed.
+verifyDerivations :: [Named AbsDerivation] -> String
+verifyDerivations named =
     case concretize named of
         Left errmsg  -> errmsg
-        Right named' -> generateLatexImpl drules gens named'
-    where drules = addDRules rules $ Prelude.map value named
+        Right derivs -> verifyDerivationSteps derivs
 
 -- | Consumes a handle, a list of derivation files (DerivFnames), a dictionary of rewrite
 -- rules (rules), and a list of generators (gens). If all derivations parse correctly,
--- then the the derivations are converted to a LaTeX representation and printed to the
+-- then the derivations are validated and any invalid derivations are printed to the
 -- handle. Otherwise, a parsing error is printed to the handle with file name and line
 -- number.
 processDerivationFiles :: Handle -> [String] -> RuleDict -> [String] -> IO ()
@@ -72,10 +60,10 @@ processDerivationFiles hdl fnames rules gens = do
         Right prederivs       -> case processPreDerivations prederivs rules gens of
             DupDeriv fname id     -> hPutStr hdl $ logFromFile fname 0 $ reportDupRule id
             BadDeriv fname ln err -> hPutStr hdl $ logEitherMsg fname ln err
-            NamedDerivs derivs    -> hPutStr hdl $ generateLatex rules gens derivs
+            NamedDerivs derivs    -> hPutStr hdl $ verifyDerivations derivs
 
--- | See toLatex. Requires that both files exist, whereas toLatex does not impose this
--- assumption.
+-- | See validateDerivations. Requires that both files exist, whereas validateDerivations
+-- does not impose this assumption.
 validateDerivationsImpl :: Handle -> String -> [String] -> [String] -> IO ()
 validateDerivationsImpl hdl genFname relFnames derivFnames = do
     genFile  <- readNamedFile genFname
@@ -90,10 +78,11 @@ validateDerivationsImpl hdl genFname relFnames derivFnames = do
 
 -- | Consumes a handle, the name of a generator file (genFname), the name of a relation
 -- file (relFname), and list of derivation file names (derivFnames). If all files parse
--- correctly, then the derivations are converted to a LaTeX representation. Otherwise, a
--- parsing error is printed to the handle with file name and line number.
-toLatex :: Handle -> String -> NonEmpty String -> [String] -> IO ()
-toLatex hdl genFname relFnames derivFnames = do
+-- correctly, then the derivations are validated and any invalid derivations are printed
+-- to the handle. Otherwise, a parsing error is printed to the handle with file name and
+-- line number.
+validateDerivations :: Handle -> String -> NonEmpty String -> [String] -> IO ()
+validateDerivations hdl genFname relFnames derivFnames = do
     res <- doFilesExist $ genFnames' ++ relFnames' ++ derivFnames
     case res of
         Just name -> hPutStr hdl $ "File does not exist: " ++ name ++ "\n"

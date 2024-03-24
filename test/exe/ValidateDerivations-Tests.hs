@@ -3,7 +3,7 @@ module Main where
 import qualified Data.List.NonEmpty            as NonEmpty
 import           Data.List
 import           TietzeExeTest.HandleTest
-import           LafontExe.ValidateDerivations
+import           TietzeExe.ValidateDerivations
 import           Lafont.String
 import           Lafont.Rewrite.Derivations
 import           System.IO

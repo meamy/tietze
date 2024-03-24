@@ -11,8 +11,8 @@ module CheckGenerators.CmdLn
 -------------------------------------------------------------------------------
 -- * Import Section.
 
-import LafontExe.IO.CmdLnFlags (configFlags)
-import LafontExe.IO.CmdLnParser
+import TietzeExe.IO.CmdLnFlags (configFlags)
+import TietzeExe.IO.CmdLnParser
   ( Data
   , Typeable
   , addModeAnnotations

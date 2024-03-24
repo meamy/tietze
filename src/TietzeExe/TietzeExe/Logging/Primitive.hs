@@ -1,20 +1,37 @@
 -- | Functions to log primitive types with a special format.
 
-module LafontExe.Logging.Primitive (
-    logEIRule,
-    logEIRuleByQuery,
-    logEIView,
-    logRule,
-    logRuleDict,
-    logWord,
-) where
+module TietzeExe.Logging.Primitive
+  ( logEIRule
+  , logEIRuleByQuery
+  , logEIView
+  , logRule
+  , logRuleDict
+  , logWord
+  ) where
+
+-------------------------------------------------------------------------------
+-- * Import Section.
 
 import qualified Data.Set as Set
-import           Lafont.Common
-import           Lafont.Edit.EIRules
-import           Lafont.Edit.Invert
-import           Lafont.Rewrite.Lookup
-import           Lafont.Rewrite.Rules
+import Lafont.Common
+  ( Display (..)
+  , MonWord (..)
+  , Symbol
+  )
+import Lafont.Edit.EIRules
+  ( EIRule
+  , getRelName
+  , isDerived
+  )
+import Lafont.Edit.Invert
+  ( EIView
+  , findEIRule
+  )
+import Lafont.Rewrite.Lookup
+  ( RuleDict
+  , foldRules
+  )
+import Lafont.Rewrite.Rules (RewriteRule (..))
 
 -----------------------------------------------------------------------------------------
 -- * Array-Based Logging.

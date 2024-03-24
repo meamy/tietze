@@ -1,19 +1,26 @@
 -- | Functions to format error messages.
 
-module LafontExe.Logging.ErrorFormat (
-    describeFailedApply,
-    describeIncorrectResult,
-    describeIncorrectStep,
-    reportMissingERule,
-    reportMissingIRule,
-    reportDupRule,
-    reportInvalidRule,
-    reportUnknownGen
-) where
+module TietzeExe.Logging.ErrorFormat
+  ( describeFailedApply
+  , describeIncorrectResult
+  , describeIncorrectStep
+  , reportMissingERule
+  , reportMissingIRule
+  , reportDupRule
+  , reportInvalidRule
+  , reportUnknownGen
+  ) where
 
-import           Data.Maybe
-import           Lafont.Common
-import           LafontExe.Logging.Primitive
+-------------------------------------------------------------------------------
+-- * Import Section.
+
+import Data.Maybe (fromMaybe)
+import Lafont.Common
+  ( Display (..)
+  , MonWord
+  , Symbol 
+  )
+import TietzeExe.Logging.Primitive (logWord)
 
 -----------------------------------------------------------------------------------------
 -- * Relation Error Logging.

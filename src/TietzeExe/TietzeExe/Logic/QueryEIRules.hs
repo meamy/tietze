@@ -1,6 +1,6 @@
 -- | Utilities to query EIRules given sets of symbols.
 
-module LafontExe.Logic.QueryEIRules where
+module TietzeExe.Logic.QueryEIRules where
 
 import qualified Data.Set             as Set
 import           Lafont.Common

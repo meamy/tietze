@@ -8,8 +8,8 @@ import System.Environment
 import System.IO
 import Lafont.Common
 import Lafont.Edit.Invert
-import LafontExe.IO.Configs
-import LafontExe.QueryEIRules
+import TietzeExe.IO.Configs
+import TietzeExe.QueryEIRules
 import QueryEIRules.CmdLn
 
 -- | Helper method to pass configurations to queryEIRules.
@@ -24,7 +24,7 @@ runTool conf args = queryEIRules stdout gens rels ders query
 -- | Parses and validates arguments before calling queryEIRules.
 main = do
     args <- getCmdArgs
-    res  <- parseConfigYamlImpl $ configs args
+    res  <- parseConfigYaml $ configs args
     case res of
         Left err   -> putStrLn $ printConfigErr err
         Right conf -> runTool conf args

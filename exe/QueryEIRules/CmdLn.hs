@@ -11,14 +11,14 @@ module QueryEIRules.CmdLn
 -------------------------------------------------------------------------------
 -- * Import Section.
 
-import LafontExe.IO.CmdLnFlags
+import TietzeExe.IO.CmdLnFlags
   ( configFlags
   , def
   , eiPolicyFlags
   , leftInvFlags
   , symbolFlags
   )
-import LafontExe.IO.CmdLnParser
+import TietzeExe.IO.CmdLnParser
   ( Data
   , Typeable
   , addModeAnnotations

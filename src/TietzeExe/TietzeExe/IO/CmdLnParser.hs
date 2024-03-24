@@ -2,7 +2,7 @@
 --
 -- Adapted from: https://github.com/onestruggler/qasm-quipper/
 
-module LafontExe.IO.CmdLnParser
+module TietzeExe.IO.CmdLnParser
   ( Data
   , Typeable
   , addModeAnnotations

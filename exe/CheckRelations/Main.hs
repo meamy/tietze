@@ -6,8 +6,8 @@ module Main where
 import CheckRelations.CmdLn
 import System.Environment
 import System.IO
-import LafontExe.CheckRelations
-import LafontExe.IO.Configs
+import TietzeExe.CheckRelations
+import TietzeExe.IO.Configs
 
 -- | Helper method to pass configurations to checkRelations.
 runTool :: Config -> IO ()
@@ -18,7 +18,7 @@ runTool conf = checkRelations stdout gens rels
 -- | Parses and validates arguments before calling checkRelations.
 main = do
     args <- getCmdArgs
-    res  <- parseConfigYamlImpl $ configs args
+    res  <- parseConfigYaml $ configs args
     case res of
         Left err   -> putStrLn $ printConfigErr err
         Right conf -> runTool conf

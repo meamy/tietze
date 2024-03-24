@@ -3,7 +3,7 @@ module Main where
 import qualified Data.List.NonEmpty       as NonEmpty
 import           Data.List
 import           TietzeExeTest.HandleTest
-import           LafontExe.CheckRelations
+import           TietzeExe.CheckRelations
 import           Lafont.String
 import           System.IO
 
