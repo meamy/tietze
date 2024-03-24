@@ -1,7 +1,7 @@
 module Main where
 
 import Data.List
-import LafontExeTest.HandleTest
+import TietzeExeTest.HandleTest
 import LafontExe.CheckGenerators
 import Lafont.String
 

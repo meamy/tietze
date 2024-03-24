@@ -1,6 +1,6 @@
 cabal-version:       2.2
 
-name:                Tietze
+name:                Lafont
 version:             0.1.0.0
 license:             MIT
 license-file:        LICENSE
@@ -364,11 +364,11 @@ test-suite lafontexe-logging-primitive-tests
 -----------------------------------------------------------------------------------------
 -- Executable test library and tests.
 
-library LafontExeTest
-  exposed-modules:     LafontExeTest.HandleTest
+library TietzeExeTest
+  exposed-modules:     TietzeExeTest.HandleTest
   build-depends:       base,
                        directory
-  hs-source-dirs:      src/LafontExeTest
+  hs-source-dirs:      src/TietzeExeTest
   default-language:    Haskell2010
 
 common exe-test-props
@@ -377,7 +377,7 @@ common exe-test-props
   build-depends:       base,
                        Lafont,
                        LafontExe,
-                       LafontExeTest
+                       TietzeExeTest
 
 test-suite checkgenerators-tests
   import:              exe-test-props

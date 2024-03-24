@@ -2,7 +2,7 @@
 -- executable has been factored out into a library, and that the entry-point of the
 -- executable takes as input a handle to use as an output stream.
 
-module LafontExeTest.HandleTest where
+module TietzeExeTest.HandleTest where
 
 import           System.Directory
 import           System.Exit

@@ -1,8 +1,8 @@
 module Main where
 
-import qualified Data.List.NonEmpty as NonEmpty
+import qualified Data.List.NonEmpty       as NonEmpty
 import           Data.List
-import           LafontExeTest.HandleTest
+import           TietzeExeTest.HandleTest
 import           LafontExe.CheckRelations
 import           Lafont.String
 import           System.IO

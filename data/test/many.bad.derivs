@@ -17,7 +17,7 @@ rel3 → 1
 rel3 → 0
 ε
 
-@name FaultyTule
+@name FaultyRule
 lmnop123.abc1.xyz1.abc2.xyz2.lmnop123.abc1.abc1.abc1.abc1
 rel1 → 1
 rel3 → 1

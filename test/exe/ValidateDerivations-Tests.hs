@@ -1,8 +1,8 @@
 module Main where
 
-import qualified Data.List.NonEmpty as NonEmpty
+import qualified Data.List.NonEmpty            as NonEmpty
 import           Data.List
-import           LafontExeTest.HandleTest
+import           TietzeExeTest.HandleTest
 import           LafontExe.ValidateDerivations
 import           Lafont.String
 import           Lafont.Rewrite.Derivations
@@ -360,7 +360,7 @@ check19 str =
     then (and [-- The error and its location.
                (isFailure (outputLines !! 0)),
                -- The error details.
-               ("derivation(3)" `isSubstrOf` (outputLines !! 0))])
+               ("FaultyRule" `isSubstrOf` (outputLines !! 0))])
     else False
     where outputLines = lines str
 
