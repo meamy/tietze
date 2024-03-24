@@ -1,3 +1,3 @@
-# Implicit Abelian Groups in Lafont
+# Implicit Abelian Groups in Tietze
 
 TODO: describe the example.

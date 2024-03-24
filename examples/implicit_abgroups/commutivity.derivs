@@ -1,5 +1,3 @@
--- To run: [lafont_path] generators.gens relations.rels commutivity.derivs lemmas.derivs
---
 -- In relations.rels, we claimed that some commutivity relations are redundant.
 -- A generator commutes with its formal inverse due to rinv and linv.
 -- The other commutivity relations follow from the id relations.

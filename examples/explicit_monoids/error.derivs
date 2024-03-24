@@ -1,5 +1,5 @@
 -- A tool that always prints "success" is no good at all!
--- Let's see what happens when Lafont is presented with an invalid proof.
+-- Let's see what happens when Tietze is presented with an invalid proof.
 -- We take the proof from simple.derivs, but offset a single step.
 
 y.x.x.x.y.y.y.x.x.x.x.x.y.z.z.y.y.y.z.y
@@ -9,5 +9,5 @@ elim_y → 6 -- This step will fail as the substring at position 6 is y.y.z.y.
            -- This will not match the substring y.y.y expected by elim_y →.
 y.x.y.z.z.z.y
 
--- Let's try running it and see if Lafont identifiers the same error.
+-- Let's try running it and see if Tietze identifiers the same error.
 -- Note that steps are also zero-indexed, so step 2 is elim_y → 6.

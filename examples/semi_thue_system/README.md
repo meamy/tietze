@@ -1,3 +1,3 @@
-# Semi-Thue Systems in Lafont
+# Semi-Thue Systems in Tietze
 
 TODO: describe the example.

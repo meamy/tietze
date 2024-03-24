@@ -9,4 +9,3 @@
   - {name: [Data.Set, Data.HashSet], as: Set}
   - {name: [Quantum.Synthesis.Matrix], as: QMat}
   - {name: [Quantum.Synthesis.Ring], as: QRing}
-

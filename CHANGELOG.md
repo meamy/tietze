@@ -1,5 +1,5 @@
-# Revision history for DyadicRewrite
+# Revision history for Tietze
 
-## 0.1.0.0 -- YYYY-mm-dd
+## 0.1.0.0 -- 2024-03-24
 
-* First version. Released on an unsuspecting world.
+* First version. Minimal features to prove E8 is isomorphic to TofK(3).

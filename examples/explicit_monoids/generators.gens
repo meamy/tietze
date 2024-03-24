@@ -1,7 +1,7 @@
 -- This example considers strings with three generators.
 -- We name these generaotrs x, y, and z.
 
--- This line tells Lafont that we are working with quotients of free monoids.
+-- This line tells Tietze that we are working with quotients of free monoids.
 -- This means that the generators are merely symbols and nothing more.
 -- In later examples we will look at giving semantic meaning to generators.
 Monoid

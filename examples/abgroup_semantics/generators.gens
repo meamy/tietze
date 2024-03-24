@@ -1,4 +1,4 @@
--- Lafont also offers support for semantic models.
+-- Tietze also offers support for semantic models.
 -- Semantic models are best understood in terms of categories and functors.
 -- However, in this example, it suffices to think of monoids and their homomorphisms.
 --
@@ -16,7 +16,7 @@
 AddModP(7, 3, 5)
 
 -- We specify elements of (Z/Z7)X(Z/Z3)X(Z/Z5) using 3-tuples.
--- By writing `gen := val`, we tell Lafont that f(gen) = val.
+-- By writing `gen := val`, we tell Tietze that f(gen) = val.
 -- We claim that x, y, and z are satisfied by the basis vectors for (Z/Z7)X(Z/Z3)X(Z/Z5).
 x  := (1, 0, 0)
 y  := (0, 1, 0)

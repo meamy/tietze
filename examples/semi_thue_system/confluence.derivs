@@ -1,5 +1,3 @@
--- To run: [lafont_path] generators.gens relations.rels confluence.derivs
---
 -- An important property of a semi-Thue system is whether it is confluence.
 -- We say that a system is confluence if for all w derives u and w derives v:
 --   there exists a string q such that u derives q and v derives q.

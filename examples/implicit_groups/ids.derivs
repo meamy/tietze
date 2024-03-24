@@ -1,5 +1,3 @@
--- To run: [lafont_path] generators.gens relations.rels ids.derivs
---
 -- It turns out that every element already has an inverse.
 -- For example, y.y.y = ε, so iy = y.y.
 -- This follows from the uniqueness of inverses in groups.

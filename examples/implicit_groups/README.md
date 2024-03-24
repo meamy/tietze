@@ -1,3 +1,3 @@
-# Implicit Groups in Lafont
+# Implicit Groups in Tietze
 
 TODO: describe the example.

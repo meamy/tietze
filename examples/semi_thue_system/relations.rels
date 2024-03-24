@@ -1,6 +1,6 @@
 -- Note that the relations in this file use → rather than =.
 -- This states that each relation may only be applied left-to-right.
--- In practice, Lafont allows for a mix of equation and directed rules.
+-- In practice, Tietze allows for a mix of equation and directed rules.
 -- In this example, all rewrite rules are directed.
 
 rel1 w   → x.y.y

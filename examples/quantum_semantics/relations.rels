@@ -1,7 +1,5 @@
--- To run: [lafont_path] generators.gens relations.rels
---
 -- This file contains some basic Clifford relations.
--- Lafont will verify all relations using the provided semantics.
+-- Tietze will verify all relations using the provided semantics.
 
 -- Some self-inverse gates. These gates are reflections.
 refl1 CX10.CX10 = ε

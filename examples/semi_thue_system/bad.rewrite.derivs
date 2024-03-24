@@ -1,6 +1,4 @@
--- To run: [lafont_path] generators.gens relations.rels bad.rewrite.derivs
---
--- Lafont will tell us if a primitive rule is applied in the wrong direction.
+-- Tietze will tell us if a primitive rule is applied in the wrong direction.
 -- Let's run this file to see what happens!
 
 @name lemma1

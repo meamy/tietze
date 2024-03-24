@@ -1,4 +1,4 @@
-# Lafont
+# Tietze
 
 A tool for string rewriting.
 Documentation is a work in progres.

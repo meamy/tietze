@@ -1,4 +1,4 @@
--- A proof in Lafont consists of one or more derivations.
+-- A proof in Tietze consists of one or more derivations.
 -- Multiple derivations can appear in a single file.
 -- For now we will focus on a single derivation.
 

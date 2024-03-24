@@ -1,4 +1,4 @@
--- Lafont also has native support for 4x4 and 8x8 dyadic matrices.
+-- Tietze also has native support for 4x4 and 8x8 dyadic matrices.
 -- In the 4x4 case, such matrices correspond to the Dyadic Clifford Circuits.
 -- In the 8x8 case, such matrices correspond to the Dyadic Clifford + Tof Circuits.
 --
