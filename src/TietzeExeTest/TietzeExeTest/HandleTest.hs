@@ -2,11 +2,29 @@
 -- executable has been factored out into a library, and that the entry-point of the
 -- executable takes as input a handle to use as an output stream.
 
-module TietzeExeTest.HandleTest where
+module TietzeExeTest.HandleTest
+  ( HandleTest (..)
+  , handleTestToMain
+  , runAllHandleTests
+  ) where
 
-import           System.Directory
-import           System.Exit
-import           System.IO
+-------------------------------------------------------------------------------
+-- * Import Section.
+
+import System.Directory
+  ( getTemporaryDirectory
+  , removeFile
+  )
+import System.Exit
+  ( ExitCode (..)
+  , exitSuccess
+  , exitWith
+  )
+import System.IO
+  ( Handle
+  , hClose
+  , openTempFile
+  )
 
 -- | Group together a test name, its description (printed on failure), a function under
 -- test that produces output to a handle, and a function to validate all data written to

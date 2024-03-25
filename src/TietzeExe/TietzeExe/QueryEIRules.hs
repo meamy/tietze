@@ -1,28 +1,64 @@
  -- | Implementation of query_eirules.
 
-module TietzeExe.QueryEIRules where
+module TietzeExe.QueryEIRules
+  ( EIQuery (..)
+  , queryEIRules
+  ) where
 
-import           Data.List.NonEmpty
-import qualified Data.Set             as Set
-import           Lafont.Common
-import           Lafont.Named
-import           Lafont.Edit.EIRules
-import           Lafont.Edit.Invert
-import           Lafont.Parse.DerivationFile
-import           Lafont.Rewrite.Abstraction
-import           Lafont.Rewrite.Derivations
-import           Lafont.Rewrite.Lookup
-import           Lafont.Rewrite.Simplification
-import           Lafont.Rewrite.Summary
-import           TietzeExe.IO.Files
-import           TietzeExe.Logging.ErrorFormat
-import           TietzeExe.Logging.Graph
-import           TietzeExe.Logging.LineBased
-import           TietzeExe.Logging.Primitive
-import           TietzeExe.Logic.Derivations
-import           TietzeExe.Logic.QueryEIRules
-import           TietzeExe.Logic.Relations
-import           System.IO
+-------------------------------------------------------------------------------
+-- * Import Section.
+
+import Data.List.NonEmpty
+  ( NonEmpty
+  , toList
+  )
+import qualified Data.Set as Set
+import Lafont.Common (Symbol)
+import Lafont.Named (Named (..))
+import Lafont.Edit.EIRules
+  ( EIQueryType
+  , IsLeftInv
+  )
+import Lafont.Edit.Invert (EIView)
+import Lafont.Rewrite.Abstraction
+  ( AbsDerivation
+  , addDRules
+  )
+import Lafont.Rewrite.Lookup (RuleDict)
+import TietzeExe.IO.Files
+  ( doFilesExist
+  , readDerivationFiles
+  , readNamedFile
+  , readNamedFiles
+  )
+import TietzeExe.Logging.ErrorFormat
+  ( reportDupRule
+  , reportInvalidRule
+  , reportMissingERule
+  , reportMissingIRule
+  , reportUnknownGen
+  )
+import TietzeExe.Logging.LineBased
+  ( logEitherMsg
+  , logFromFile
+  )
+import TietzeExe.Logging.Primitive (logEIView)
+import TietzeExe.Logic.Derivations
+  ( DerivReadResult (..)
+  , processPreDerivations
+  )
+import TietzeExe.Logic.QueryEIRules
+  ( EIQueryRes (..)
+  , resolveEIQuery
+  )
+import TietzeExe.Logic.Relations
+  ( GenRuleReadResult (..)
+  , readGeneratorsAndRules
+  )
+import System.IO
+  ( Handle
+  , hPutStr
+  )
 
 -----------------------------------------------------------------------------------------
 -- * Logic.

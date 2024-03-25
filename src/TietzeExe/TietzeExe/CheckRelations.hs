@@ -1,14 +1,33 @@
 -- | Implementation of check_relations.
 
-module TietzeExe.CheckRelations where
+module TietzeExe.CheckRelations (checkRelations) where
 
-import           Data.List.NonEmpty
-import           TietzeExe.IO.Files
-import           TietzeExe.Logging.ErrorFormat
-import           TietzeExe.Logging.LineBased
-import           TietzeExe.Logging.Primitive
-import           TietzeExe.Logic.Relations
-import           System.IO
+-------------------------------------------------------------------------------
+-- * Import Section.
+
+import Data.List.NonEmpty
+  ( NonEmpty
+  , toList
+  )
+import TietzeExe.IO.Files
+  ( doFilesExist
+  , readNamedFile
+  , readNamedFiles
+  )
+import TietzeExe.Logging.ErrorFormat
+  ( reportInvalidRule
+  , reportUnknownGen
+  )
+import TietzeExe.Logging.LineBased (logEitherMsg)
+import TietzeExe.Logging.Primitive (logRuleDict)
+import TietzeExe.Logic.Relations
+  ( GenRuleReadResult (..)
+  , readGeneratorsAndRules
+  )
+import System.IO
+  ( Handle
+  , hPutStr
+  )
 
 -----------------------------------------------------------------------------------------
 -- * Logic.

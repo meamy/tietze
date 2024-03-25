@@ -1,12 +1,27 @@
 -- | Utilities to query EIRules given sets of symbols.
 
-module TietzeExe.Logic.QueryEIRules where
+module TietzeExe.Logic.QueryEIRules
+  ( EIQueryRes (..)
+  , resolveEIQuery
+  ) where
 
-import qualified Data.Set             as Set
-import           Lafont.Common
-import           Lafont.Edit.EIRules
-import           Lafont.Edit.Invert
-import           Lafont.Rewrite.Lookup
+-------------------------------------------------------------------------------
+-- * Import Section.
+
+import qualified Data.Set as Set
+import Lafont.Common (Symbol)
+import Lafont.Edit.EIRules
+  ( EIQueryType
+  , IsLeftInv
+  , toEDict
+  , toIDict
+  )
+import Lafont.Edit.Invert
+  ( EIView
+  , ViewQueryRes (..)
+  , viewByQuery
+  )
+import Lafont.Rewrite.Lookup (RuleDict)
 
 -----------------------------------------------------------------------------------------
 -- * Type-specialized relation processing.

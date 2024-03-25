@@ -1,23 +1,61 @@
 -- | Implementation of to_latex.
 
-module TietzeExe.ToLatex where
+module TietzeExe.ToLatex (toLatex) where
 
-import           Data.List.NonEmpty
-import           Lafont.Either
-import           Lafont.Named
-import           Lafont.Format.Common
-import           Lafont.Format.LaTeX
-import           Lafont.Parse.DerivationFile
-import           Lafont.Rewrite.Abstraction
-import           Lafont.Rewrite.Derivations
-import           Lafont.Rewrite.Lookup
-import           Lafont.Rewrite.Summary
-import           TietzeExe.IO.Files
-import           TietzeExe.Logging.ErrorFormat
-import           TietzeExe.Logging.LineBased
-import           TietzeExe.Logic.Derivations
-import           TietzeExe.Logic.Relations
-import           System.IO
+-------------------------------------------------------------------------------
+-- * Import Section.
+
+import Data.List.NonEmpty
+  ( NonEmpty
+  , toList
+  )
+import Lafont.Named (Named (..))
+import Lafont.Format.Common (formatDerivation)
+import Lafont.Format.LaTeX
+  ( MacroList
+  , makeGenMacros
+  , makeRelMacros
+  , printFormattedProof
+  , printMacroList
+  )
+import Lafont.Rewrite.Abstraction
+  ( AbsDerivation
+  , addDRules
+  )
+import Lafont.Rewrite.Derivations (Derivation (..))
+import Lafont.Rewrite.Lookup (RuleDict)
+import Lafont.Rewrite.Summary
+  ( DerivationSummary (..)
+  , RewritePreamble (..)
+  )
+import TietzeExe.IO.Files
+  ( doFilesExist
+  , readDerivationFiles
+  , readNamedFile
+  , readNamedFiles
+  )
+import TietzeExe.Logging.ErrorFormat
+  ( reportDupRule
+  , reportInvalidRule
+  , reportUnknownGen
+  )
+import TietzeExe.Logging.LineBased
+  ( logEitherMsg
+  , logFromFile
+  )
+import TietzeExe.Logic.Derivations
+  ( DerivReadResult (..)
+  , concretize
+  , processPreDerivations
+  )
+import TietzeExe.Logic.Relations
+  ( GenRuleReadResult (..)
+  , readGeneratorsAndRules
+  )
+import System.IO
+  ( Handle
+  , hPutStr
+  )
 
 -----------------------------------------------------------------------------------------
 -- * Logic.

@@ -1,17 +1,44 @@
 -- | Utilities to parse and validate derivations (syntactically).
 
-module TietzeExe.Logic.Derivations where
+module TietzeExe.Logic.Derivations
+  ( DerivReadResult (..)
+  , concretize
+  , processPreDerivations
+  ) where
+ 
+-------------------------------------------------------------------------------
+-- * Import Section.
 
-import           Lafont.Either
-import           Lafont.Named
-import           Lafont.Parse.DerivationFile
-import           Lafont.Rewrite.Abstraction
-import           Lafont.Rewrite.Derivations
-import           Lafont.Rewrite.Lookup
-import           Lafont.Rewrite.Summary
-import           TietzeExe.IO.Files
-import           TietzeExe.Logging.ErrorFormat
-import           TietzeExe.Logging.Graph
+import Lafont.Either (updateRight)
+import Lafont.Named (Named (..))
+import Lafont.Parse.DerivationFile
+  ( DFPError
+  , PreDerivation (..)
+  , parseDerivationFile
+  )
+import Lafont.Rewrite.Abstraction
+  ( AbsDerivation
+  , detectDerivationError
+  , identifyEquationalRules
+  , makeDerivationMap
+  )
+import Lafont.Rewrite.Derivations
+  ( Derivation
+  , DerivationMetadata
+  , concretizeDerivation
+  )
+import Lafont.Rewrite.Lookup (RuleDict)
+import Lafont.Rewrite.Summary
+  ( DRuleSet
+  , addSummaryToSymbols
+  , nullRuleSet
+  )
+import TietzeExe.IO.Files (ParseFilesRV)
+import TietzeExe.Logging.ErrorFormat (describeFailedApply)
+import TietzeExe.Logging.Graph
+  ( printCycle
+  , printUnmetDep
+  )
 
 -----------------------------------------------------------------------------------------
 -- * Type-specialized parsing of derivations.

@@ -1,22 +1,56 @@
 -- | Implementation of check_relations.
 
-module TietzeExe.GraphDeps where
+module TietzeExe.GraphDeps (graphDeps) where
 
-import           Data.List.NonEmpty
-import           Lafont.Named
-import           Lafont.Format.GraphViz
-import           Lafont.Parse.DerivationFile
-import           Lafont.Rewrite.Abstraction
-import           Lafont.Rewrite.Lookup
-import           TietzeExe.IO.Files
-import           TietzeExe.IO.Configs
-import           TietzeExe.Logging.ErrorFormat
-import           TietzeExe.Logging.Graph
-import           TietzeExe.Logging.LineBased
-import           TietzeExe.Logic.Derivations
-import           TietzeExe.Logic.GraphDeps
-import           TietzeExe.Logic.Relations
-import           System.IO
+-------------------------------------------------------------------------------
+-- * Import Section.
+
+import Data.List.NonEmpty
+  ( NonEmpty
+  , toList
+  )
+import Lafont.Named (Named (..))
+import Lafont.Format.GraphViz
+  ( DotFile
+  , printDotFile
+  )
+import Lafont.Rewrite.Abstraction (AbsDerivation)
+import Lafont.Rewrite.Lookup (RuleDict)
+import TietzeExe.IO.Files
+  ( doFilesExist
+  , readDerivationFiles
+  , readNamedFile
+  , readNamedFiles
+  )
+import TietzeExe.IO.Configs (Style (..))
+import TietzeExe.Logging.ErrorFormat
+  ( reportDupRule
+  , reportInvalidRule
+  , reportUnknownGen
+  )
+import TietzeExe.Logging.Graph (printUnmetDep)
+import TietzeExe.Logging.LineBased
+  ( logEitherMsg
+  , logFromFile
+  )
+import TietzeExe.Logic.Derivations
+  ( DerivReadResult (..)
+  , processPreDerivations
+  )
+import TietzeExe.Logic.GraphDeps
+  ( AnnotatedDotFile
+  , applyNodeColour
+  , derivationsToDotFile
+  , unwrapDotFile
+  )
+import TietzeExe.Logic.Relations
+  ( GenRuleReadResult (..)
+  , readGeneratorsAndRules
+  )
+import System.IO
+  ( Handle
+  , hPutStr
+  )
 
 -----------------------------------------------------------------------------------------
 -- * Logic.

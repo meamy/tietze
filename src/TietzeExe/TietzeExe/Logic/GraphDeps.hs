@@ -1,15 +1,43 @@
 -- | Utilities to generate dependency graphs.
 
-module TietzeExe.Logic.GraphDeps where
+module TietzeExe.Logic.GraphDeps
+  ( AnnotatedDotFile
+  , applyNodeColour
+  , derivationsToDotFile
+  , unwrapDotFile
+  ) where
+ 
+-------------------------------------------------------------------------------
+-- * Import Section.
 
-import qualified Data.Map                   as Map
-import qualified Data.Set                   as Set
-import           Lafont.Either
-import           Lafont.Format.GraphViz
-import           Lafont.Graph
-import           Lafont.Rewrite.Abstraction
-import           Lafont.Rewrite.Summary
-import           TietzeExe.IO.Configs
+import qualified Data.Map as Map
+import qualified Data.Set as Set
+import Lafont.Either (branchRight)
+import Lafont.Format.GraphViz
+  ( DotFile
+  , NodeID
+  , graphToDotFile
+  , setNodeColour
+  , unsafeToNodeID
+  , unwrapNodeID
+  )
+import Lafont.Graph
+  ( Digraph
+  , findCone
+  , induceSubgraph
+  )
+import Lafont.Rewrite.Abstraction
+  ( AbsDerivation (..)
+  , UnmetDep
+  , derivationToGraph
+  , unwrapDepGraph
+  )
+import Lafont.Rewrite.Summary
+  ( meta
+  , propName
+  , propType
+  )
+import TietzeExe.IO.Configs (ColorMap)
 
 -----------------------------------------------------------------------------------------
 -- * Annotated DotFile Generation.

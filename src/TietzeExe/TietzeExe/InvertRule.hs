@@ -1,29 +1,75 @@
  -- | Implementation of invert_rule.
 
-module TietzeExe.InvertRule where
+module TietzeExe.InvertRule
+  ( InvQuery (..)
+  , doInversion
+  ) where
 
-import           Data.List.NonEmpty
-import qualified Data.Set             as Set
-import           Lafont.Common
-import           Lafont.Named
-import           Lafont.Edit.EIRules
-import           Lafont.Edit.Invert
-import           Lafont.Parse.DerivationFile
-import           Lafont.Rewrite.Abstraction
-import           Lafont.Rewrite.Derivations
-import           Lafont.Rewrite.Lookup
-import           Lafont.Rewrite.Rules
-import           Lafont.Rewrite.Simplification
-import           Lafont.Rewrite.Summary
-import           TietzeExe.IO.Files
-import           TietzeExe.Logging.ErrorFormat
-import           TietzeExe.Logging.Graph
-import           TietzeExe.Logging.LineBased
-import           TietzeExe.Logging.Primitive
-import           TietzeExe.Logic.Derivations
-import           TietzeExe.Logic.QueryEIRules
-import           TietzeExe.Logic.Relations
-import           System.IO
+-------------------------------------------------------------------------------
+-- * Import Section.
+
+import Data.List.NonEmpty
+  ( NonEmpty
+  , toList
+  )
+import qualified Data.Set as Set
+import Lafont.Named (Named(..))
+import Lafont.Edit.EIRules
+  ( EIQueryType
+  , IsLeftInv
+  )
+import Lafont.Edit.Invert
+  ( EIRewrite
+  , InversionProof (..)
+  , getInvProof
+  )
+import Lafont.Parse.DerivationFile (display)
+import Lafont.Rewrite.Abstraction
+  ( AbsDerivation
+  , addDRules
+  )
+import Lafont.Rewrite.Lookup
+  ( RuleDict
+  , interpretRule
+  )
+import Lafont.Rewrite.Rules
+  ( RewriteRule (..)
+  , showRewrite
+  )
+import TietzeExe.IO.Files
+  ( doFilesExist
+  , readDerivationFiles
+  , readNamedFile
+  , readNamedFiles
+  )
+import TietzeExe.Logging.ErrorFormat
+  ( reportDupRule
+  , reportInvalidRule
+  , reportMissingIRule
+  , reportMissingERule
+  , reportUnknownGen
+  )
+import TietzeExe.Logging.LineBased
+  ( logEitherMsg
+  , logFromFile
+  )
+import TietzeExe.Logging.Primitive (logWord)
+import TietzeExe.Logic.Derivations
+  ( DerivReadResult (..)
+  , processPreDerivations
+  )
+import TietzeExe.Logic.QueryEIRules
+  ( EIQueryRes (..)
+  , resolveEIQuery
+  )
+import TietzeExe.Logic.Relations
+  ( GenRuleReadResult (..)
+  , readGeneratorsAndRules
+  )
+import System.IO
+  ( Handle
+  , hPutStr
+  )
 
 -----------------------------------------------------------------------------------------
 -- * Logic.
@@ -88,8 +134,8 @@ processDerivationFiles hdl fnames rules gens query = do
 
 -- | See doInversion. Requires that both files exist, whereas doInversion does not impose
 -- this assumption.
-queryEIRulesImpl :: Handle -> String -> [String] -> [String] -> InvQuery -> IO ()
-queryEIRulesImpl hdl genFname relFnames derivFnames query = do
+doInversionImpl :: Handle -> String -> [String] -> [String] -> InvQuery -> IO ()
+doInversionImpl hdl genFname relFnames derivFnames query = do
     genFile  <- readNamedFile genFname
     relFiles <- readNamedFiles relFnames
     case readGeneratorsAndRules genFile relFiles of
@@ -110,6 +156,6 @@ doInversion hdl genFname relFnames derivFnames query = do
     res <- doFilesExist $ genFnames' ++ relFnames' ++ derivFnames
     case res of
         Just name -> hPutStr hdl $ "File does not exist: " ++ name ++ "\n"
-        Nothing   -> queryEIRulesImpl hdl genFname relFnames' derivFnames query
+        Nothing   -> doInversionImpl hdl genFname relFnames' derivFnames query
     where relFnames' = toList relFnames
           genFnames' = [genFname]

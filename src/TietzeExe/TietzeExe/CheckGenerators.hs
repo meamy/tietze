@@ -1,15 +1,31 @@
 -- | Implementation of check_generators.
 
-module TietzeExe.CheckGenerators where
+module TietzeExe.CheckGenerators (checkGenerators) where
 
-import           Lafont.Common
-import           Lafont.Generators.Display
-import           Lafont.Generators.Semantics
-import           Lafont.Parse.GeneratorFile
-import           TietzeExe.IO.Files
-import           TietzeExe.Logging.LineBased
-import           System.Directory
-import           System.IO
+-------------------------------------------------------------------------------
+-- * Import Section.
+
+import Lafont.Common (Display (..))
+import Lafont.Generators.Display ()
+import Lafont.Generators.Semantics
+  ( GenDict
+  , SemModel (..)
+  , foldGens
+  )
+import Lafont.Parse.GeneratorFile
+  ( GenFileSummary (..)
+  , parseGenFileAsDict
+  )
+import TietzeExe.IO.Files
+  ( FileData (..)
+  , readNamedFile
+  )
+import TietzeExe.Logging.LineBased (logEitherMsg)
+import System.Directory (doesFileExist)
+import System.IO
+  ( Handle
+  , hPutStr
+  )
 
 -----------------------------------------------------------------------------------------
 -- * Helpers.
