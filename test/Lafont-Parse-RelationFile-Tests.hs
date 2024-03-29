@@ -5,13 +5,13 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Maybe
 import Data.Either
-import Lafont.Common
-import Lafont.Rewrite.Rules
-import Lafont.Rewrite.Lookup
-import Lafont.Parse.Common
-import Lafont.Parse.Internal.RelationFile
-import Lafont.Parse.MonWords
-import Lafont.Parse.RelationFile
+import Tietze.Common
+import Tietze.Rewrite.Rules
+import Tietze.Rewrite.Lookup
+import Tietze.Parse.Common
+import Tietze.Parse.Internal.RelationFile
+import Tietze.Parse.MonWords
+import Tietze.Parse.RelationFile
 
 -----------------------------------------------------------------------------------------
 -- parseRule

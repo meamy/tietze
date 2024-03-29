@@ -3,9 +3,9 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Lafont.Common
-import Lafont.Generators.Categories
-import Lafont.Generators.Semantics
+import Tietze.Common
+import Tietze.Generators.Categories
+import Tietze.Generators.Semantics
 
 -----------------------------------------------------------------------------------------
 -- Generator Dictionaries.

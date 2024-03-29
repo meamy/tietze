@@ -7,7 +7,7 @@ import qualified Data.Map             as Map
 import           System.Environment
 import           System.Exit
 import           System.IO
-import           Lafont.Format.GraphViz
+import           Tietze.Format.GraphViz
 import           TietzeExe.IO.Configs
 import           YamlTest.CmdLn
 

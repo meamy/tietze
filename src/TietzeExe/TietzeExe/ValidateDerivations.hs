@@ -9,15 +9,15 @@ import Data.List.NonEmpty
   ( NonEmpty
   , toList
   )
-import Lafont.Named (Named (..))
-import Lafont.Rewrite.Abstraction (AbsDerivation)
-import Lafont.Rewrite.Derivations (Derivation (..))
-import Lafont.Rewrite.Lookup (RuleDict)
-import Lafont.Rewrite.Simplification
+import Tietze.Named (Named (..))
+import Tietze.Rewrite.Abstraction (AbsDerivation)
+import Tietze.Rewrite.Derivations (Derivation (..))
+import Tietze.Rewrite.Lookup (RuleDict)
+import Tietze.Rewrite.Simplification
   ( RewriteResult (..)
   , simplify
   )
-import Lafont.Rewrite.Summary
+import Tietze.Rewrite.Summary
   ( DerivationSummary (..)
   , RewritePreamble (..)
   )

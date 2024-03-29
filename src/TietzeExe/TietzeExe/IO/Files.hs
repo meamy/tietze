@@ -13,12 +13,12 @@ module TietzeExe.IO.Files
 -- * Import Section.
 
 import System.Directory (doesFileExist)
-import Lafont.Either (updateRight)
-import Lafont.Named
+import Tietze.Either (updateRight)
+import Tietze.Named
   ( Named (..)
   , addToNamedList
   )
-import Lafont.Parse.DerivationFile (preparseDerivationFile)
+import Tietze.Parse.DerivationFile (preparseDerivationFile)
 
 -----------------------------------------------------------------------------------------
 -- * General-Purpose Reading/Writing.

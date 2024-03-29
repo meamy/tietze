@@ -3,10 +3,10 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Lafont.Common
-import Lafont.Rewrite.Common
-import Lafont.Rewrite.Internal.Rules
-import Lafont.Rewrite.Rules
+import Tietze.Common
+import Tietze.Rewrite.Common
+import Tietze.Rewrite.Internal.Rules
+import Tietze.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
 -- Declares some symbols to ues throughout the test.

@@ -8,25 +8,25 @@ module TietzeExe.Logic.Relations
 -------------------------------------------------------------------------------
 -- * Import Section.
 
-import Lafont.Generators.Categories (MonoidObj)
-import Lafont.Generators.RuleSem
+import Tietze.Generators.Categories (MonoidObj)
+import Tietze.Generators.RuleSem
   ( RuleDictStatus (..)
   , checkRuleSem
   )
-import Lafont.Generators.Semantics
+import Tietze.Generators.Semantics
   ( GenDict
   , toAlphabet
   )
-import Lafont.Parse.GeneratorFile
+import Tietze.Parse.GeneratorFile
   ( GenFileSummary (..)
   , GFPError
   , parseGenFileAsDict
   )
-import Lafont.Parse.RelationFile
+import Tietze.Parse.RelationFile
   ( RFPError
   , parseRelFile
   )
-import Lafont.Rewrite.Lookup
+import Tietze.Rewrite.Lookup
   ( RuleDict (..)
   , empty
   )
@@ -62,7 +62,7 @@ readRulesImpl language ((FileData name lines):files) rules =
 --
 -- Note: This method is said to be unchecked, as semantic validity is ignored.
 readRules :: GenDict a -> [FileData] -> GenRuleReadResult
-readRules gens files = readRulesImpl language files Lafont.Rewrite.Lookup.empty
+readRules gens files = readRulesImpl language files Tietze.Rewrite.Lookup.empty
     where language = toAlphabet gens
 
 -- | Consumes a relation file and a dictionary of generators whose semantics are given by

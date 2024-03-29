@@ -3,9 +3,9 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Lafont.Generators.Algebraic.Internal.Product
-import Lafont.Generators.Algebraic.Product
-import Lafont.Generators.Categories
+import Tietze.Generators.Algebraic.Internal.Product
+import Tietze.Generators.Algebraic.Product
+import Tietze.Generators.Categories
 
 -----------------------------------------------------------------------------------------
 -- promoteToProduct

@@ -3,12 +3,12 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Lafont.Common
-import Lafont.Edit.EIRules
-import Lafont.Edit.Internal.EIRules
-import Lafont.Rewrite.Common
-import Lafont.Rewrite.Lookup
-import Lafont.Rewrite.Rules
+import Tietze.Common
+import Tietze.Edit.EIRules
+import Tietze.Edit.Internal.EIRules
+import Tietze.Rewrite.Common
+import Tietze.Rewrite.Lookup
+import Tietze.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
 -- Example rewrite rules.

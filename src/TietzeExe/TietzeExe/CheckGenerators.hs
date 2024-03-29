@@ -5,14 +5,14 @@ module TietzeExe.CheckGenerators (checkGenerators) where
 -------------------------------------------------------------------------------
 -- * Import Section.
 
-import Lafont.Common (Display (..))
-import Lafont.Generators.Display ()
-import Lafont.Generators.Semantics
+import Tietze.Common (Display (..))
+import Tietze.Generators.Display ()
+import Tietze.Generators.Semantics
   ( GenDict
   , SemModel (..)
   , foldGens
   )
-import Lafont.Parse.GeneratorFile
+import Tietze.Parse.GeneratorFile
   ( GenFileSummary (..)
   , parseGenFileAsDict
   )

@@ -6,11 +6,11 @@ import Test.HUnit
 import Data.Maybe
 import Quantum.Synthesis.Ring
 import Quantum.Synthesis.Matrix
-import Lafont.Common
-import Lafont.Generators.Categories
-import Lafont.Generators.Algebraic.ModP
-import Lafont.Generators.Algebraic.Product
-import Lafont.Generators.Display
+import Tietze.Common
+import Tietze.Generators.Categories
+import Tietze.Generators.Algebraic.ModP
+import Tietze.Generators.Algebraic.Product
+import Tietze.Generators.Display
 
 -----------------------------------------------------------------------------------------
 -- Display Dyadic Integers.

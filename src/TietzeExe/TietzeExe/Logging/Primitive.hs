@@ -13,25 +13,25 @@ module TietzeExe.Logging.Primitive
 -- * Import Section.
 
 import qualified Data.Set as Set
-import Lafont.Common
+import Tietze.Common
   ( Display (..)
   , MonWord (..)
   , Symbol
   )
-import Lafont.Edit.EIRules
+import Tietze.Edit.EIRules
   ( EIRule
   , getRelName
   , isDerived
   )
-import Lafont.Edit.Invert
+import Tietze.Edit.Invert
   ( EIView
   , findEIRule
   )
-import Lafont.Rewrite.Lookup
+import Tietze.Rewrite.Lookup
   ( RuleDict
   , foldRules
   )
-import Lafont.Rewrite.Rules (RewriteRule (..))
+import Tietze.Rewrite.Rules (RewriteRule (..))
 
 -----------------------------------------------------------------------------------------
 -- * Array-Based Logging.

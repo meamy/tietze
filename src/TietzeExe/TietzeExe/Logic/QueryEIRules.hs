@@ -9,19 +9,19 @@ module TietzeExe.Logic.QueryEIRules
 -- * Import Section.
 
 import qualified Data.Set as Set
-import Lafont.Common (Symbol)
-import Lafont.Edit.EIRules
+import Tietze.Common (Symbol)
+import Tietze.Edit.EIRules
   ( EIQueryType
   , IsLeftInv
   , toEDict
   , toIDict
   )
-import Lafont.Edit.Invert
+import Tietze.Edit.Invert
   ( EIView
   , ViewQueryRes (..)
   , viewByQuery
   )
-import Lafont.Rewrite.Lookup (RuleDict)
+import Tietze.Rewrite.Lookup (RuleDict)
 
 -----------------------------------------------------------------------------------------
 -- * Type-specialized relation processing.

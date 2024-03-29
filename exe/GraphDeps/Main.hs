@@ -5,7 +5,7 @@ module Main where
 import Data.List.Split
 import System.Environment
 import System.IO
-import Lafont.Common
+import Tietze.Common
 import TietzeExe.GraphDeps
 import TietzeExe.IO.Configs
 import GraphDeps.CmdLn

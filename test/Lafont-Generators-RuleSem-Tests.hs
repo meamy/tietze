@@ -3,12 +3,12 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Lafont.Common
-import Lafont.Generators.Categories
-import qualified Lafont.Generators.Semantics as Sem
-import Lafont.Generators.RuleSem
-import qualified Lafont.Rewrite.Lookup as Rel
-import Lafont.Rewrite.Rules
+import Tietze.Common
+import Tietze.Generators.Categories
+import qualified Tietze.Generators.Semantics as Sem
+import Tietze.Generators.RuleSem
+import qualified Tietze.Rewrite.Lookup as Rel
+import Tietze.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
 -- Defines generators and rules.

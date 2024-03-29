@@ -9,22 +9,22 @@ import Data.List.NonEmpty
   ( NonEmpty
   , toList
   )
-import Lafont.Named (Named (..))
-import Lafont.Format.Common (formatDerivation)
-import Lafont.Format.LaTeX
+import Tietze.Named (Named (..))
+import Tietze.Format.Common (formatDerivation)
+import Tietze.Format.LaTeX
   ( MacroList
   , makeGenMacros
   , makeRelMacros
   , printFormattedProof
   , printMacroList
   )
-import Lafont.Rewrite.Abstraction
+import Tietze.Rewrite.Abstraction
   ( AbsDerivation
   , addDRules
   )
-import Lafont.Rewrite.Derivations (Derivation (..))
-import Lafont.Rewrite.Lookup (RuleDict)
-import Lafont.Rewrite.Summary
+import Tietze.Rewrite.Derivations (Derivation (..))
+import Tietze.Rewrite.Lookup (RuleDict)
+import Tietze.Rewrite.Summary
   ( DerivationSummary (..)
   , RewritePreamble (..)
   )

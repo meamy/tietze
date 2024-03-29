@@ -3,9 +3,9 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Lafont.Parse.Common
-import Lafont.Parse.Internal.Properties
-import Lafont.Parse.Properties
+import Tietze.Parse.Common
+import Tietze.Parse.Internal.Properties
+import Tietze.Parse.Properties
 
 -----------------------------------------------------------------------------------------
 -- Test Data.

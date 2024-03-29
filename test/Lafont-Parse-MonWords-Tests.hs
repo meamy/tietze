@@ -3,8 +3,8 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Lafont.Common
-import Lafont.Parse.MonWords
+import Tietze.Common
+import Tietze.Parse.MonWords
 
 -----------------------------------------------------------------------------------------
 -- parseParam

@@ -5,8 +5,8 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Quantum.Synthesis.Ring
 import Quantum.Synthesis.Matrix
-import Lafont.Generators.Categories
-import Lafont.Generators.QubitGates
+import Tietze.Generators.Categories
+import Tietze.Generators.QubitGates
 
 -----------------------------------------------------------------------------------------
 -- Additive Integers (Monoid).

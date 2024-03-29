@@ -9,7 +9,7 @@ module TietzeExe.Logging.LineBased
 -------------------------------------------------------------------------------
 -- * Import Section.
 
-import Lafont.Common (Display (..))
+import Tietze.Common (Display (..))
 
 -----------------------------------------------------------------------------------------
 -- * Logging By: File and Line Number.

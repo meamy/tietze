@@ -3,7 +3,7 @@ module Main where
 import Data.List
 import TietzeExeTest.HandleTest
 import TietzeExe.CheckGenerators
-import Lafont.String
+import Tietze.String
 
 -----------------------------------------------------------------------------------------
 -- Good input.

@@ -14,60 +14,60 @@ extra-source-files:  CHANGELOG.md
 -- Main library.
 
 library
-  exposed-modules:     Lafont.Common
-                       Lafont.Either
-                       Lafont.Graph
-                       Lafont.Internal.Graph
-                       Lafont.Maybe
-                       Lafont.Named
-                       Lafont.Ring
-                       Lafont.String
-                       Lafont.Edit.EIRules
-                       Lafont.Edit.Internal.EIRules
-                       Lafont.Edit.Invert
-                       Lafont.Format.Common
-                       Lafont.Format.Internal.GraphViz
-                       Lafont.Format.GraphViz
-                       Lafont.Format.LaTeX
-                       Lafont.Generators.Algebraic.Internal.ModP
-                       Lafont.Generators.Algebraic.Internal.Product
-                       Lafont.Generators.Algebraic.ModP
-                       Lafont.Generators.Algebraic.Product
-                       Lafont.Generators.Categories
-                       Lafont.Generators.Display
-                       Lafont.Generators.QubitGates
-                       Lafont.Generators.RuleSem
-                       Lafont.Generators.Semantics
-                       Lafont.Parse.Common
-                       Lafont.Parse.DelimLists
-                       Lafont.Parse.DerivationFile
-                       Lafont.Parse.GeneratorFile
-                       Lafont.Parse.Internal.DerivationFile
-                       Lafont.Parse.Internal.GeneratorFile
-                       Lafont.Parse.Internal.Properties
-                       Lafont.Parse.Internal.RelationFile
-                       Lafont.Parse.Internal.Semantics
-                       Lafont.Parse.MonWords
-                       Lafont.Parse.Properties
-                       Lafont.Parse.RelationFile
-                       Lafont.Parse.Semantics
-                       Lafont.Rewrite.Abstraction
-                       Lafont.Rewrite.Common
-                       Lafont.Rewrite.Derivations
-                       Lafont.Rewrite.Internal.Abstraction
-                       Lafont.Rewrite.Internal.Derivations
-                       Lafont.Rewrite.Internal.Rules
-                       Lafont.Rewrite.Internal.Summary
-                       Lafont.Rewrite.Lookup
-                       Lafont.Rewrite.Rules
-                       Lafont.Rewrite.Simplification
-                       Lafont.Rewrite.Summary
+  exposed-modules:     Tietze.Common
+                       Tietze.Either
+                       Tietze.Graph
+                       Tietze.Internal.Graph
+                       Tietze.Maybe
+                       Tietze.Named
+                       Tietze.Ring
+                       Tietze.String
+                       Tietze.Edit.EIRules
+                       Tietze.Edit.Internal.EIRules
+                       Tietze.Edit.Invert
+                       Tietze.Format.Common
+                       Tietze.Format.Internal.GraphViz
+                       Tietze.Format.GraphViz
+                       Tietze.Format.LaTeX
+                       Tietze.Generators.Algebraic.Internal.ModP
+                       Tietze.Generators.Algebraic.Internal.Product
+                       Tietze.Generators.Algebraic.ModP
+                       Tietze.Generators.Algebraic.Product
+                       Tietze.Generators.Categories
+                       Tietze.Generators.Display
+                       Tietze.Generators.QubitGates
+                       Tietze.Generators.RuleSem
+                       Tietze.Generators.Semantics
+                       Tietze.Parse.Common
+                       Tietze.Parse.DelimLists
+                       Tietze.Parse.DerivationFile
+                       Tietze.Parse.GeneratorFile
+                       Tietze.Parse.Internal.DerivationFile
+                       Tietze.Parse.Internal.GeneratorFile
+                       Tietze.Parse.Internal.Properties
+                       Tietze.Parse.Internal.RelationFile
+                       Tietze.Parse.Internal.Semantics
+                       Tietze.Parse.MonWords
+                       Tietze.Parse.Properties
+                       Tietze.Parse.RelationFile
+                       Tietze.Parse.Semantics
+                       Tietze.Rewrite.Abstraction
+                       Tietze.Rewrite.Common
+                       Tietze.Rewrite.Derivations
+                       Tietze.Rewrite.Internal.Abstraction
+                       Tietze.Rewrite.Internal.Derivations
+                       Tietze.Rewrite.Internal.Rules
+                       Tietze.Rewrite.Internal.Summary
+                       Tietze.Rewrite.Lookup
+                       Tietze.Rewrite.Rules
+                       Tietze.Rewrite.Simplification
+                       Tietze.Rewrite.Summary
   build-depends:       base,    
                        containers,
                        directory,
                        newsynth,
                        split
-  hs-source-dirs:      src/Lafont
+  hs-source-dirs:      src/Tietze
   default-language:    Haskell2010
 
 -----------------------------------------------------------------------------------------

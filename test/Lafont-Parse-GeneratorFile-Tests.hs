@@ -5,15 +5,15 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Maybe
 import Data.Either
-import Lafont.Generators.Algebraic.ModP
-import Lafont.Generators.Algebraic.Product
-import Lafont.Generators.Categories
-import Lafont.Generators.Semantics
-import Lafont.Generators.QubitGates
-import Lafont.Parse.Common
-import Lafont.Parse.Internal.GeneratorFile
-import Lafont.Parse.Semantics
-import Lafont.Parse.GeneratorFile
+import Tietze.Generators.Algebraic.ModP
+import Tietze.Generators.Algebraic.Product
+import Tietze.Generators.Categories
+import Tietze.Generators.Semantics
+import Tietze.Generators.QubitGates
+import Tietze.Parse.Common
+import Tietze.Parse.Internal.GeneratorFile
+import Tietze.Parse.Semantics
+import Tietze.Parse.GeneratorFile
 
 -----------------------------------------------------------------------------------------
 -- parseGenerator

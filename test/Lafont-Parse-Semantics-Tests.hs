@@ -4,13 +4,13 @@ import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Maybe
-import Lafont.Generators.Categories
+import Tietze.Generators.Categories
 import Quantum.Synthesis.Matrix
-import Lafont.Generators.Algebraic.ModP
-import Lafont.Generators.Algebraic.Product
-import Lafont.Generators.QubitGates
-import Lafont.Parse.Internal.Semantics
-import Lafont.Parse.Semantics
+import Tietze.Generators.Algebraic.ModP
+import Tietze.Generators.Algebraic.Product
+import Tietze.Generators.QubitGates
+import Tietze.Parse.Internal.Semantics
+import Tietze.Parse.Semantics
 
 -----------------------------------------------------------------------------------------
 -- Quantum Operator Semantics Parsing.

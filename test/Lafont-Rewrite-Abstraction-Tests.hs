@@ -5,14 +5,14 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Either
 import qualified Data.Set as Set
-import Lafont.Common
-import Lafont.Graph
-import Lafont.Rewrite.Abstraction
-import Lafont.Rewrite.Common
-import Lafont.Rewrite.Internal.Abstraction
-import Lafont.Rewrite.Lookup
-import Lafont.Rewrite.Rules
-import Lafont.Rewrite.Summary
+import Tietze.Common
+import Tietze.Graph
+import Tietze.Rewrite.Abstraction
+import Tietze.Rewrite.Common
+import Tietze.Rewrite.Internal.Abstraction
+import Tietze.Rewrite.Lookup
+import Tietze.Rewrite.Rules
+import Tietze.Rewrite.Summary
 
 -----------------------------------------------------------------------------------------
 -- Declares derivations for tests.
@@ -278,7 +278,7 @@ absRule1 = RewriteRule [] [] True (Derived $ Just rel1)
 absRule2 = RewriteRule [] [] True (Derived $ Just rel2)
 absRule3 = RewriteRule [] [] True (Derived $ Just rel3)
 
-rules1 = addRule Lafont.Rewrite.Lookup.empty ("r1", rule1)
+rules1 = addRule Tietze.Rewrite.Lookup.empty ("r1", rule1)
 rules2 = addRule rules1                      ("r2", rule1)
 rules3 = addRule rules2                      ("r3", rule1) 
 rules4 = addRule rules3                      ("rel1", absRule1)

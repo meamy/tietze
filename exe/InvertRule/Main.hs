@@ -4,8 +4,8 @@ module Main where
 
 import System.Environment
 import System.IO
-import Lafont.Common
-import Lafont.Edit.Invert
+import Tietze.Common
+import Tietze.Edit.Invert
 import TietzeExe.IO.Configs
 import TietzeExe.InvertRule
 import InvertRule.CmdLn

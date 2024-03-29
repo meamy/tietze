@@ -15,7 +15,7 @@ module TietzeExe.Logging.ErrorFormat
 -- * Import Section.
 
 import Data.Maybe (fromMaybe)
-import Lafont.Common
+import Tietze.Common
   ( Display (..)
   , MonWord
   , Symbol 

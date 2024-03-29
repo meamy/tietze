@@ -12,8 +12,8 @@ module TietzeExe.Logic.GraphDeps
 
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-import Lafont.Either (branchRight)
-import Lafont.Format.GraphViz
+import Tietze.Either (branchRight)
+import Tietze.Format.GraphViz
   ( DotFile
   , NodeID
   , graphToDotFile
@@ -21,18 +21,18 @@ import Lafont.Format.GraphViz
   , unsafeToNodeID
   , unwrapNodeID
   )
-import Lafont.Graph
+import Tietze.Graph
   ( Digraph
   , findCone
   , induceSubgraph
   )
-import Lafont.Rewrite.Abstraction
+import Tietze.Rewrite.Abstraction
   ( AbsDerivation (..)
   , UnmetDep
   , derivationToGraph
   , unwrapDepGraph
   )
-import Lafont.Rewrite.Summary
+import Tietze.Rewrite.Summary
   ( meta
   , propName
   , propType

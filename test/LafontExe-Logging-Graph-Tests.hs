@@ -4,7 +4,7 @@ import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import qualified Data.Sequence as Seq
-import Lafont.Rewrite.Abstraction
+import Tietze.Rewrite.Abstraction
 import TietzeExe.Logging.Graph
 
 -----------------------------------------------------------------------------------------

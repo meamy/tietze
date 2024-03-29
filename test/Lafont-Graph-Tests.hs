@@ -6,8 +6,8 @@ import Test.HUnit
 import Data.List
 import Data.Maybe
 import Data.Set as Set
-import Lafont.Graph
-import Lafont.Internal.Graph
+import Tietze.Graph
+import Tietze.Internal.Graph
 
 -----------------------------------------------------------------------------------------
 -- Tests the ability to build and inspect a graph.
@@ -54,7 +54,7 @@ test16 = makeVertexTest g15 [1, 5, 12, 7, 15, (-2)] "g15"
 makeEdgeTest :: Digraph Int -> Int -> [Int] -> String -> Test.HUnit.Test
 makeEdgeTest g v edges name = TestCase (assertEqual msg exp act)
     where msg = "The edges in " ++ name ++ " are correct from " ++ (show v) ++ "."
-          exp = Lafont.Internal.Graph.fromList edges
+          exp = Tietze.Internal.Graph.fromList edges
           act = edgeSet g v
 
 test17 = makeEdgeTest g0 1 [] "g0"
@@ -194,7 +194,7 @@ makeVertexCycleTest :: Int -> GraphWalk Int -> Test.HUnit.Test
 makeVertexCycleTest v path = TestCase (assertEqual msg exp act)
     where msg = "Can detect path from vertex " ++ (show v ) ++ "."
           exp = Just path :: Maybe (GraphWalk Int)
-          act = findCycleFromVertex g19 v Lafont.Internal.Graph.empty
+          act = findCycleFromVertex g19 v Tietze.Internal.Graph.empty
 
 test89 = makeVertexCycleTest 12 (listToWalk [12, 12])
 test90 = makeVertexCycleTest (-2) (listToWalk [-2, 7, 5, 15, -2])
@@ -206,27 +206,27 @@ test94 = makeVertexCycleTest 1 cycleFromV1
 test95 = TestCase (assertEqual "findCycleFromVertex handles vertex without cycle (1/2)."
                                (Nothing :: Maybe (GraphWalk Int))
                                act)
-    where act = findCycleFromVertex g19 100 Lafont.Internal.Graph.empty
+    where act = findCycleFromVertex g19 100 Tietze.Internal.Graph.empty
 
 test96 = TestCase (assertEqual "findCycleFromVertex handles vertex without cycle (2/2)."
                                (Nothing :: Maybe (GraphWalk Int))
                                act)
-    where act = findCycleFromVertex g19 200 Lafont.Internal.Graph.empty
+    where act = findCycleFromVertex g19 200 Tietze.Internal.Graph.empty
 
 test97 = TestCase (assertEqual "findCycleFromVertex handles invalid vertex."
                                (Nothing :: Maybe (GraphWalk Int))
                                act)
-    where act = findCycleFromVertex g19 300 Lafont.Internal.Graph.empty
+    where act = findCycleFromVertex g19 300 Tietze.Internal.Graph.empty
 
 test98 = TestCase (assertEqual "findCycleFromVertices returns first cycle."
                                (Just cycleFromV1 :: Maybe (GraphWalk Int))
                                act)
-    where act = findCycleFromVertices g19 [100, 1, 12] Lafont.Internal.Graph.empty
+    where act = findCycleFromVertices g19 [100, 1, 12] Tietze.Internal.Graph.empty
 
 test99 = TestCase (assertEqual "findCycleFromVertices handles vertices without cycles."
                                (Nothing :: Maybe (GraphWalk Int))
                                act)
-    where act = findCycleFromVertices g19 [100, 200, 300] Lafont.Internal.Graph.empty
+    where act = findCycleFromVertices g19 [100, 200, 300] Tietze.Internal.Graph.empty
 
 test100 = TestCase (assertBool "Can take a graph and return a cycle."
                                (isJust $ findCycle g19))

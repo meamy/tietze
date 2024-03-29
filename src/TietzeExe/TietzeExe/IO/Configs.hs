@@ -31,7 +31,7 @@ import Data.Yaml
   , prettyPrintParseException
   )
 import GHC.Generics (Generic (..))
-import Lafont.Format.GraphViz
+import Tietze.Format.GraphViz
   ( Display (..)
   , X11Color (..)
   , toColour
@@ -68,7 +68,7 @@ data Style = Style { color :: ColorMap
                    } deriving (Generic, Show, Eq)
 instance FromJSON Style
 
--- | Returns the default styling for Lafont output.
+-- | Returns the default styling for Tietze output.
 defaultStyle :: Style
 defaultStyle = Style { color = Map.empty }
 

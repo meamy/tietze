@@ -30,7 +30,7 @@ import System.Console.CmdArgs
   , help
   , typFile
   )
-import Lafont.Edit.EIRules (EIQueryType(..))
+import Tietze.Edit.EIRules (EIQueryType(..))
 
 -----------------------------------------------------------------------------------------
 -- * Input/Output Flags.

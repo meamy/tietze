@@ -3,10 +3,10 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Lafont.Common
-import Lafont.Edit.Internal.EIRules
-import Lafont.Edit.Invert
-import Lafont.Rewrite.Rules
+import Tietze.Common
+import Tietze.Edit.Internal.EIRules
+import Tietze.Edit.Invert
+import Tietze.Rewrite.Rules
 import TietzeExe.Logging.Primitive
 
 -----------------------------------------------------------------------------------------

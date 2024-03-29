@@ -3,9 +3,9 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Lafont.Common
-import Lafont.Rewrite.Rules
-import Lafont.Rewrite.Lookup
+import Tietze.Common
+import Tietze.Rewrite.Rules
+import Tietze.Rewrite.Lookup
 
 -----------------------------------------------------------------------------------------
 -- Rule Dictionaries.

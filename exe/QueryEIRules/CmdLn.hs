@@ -24,7 +24,7 @@ import TietzeExe.IO.CmdLnParser
   , addModeAnnotations
   , parseCmdLnArgs
   )
-import Lafont.Edit.EIRules (EIQueryType(..))
+import Tietze.Edit.EIRules (EIQueryType(..))
 
 -------------------------------------------------------------------------------
 -- * Argument Data Type.

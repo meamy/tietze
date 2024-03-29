@@ -5,13 +5,13 @@ import Test.Framework.Providers.HUnit
 import Test.HUnit
 import qualified Data.Set as Set
 import Data.Maybe
-import Lafont.Common
-import Lafont.Edit.Invert
-import Lafont.Edit.EIRules
-import Lafont.Edit.Internal.EIRules
-import Lafont.Rewrite.Common
-import Lafont.Rewrite.Lookup
-import Lafont.Rewrite.Rules
+import Tietze.Common
+import Tietze.Edit.Invert
+import Tietze.Edit.EIRules
+import Tietze.Edit.Internal.EIRules
+import Tietze.Rewrite.Common
+import Tietze.Rewrite.Lookup
+import Tietze.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
 -- * Test structures.

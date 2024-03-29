@@ -4,16 +4,16 @@ import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Maybe
-import Lafont.Common
-import Lafont.Graph
-import Lafont.Internal.Graph
-import Lafont.Rewrite.Abstraction
-import Lafont.Rewrite.Common
-import Lafont.Rewrite.Derivations
-import Lafont.Rewrite.Internal.Abstraction
-import Lafont.Rewrite.Internal.Derivations
-import Lafont.Rewrite.Rules
-import Lafont.Rewrite.Summary
+import Tietze.Common
+import Tietze.Graph
+import Tietze.Internal.Graph
+import Tietze.Rewrite.Abstraction
+import Tietze.Rewrite.Common
+import Tietze.Rewrite.Derivations
+import Tietze.Rewrite.Internal.Abstraction
+import Tietze.Rewrite.Internal.Derivations
+import Tietze.Rewrite.Rules
+import Tietze.Rewrite.Summary
 
 -----------------------------------------------------------------------------------------
 -- Declares derivations for tests.

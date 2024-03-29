@@ -4,9 +4,9 @@ import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Maybe
-import Lafont.Format.GraphViz
-import Lafont.Format.Internal.GraphViz
-import Lafont.Graph
+import Tietze.Format.GraphViz
+import Tietze.Format.Internal.GraphViz
+import Tietze.Graph
 
 -----------------------------------------------------------------------------------------
 -- toNodeID

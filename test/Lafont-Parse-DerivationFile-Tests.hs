@@ -4,16 +4,16 @@ import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Either
-import Lafont.Common
-import Lafont.Rewrite.Abstraction
-import Lafont.Rewrite.Common
-import Lafont.Rewrite.Derivations
-import Lafont.Rewrite.Rules
-import Lafont.Rewrite.Lookup
-import Lafont.Rewrite.Summary
-import Lafont.Parse.Common
-import Lafont.Parse.DerivationFile
-import Lafont.Parse.Internal.DerivationFile
+import Tietze.Common
+import Tietze.Rewrite.Abstraction
+import Tietze.Rewrite.Common
+import Tietze.Rewrite.Derivations
+import Tietze.Rewrite.Rules
+import Tietze.Rewrite.Lookup
+import Tietze.Rewrite.Summary
+import Tietze.Parse.Common
+import Tietze.Parse.DerivationFile
+import Tietze.Parse.Internal.DerivationFile
 
 -----------------------------------------------------------------------------------------
 -- parseRewriteAtPos

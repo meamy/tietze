@@ -13,18 +13,18 @@ import Data.List.NonEmpty
   , toList
   )
 import qualified Data.Set as Set
-import Lafont.Common (Symbol)
-import Lafont.Named (Named (..))
-import Lafont.Edit.EIRules
+import Tietze.Common (Symbol)
+import Tietze.Named (Named (..))
+import Tietze.Edit.EIRules
   ( EIQueryType
   , IsLeftInv
   )
-import Lafont.Edit.Invert (EIView)
-import Lafont.Rewrite.Abstraction
+import Tietze.Edit.Invert (EIView)
+import Tietze.Rewrite.Abstraction
   ( AbsDerivation
   , addDRules
   )
-import Lafont.Rewrite.Lookup (RuleDict)
+import Tietze.Rewrite.Lookup (RuleDict)
 import TietzeExe.IO.Files
   ( doFilesExist
   , readDerivationFiles

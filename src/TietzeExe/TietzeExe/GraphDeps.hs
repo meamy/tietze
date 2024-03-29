@@ -9,13 +9,13 @@ import Data.List.NonEmpty
   ( NonEmpty
   , toList
   )
-import Lafont.Named (Named (..))
-import Lafont.Format.GraphViz
+import Tietze.Named (Named (..))
+import Tietze.Format.GraphViz
   ( DotFile
   , printDotFile
   )
-import Lafont.Rewrite.Abstraction (AbsDerivation)
-import Lafont.Rewrite.Lookup (RuleDict)
+import Tietze.Rewrite.Abstraction (AbsDerivation)
+import Tietze.Rewrite.Lookup (RuleDict)
 import TietzeExe.IO.Files
   ( doFilesExist
   , readDerivationFiles

@@ -3,7 +3,7 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Lafont.Generators.QubitGates
+import Tietze.Generators.QubitGates
 
 import Quantum.Synthesis.Matrix
 import Quantum.Synthesis.Ring

@@ -3,8 +3,8 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Lafont.Maybe
-import Lafont.Parse.DelimLists
+import Tietze.Maybe
+import Tietze.Parse.DelimLists
 
 -----------------------------------------------------------------------------------------
 -- parseList

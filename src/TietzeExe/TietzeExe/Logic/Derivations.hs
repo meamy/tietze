@@ -9,26 +9,26 @@ module TietzeExe.Logic.Derivations
 -------------------------------------------------------------------------------
 -- * Import Section.
 
-import Lafont.Either (updateRight)
-import Lafont.Named (Named (..))
-import Lafont.Parse.DerivationFile
+import Tietze.Either (updateRight)
+import Tietze.Named (Named (..))
+import Tietze.Parse.DerivationFile
   ( DFPError
   , PreDerivation (..)
   , parseDerivationFile
   )
-import Lafont.Rewrite.Abstraction
+import Tietze.Rewrite.Abstraction
   ( AbsDerivation
   , detectDerivationError
   , identifyEquationalRules
   , makeDerivationMap
   )
-import Lafont.Rewrite.Derivations
+import Tietze.Rewrite.Derivations
   ( Derivation
   , DerivationMetadata
   , concretizeDerivation
   )
-import Lafont.Rewrite.Lookup (RuleDict)
-import Lafont.Rewrite.Summary
+import Tietze.Rewrite.Lookup (RuleDict)
+import Tietze.Rewrite.Summary
   ( DRuleSet
   , addSummaryToSymbols
   , nullRuleSet

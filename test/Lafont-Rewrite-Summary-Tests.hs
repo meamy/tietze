@@ -3,13 +3,13 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Lafont.Common
-import Lafont.Rewrite.Abstraction
-import Lafont.Rewrite.Common
-import Lafont.Rewrite.Internal.Summary
-import Lafont.Rewrite.Lookup
-import Lafont.Rewrite.Rules
-import Lafont.Rewrite.Summary
+import Tietze.Common
+import Tietze.Rewrite.Abstraction
+import Tietze.Rewrite.Common
+import Tietze.Rewrite.Internal.Summary
+import Tietze.Rewrite.Lookup
+import Tietze.Rewrite.Rules
+import Tietze.Rewrite.Summary
 
 -----------------------------------------------------------------------------------------
 -- Building components for summaries (used across tests).

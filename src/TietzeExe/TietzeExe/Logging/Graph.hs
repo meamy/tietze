@@ -8,8 +8,8 @@ module TietzeExe.Logging.Graph
 -------------------------------------------------------------------------------
 -- * Import Section.
 
-import Lafont.Graph (foldPath)
-import Lafont.Rewrite.Abstraction
+import Tietze.Graph (foldPath)
+import Tietze.Rewrite.Abstraction
   ( DepCycle (..)
   , UnmetDep (..)
   )

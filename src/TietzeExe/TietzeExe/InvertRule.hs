@@ -13,26 +13,26 @@ import Data.List.NonEmpty
   , toList
   )
 import qualified Data.Set as Set
-import Lafont.Named (Named(..))
-import Lafont.Edit.EIRules
+import Tietze.Named (Named(..))
+import Tietze.Edit.EIRules
   ( EIQueryType
   , IsLeftInv
   )
-import Lafont.Edit.Invert
+import Tietze.Edit.Invert
   ( EIRewrite
   , InversionProof (..)
   , getInvProof
   )
-import Lafont.Parse.DerivationFile (display)
-import Lafont.Rewrite.Abstraction
+import Tietze.Parse.DerivationFile (display)
+import Tietze.Rewrite.Abstraction
   ( AbsDerivation
   , addDRules
   )
-import Lafont.Rewrite.Lookup
+import Tietze.Rewrite.Lookup
   ( RuleDict
   , interpretRule
   )
-import Lafont.Rewrite.Rules
+import Tietze.Rewrite.Rules
   ( RewriteRule (..)
   , showRewrite
   )
