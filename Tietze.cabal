@@ -1,6 +1,6 @@
 cabal-version:       2.2
 
-name:                Lafont
+name:                Tietze
 version:             0.1.0.0
 license:             MIT
 license-file:        LICENSE
@@ -100,7 +100,7 @@ library TietzeExe
                        directory,
                        text,
                        yaml,
-                       Lafont
+                       Tietze
   hs-source-dirs:      src/TietzeExe
   default-language:    Haskell2010
 
@@ -109,7 +109,7 @@ common exe-with-file-io-props
   default-language:    Haskell2010
   build-depends:       base, 
                        directory,
-                       Lafont,
+                       Tietze,
                        TietzeExe
 
 executable check_generators
@@ -166,7 +166,7 @@ common basic-unit-test-props
                        test-framework,
                        test-framework-hunit,
                        HUnit,
-                       Lafont
+                       Tietze
 
 common io-unit-test-props
   import:              basic-unit-test-props
@@ -375,7 +375,7 @@ common exe-test-props
   hs-source-dirs:      test/exe
   default-language:    Haskell2010
   build-depends:       base,
-                       Lafont,
+                       Tietze,
                        TietzeExe,
                        TietzeExeTest
 
