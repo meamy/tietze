@@ -23,7 +23,7 @@ module Tietze.Parse.Internal.DerivationFile
   , preparseDerivation
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import           Tietze.Common

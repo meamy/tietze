@@ -1,11 +1,12 @@
 module Main where
 
+import qualified Data.Set as Set
+
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.List
 import Data.Maybe
-import Data.Set as Set
 import Tietze.Graph
 import Tietze.Internal.Graph
 

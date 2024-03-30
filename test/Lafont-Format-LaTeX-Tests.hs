@@ -1,15 +1,16 @@
 module Main where
 
-import           Test.Framework
-import           Test.Framework.Providers.HUnit
-import           Test.HUnit
-import           Tietze.Common
-import           Tietze.Format.Common
-import           Tietze.Format.LaTeX
 import qualified Tietze.Generators.Semantics as Sem
-import           Tietze.Rewrite.Common
 import qualified Tietze.Rewrite.Lookup as Rel
-import           Tietze.Rewrite.Rules
+
+import Test.Framework
+import Test.Framework.Providers.HUnit
+import Test.HUnit
+import Tietze.Common
+import Tietze.Format.Common
+import Tietze.Format.LaTeX
+import Tietze.Rewrite.Common
+import Tietze.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------
 -- Declares some symbols to ues throughout the test.

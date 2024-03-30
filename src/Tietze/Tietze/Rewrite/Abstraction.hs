@@ -21,10 +21,11 @@ module Tietze.Rewrite.Abstraction
   , unwrapDepGraph
 ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Data.Map as Map
+
 import Data.Maybe (fromMaybe)
 import Tietze.Either (branchRight)
 import Tietze.Graph

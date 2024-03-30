@@ -21,7 +21,7 @@ module Tietze.Generators.QubitGates
   , prepare_gate_8x8
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Quantum.Synthesis.CliffordT as QCliffT

@@ -13,8 +13,10 @@ module TietzeExe.IO.Configs
   , parseStyleYaml
   ) where
 
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
+
+import qualified Data.Map as Map
 
 import Data.Aeson.Types
   ( Value (String)
@@ -22,7 +24,6 @@ import Data.Aeson.Types
   , typeMismatch
   )
 import Data.List.NonEmpty (NonEmpty)
-import qualified Data.Map as Map
 import Data.Text (unpack)
 import Data.Yaml
   ( FromJSON (..)

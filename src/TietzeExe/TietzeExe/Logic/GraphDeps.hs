@@ -7,11 +7,12 @@ module TietzeExe.Logic.GraphDeps
   , unwrapDotFile
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Data.Map as Map
 import qualified Data.Set as Set
+
 import Tietze.Either (branchRight)
 import Tietze.Format.GraphViz
   ( DotFile

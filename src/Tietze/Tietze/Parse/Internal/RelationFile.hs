@@ -10,7 +10,7 @@ module Tietze.Parse.Internal.RelationFile
   , parseRelLine
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import           Tietze.Common

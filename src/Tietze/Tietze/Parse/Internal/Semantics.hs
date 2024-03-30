@@ -2,7 +2,7 @@
 
 module Tietze.Parse.Internal.Semantics (tokenizeByIntIncl) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import           Data.Bifunctor

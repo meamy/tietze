@@ -14,14 +14,15 @@ module Tietze.Internal.Graph
   , findCycleFromVertices
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Data.Map as Map
-import Data.Maybe (fromMaybe)
-import Data.Sequence (Seq (..), (<|), (|>))
 import qualified Data.Sequence as Seq
 import qualified Data.Set as Set
+
+import Data.Maybe (fromMaybe)
+import Data.Sequence (Seq (..), (<|), (|>))
 import Tietze.Maybe
   ( branchNothing
   , maybeApply

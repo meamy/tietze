@@ -6,7 +6,7 @@ module TietzeExe.Logging.LineBased
   , logFromFile
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Common (Display (..))

@@ -17,11 +17,12 @@ module Tietze.Edit.Invert
   , viewByQuery
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Data.Map as Map
 import qualified Data.Set as Set
+
 import Tietze.Common
   ( Display (..)
   , MonWord

@@ -2,7 +2,7 @@
 
 module TietzeExe.CheckRelations (checkRelations) where
 
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Data.List.NonEmpty

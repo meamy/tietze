@@ -5,7 +5,7 @@ module TietzeExe.Logic.Relations
   , readGeneratorsAndRules
   ) where
 
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Generators.Categories (MonoidObj)

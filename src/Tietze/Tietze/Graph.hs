@@ -19,12 +19,13 @@ module Tietze.Graph
   , induceSubgraph
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Data.Map as Map
 import qualified Data.Sequence as Seq
 import qualified Data.Set as Set
+
 import Tietze.Internal.Graph
   ( Digraph (..)
   , EdgeSet

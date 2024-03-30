@@ -15,10 +15,11 @@ module Tietze.Generators.Semantics
   , semComp
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Data.Map as Map
+
 import Tietze.Common
   ( Display (..)
   , MonWord

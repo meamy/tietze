@@ -6,7 +6,7 @@ module Tietze.Rewrite.Simplification
   , simplify
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Common (MonWord)

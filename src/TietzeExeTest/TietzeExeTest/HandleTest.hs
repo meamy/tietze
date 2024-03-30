@@ -8,7 +8,7 @@ module TietzeExeTest.HandleTest
   , runAllHandleTests
   ) where
 
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import System.Directory

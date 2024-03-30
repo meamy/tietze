@@ -8,7 +8,7 @@ module Tietze.Parse.GeneratorFile
   , parseGenFileAsAlphabet
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import           Tietze.Common

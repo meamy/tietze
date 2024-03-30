@@ -8,7 +8,7 @@ module Tietze.Parse.DerivationFile
   , parseDerivationFile
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import           Tietze.Common

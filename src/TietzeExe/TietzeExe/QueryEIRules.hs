@@ -5,14 +5,15 @@ module TietzeExe.QueryEIRules
   , queryEIRules
   ) where
 
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
+
+import qualified Data.Set as Set
 
 import Data.List.NonEmpty
   ( NonEmpty
   , toList
   )
-import qualified Data.Set as Set
 import Tietze.Common (Symbol)
 import Tietze.Named (Named (..))
 import Tietze.Edit.EIRules

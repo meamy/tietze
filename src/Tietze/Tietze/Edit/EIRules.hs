@@ -21,12 +21,13 @@ module Tietze.Edit.EIRules
   , toIDict
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
+
+import qualified Data.Map as Map
 
 import Data.Data (Data)
 import Data.Typeable (Typeable)
-import qualified Data.Map as Map
 import Tietze.Maybe (branchJust)
 import Tietze.Common
   ( MonWord

@@ -5,7 +5,7 @@ module Tietze.Rewrite.Internal.Summary
   , DRuleSet (..)
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Data.Map as Map

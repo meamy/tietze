@@ -10,7 +10,7 @@ module Tietze.Rewrite.Internal.Abstraction
   , addDepsToGraph
 ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Either (branchRight)

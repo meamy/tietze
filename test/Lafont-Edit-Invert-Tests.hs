@@ -1,9 +1,10 @@
 module Main where
 
+import qualified Data.Set as Set
+
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import qualified Data.Set as Set
 import Data.Maybe
 import Tietze.Common
 import Tietze.Edit.Invert

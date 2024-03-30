@@ -2,7 +2,7 @@
 
 module TietzeExe.CheckGenerators (checkGenerators) where
 
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Common (Display (..))

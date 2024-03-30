@@ -5,7 +5,7 @@ module Tietze.Generators.Algebraic.Internal.Product
   , expandIdentityFor
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Generators.Categories (MonoidObj (..))

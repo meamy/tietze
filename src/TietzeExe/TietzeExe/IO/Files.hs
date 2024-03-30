@@ -9,7 +9,7 @@ module TietzeExe.IO.Files
   , doFilesExist
   ) where
 
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import System.Directory (doesFileExist)

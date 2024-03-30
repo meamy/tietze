@@ -9,10 +9,11 @@ module TietzeExe.Logging.Primitive
   , logWord
   ) where
 
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Data.Set as Set
+
 import Tietze.Common
   ( Display (..)
   , MonWord (..)

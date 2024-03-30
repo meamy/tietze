@@ -2,7 +2,7 @@
 
 module TietzeExe.ValidateDerivations (validateDerivations) where
 
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Data.List.NonEmpty

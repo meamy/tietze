@@ -11,7 +11,7 @@ module Tietze.Generators.Algebraic.ModP
   , identity
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Generators.Algebraic.Internal.ModP

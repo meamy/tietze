@@ -1,10 +1,11 @@
 module Main where
 
+import qualified Data.Set as Set
+
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Data.Either
-import qualified Data.Set as Set
 import Tietze.Common
 import Tietze.Graph
 import Tietze.Rewrite.Abstraction

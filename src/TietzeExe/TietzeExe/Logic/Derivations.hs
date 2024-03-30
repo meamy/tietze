@@ -6,7 +6,7 @@ module TietzeExe.Logic.Derivations
   , processPreDerivations
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Either (updateRight)

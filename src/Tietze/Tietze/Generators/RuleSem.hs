@@ -6,7 +6,7 @@ module Tietze.Generators.RuleSem
   , checkRuleSem
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Generators.Categories (MonoidObj)

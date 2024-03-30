@@ -1,9 +1,10 @@
 module Main where
 
+import qualified Data.Sequence as Seq
+
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import qualified Data.Sequence as Seq
 import Tietze.Rewrite.Abstraction
 import TietzeExe.Logging.Graph
 

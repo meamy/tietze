@@ -9,7 +9,7 @@ module Tietze.Generators.Algebraic.Product
   , identity
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Generators.Algebraic.Internal.Product

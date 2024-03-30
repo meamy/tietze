@@ -5,7 +5,7 @@ module Tietze.Rewrite.Internal.Rules
   , applyProductionRule
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Common (MonWord)

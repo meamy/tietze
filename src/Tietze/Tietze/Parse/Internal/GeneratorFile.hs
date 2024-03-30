@@ -9,7 +9,7 @@ module Tietze.Parse.Internal.GeneratorFile
   , parseGenDict
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import           Tietze.Either

@@ -3,8 +3,11 @@
 
 module Tietze.Generators.Display (display) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
+
+import qualified Quantum.Synthesis.Matrix as QMat
+import qualified Quantum.Synthesis.Ring as QRing
 
 import Tietze.Common (Display (..))
 import Tietze.Generators.Algebraic.Internal.ModP
@@ -18,8 +21,6 @@ import Tietze.Generators.Categories
   )
 import Tietze.Ring (reduceDyadic)
 import Tietze.String (formatList)
-import qualified Quantum.Synthesis.Matrix as QMat
-import qualified Quantum.Synthesis.Ring as QRing
 
 -----------------------------------------------------------------------------------------
 -- * Monoid Semantics.

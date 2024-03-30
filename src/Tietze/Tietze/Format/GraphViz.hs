@@ -15,14 +15,15 @@ module Tietze.Format.GraphViz
   , unwrapNodeID
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
+
+import qualified Data.Map as Map
 
 import Data.Char
   ( isAlphaNum
   , isUpper
   )
-import qualified Data.Map as Map
 import Tietze.Common (Display (..))
 import Tietze.Format.Internal.GraphViz
   ( DotParseError (..)

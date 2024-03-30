@@ -7,7 +7,7 @@ module Tietze.Rewrite.Derivations
   , concretizeDerivation
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Either (updateRight)

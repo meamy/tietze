@@ -10,14 +10,15 @@ module Tietze.Format.LaTeX
   , printMacroList
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
+
+import qualified Data.Map as Map
 
 import Data.Char
   ( chr
   , ord
   )
-import qualified Data.Map as Map
 import Tietze.Common
   ( MonWord
   , Symbol (..)

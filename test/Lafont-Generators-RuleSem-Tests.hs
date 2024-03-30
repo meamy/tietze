@@ -1,13 +1,14 @@
 module Main where
 
+import qualified Tietze.Generators.Semantics as Sem
+import qualified Tietze.Rewrite.Lookup as Rel
+
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 import Tietze.Common
 import Tietze.Generators.Categories
-import qualified Tietze.Generators.Semantics as Sem
 import Tietze.Generators.RuleSem
-import qualified Tietze.Rewrite.Lookup as Rel
 import Tietze.Rewrite.Rules
 
 -----------------------------------------------------------------------------------------

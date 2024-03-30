@@ -2,7 +2,7 @@
 
 module Tietze.Ring (reduceDyadic) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Quantum.Synthesis.Ring as QRing

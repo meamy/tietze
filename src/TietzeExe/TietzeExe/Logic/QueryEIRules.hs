@@ -5,10 +5,11 @@ module TietzeExe.Logic.QueryEIRules
   , resolveEIQuery
   ) where
 
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Data.Set as Set
+
 import Tietze.Common (Symbol)
 import Tietze.Edit.EIRules
   ( EIQueryType

@@ -1,12 +1,13 @@
 module Main where
 
-import qualified Data.List.NonEmpty            as NonEmpty
-import           Data.List
-import           TietzeExeTest.HandleTest
-import           TietzeExe.ValidateDerivations
-import           Tietze.String
-import           Tietze.Rewrite.Derivations
-import           System.IO
+import qualified Data.List.NonEmpty as NonEmpty
+
+import Data.List
+import TietzeExeTest.HandleTest
+import TietzeExe.ValidateDerivations
+import Tietze.String
+import Tietze.Rewrite.Derivations
+import System.IO
 
 -----------------------------------------------------------------------------------------
 -- Common files.

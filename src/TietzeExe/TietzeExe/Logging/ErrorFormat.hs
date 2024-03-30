@@ -11,7 +11,7 @@ module TietzeExe.Logging.ErrorFormat
   , reportUnknownGen
   ) where
 
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Data.Maybe (fromMaybe)

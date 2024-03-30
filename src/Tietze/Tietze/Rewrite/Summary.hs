@@ -22,11 +22,12 @@ module Tietze.Rewrite.Summary
   , addSummaryToSymbols
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
-import Data.Map as Map
-import Data.Set as Set
+import qualified Data.Map as Map
+import qualified Data.Set as Set
+
 import Tietze.Common (MonWord)
 import Tietze.Rewrite.Internal.Summary
   ( DRuleSet (..)

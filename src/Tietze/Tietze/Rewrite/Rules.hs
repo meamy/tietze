@@ -15,7 +15,7 @@ module Tietze.Rewrite.Rules
   , showRewrite
 ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import Tietze.Common (MonWord)
@@ -23,7 +23,10 @@ import Tietze.Rewrite.Common
   ( RuleDir (..)
   , RulePos
   )
-import           Tietze.Rewrite.Internal.Rules
+import Tietze.Rewrite.Internal.Rules
+  ( applyProductionRule
+  , doesRewriteTermMatch
+  )
 
 -----------------------------------------------------------------------------------------
 -- * RewriteRules.

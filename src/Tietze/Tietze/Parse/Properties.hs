@@ -14,7 +14,7 @@ module Tietze.Parse.Properties
   , makePreambleParser
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Data.Map                         as Map

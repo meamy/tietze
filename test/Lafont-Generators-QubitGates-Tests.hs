@@ -3,10 +3,9 @@ module Main where
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-import Tietze.Generators.QubitGates
-
 import Quantum.Synthesis.Matrix
 import Quantum.Synthesis.Ring
+import Tietze.Generators.QubitGates
 
 -----------------------------------------------------------------------------------------
 -- Helpers.

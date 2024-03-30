@@ -10,7 +10,7 @@ module Tietze.Parse.Internal.Properties
   , parsePreamble
   ) where
  
--------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -- * Import Section.
 
 import qualified Data.Map            as Map
