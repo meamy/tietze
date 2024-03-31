@@ -25,7 +25,7 @@ import Tietze.Rewrite.Rules
 data RewriteResult = RewriteResult { output  :: MonWord
                                    , step    :: Int
                                    , success :: Bool
-                                   } deriving (Show,Eq)
+                                   } deriving (Show, Eq)
 
 -- | Consumes a monoid word and a list of rewrites. Returned the string obtained by
 -- performing all rewrites in order, or failure data.

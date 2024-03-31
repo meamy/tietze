@@ -10,7 +10,7 @@ module Tietze.Rewrite.Common
 
 -- | The direction of a rule application in a derivational proof. Either left-to-right
 -- (L2R) or right-to-left (R2L).
-data RuleDir = L2R | R2L deriving (Show,Eq)
+data RuleDir = L2R | R2L deriving (Show, Eq)
 
 -- | The location of a rule application in a derivational proof. Should be non-negative.
 -- This requirement is not checked at compile-time.

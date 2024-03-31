@@ -38,7 +38,7 @@ data SemModel = MonoidSem
               | DyadicThreeSem
               | MultModPSem [Int]
               | AddModPSem [Int]
-              deriving (Eq,Show)
+              deriving (Show, Eq)
 
 -- | Returns the token used to indicate a semantic model. For example, if the semantic
 -- model is taken to be MonoidSem, then both the semantic token and the semantic line are
@@ -66,7 +66,7 @@ instance Display SemModel where
 -- * Generator Dictionary.
 
 -- | A mapping from generator symbols (strings) to their semantic values of type a.
-newtype GenDict a = GenDict (Map.Map String (Maybe a)) deriving (Eq,Show)
+newtype GenDict a = GenDict (Map.Map String (Maybe a)) deriving (Show, Eq)
 
 -- | Creates an empty GenDict.
 empty :: GenDict a

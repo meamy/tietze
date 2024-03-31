@@ -75,7 +75,7 @@ isDerived (EIRule _ _ _ _ deriv) = deriv
 type EIMap = Map.Map Symbol [EIRule]
 
 -- | A mapping from symbols, to either their introduction or elimination rules.
-data EIDict = EIDict Bool Int EIMap deriving (Eq, Show)
+data EIDict = EIDict Bool Int EIMap deriving (Show, Eq)
 
 -- | A function that consumes whether inverses appear on the left or right, together with
 -- a dictionary of rewrite rules. A dictionary of EIRules is constructed as follows. For

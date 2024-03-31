@@ -35,7 +35,7 @@ import Tietze.Rewrite.Summary
 -- * Types to Represent a Derivation
 
 -- | A concrete description of a derivation (i.e., includes all rewrite data).
-data Derivation = Derivation DerivationSummary [Rewrite] deriving (Eq,Show)
+data Derivation = Derivation DerivationSummary [Rewrite] deriving (Show, Eq)
 
 -----------------------------------------------------------------------------------------
 -- * Concretization of Abstract Derivations.

@@ -29,7 +29,7 @@ data GenFileError = MissingSemModel
                   | InvalidGenName
                   | InvalidGenSem Int String
                   | DuplicateGenName String
-                  deriving (Eq,Show)
+                  deriving (Show, Eq)
 
 -- | Errors returned during generator file parsing.
 type GFPError = Either ParserError GenFileError

@@ -87,7 +87,7 @@ type IsLeftInv = Bool
 -- in the relation (any additional symbols introduced or eliminated in the process). The
 -- fourth argument is the direction the rule must be applied in to act as intended. The
 -- fourth argument indicates is the rule is derive d and therefore must be applied.
-data EIRule = EIRule String MonWord RuleDir IsLeftInv IsDerived deriving (Show,Eq)
+data EIRule = EIRule String MonWord RuleDir IsLeftInv IsDerived deriving (Show, Eq)
 
 -----------------------------------------------------------------------------------------
 -- * Helper methods to extract elimination/introduction rules.

@@ -23,7 +23,7 @@ class Display a where
 -- as arguments.
 data Symbol = Symbol { name :: String
                      , args :: [Int]
-                     } deriving (Eq,Show)
+                     } deriving (Show, Eq)
 
 -- | Converts a string to a symbol without any parameters.
 toSymbol :: String -> Symbol

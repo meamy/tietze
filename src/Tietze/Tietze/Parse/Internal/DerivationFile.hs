@@ -52,7 +52,7 @@ data DerFileError = UnknownRewriteMod
                   | UnknownDerivedRule String
                   | MissingInitialWord
                   | MissingFinalWord
-                  deriving (Eq,Show)
+                  deriving (Show, Eq)
 
 -- | Helper function to propogation derivation file errors from a callee parsing function
 -- to a caller parsing function. For example, if an error occurs at index 5 of substr,
@@ -207,7 +207,7 @@ type DSkel = (MonWord, [String], MonWord)
 data PreDerivation = ParDerivation { parsed   :: DerivationSummary
                                    , unparsed :: [String]
                                    , linenum  :: Int
-                                   } deriving (Eq,Show)
+                                   } deriving (Show, Eq)
 
 -- | Consumes the body of a derivation file (excluding the initial word). Attempts to
 -- find the final word in the file. If the final word is found, then the word is returned

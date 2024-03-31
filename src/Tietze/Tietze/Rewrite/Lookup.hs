@@ -21,7 +21,7 @@ import Tietze.Rewrite.Rules (RewriteRule)
 -- * Rule Dictionary.
 
 -- | A mapping from rule names (strings) to the rewrite rules they represent.
-newtype RuleDict = RuleDict (Map.Map String RewriteRule) deriving (Eq,Show)
+newtype RuleDict = RuleDict (Map.Map String RewriteRule) deriving (Show, Eq)
 
 -- | Creates an empty RuleDict.
 empty :: RuleDict

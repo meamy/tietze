@@ -10,7 +10,7 @@ import Tietze.Parse.Properties
 -----------------------------------------------------------------------------------------
 -- Test Data.
 
-data Container = Container (Maybe Int) (Maybe Int) (Maybe Int) deriving (Eq,Show)
+data Container = Container (Maybe Int) (Maybe Int) (Maybe Int) deriving (Show, Eq)
 
 sampleSetter1 :: PropSetter Int Container
 sampleSetter1 _ (Container (Just _) _ _)  = Nothing

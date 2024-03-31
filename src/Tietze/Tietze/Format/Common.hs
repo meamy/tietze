@@ -40,7 +40,7 @@ data FormattedLine = NoEditLine MonWord
                    | AddOverElimLine MonWord MonWord MonWord MonWord MonWord
                    | ElimAddOverlapLine MonWord MonWord MonWord MonWord MonWord
                    | AddElimOverlapLine MonWord MonWord MonWord MonWord MonWord
-                   deriving (Eq, Show)
+                   deriving (Show, Eq)
 
 -- | Handles the case where only a single edit occurs (the other is of length 0).
 splitSingleEdit :: MonWord -> (Int, Int) -> (MonWord, MonWord, MonWord)
@@ -139,10 +139,10 @@ flength (AddElimSplitLine w1 w2 w3 w4 w5) = sumlength [w1, w2, w3, w4, w5]
 -- * FormattedProof Generation
 
 -- | A fully-expanded step in a derivational proof.
-data FormattedStep = FormattedStep RuleSource RuleDir FormattedLine deriving (Eq, Show)
+data FormattedStep = FormattedStep RuleSource RuleDir FormattedLine deriving (Show, Eq)
 
 -- | A fully-expanded derivational proof.
-data FormattedProof = FormattedProof FormattedLine [FormattedStep] deriving (Eq, Show)
+data FormattedProof = FormattedProof FormattedLine [FormattedStep] deriving (Show, Eq)
 
 -- | Pattern-matching for the recursive call in formatProofImpl.
 formatProofRec :: MonWord -> FormattedStep -> [Rewrite] -> [FormattedStep]

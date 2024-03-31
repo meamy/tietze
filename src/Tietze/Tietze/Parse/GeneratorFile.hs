@@ -41,7 +41,7 @@ data GenFileSummary = MonoidGenSummary (GenDict ())
                     | DyadicThreeSummary (GenDict ThreeQubitDyadic)
                     | ModMultProductSummary (GenDict MultProductModP) [Int]
                     | ModAddProductSummary (GenDict AddProductModP) [Int]
-                    deriving (Eq,Show)
+                    deriving (Show, Eq)
 
 -- | Consumes all lines of a generator file (lines). If the lines are valid, then returns
 -- a dictionary of all generators and their semantics, wrapped by their semantic model.

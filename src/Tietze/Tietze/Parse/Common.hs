@@ -46,7 +46,7 @@ data ParserError = ImplError String
                  | UnexpectedEOF
                  | ExpectedEOF
                  | UnknownParseError
-                 deriving (Eq,Show)
+                 deriving (Show, Eq)
 
 instance Display ParserError where
     display (ImplError msg)        = "Implementation error! " ++ msg

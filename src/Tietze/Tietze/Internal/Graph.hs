@@ -36,7 +36,7 @@ import Tietze.Maybe
 type EdgeSet a = Set.Set a
 
 -- | Represents a graph as a mapping from vertex names to edge sets.
-newtype Digraph a = Digraph (Map.Map a (EdgeSet a)) deriving (Eq,Show)
+newtype Digraph a = Digraph (Map.Map a (EdgeSet a)) deriving (Show, Eq)
 
 -- | Represents a walk as a bidirectional sequence of vertices.
 type GraphWalk a = Seq.Seq a

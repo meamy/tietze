@@ -28,7 +28,7 @@ import Tietze.Rewrite.Rules (RewriteRule (..))
 data RuleDictStatus = GoodRuleDict
                     | InvalidRuleSem String
                     | IncompleteGenSet String
-                    deriving (Eq,Show)
+                    deriving (Show, Eq)
 
 -- | Returns true if a RuleDictStatus is GoodRuleDict.
 isRuleDictStatusGood :: RuleDictStatus -> Bool

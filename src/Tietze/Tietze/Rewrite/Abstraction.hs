@@ -67,7 +67,7 @@ import Tietze.Rewrite.Summary
 -- | Provides an abstract view of a derivational proof. In an abstract proof, each step
 -- is either a rewrite or the application of a derived relation. In other words, the
 -- proof consists of abstract rewrites.
-data AbsDerivation = AbsDerivation DerivationSummary [AbsRewrite] deriving (Eq,Show)
+data AbsDerivation = AbsDerivation DerivationSummary [AbsRewrite] deriving (Show, Eq)
 
 -- | Helper method to get summary from abstract derivation.
 _getSummary :: AbsDerivation -> DerivationSummary

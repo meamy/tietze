@@ -49,13 +49,13 @@ import Tietze.Rewrite.Rules
 -- | Maintains metadata about a derivation.
 data RewritePreamble = RewritePreamble { propName :: Maybe String
                                        , propType :: Maybe String
-                                       } deriving (Show,Eq)
+                                       } deriving (Show, Eq)
 
 -- | A description of a derivation that abstracts away all proof details (rewrites).
 data DerivationSummary = DerivationSummary { meta    :: RewritePreamble
                                            , initial :: MonWord
                                            , final   :: MonWord
-                                           } deriving (Eq,Show)
+                                           } deriving (Show, Eq)
 
 -----------------------------------------------------------------------------------------
 -- * Functions to Abstract Derivation Summaries as Rules.

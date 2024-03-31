@@ -19,10 +19,10 @@ import qualified Quantum.Synthesis.Ring as QRing
 -- * Single Object Categories (Abstract Algebraic Types).
 
 -- | Additive Integers: the abelian group of integers under addition.
-newtype AddInt = AddInt Int deriving (Eq,Show)
+newtype AddInt = AddInt Int deriving (Show, Eq)
 
 -- | Multiplicative Integers: the commutative monoid of integers under multiplication.
-newtype MultInt = MultInt Int deriving (Eq,Show)
+newtype MultInt = MultInt Int deriving (Show, Eq)
 
 -- | A monoid in the sense of abstract algebra. Typically, this class describes a set of
 -- elements that are equipped with an association composition operator and an identity

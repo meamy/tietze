@@ -29,7 +29,7 @@ import Tietze.Rewrite.Rules (Rewrite (..))
 
 -- | Represents the instruction !appply <NAME> <DIR> <POS>. An apply is considered an
 -- abstract derivational proof step, as it does not specify the terms to rewrite.
-data Apply = Apply String RulePos RuleDir deriving (Eq,Show)
+data Apply = Apply String RulePos RuleDir deriving (Show, Eq)
 
 -- | Provides an abstract view of a derivational proof step. Each relation is either a
 -- rewrite (i.e., a concrete step) or a derived relation application (i.e., an abstract
@@ -43,10 +43,10 @@ type AbsRewrite = Either Rewrite Apply
 type Dependency = String
 
 -- | A graph to store dependencies between derivations.
-newtype DepGraph = DepGraph (Digraph Dependency) deriving (Eq,Show)
+newtype DepGraph = DepGraph (Digraph Dependency) deriving (Show, Eq)
 
 -- | A derivation and its unmet dependency.
-data UnmetDep = UnmetDep Dependency Dependency deriving (Eq,Show)
+data UnmetDep = UnmetDep Dependency Dependency deriving (Show, Eq)
 
 -- | Consumes a dependency (dep), a rewrite, and a dependency graph (g). If the rewrite
 -- applies a derivation (dep') and at least one of dep or dep' is not a vertex in g, then

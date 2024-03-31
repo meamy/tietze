@@ -31,7 +31,7 @@ data RelFileError = InvalidRuleName
                   | RuleMissingRHS
                   | UnknownGenName String
                   | DuplicateRuleName String
-                  deriving (Eq,Show)
+                  deriving (Show, Eq)
 
 -- | Errors returned during generator file parsing.
 type RFPError = Either ParserError RelFileError

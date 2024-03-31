@@ -21,7 +21,7 @@ import Tietze.Generators.Categories (MonoidObj (..))
 -- If e is the identity element of a and f = replicate, then ProductID equates to
 -- (ProductVal (f n e)) for any n. However, equality is a partial function, with
 -- (ProductVal (f n e)) incomparable with (ProductVal (f m e)) for all n != m.
-data ProductType a = ProductID | ProductVal [a] deriving (Eq,Show)
+data ProductType a = ProductID | ProductVal [a] deriving (Show, Eq)
 
 -- | Consumes a list of monoidal objects. Returns a new list, of the same length, whose
 -- only element is the identity of a.

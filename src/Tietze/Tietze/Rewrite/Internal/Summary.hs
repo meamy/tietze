@@ -16,10 +16,10 @@ import qualified Data.Set as Set
 
 -- | A mapping from derivation names to their equatioanl flags. If the equational flag of
 -- a derived relation is true, then the derived relation may be applied in any direction.
-newtype EqMap = EqMap (Map.Map String Bool) deriving (Eq,Show)
+newtype EqMap = EqMap (Map.Map String Bool) deriving (Show, Eq)
 
 -----------------------------------------------------------------------------------------
 -- * Functions to Register Derivations as Relations.
 
 -- | A collection of unique derived relation symbols.
-newtype DRuleSet = DRuleSet (Set.Set String) deriving (Eq,Show)
+newtype DRuleSet = DRuleSet (Set.Set String) deriving (Show, Eq)

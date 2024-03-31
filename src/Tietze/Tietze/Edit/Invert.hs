@@ -57,7 +57,7 @@ import Tietze.Rewrite.Rules
 -- the structure of a derivational proof. An EIView solves this problem by selecting a
 -- single elimination (resp. introduction) rule for each symbol. In addition, each EIView
 -- enforces that all inverses appear strictly on either the left or right.
-data EIView = EIView IsLeftInv (Map.Map Symbol EIRule) deriving (Eq, Show)
+data EIView = EIView IsLeftInv (Map.Map Symbol EIRule) deriving (Show, Eq)
 
 -- | Initializes a new EIView in which no symbol has elimination (resp. introduction)
 -- rule. The addRule method is used to assign rules to symbols.

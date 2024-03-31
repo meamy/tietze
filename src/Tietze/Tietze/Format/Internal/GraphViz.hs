@@ -13,7 +13,7 @@ module Tietze.Format.Internal.GraphViz
 data DotParseError = UpperCase Char
                    | UnexpectedChar Char
                    | EmptyToken
-                   deriving (Eq,Show)
+                   deriving (Show, Eq)
 
 -----------------------------------------------------------------------------------------
 -- * Valid Vertex Name.
@@ -22,10 +22,10 @@ data DotParseError = UpperCase Char
 -- restricted set of the NodeID types supported by the Dot file format. For example, the
 -- HTML string format is not supported. In particular, NodeID strings may consist of only
 -- alphanumeric symbols and underscores.
-newtype NodeID = NodeID String deriving (Eq,Show,Ord)
+newtype NodeID = NodeID String deriving (Show, Eq, Ord)
 
 -----------------------------------------------------------------------------------------
 -- * Valid Colour Name.
 
 -- | A wrapper type for the X11Color strings supported by the Dot file format.
-newtype X11Color = X11Color String deriving (Eq,Show)
+newtype X11Color = X11Color String deriving (Show, Eq)

@@ -171,14 +171,14 @@ test34 = TestCase (assertEqual "Can extract alphabet from sampleDict2."
 -----------------------------------------------------------------------------------------
 -- Monoid semantics used in the test.
 
-data ZeroInt = ZeroInt Int deriving (Eq,Show)
+data ZeroInt = ZeroInt Int deriving (Show, Eq)
 
 instance MonoidObj (ZeroInt) where
     equate   a           b           = Just (a == b)
     compose  (ZeroInt x) (ZeroInt y) = Just (ZeroInt (x * y))
     identity                         = ZeroInt 0
 
-data BadInt = BadInt Int deriving (Eq,Show)
+data BadInt = BadInt Int deriving (Show, Eq)
 
 instance MonoidObj (BadInt) where
     equate   a          b          = Just (a == b)

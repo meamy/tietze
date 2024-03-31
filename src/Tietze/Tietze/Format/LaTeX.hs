@@ -42,13 +42,13 @@ import Tietze.Rewrite.Rules (RuleSource (..))
 -- | Describes a newcommand definition which associates a derivational symbol with its
 -- math mode representation. For example, (MacroDef lft_SWAP01 X_0) maps the generator
 -- SWAP01 to the symbol X_0 through a macro called lft_SAWP01.
-data MacroDef = MacroDef String String deriving (Eq, Show)
+data MacroDef = MacroDef String String deriving (Show, Eq)
 
 -- | Maintains a mapping from derivational symbol names to macro definitions. Each macro
 -- definition allows an end-user to decide the math mode representation associated with
 -- each symbol in the LaTeX depiction of a derivation. In terms of LaTeX source code,
 -- this component is a list of newcommand statements.
-newtype MacroList = MacroList (Map.Map String MacroDef) deriving (Eq, Show)
+newtype MacroList = MacroList (Map.Map String MacroDef) deriving (Show, Eq)
 
 -- | Prints a single macro definition as a newcommand statement.
 printMacroDef :: MacroDef -> String

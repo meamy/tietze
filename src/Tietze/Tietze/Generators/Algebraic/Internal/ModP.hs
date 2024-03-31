@@ -27,4 +27,4 @@ class ModP a where
 -- the identity element of a, then ArithID equates to (ArithModP e p) for any p. However,
 -- equality is a partial function, with (ArithModP e p) incomparable with (ArithModP e q)
 -- for all p != q.
-data (ModP a) => ArithModP a = ArithID | ArithModP a Int deriving (Eq,Show)
+data (ModP a) => ArithModP a = ArithID | ArithModP a Int deriving (Show, Eq)
