@@ -50,17 +50,6 @@ test7 = TestCase (assertEqual "branchJust can handle Nothing."
                               (branchJust nothingAsInt f))
 
 -----------------------------------------------------------------------------------------
--- branchNothing
-
-test8 = TestCase (assertEqual "branchNothing can handle Just."
-                              (Just 5 :: Maybe Int)
-                              (branchNothing (Just 5) (Just 10)))
-
-test9 = TestCase (assertEqual "branchNothing can handle Nothing."
-                              (Just 10 :: Maybe Int)
-                              (branchNothing nothingAsInt (Just 10)))
-
------------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "maybeApply_JustIntToJustString" test1,
@@ -69,8 +58,6 @@ tests = hUnitTestToTests $ TestList [TestLabel "maybeApply_JustIntToJustString" 
                                      TestLabel "maybeApply_NothingAsMaybeBool" test4,
                                      TestLabel "branchJust_Just_Just" test5,
                                      TestLabel "branchJust_Just_Nothing" test6,
-                                     TestLabel "branchJust_Nothing" test7,
-                                     TestLabel "branchNothing_Just" test8,
-                                     TestLabel "branchNothing_Nothing" test9]
+                                     TestLabel "branchJust_Nothing" test7]
 
 main = defaultMain tests

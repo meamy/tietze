@@ -24,8 +24,7 @@ import qualified Data.Set as Set
 import Data.Maybe (fromMaybe)
 import Data.Sequence (Seq (..), (<|), (|>))
 import Tietze.Maybe
-  ( branchNothing
-  , maybeApply
+  ( maybeApply
   )
 
 -----------------------------------------------------------------------------------------
@@ -109,5 +108,7 @@ findCycleFromVertex g v seen
 -- Note: Mutually depends on findCycleFromVertex.
 findCycleFromVertices :: (Ord a) => Digraph a -> [a] -> EdgeSet a -> Maybe (GraphWalk a)
 findCycleFromVertices _ []       _    = Nothing
-findCycleFromVertices g (v:list) seen = branchNothing (findCycleFromVertex g v seen)
-                                                      (findCycleFromVertices g list seen)
+findCycleFromVertices g (v:list) seen = 
+    case findCycleFromVertex g v seen of
+        Nothing -> findCycleFromVertices g list seen
+        just    -> just
