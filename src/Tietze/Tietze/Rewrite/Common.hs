@@ -3,6 +3,7 @@
 module Tietze.Rewrite.Common
   ( RuleDir (..)
   , RulePos
+  , reverseDir
   ) where
 
 -----------------------------------------------------------------------------------------
@@ -15,3 +16,11 @@ data RuleDir = L2R | R2L deriving (Show, Eq)
 -- | The location of a rule application in a derivational proof. Should be non-negative.
 -- This requirement is not checked at compile-time.
 type RulePos = Int
+
+-----------------------------------------------------------------------------------------
+-- * Basic Operations.
+
+-- | Reverses the direction of a RuleDir.
+reverseDir :: RuleDir -> RuleDir
+reverseDir L2R = R2L
+reverseDir R2L = L2R

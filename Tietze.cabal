@@ -22,6 +22,7 @@ library
                        Tietze.Named
                        Tietze.Ring
                        Tietze.String
+                       Tietze.Edit.Derive
                        Tietze.Edit.EIRules
                        Tietze.Edit.Internal.EIRules
                        Tietze.Edit.Invert
@@ -187,6 +188,12 @@ test-suite lafont-edit-eirules-tests
   import:              basic-unit-test-props
   main-is:             Lafont-Edit-EIRules-Tests.hs
   type:                exitcode-stdio-1.0
+
+test-suite lafont-edit-derive-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Edit-Derive-Tests.hs
+  type:                exitcode-stdio-1.0
+  build-depends:       containers
 
 test-suite lafont-either-tests
   import:              basic-unit-test-props
