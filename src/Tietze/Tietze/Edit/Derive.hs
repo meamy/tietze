@@ -4,6 +4,7 @@ module Tietze.Edit.Derive
   ( DeriveLog
   , DOption
   , deriveRule
+  , findMeet
   , newDeriveLog
   , rulesToOptions
   ) where
@@ -55,7 +56,7 @@ rulesToOptions rules disallowed = foldRules f [] rules
 -----------------------------------------------------------------------------------------
 -- * Option Analysis.
 
--- Associates a rewrite application with a rule name.
+-- | Associates a rewrite application with a rule name.
 type NRewrite = (String, Rewrite)
 
 -- | Conditionally reverses the direction of a rule.
@@ -150,3 +151,49 @@ deriveRule log opts goal cur bnd
     | otherwise                   = Left log
     where rws  = optionsToRewrites False opts cur
           nlog = logDerivation cur bnd log
+
+-----------------------------------------------------------------------------------------
+-- * Join Search
+
+-- | Helper function for findMeet. This function takes the list of valid rewrite
+-- applications (as determined by optionsToRewrites), and performs a depth-first search
+-- over the possible derivations. If a solution is not found within the depth bound, then
+-- the updated derivation log is returned. Otherwise, the word at which the left-hand
+-- side and right-hand side meet is returned.
+--
+-- See findMeet for more details on the arguments.
+fmBranch :: RuleDir -> DeriveLog -> [DOption] -> DeriveLog -> MonWord -> Int -> [NRewrite]
+                    -> Either DeriveLog MonWord
+fmBranch _   log _    _     _   _     []               = Left log
+fmBranch dir log opts goals cur bnd (nrw@(_, rw):nrws) =
+    case findMeet dir log opts goals (applyRewrite cur rw) (bnd - 1) of
+        Left nlog -> fmBranch dir nlog opts goals cur bnd nrws
+        meet      -> meet
+
+-- | The function searches for a meet between two words u and v. A meet is some word w
+-- such that w is derivable from both u and and v is derivable from w. If a path of
+-- length 2n exists from u to v, then a meet between u and v exists at depth n. Since
+-- increasing the depth of a derivation can increase the number of possible derivations
+-- exponentially, then a meet between u and v usually be found in less time than
+-- performing a forward search from u to v.
+--
+-- The function takes as input whether the search is forward is backwards (dir), a list
+-- of strings derived in previous iterations (logs), a list of possible rewrites (opts,
+-- as computed by rulesToOptions), a list of strings which are known to be derivable from
+-- the other side (goals), the word from which the search is beginning (cur), and the
+-- maximum derivation depth for this iteration (bnd).
+--
+-- This function is meant to be used as follows. First, a DeriveLog is created for both
+-- the left-hand side and the right-hand side. Then findMeet is applied to both sides, in
+-- an alternating fashion, with bnd increasing after each round of searches.
+findMeet :: RuleDir -> DeriveLog -> [DOption] -> DeriveLog -> MonWord -> Int
+                    -> Either DeriveLog MonWord
+findMeet dir log opts goals cur bnd
+    | not $ isNewDerivation cur (-1) goals = Right cur
+    | bnd == 0 && isNew                    = Left nlog
+    | bnd == 0                             = Left log
+    | isNew                                = fmBranch dir nlog opts goals cur bnd rws
+    | otherwise                            = Left log
+    where isNew = isNewDerivation cur bnd log
+          rws   = optionsToRewrites (dir == R2L) opts cur
+          nlog  = logDerivation cur bnd log

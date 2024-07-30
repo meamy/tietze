@@ -81,8 +81,11 @@ test5 = TestCase (assertEqual "Can extract rules from a full dictionary, full ex
 
 nocache    = newDeriveLog 0
 fullCache  = newDeriveLog (-1)
-smCache    = newDeriveLog 3
+smCache    = newDeriveLog 1
 largeCache = newDeriveLog 1000
+
+-----------------------------------------------------------------------------------------
+-- Helper Functions for Validating Results.
 
 isFailure :: Either DeriveLog [(String, Rewrite)] -> Bool
 isFailure (Left _) = True
@@ -131,6 +134,7 @@ test13 = TestCase (assertEqual "Cannot derive c from aaa with too few steps."
 -----------------------------------------------------------------------------------------
 -- deriveRule: Deriving aaa from c.
 
+
 test14 = TestCase (assertEqual "Cannot derive aaa from c without caching."
                                (Left nocache)
                                (deriveRule nocache stdOpts word3a word3b 4))
@@ -161,6 +165,112 @@ test19 = TestCase (assertEqual "Cannot derive aaa from bbb with too few steps."
                                (deriveRule nocache stdOpts word3a word2a 2))
 
 -----------------------------------------------------------------------------------------
+-- Helper Function for Testing: findMeet.
+
+data MeetTestReult = Impossible | NoMeet | Meet MonWord deriving (Eq, Show)
+
+testFindMeet :: DeriveLog -> [DOption] -> MonWord -> MonWord -> Int -> MeetTestReult
+testFindMeet log opts lhs rhs bnd =
+    case findMeet L2R log opts log lhs bnd of
+        Right meet  -> Impossible 
+        Left midlog -> case findMeet R2L log opts midlog rhs bnd of
+            Right meet -> Meet meet
+            Left _     -> NoMeet
+
+-----------------------------------------------------------------------------------------
+-- findMeet: Deriving c from aaa.
+
+meet1 :: MonWord
+meet1 = [(Symbol "a" []), (Symbol "b" []), (Symbol "b" [])]
+
+test20 = TestCase (assertEqual "Cannot meet c from aaa without caching."
+                               NoMeet
+                               (testFindMeet nocache stdOpts word3a word3b 4))
+
+test21 = TestCase (assertEqual "Can meet c from aaa with caching (exact steps)."
+                               (Meet meet1)
+                               (testFindMeet fullCache stdOpts word3a word3b 2))
+
+test22 = TestCase (assertEqual "Cannot meet c from aaa with insufficiently many steps."
+                               NoMeet
+                               (testFindMeet fullCache stdOpts word3a word3b 1))
+
+test23 = TestCase (assertEqual "Cannot meet c from aaa with insufficiently small cache."
+                               NoMeet
+                               (testFindMeet smCache stdOpts word3a word3b 2))
+
+test24 = TestCase (assertEqual "Can meet c from aaa via an alternative midpoint."
+                               (Meet word3b)
+                               (testFindMeet fullCache stdOpts word3a word3b 4))
+
+-----------------------------------------------------------------------------------------
+-- findMeet: Deriving aaa from c (rule direction test).
+
+test25 = TestCase (assertEqual "Cannot meet aaa from c without caching."
+                               NoMeet
+                               (testFindMeet nocache stdOpts word3b word3a 5))
+
+test26 = TestCase (assertEqual "Cannot meet aaa from c with caching."
+                               NoMeet
+                               (testFindMeet fullCache stdOpts word3b word3a 5))
+
+test27 = TestCase (assertEqual "Cannot Cannot meet aaa from c with fixed cache."
+                               NoMeet
+                               (testFindMeet smCache stdOpts word3b word3a 5))
+
+-----------------------------------------------------------------------------------------
+-- findMeet: Deriving aaa from bbb.
+
+meet2 :: MonWord
+meet2 = [(Symbol "b" []), (Symbol "a" []), (Symbol "a" [])]
+
+test28 = TestCase (assertEqual "Cannot meet aaa from bbb without caching."
+                               NoMeet
+                               (testFindMeet nocache stdOpts word2a word3a 4))
+
+test29 = TestCase (assertEqual "Can meet aaa from bbb with caching (exact steps)."
+                               (Meet meet2)
+                               (testFindMeet fullCache stdOpts word2a word3a 2))
+
+test30 = TestCase (assertEqual "Cannot meet aaa from bbb with insufficiently many steps."
+                               NoMeet
+                               (testFindMeet fullCache stdOpts word2a word3a 1))
+
+test31 = TestCase (assertEqual "Cannot meet aaa from bbb with insufficiently small cache."
+                               NoMeet
+                               (testFindMeet smCache stdOpts word2a word3a 2))
+
+test32 = TestCase (assertEqual "Can meet aaa from bbb via an alternative midpoint."
+                               (Meet word3a)
+                               (testFindMeet fullCache stdOpts word2a word3a 4))
+
+-----------------------------------------------------------------------------------------
+-- findMeet: Deriving bbb from aaa.
+
+meet3 :: MonWord
+meet3 = [(Symbol "a" []), (Symbol "b" []), (Symbol "b" [])]
+
+test33 = TestCase (assertEqual "Cannot meet bbb from aaa without caching."
+                               NoMeet
+                               (testFindMeet nocache stdOpts word3a word2a 4))
+
+test34 = TestCase (assertEqual "Can meet bbb from aaa with caching (exact steps)."
+                               (Meet meet3)
+                               (testFindMeet fullCache stdOpts word3a word2a 2))
+
+test35 = TestCase (assertEqual "Cannot meet bbb from aaa with insufficiently many steps."
+                               NoMeet
+                               (testFindMeet fullCache stdOpts word3a word2a 1))
+
+test36 = TestCase (assertEqual "Cannot meet bbb from aaa with insufficiently small cache."
+                               NoMeet
+                               (testFindMeet smCache stdOpts word3a word2a 2))
+
+test37 = TestCase (assertEqual "Can meet bbb from aaa via an alternative midpoint."
+                               (Meet word2a)
+                               (testFindMeet fullCache stdOpts word3a word2a 4))
+
+-----------------------------------------------------------------------------------------
 -- Orchestrates tests.
 
 tests = hUnitTestToTests $ TestList [TestLabel "rulesToOptions_Test1" test1,
@@ -181,6 +291,24 @@ tests = hUnitTestToTests $ TestList [TestLabel "rulesToOptions_Test1" test1,
                                      TestLabel "deriveRule_Case2_Conf3" test16,
                                      TestLabel "deriveRule_Case3_Conf1" test17,
                                      TestLabel "deriveRule_Case3_Conf2" test18,
-                                     TestLabel "deriveRule_Case3_Conf3" test19]
+                                     TestLabel "deriveRule_Case3_Conf3" test19,
+                                     TestLabel "findMeet_Case1_Conf1" test20,
+                                     TestLabel "findMeet_Case1_Conf2" test21,
+                                     TestLabel "findMeet_Case1_Conf3" test22,
+                                     TestLabel "findMeet_Case1_Conf4" test23,
+                                     TestLabel "findMeet_Case1_Conf5" test24,
+                                     TestLabel "findMeet_Case2_Conf1" test25,
+                                     TestLabel "findMeet_Case2_Conf2" test26,
+                                     TestLabel "findMeet_Case2_Conf3" test27,
+                                     TestLabel "findMeet_Case3_Conf1" test28,
+                                     TestLabel "findMeet_Case3_Conf2" test29,
+                                     TestLabel "findMeet_Case3_Conf3" test30,
+                                     TestLabel "findMeet_Case3_Conf4" test31,
+                                     TestLabel "findMeet_Case3_Conf5" test32,
+                                     TestLabel "findMeet_Case4_Conf1" test33,
+                                     TestLabel "findMeet_Case4_Conf2" test34,
+                                     TestLabel "findMeet_Case4_Conf3" test35,
+                                     TestLabel "findMeet_Case4_Conf4" test36,
+                                     TestLabel "findMeet_Case4_Conf5" test37]
 
 main = defaultMain tests
