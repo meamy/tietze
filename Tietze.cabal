@@ -78,6 +78,7 @@ library TietzeExe
   exposed-modules:     TietzeExe.CheckGenerators
                        TietzeExe.CheckRelations
                        TietzeExe.DeriveRule
+                       TietzeExe.FindMeet
                        TietzeExe.GraphDeps
                        TietzeExe.InvertRule
                        TietzeExe.ToLatex
@@ -128,6 +129,11 @@ executable derive_rule
   import:              exe-with-file-io-props
   main-is:             DeriveRule/Main.hs
   other-modules:       DeriveRule.CmdLn
+
+executable find_meet
+  import:              exe-with-file-io-props
+  main-is:             FindMeet/Main.hs
+  other-modules:       FindMeet.CmdLn
 
 executable graph_deps
   import:              exe-with-file-io-props
