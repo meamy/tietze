@@ -48,7 +48,7 @@ checkRelationsImpl hdl genFname relFnames = do
 
 -- | Consumes a handle, the name of a generator file (genFname) and the name of a
 -- relation file (relFname). If the generator and relation files parse correctly, then an
--- internal representation of the generators is printed to handle. Otherwise, a parsing
+-- internal representation of the relations is printed to handle. Otherwise, a parsing
 -- error is printed to handle with the file name and line number.
 checkRelations :: Handle -> String -> NonEmpty String -> IO ()
 checkRelations hdl genFname relFnames = do
