@@ -4,6 +4,7 @@
 
 module TietzeExe.IO.CmdLnFlags
   ( configFlags
+  , cutoffFlag
   , def
   , eiPolicyFlags
   , leftInvFlags
@@ -86,3 +87,14 @@ eiPolicyFlags x = x &= help ("Options: " ++ names)
     where elist = enumFrom $ toEnum 0 :: [EIQueryType]
           slist = map show elist
           names = concat $ intersperse ", " slist
+
+-- | Returns the annotation for a flag which allows an end-user to specify the number of
+-- cached results during a tree search. The default value is taken as an argument, since
+-- flags are impure.
+cutoffFlag :: Int -> Int
+cutoffFlag x = x &= help helpMsg
+    where line1   = "The number of previous results cached during the search."
+          line2   = "A higher cutoff reduces search time but increases memory usage."
+          line3   = "To disable caching, set cutoff to 0."
+          line4   = "For unbounded caching, set cutoff to a negative value."
+          helpMsg = line1 ++ " " ++ line2 ++ " " ++ line3 ++ " " ++ line4

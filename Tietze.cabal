@@ -77,6 +77,7 @@ library
 library TietzeExe
   exposed-modules:     TietzeExe.CheckGenerators
                        TietzeExe.CheckRelations
+                       TietzeExe.DeriveRule
                        TietzeExe.GraphDeps
                        TietzeExe.InvertRule
                        TietzeExe.ToLatex
@@ -122,6 +123,11 @@ executable check_relations
   import:              exe-with-file-io-props
   main-is:             CheckRelations/Main.hs
   other-modules:       CheckRelations.CmdLn
+
+executable derive_rule
+  import:              exe-with-file-io-props
+  main-is:             DeriveRule/Main.hs
+  other-modules:       DeriveRule.CmdLn
 
 executable graph_deps
   import:              exe-with-file-io-props
