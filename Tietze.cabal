@@ -53,6 +53,7 @@ library
                        Tietze.Parse.RelationFile
                        Tietze.Parse.Semantics
                        Tietze.Rewrite.Abstraction
+                       Tietze.Rewrite.AliasLookup
                        Tietze.Rewrite.Common
                        Tietze.Rewrite.Derivations
                        Tietze.Rewrite.Internal.Abstraction
@@ -259,6 +260,11 @@ test-suite lafont-rewrite-abstraction-tests
   main-is:             Lafont-Rewrite-Abstraction-Tests.hs
   type:                exitcode-stdio-1.0
   build-depends:       containers
+
+test-suite lafont-rewrite-aliaslookup-tests
+  import:              basic-unit-test-props
+  main-is:             Lafont-Rewrite-AliasLookup-Tests.hs
+  type:                exitcode-stdio-1.0
 
 test-suite lafont-rewrite-rules-tests
   import:              basic-unit-test-props
